@@ -263,12 +263,12 @@ function submitContato() {
 
   // Formspree — substitua YOUR_FORM_ID pelo ID do seu formulário em formspree.io
   // É gratuito para até 50 envios/mês. Crie em https://formspree.io
-  var FORMSPREE = 'https://formspree.io/f/YOUR_FORM_ID';
+  var FORMSPREE = 'https://script.google.com/macros/s/AKfycbw9M0BRgqvT7srgiNmRTFKh-YvkVP6C6hnW8VwLhROSKAYCBQIdOz3U_XcuwEUrVyctzQ/exec';
 
   fetch(FORMSPREE, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-    body: JSON.stringify({ nome: nome, email: email, assunto: assunto, mensagem: msg })
+    
+    body: new URLSearchParams({ nome: nome, email: email, assunto: assunto, mensagem: msg }), mode: 'no-cors'
   })
   .then(function(r) { return r.json(); })
   .catch(function() { return {ok: true}; })
