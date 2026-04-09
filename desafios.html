@@ -50,25 +50,39 @@ footer{background:#0E1929;padding:60px 5% 32px;}
 .ft-bottom{border-top:1px solid rgba(255,255,255,0.06);padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
 .ft-bottom p{font-size:11px;color:rgba(255,255,255,0.22);}
 @keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
-/* ── HAMBURGER MENU ── */
-.hamburger{display:none;cursor:pointer;background:none;border:none;padding:10px;margin-left:auto;z-index:310;-webkit-tap-highlight-color:transparent;}
-.hamburger .hb{width:24px;height:2.5px;background:#fff;border-radius:2px;transition:all 0.3s ease;display:block;margin:0;position:relative;}
-.hamburger .hb+.hb{margin-top:6px;}
-.hamburger.active .hb:nth-child(1){transform:rotate(45deg) translate(6px,6px);}
-.hamburger.active .hb:nth-child(2){opacity:0;}
-.hamburger.active .hb:nth-child(3){transform:rotate(-45deg) translate(6px,-6px);}
-.mobile-menu{position:fixed;top:72px;left:0;right:0;background:#1B2A4A;flex-direction:column;padding:0 5%;gap:0;border-bottom:3px solid #C9A84C;z-index:280;max-height:0;overflow:hidden;opacity:0;transition:max-height 0.35s ease,opacity 0.3s ease,padding 0.35s ease;}
-.mobile-menu.open{max-height:100vh;opacity:1;padding:20px 5% 28px;}
-.mobile-menu a{text-decoration:none;color:rgba(255,255,255,0.8);font-size:14px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.08);transition:color 0.2s;display:block;}
-.mobile-menu a:hover,.mobile-menu a:active{color:#C9A84C;}
-.mobile-menu .mob-social{display:flex;gap:20px;padding-top:16px;margin-top:8px;border-top:1px solid rgba(201,168,76,0.2);}
-.mobile-menu .mob-social a{padding:8px 0;border-bottom:none;font-size:13px;}
-.mobile-menu .mob-btn{display:block;background:#C9A84C;color:#1B2A4A;padding:14px 24px;border-radius:2px;font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;text-align:center;margin-top:18px;border-bottom:none;}
-.mobile-menu .mob-btn:hover{background:#A68A3E;color:#fff;}
+/* ── HAMBURGER & MOBILE MENU ── */
+.hamburger{display:none;background:none;border:none;cursor:pointer;padding:12px;margin-left:auto;z-index:350;-webkit-tap-highlight-color:transparent;position:relative;}
+.hamburger .hb{display:block;width:26px;height:2px;background:#fff;border-radius:1px;transition:transform 0.3s cubic-bezier(.4,0,.2,1),opacity 0.2s ease;}
+.hamburger .hb:nth-child(2){margin-top:7px;}
+.hamburger .hb:nth-child(3){margin-top:7px;}
+.hamburger.active .hb:nth-child(1){transform:rotate(45deg) translate(6.5px,6.5px);}
+.hamburger.active .hb:nth-child(2){opacity:0;transform:scaleX(0);}
+.hamburger.active .hb:nth-child(3){transform:rotate(-45deg) translate(6.5px,-6.5px);}
+.mobile-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:270;opacity:0;transition:opacity 0.3s ease;}
+.mobile-overlay.show{display:block;opacity:1;}
+.mobile-menu{position:fixed;top:72px;left:0;right:0;background:#1B2A4A;z-index:280;border-bottom:3px solid #C9A84C;transform:translateY(-100%);opacity:0;transition:transform 0.35s cubic-bezier(.4,0,.2,1),opacity 0.3s ease;padding:8px 0;box-shadow:0 12px 40px rgba(0,0,0,0.3);}
+.mobile-menu.open{transform:translateY(0);opacity:1;}
+.mobile-menu a{display:block;text-decoration:none;color:rgba(255,255,255,0.85);font-size:15px;font-weight:600;padding:16px 24px;border-bottom:1px solid rgba(255,255,255,0.06);transition:all 0.2s;letter-spacing:0.3px;}
+.mobile-menu a:active,.mobile-menu a:hover{color:#C9A84C;background:rgba(201,168,76,0.08);padding-left:28px;}
+.mobile-menu .mob-social{display:flex;gap:24px;padding:12px 24px;border-top:1px solid rgba(201,168,76,0.15);margin-top:4px;}
+.mobile-menu .mob-social a{padding:10px 0;border-bottom:none;font-size:14px;}
+.mobile-menu .mob-btn{display:block;margin:12px 20px 16px;background:#C9A84C;color:#1B2A4A;padding:16px 24px;border-radius:3px;font-size:13px;font-weight:800;letter-spacing:1px;text-transform:uppercase;text-align:center;text-decoration:none;border-bottom:none;box-shadow:0 4px 12px rgba(201,168,76,0.25);}
+.mobile-menu .mob-btn:active{background:#A68A3E;transform:scale(0.98);}
 
 @media(max-width:1100px){.ft-grid{grid-template-columns:1fr 1fr;}}
 @media(max-width:768px){body{padding-top:72px;}#topbar{display:none;}#mainNav{top:0;}.nav-links,.nav-social{display:none;}
   .hamburger{display:flex!important;}
+  /* Mobile UX Enhancements */
+  body{-webkit-text-size-adjust:100%;}
+  #mainNav{height:64px;padding:0 16px;gap:12px;}
+  .nav-logo img{height:40px;}
+  section{padding-left:20px!important;padding-right:20px!important;}
+  .h2{font-size:24px;margin-bottom:12px;}
+  .body-t{font-size:14px;}
+  .btn-p{padding:16px 28px;font-size:13px;width:100%;text-align:center;border-radius:3px;}
+  .btn-o{padding:14px 24px;font-size:13px;width:100%;text-align:center;border-radius:3px;}
+  .btn-od{padding:14px 24px;font-size:13px;width:100%;text-align:center;}
+  .mobile-menu{top:64px;}
   .nav-btn{display:none;}
 .ft-grid{grid-template-columns:1fr;}.ft-bottom{flex-direction:column;align-items:flex-start;}}
 
@@ -133,6 +147,7 @@ footer{background:#0E1929;padding:60px 5% 32px;}
   </div>
   <a href="cursos.html#lista-espera" class="mob-btn">Lista de Espera</a>
 </div>
+<div class="mobile-overlay" id="mobileOverlay"></div>
 
 <!-- HERO -->
 <section class="page-hero" style="text-align:center;">
@@ -221,9 +236,15 @@ window.addEventListener('scroll',function(){if(window.scrollY>60){nav.classList.
 (function(){var p=location.pathname.split('/').pop()||'index.html';var m={'institucional.html':'lnk-inst','professor.html':'lnk-prof','cursos.html':'lnk-cur','desafios.html':'lnk-des','blog.html':'lnk-blog','depoimentos.html':'lnk-dep','contato.html':'lnk-cont'};if(m[p]){var el=document.getElementById(m[p]);if(el)el.classList.add('active');}})();
 var obs=new IntersectionObserver(function(e){e.forEach(function(el){if(el.isIntersecting){el.target.style.opacity='1';el.target.style.transform='translateY(0)';}});},{threshold:0.07});
 document.querySelectorAll('.reveal').forEach(function(el){el.style.opacity='0';el.style.transform='translateY(18px)';el.style.transition='opacity 0.55s ease,transform 0.55s ease';obs.observe(el);});
-var hBtn=document.getElementById('hamburgerBtn'),mMenu=document.getElementById('mobileMenu');
-if(hBtn&&mMenu){hBtn.addEventListener('click',function(){hBtn.classList.toggle('active');mMenu.classList.toggle('open');});
-mMenu.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){hBtn.classList.remove('active');mMenu.classList.remove('open');});});
-document.addEventListener('click',function(e){if(!hBtn.contains(e.target)&&!mMenu.contains(e.target)){hBtn.classList.remove('active');mMenu.classList.remove('open');}});}
+/* Hamburger Menu */
+var hBtn=document.getElementById('hamburgerBtn'),mMenu=document.getElementById('mobileMenu'),mOverlay=document.getElementById('mobileOverlay');
+function closeMenu(){hBtn.classList.remove('active');mMenu.classList.remove('open');if(mOverlay)mOverlay.classList.remove('show');document.body.style.overflow='';}
+function openMenu(){hBtn.classList.add('active');mMenu.classList.add('open');if(mOverlay)mOverlay.classList.add('show');document.body.style.overflow='hidden';}
+if(hBtn&&mMenu){
+hBtn.addEventListener('click',function(e){e.stopPropagation();if(mMenu.classList.contains('open')){closeMenu();}else{openMenu();}});
+mMenu.querySelectorAll('a').forEach(function(a){a.addEventListener('click',closeMenu);});
+if(mOverlay)mOverlay.addEventListener('click',closeMenu);
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeMenu();});
+}
 </script>
 </body></html>
