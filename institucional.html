@@ -53,21 +53,19 @@ footer{background:#0E1929;padding:60px 5% 32px;}
 .ft-grid{grid-template-columns:1fr;}.ft-bottom{flex-direction:column;align-items:flex-start;}}
 
 /* ── HAMBURGER MENU ── */
-.hamburger{display:none;flex-direction:column;justify-content:center;align-items:center;width:40px;height:40px;cursor:pointer;background:none;border:none;padding:4px;margin-left:auto;z-index:310;position:relative;}
-.hamburger span{display:block;width:22px;height:2px;background:rgba(255,255,255,0.85);border-radius:2px;transition:all 0.3s ease;}
-.hamburger span:nth-child(1){margin-bottom:5px;}
-.hamburger span:nth-child(3){margin-top:5px;}
-.hamburger.active span:nth-child(1){transform:rotate(45deg) translate(5px,5px);}
-.hamburger.active span:nth-child(2){opacity:0;transform:scaleX(0);}
-.hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px);}
-.mobile-menu{display:none;position:fixed;top:72px;left:0;right:0;background:rgba(27,42,74,0.99);backdrop-filter:blur(12px);flex-direction:column;padding:20px 5% 28px;gap:0;border-bottom:2px solid rgba(200,168,75,0.3);transform:translateY(-10px);opacity:0;transition:all 0.3s ease;z-index:280;}
-.mobile-menu.open{display:flex;transform:translateY(0);opacity:1;}
-.mobile-menu a{text-decoration:none;color:rgba(255,255,255,0.75);font-size:13px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.06);transition:color 0.2s;}
-.mobile-menu a:last-child{border-bottom:none;}
-.mobile-menu a:hover,.mobile-menu a:active{color:#C8A84B;}
-.mobile-menu .mob-social{display:flex;gap:18px;padding-top:16px;margin-top:8px;border-top:1px solid rgba(200,168,75,0.15);}
-.mobile-menu .mob-social a{padding:8px 0;border-bottom:none;}
-.mobile-menu .mob-btn{display:inline-block;background:#C8A84B;color:#1B2A4A;padding:12px 24px;border-radius:2px;font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;text-align:center;margin-top:16px;border-bottom:none;}
+.hamburger{display:none;cursor:pointer;background:none;border:none;padding:10px;margin-left:auto;z-index:310;-webkit-tap-highlight-color:transparent;}
+.hamburger .bar{width:24px;height:2.5px;background:#fff;border-radius:2px;transition:all 0.3s ease;display:block;margin:0;position:relative;}
+.hamburger .bar+.bar{margin-top:6px;}
+.hamburger.active .bar:nth-child(1){transform:rotate(45deg) translate(6px,6px);}
+.hamburger.active .bar:nth-child(2){opacity:0;}
+.hamburger.active .bar:nth-child(3){transform:rotate(-45deg) translate(6px,-6px);}
+.mobile-menu{position:fixed;top:72px;left:0;right:0;background:#1B2A4A;flex-direction:column;padding:0 5%;gap:0;border-bottom:3px solid #C9A84C;z-index:280;max-height:0;overflow:hidden;opacity:0;transition:max-height 0.35s ease,opacity 0.3s ease,padding 0.35s ease;}
+.mobile-menu.open{max-height:100vh;opacity:1;padding:20px 5% 28px;}
+.mobile-menu a{text-decoration:none;color:rgba(255,255,255,0.8);font-size:14px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.08);transition:color 0.2s;display:block;}
+.mobile-menu a:hover,.mobile-menu a:active{color:#C9A84C;}
+.mobile-menu .mob-social{display:flex;gap:20px;padding-top:16px;margin-top:8px;border-top:1px solid rgba(201,168,76,0.2);}
+.mobile-menu .mob-social a{padding:8px 0;border-bottom:none;font-size:13px;}
+.mobile-menu .mob-btn{display:block;background:#C9A84C;color:#1B2A4A;padding:14px 24px;border-radius:2px;font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;text-align:center;margin-top:18px;border-bottom:none;}
 .mobile-menu .mob-btn:hover{background:#A68A3E;color:#fff;}
 </style>
 <style>
@@ -144,7 +142,7 @@ footer{background:#0E1929;padding:60px 5% 32px;}
     <a href="https://www.youtube.com/@prof.viniciusferraz" target="_blank" rel="noopener" title="YouTube"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.3 31.3 0 0 0 0 12a31.3 31.3 0 0 0 .6 5.8 3 3 0 0 0 2 2.1c2 .6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.3 31.3 0 0 0 24 12a31.3 31.3 0 0 0-.5-5.8zM9.7 15.5V8.5l6.3 3.5-6.3 3.5z"/></svg></a>
   </div>
   <a href="cursos.html#lista-espera" class="nav-btn">Lista de Espera</a>
-  <button class="hamburger" id="hamburgerBtn" aria-label="Menu"><span></span><span></span><span></span></button>
+  <button class="hamburger" id="hamburgerBtn" aria-label="Menu"><div class="bar"></div><div class="bar"></div><div class="bar"></div></button>
 </nav>
 <div class="mobile-menu" id="mobileMenu">
   <a href="index.html">Início</a>
