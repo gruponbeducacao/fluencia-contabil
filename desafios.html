@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Depoimentos — Fluência Contábil</title>
+<title>Os Desafios da Contabilidade — Fluência Contábil</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
 <style>
 :root{--azul:#1B2A4A;--azul-medio:#2A3F6F;--dourado:#C9A84C;--dourado-esc:#A68A3E;--cream:#FBF6E9;--texto:#1A1A1A;--branco:#FFFFFF;}
@@ -26,8 +26,6 @@ body{font-family:'Montserrat',sans-serif;color:var(--texto);background:var(--bra
 .btn-p:hover{background:var(--dourado-esc);border-color:var(--dourado-esc);transform:translateY(-2px);box-shadow:0 8px 24px rgba(201,168,76,0.3);}
 .btn-o{display:inline-block;background:transparent;color:rgba(255,255,255,0.75);padding:14px 32px;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;border-radius:2px;border:1.5px solid rgba(255,255,255,0.25);transition:all 0.2s;}
 .btn-o:hover{border-color:rgba(255,255,255,0.6);color:var(--branco);}
-.btn-od{display:inline-block;background:transparent;color:var(--azul);padding:14px 32px;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;border-radius:2px;border:2px solid var(--azul);transition:all 0.2s;}
-.btn-od:hover{background:var(--azul);color:var(--branco);}
 .lbl{display:block;font-size:10px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--dourado);margin-bottom:10px;}
 .bar{width:44px;height:3px;background:var(--dourado);margin-bottom:28px;}
 .h2{font-size:clamp(24px,3vw,40px);font-weight:900;color:var(--azul);line-height:1.1;letter-spacing:-0.5px;margin-bottom:16px;}
@@ -52,7 +50,7 @@ footer{background:#0E1929;padding:60px 5% 32px;}
 .ft-bottom{border-top:1px solid rgba(255,255,255,0.06);padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
 .ft-bottom p{font-size:11px;color:rgba(255,255,255,0.22);}
 @keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+@media(max-width:1100px){.ft-grid{grid-template-columns:1fr 1fr;}}
 @media(max-width:680px){body{padding-top:72px;}#topbar{display:none;}#mainNav{top:0;}.nav-links,.nav-social{display:none;}
   .hamburger{display:flex;}
   .nav-btn{display:none;}
@@ -75,30 +73,33 @@ footer{background:#0E1929;padding:60px 5% 32px;}
 .mobile-menu .mob-social a{padding:8px 0;border-bottom:none;}
 .mobile-menu .mob-btn{display:inline-block;background:#C8A84B;color:#1B2A4A;padding:12px 24px;border-radius:2px;font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;text-align:center;margin-top:16px;border-bottom:none;}
 .mobile-menu .mob-btn:hover{background:#A68A3E;color:#fff;}
-</style>
-<style>
-.big-quote{font-size:clamp(20px,2.5vw,30px);font-family:'Source Serif 4',serif;font-style:italic;color:var(--azul);line-height:1.55;margin-bottom:24px;position:relative;padding:0 20px;}
-.big-quote::before{content:'"';position:absolute;left:-12px;top:-16px;font-size:80px;color:rgba(201,168,76,0.2);font-style:normal;line-height:1;}
-.dep-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:56px;}
-.dep-card{background:var(--cream);border-radius:4px;padding:28px;border:1px solid rgba(201,168,76,0.15);transition:all 0.3s;display:flex;flex-direction:column;gap:16px;}
-.dep-card:hover{box-shadow:0 8px 32px rgba(27,42,74,0.1);transform:translateY(-3px);}
-.dep-stars{color:var(--dourado);font-size:14px;letter-spacing:2px;}
-.dep-text{font-size:14px;line-height:1.75;color:#444;font-family:'Source Serif 4',serif;font-style:italic;flex:1;}
-.dep-footer{display:flex;align-items:center;gap:12px;border-top:1px solid rgba(201,168,76,0.2);padding-top:16px;}
-.dep-avatar{width:40px;height:40px;background:var(--azul);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:var(--dourado);flex-shrink:0;}
-.dep-info strong{display:block;font-size:13px;font-weight:800;color:var(--azul);}
-.dep-info span{font-size:11px;color:#888;}
-.dep-num-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;}
-.dep-num-card{padding:48px 32px;text-align:center;border-right:1px solid rgba(255,255,255,0.07);}
-.dep-num-card:last-child{border-right:none;}
-.dep-num-val{font-size:52px;font-weight:900;color:var(--dourado);line-height:1;letter-spacing:-2px;}
-.dep-num-lbl{font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-top:10px;display:block;}
-@media(max-width:1024px){.dep-grid{grid-template-columns:1fr 1fr;}.dep-num-grid{grid-template-columns:1fr;}}
-@media(max-width:680px){.dep-grid{grid-template-columns:1fr;}}
+
+/* ── DESAFIOS PAGE ── */
+.desafio-section{padding:80px 5%;position:relative;}
+.desafio-section:nth-child(odd){background:var(--branco);}
+.desafio-section:nth-child(even){background:var(--cream);}
+.desafio-inner{max-width:820px;margin-inline:auto;}
+.desafio-num{display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:50%;background:var(--azul);color:var(--dourado);font-size:20px;font-weight:900;margin-bottom:20px;}
+.desafio-inner h2{font-size:clamp(20px,2.5vw,30px);font-weight:900;color:var(--azul);line-height:1.2;margin-bottom:24px;letter-spacing:-0.3px;}
+.desafio-inner p{font-size:16px;line-height:1.9;color:#444;font-family:'Source Serif 4',serif;margin-bottom:24px;}
+.desafio-cta{display:inline-block;font-size:13px;font-weight:700;color:var(--dourado-esc);text-decoration:none;letter-spacing:0.5px;transition:all 0.2s;padding:6px 0;border-bottom:1.5px solid rgba(201,168,76,0.3);}
+.desafio-cta:hover{color:var(--azul);border-bottom-color:var(--azul);transform:translateX(4px);}
+.intro-section{padding:80px 5%;background:var(--cream);}
+.intro-inner{max-width:820px;margin-inline:auto;text-align:center;}
+.intro-inner p{font-size:16px;line-height:1.9;color:#555;font-family:'Source Serif 4',serif;}
+.cta-final{padding:100px 5%;background:var(--azul);text-align:center;position:relative;overflow:hidden;}
+.cta-final .bg-grid{position:absolute;inset:0;}
+.cta-final-content{position:relative;z-index:2;max-width:700px;margin-inline:auto;}
+.cta-final-content h2{font-size:clamp(26px,3.5vw,44px);font-weight:900;color:var(--branco);margin-bottom:20px;letter-spacing:-0.5px;}
+.cta-final-content h2 em{font-style:normal;color:var(--dourado);}
+.cta-final-content p{font-size:16px;line-height:1.8;color:rgba(255,255,255,0.55);font-family:'Source Serif 4',serif;margin-bottom:40px;}
+.cta-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
+.reveal{opacity:0;transform:translateY(18px);transition:opacity 0.55s ease,transform 0.55s ease;}
+@media(max-width:680px){.desafio-section{padding:56px 5%;}.cta-btns{flex-direction:column;align-items:center;}}
 </style>
 </head>
 <body>
-<div id="topbar">🎓 Lançamento — 18 de Junho de 2026 &nbsp;·&nbsp; <a href="cursos.html">Entrar na lista de espera →</a></div>
+<div id="topbar">🎓 Lançamento — 18 de Junho de 2026 &nbsp;·&nbsp; <a href="cursos.html#lista-espera">Entrar na lista de espera →</a></div>
 <nav id="mainNav">
   <a href="index.html" class="nav-logo"><img src="Logo_Completa_BrancoDourado_COM_TAGLINE_FUNDO_AZUL.png" alt="Fluência Contábil"></a>
   <ul class="nav-links">
@@ -113,7 +114,7 @@ footer{background:#0E1929;padding:60px 5% 32px;}
     <a href="https://www.youtube.com/@prof.viniciusferraz" target="_blank" rel="noopener" title="YouTube"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.3 31.3 0 0 0 0 12a31.3 31.3 0 0 0 .6 5.8 3 3 0 0 0 2 2.1c2 .6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.3 31.3 0 0 0 24 12a31.3 31.3 0 0 0-.5-5.8zM9.7 15.5V8.5l6.3 3.5-6.3 3.5z"/></svg></a>
     <a href="https://www.instagram.com/prof.viniciusferraz" target="_blank" rel="noopener" title="Instagram"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8 0 3.2 0 3.6-.1 4.8-.1 3.2-1.7 4.8-4.9 4.9-1.3.1-1.6.1-4.9.1-3.2 0-3.6 0-4.8-.1-3.3-.1-4.8-1.7-4.9-4.9C2.2 15.6 2.2 15.2 2.2 12c0-3.2 0-3.6.1-4.8C2.4 3.9 4 2.3 7.2 2.2c1.2-.1 1.6-.1 4.8-.1zM12 0C8.7 0 8.3 0 7.1.1 2.7.3.3 2.7.1 7.1.0 8.3 0 8.7 0 12c0 3.3 0 3.7.1 4.9.2 4.4 2.6 6.8 7 7C8.3 24 8.7 24 12 24c3.3 0 3.7 0 4.9-.1 4.4-.2 6.8-2.6 7-7 .1-1.2.1-1.6.1-4.9 0-3.3 0-3.7-.1-4.9C23.7 2.7 21.3.3 16.9.1 15.7 0 15.3 0 12 0zm0 5.8a6.2 6.2 0 1 0 0 12.4A6.2 6.2 0 0 0 12 5.8zm0 10.2a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.4-11.8a1.4 1.4 0 1 0 0 2.8 1.4 1.4 0 0 0 0-2.8z"/></svg></a>
   </div>
-  <a href="cursos.html" class="nav-btn">Quero Estudar</a>
+  <a href="cursos.html#lista-espera" class="nav-btn">Quero Estudar</a>
   <button class="hamburger" id="hamburgerBtn" aria-label="Menu"><span></span><span></span><span></span></button>
 </nav>
 <div class="mobile-menu" id="mobileMenu">
@@ -130,113 +131,84 @@ footer{background:#0E1929;padding:60px 5% 32px;}
   </div>
   <a href="cursos.html#lista-espera" class="mob-btn">Lista de Espera</a>
 </div>
+
+<!-- HERO -->
 <section class="page-hero" style="text-align:center;">
   <div class="bg-grid"></div>
   <div class="page-hero-inner" style="margin-inline:auto;">
-    <span class="lbl" style="justify-content:center;display:flex;">Resultados Reais</span>
-    <h1>O que nossos alunos <em>têm a dizer.</em></h1>
-    <p style="margin:16px auto 0;">Mais de Mais de 5.000 alunos que estudaram com o professor Vinícius Ferraz. Aprovações em SEFAZ, TCE, Senado, Câmara e muito mais.</p>
+    <span class="lbl" style="justify-content:center;display:flex;">Antes de Começar</span>
+    <h1>Os Desafios da <em>Contabilidade</em></h1>
+    <p style="margin:16px auto 0;max-width:620px;">Entender esses desafios desde o início ajuda a enxergar com mais clareza o caminho que será percorrido neste curso.</p>
   </div>
 </section>
-<section style="padding:80px 5%;background:var(--cream);">
-  <div style="max-width:860px;margin-inline:auto;text-align:center;">
-    <p class="big-quote">Esse estudo acompanhado me fez gostar, novamente, de estudar. Querer mais a cada dia. Ter mais conhecimento hoje do que ontem. O professor Vinícius, com sua dedicação e cuidado conosco, ajudou nesse reinício. ISS-RJ ou outro fiscal, vocês serão parte da caminhada.</p>
-    <div style="font-size:13px;font-weight:800;color:var(--azul);text-transform:uppercase;letter-spacing:1.5px;">Érica Freitas</div>
-    <div style="font-size:12px;color:#888;margin-top:4px;">Turma ISS-RJ</div>
+
+<!-- INTRODUÇÃO -->
+<section class="intro-section">
+  <div class="intro-inner reveal">
+    <p>Antes de iniciarmos efetivamente o estudo da disciplina, é importante compreender que a contabilidade possui alguns desafios característicos que costumam dificultar a vida de quem está começando. A experiência mostra que praticamente todos os alunos enfrentam alguns obstáculos ao longo da preparação.</p>
   </div>
 </section>
-<section style="padding:100px 5%;background:var(--branco);">
-  <div class="inner">
-    <span class="lbl">Depoimentos</span><div class="bar"></div>
-    <h2 class="h2">Histórias de quem passou pelo método.</h2>
-    <div class="dep-grid">
-<div class="dep-card">
-  <div class="dep-stars">★★★★★</div>
-  <p class="dep-text">"Excelente aula. Muito obrigada professor Vinícius, estou entendo coisas que achei que nunca iria aprender... Sua didática é ótima. Grava mais por favor... Precisamos da sua ajuda"</p>
-  <div class="dep-footer">
-    <div class="dep-av">C</div>
-    <div class="dep-info">
-      <strong>@carolinnepmaia</strong>
-      <span>YouTube</span>
-    </div>
-  </div>
-</div>
-<div class="dep-card">
-  <div class="dep-stars">★★★★★</div>
-  <p class="dep-text">"Não é modéstia, honestamente é uma das melhores aulas sobre quaisquer CPCs que já assisti. Obrigada por esse PRESENTE!"</p>
-  <div class="dep-footer">
-    <div class="dep-av">Y</div>
-    <div class="dep-info">
-      <strong>@yarabezerra9762</strong>
-      <span>YouTube</span>
-    </div>
-  </div>
-</div>
-<div class="dep-card">
-  <div class="dep-stars">★★★★★</div>
-  <p class="dep-text">"De altíssimo nível seu conteúdo e aprofundamento de um CPC tão complexo. Muito obrigado por disponibilizar do seu tempo e conteúdo tão rico. Acredito muito na lei do retorno. Você tem uma boa didática, mantenha-se firme, logo seu trabalho vai bombar! Parabéns!"</p>
-  <div class="dep-footer">
-    <div class="dep-av">A</div>
-    <div class="dep-info">
-      <strong>@Mr4lessandro</strong>
-      <span>YouTube</span>
-    </div>
-  </div>
-</div>
-<div class="dep-card">
-  <div class="dep-stars">★★★★★</div>
-  <p class="dep-text">"Esse estudo acompanhado me fez gostar, novamente, de estudar. Querer mais a cada dia. Ter mais conhecimento hoje do que ontem. Principalmente o Vinícius, com sua dedicação e cuidado conosco, ajudou nesse reinício."</p>
-  <div class="dep-footer">
-    <div class="dep-av">É</div>
-    <div class="dep-info">
-      <strong>Érica Freitas</strong>
-      <span>WhatsApp — Turma ISS-RJ</span>
-    </div>
-  </div>
-</div>
-<div class="dep-card">
-  <div class="dep-stars">★★★★★</div>
-  <p class="dep-text">"Muito top a aula!!!!"</p>
-  <div class="dep-footer">
-    <div class="dep-av">A</div>
-    <div class="dep-info">
-      <strong>Aline EA Rj</strong>
-      <span>WhatsApp — Turma ISS-RJ</span>
-    </div>
-  </div>
-</div>
-<div class="dep-card">
-  <div class="dep-stars">★★★★★</div>
-  <p class="dep-text">"Aula excelente, professor. Estou estudando para certificações do mercado financeiro através dos seus vídeos. Muito obrigado!"</p>
-  <div class="dep-footer">
-    <div class="dep-av">L</div>
-    <div class="dep-info">
-      <strong>@LuizMarconiluizmn</strong>
-      <span>YouTube</span>
-    </div>
-  </div>
-</div>
-</div>
+
+<!-- DESAFIO 1 -->
+<section class="desafio-section">
+  <div class="desafio-inner reveal">
+    <div class="desafio-num">1</div>
+    <h2>Compreender o Método das Partidas Dobradas</h2>
+    <p>O primeiro grande desafio da contabilidade é compreender o método das partidas dobradas. Esse método representa, na prática, a linguagem da contabilidade. É por meio dele que os fatos econômicos são registrados e codificados dentro do sistema contábil. Assim como aprender um novo idioma exige compreender sua gramática e sua estrutura básica, aprender contabilidade exige compreender o funcionamento dos débitos, créditos e lançamentos contábeis. Uma vez dominado o método das partidas dobradas, o aluno passa a conseguir ler e interpretar os registros contábeis — o primeiro grande salto na aprendizagem da disciplina.</p>
+    <a href="cursos.html" class="desafio-cta">Veja como o curso aborda as partidas dobradas →</a>
   </div>
 </section>
-<section style="padding:80px 5%;background:var(--azul);">
-  <div class="dep-num-grid inner">
-    <div class="dep-num-card"><div class="dep-num-val">5k+</div><span class="dep-num-lbl">Alunos formados ao longo da trajetória</span></div>
-    <div class="dep-num-card"><div class="dep-num-val">40+</div><span class="dep-num-lbl">Turmas de mentoria realizadas</span></div>
-    
+
+<!-- DESAFIO 2 -->
+<section class="desafio-section">
+  <div class="desafio-inner reveal">
+    <div class="desafio-num">2</div>
+    <h2>Entender a Lógica Contábil</h2>
+    <p>Superada a etapa inicial, surge o segundo desafio: compreender a lógica da contabilidade. A contabilidade não é apenas um conjunto de regras ou lançamentos. Existe uma lógica econômica por trás de cada registro contábil. O verdadeiro objetivo da contabilidade é representar de forma organizada e fiel a situação patrimonial e o desempenho econômico de uma entidade. Quando o aluno passa a compreender essa lógica, a disciplina deixa de parecer uma sequência de regras isoladas e passa a fazer sentido.</p>
+    <a href="cursos.html" class="desafio-cta">Conheça a metodologia do curso →</a>
+  </div>
 </section>
-<section style="padding:80px 5%;background:var(--cream);text-align:center;">
-  <span class="lbl" style="display:block;">Próximo passo</span>
-  <h2 class="h2" style="text-align:center;margin-bottom:20px;">Essa pode ser a sua história.</h2>
-  <p class="body-t" style="margin:0 auto 40px;text-align:center;max-width:540px;">Entre na lista de espera e seja um dos primeiros a acessar o curso quando abrir as inscrições em junho de 2026.</p>
-  <a href="cursos.html#lista-espera" class="btn-p">Entrar na lista de espera →</a>
+
+<!-- DESAFIO 3 -->
+<section class="desafio-section">
+  <div class="desafio-inner reveal">
+    <div class="desafio-num">3</div>
+    <h2>Dominar a Estrutura das Demonstrações Contábeis</h2>
+    <p>Depois de compreender o método e a lógica contábil, surge um terceiro desafio fundamental: dominar a estrutura das demonstrações contábeis. Entre todas as demonstrações, duas possuem papel central: o Balanço Patrimonial (BP) e a Demonstração do Resultado do Exercício (DRE). Essas duas demonstrações representam o núcleo da contabilidade financeira. Praticamente todas as demais demonstrações contábeis derivam de uma delas ou da combinação entre ambas. Por essa razão, entender, conhecer e até mesmo decorar a estrutura do Balanço Patrimonial e da DRE é uma condição essencial para evoluir na contabilidade.</p>
+    <a href="cursos.html" class="desafio-cta">Veja a estrutura completa do curso →</a>
+  </div>
 </section>
+
+<!-- DESAFIO 4 -->
+<section class="desafio-section">
+  <div class="desafio-inner reveal">
+    <div class="desafio-num">4</div>
+    <h2>Enfrentar os Detalhes e as Decorebas dos CPCs</h2>
+    <p>O último grande desafio: os detalhes normativos. Grande parte das questões de prova cobra pontos específicos dos Pronunciamentos Contábeis (CPCs), que correspondem às normas contábeis brasileiras convergidas às normas internacionais. No entanto, quando o aluno já domina o método das partidas dobradas, compreende a lógica contábil e conhece a estrutura das demonstrações, esse processo se torna muito mais fácil. Os detalhes deixam de parecer arbitrários e passam a se encaixar dentro de uma estrutura lógica já compreendida.</p>
+    <a href="cursos.html" class="desafio-cta">Veja todos os CPCs abordados no curso →</a>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-final">
+  <div class="bg-grid"></div>
+  <div class="cta-final-content reveal">
+    <h2>Pronto para superar <em>esses desafios?</em></h2>
+    <p>O curso Fluência Contábil foi construído exatamente para guiar você por cada um desses desafios — do zero até o domínio completo da contabilidade.</p>
+    <div class="cta-btns">
+      <a href="cursos.html#lista-espera" class="btn-p">Quero entrar na lista de espera</a>
+      <a href="cursos.html" class="btn-o">Conheça o curso</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
 <footer>
   <div class="ft-grid inner">
     <div class="ft-brand"><div class="ft-logo"><img src="Logo_Completa_BrancoDourado_COM_TAGLINE_FUNDO_AZUL.png" alt="Fluência Contábil"></div>
     <p>Contabilidade para quem quer ser fluente. Formação completa para concursos nas áreas fiscal, controle e tribunais de contas e para o Exame de Suficiência Contábil</p></div>
     <div class="ft-col"><h4>Navegação</h4><ul><li><a href="index.html">Home</a></li><li><a href="institucional.html">Institucional</a></li><li><a href="professor.html">Conheça o Professor</a></li><li><a href="cursos.html">Meus Cursos</a></li></ul></div>
-    <div class="ft-col"><h4>Comunidade</h4><ul><li><a href="depoimentos.html">Depoimentos</a></li><li><a href="contato.html">Fale Conosco</a></li><li><a href="https://www.youtube.com/@prof.viniciusferraz" target="_blank" rel="noopener">YouTube</a></li><li><a href="https://www.instagram.com/prof.viniciusferraz" target="_blank" rel="noopener">Instagram</a></li></ul></div>
+    <div class="ft-col"><h4>Comunidade</h4><ul><li><a href="depoimentos.html">Depoimentos</a></li><li><a href="desafios.html">Os Desafios</a></li><li><a href="contato.html">Fale Conosco</a></li><li><a href="https://www.youtube.com/@prof.viniciusferraz" target="_blank" rel="noopener">YouTube</a></li><li><a href="https://www.instagram.com/prof.viniciusferraz" target="_blank" rel="noopener">Instagram</a></li></ul></div>
     <div class="ft-col"><h4>Legal</h4><ul><li><a href="#">Termos de Uso</a></li><li><a href="#">Política de Privacidade</a></li></ul></div>
   </div>
   <div class="ft-bottom inner"><p>© 2026 Fluência Contábil · Prof. Vinícius Ferraz Neves · fluenciacontabil.com.br</p><p>Todos os direitos reservados.</p></div>
@@ -245,7 +217,8 @@ footer{background:#0E1929;padding:60px 5% 32px;}
 var nav=document.getElementById('mainNav'),tb=document.getElementById('topbar');
 window.addEventListener('scroll',function(){if(window.scrollY>60){nav.classList.add('scrolled');tb.style.display='none';document.body.style.paddingTop='72px';}else{nav.classList.remove('scrolled');tb.style.display='';document.body.style.paddingTop='102px';}});
 (function(){var p=location.pathname.split('/').pop()||'index.html';var m={'institucional.html':'lnk-inst','professor.html':'lnk-prof','cursos.html':'lnk-cur','desafios.html':'lnk-des','depoimentos.html':'lnk-dep','contato.html':'lnk-cont'};if(m[p]){var el=document.getElementById(m[p]);if(el)el.classList.add('active');}})();
-
+var obs=new IntersectionObserver(function(e){e.forEach(function(el){if(el.isIntersecting){el.target.style.opacity='1';el.target.style.transform='translateY(0)';}});},{threshold:0.07});
+document.querySelectorAll('.reveal').forEach(function(el){el.style.opacity='0';el.style.transform='translateY(18px)';el.style.transition='opacity 0.55s ease,transform 0.55s ease';obs.observe(el);});
 var hBtn=document.getElementById('hamburgerBtn'),mMenu=document.getElementById('mobileMenu');
 if(hBtn&&mMenu){hBtn.addEventListener('click',function(){hBtn.classList.toggle('active');mMenu.classList.toggle('open');});
 mMenu.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){hBtn.classList.remove('active');mMenu.classList.remove('open');});});
