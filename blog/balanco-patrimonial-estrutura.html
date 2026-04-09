@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Balanço Patrimonial: entenda a estrutura de uma vez por todas | Fluência Contábil</title>
+<meta name="description" content="Guia completo sobre a estrutura do Balanço Patrimonial para concursos públicos. Ativo circulante, não circulante, passivo e PL com lançamentos contábeis e exemplos práticos.">
+<link rel="canonical" href="https://fluenciacontabil.com.br/blog/balanco-patrimonial-estrutura">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="Balanço Patrimonial: entenda a estrutura de uma vez por todas | Fluência Contábil">
+<meta property="og:description" content="Guia completo sobre a estrutura do Balanço Patrimonial para concursos públicos. Ativo circulante, não circulante, passivo e PL com lançamentos contábeis e exemplos práticos.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://fluenciacontabil.com.br/blog/balanco-patrimonial-estrutura">
+<meta property="og:site_name" content="Fluência Contábil">
+<link href="https://fonts.googleapis.com/css2?family=Quattrocento+Sans:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Balanço Patrimonial: entenda a estrutura de uma vez por todas",
+  "description": "Guia completo sobre a estrutura do Balanço Patrimonial para concursos públicos. Ativo circulante, não circulante, passivo e PL com lançamentos contábeis e exemplos práticos.",
+  "datePublished": "2025-06-10",
+  "dateModified": "2025-06-10",
+  "author": {
+    "@type": "Person",
+    "name": "Professor Victor Neves"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Fluência Contábil"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://fluenciacontabil.com.br/blog/balanco-patrimonial-estrutura"
+  },
+  "articleSection": "Demonstrações",
+  "wordCount": 2100,
+  "timeRequired": "PT10M"
+}
+</script>
+<style>
+:root {
+  --azul-profundo: #1B2A4A;
+  --azul-medio: #1E3A5F;
+  --dourado: #C9A84C;
+  --cream: #FBF6E9;
+  --branco: #FFFFFF;
+  --texto: #2C2C2C;
+  --texto-suave: #5A6A7E;
+  --borda: #E8E0D0;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Quattrocento Sans', sans-serif;
+  color: var(--texto);
+  background: var(--branco);
+  overflow-x: hidden;
+  line-height: 1.8;
+}
+
+/* ── Progress Bar ── */
+#progress-bar {
+  position: fixed; top: 0; left: 0; height: 3px; width: 0%;
+  background: var(--dourado); z-index: 9999; transition: width 0.1s linear;
+}
+
+/* ── Navbar ── */
+.navbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  background: var(--azul-profundo); height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 5%; transition: box-shadow 0.3s;
+}
+.navbar.scrolled { box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+.nav-logo {
+  font-family: 'Montserrat', sans-serif; font-weight: 700;
+  font-size: 18px; color: var(--branco); text-decoration: none;
+}
+.nav-logo span { color: var(--dourado); }
+.nav-links { display: flex; align-items: center; gap: 6px; list-style: none; }
+.nav-links a {
+  color: rgba(255,255,255,0.65); text-decoration: none;
+  font-family: 'Montserrat', sans-serif; font-size: 11px;
+  font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase;
+  padding: 8px 12px; border-radius: 3px; transition: all 0.2s;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--dourado); background: rgba(201,168,76,0.08); }
+.nav-cta {
+  background: var(--dourado); color: var(--azul-profundo);
+  padding: 10px 20px; border-radius: 3px; text-decoration: none;
+  font-family: 'Montserrat', sans-serif; font-size: 11px;
+  font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+  transition: all 0.2s; white-space: nowrap;
+}
+.nav-cta:hover { background: #b8973f; color: var(--branco); transform: translateY(-1px); }
+.nav-right { display: flex; align-items: center; gap: 20px; }
+.hamburger {
+  display: none; flex-direction: column; gap: 5px; cursor: pointer;
+  background: none; border: none; padding: 4px;
+}
+.hamburger span {
+  width: 24px; height: 2px; background: var(--branco);
+  transition: all 0.3s; display: block;
+}
+.hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+.hamburger.active span:nth-child(2) { opacity: 0; }
+.hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+.mobile-menu {
+  display: none; position: fixed; top: 64px; left: 0; right: 0;
+  background: var(--azul-profundo); padding: 20px 5%; z-index: 999;
+  flex-direction: column; gap: 4px;
+  border-top: 1px solid rgba(201,168,76,0.15);
+}
+.mobile-menu.active { display: flex; }
+.mobile-menu a {
+  color: rgba(255,255,255,0.7); text-decoration: none;
+  font-family: 'Montserrat', sans-serif; font-size: 13px;
+  font-weight: 600; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.mobile-menu a:hover { color: var(--dourado); }
+.mobile-menu .nav-cta { margin-top: 12px; text-align: center; display: block; }
+
+/* ── Hero ── */
+.article-hero {
+  background: var(--azul-profundo); padding: 120px 5% 60px;
+  background-image:
+    linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+.hero-inner { max-width: 800px; margin: 0 auto; }
+.breadcrumb {
+  font-family: 'Montserrat', sans-serif; font-size: 12px;
+  color: rgba(255,255,255,0.45); margin-bottom: 20px;
+}
+.breadcrumb a { color: rgba(255,255,255,0.45); text-decoration: none; transition: color 0.2s; }
+.breadcrumb a:hover { color: var(--dourado); }
+.breadcrumb span { margin: 0 8px; }
+.category-pill {
+  display: inline-block; padding: 5px 14px; border-radius: 3px;
+  font-family: 'Montserrat', sans-serif; font-size: 10px;
+  font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+  margin-bottom: 20px;
+  background: var(--azul-medio); color: var(--branco);
+}
+.article-hero h1 {
+  font-family: 'Montserrat', sans-serif; font-size: 42px;
+  font-weight: 700; color: var(--branco); line-height: 1.15;
+  margin-bottom: 20px; letter-spacing: -0.5px;
+}
+.article-lead {
+  font-size: 18px; color: #8AA6C6; font-style: italic;
+  line-height: 1.6; margin-bottom: 24px;
+}
+.article-meta {
+  display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+  font-family: 'Montserrat', sans-serif; font-size: 12px;
+  color: rgba(255,255,255,0.5);
+}
+.article-meta svg { width: 14px; height: 14px; vertical-align: middle; margin-right: 4px; opacity: 0.5; }
+
+/* ── Content Layout ── */
+.content-wrapper {
+  max-width: 1200px; margin: 0 auto; padding: 50px 5%;
+  display: grid; grid-template-columns: 1fr 340px; gap: 50px;
+}
+.article-body { min-width: 0; }
+.article-body h2 {
+  font-family: 'Montserrat', sans-serif; font-size: 26px;
+  font-weight: 700; color: var(--azul-profundo); margin: 48px 0 16px;
+  line-height: 1.25; letter-spacing: -0.3px;
+}
+.article-body h2:first-child { margin-top: 0; }
+.article-body p { margin-bottom: 18px; font-size: 16px; line-height: 1.85; }
+.article-body ul, .article-body ol {
+  margin: 0 0 18px 24px; font-size: 16px; line-height: 1.85;
+}
+.article-body li { margin-bottom: 8px; }
+.article-body strong { color: var(--azul-profundo); }
+
+/* ── Back Button ── */
+.back-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: 'Montserrat', sans-serif; font-size: 12px;
+  font-weight: 600; color: var(--dourado); text-decoration: none;
+  text-transform: uppercase; letter-spacing: 0.8px;
+  margin-bottom: 10px; transition: opacity 0.2s;
+}
+.back-btn:hover { opacity: 0.7; }
+
+/* ── Special Boxes ── */
+.box-banca, .box-pegadinha, .box-macete {
+  border-radius: 6px; padding: 24px 28px; margin: 28px 0;
+  font-size: 15px; line-height: 1.75;
+}
+.box-banca { background: #FFF3CD; border-left: 4px solid var(--dourado); }
+.box-pegadinha { background: #FBE9E9; border-left: 4px solid #8B2E2E; }
+.box-macete { background: #EBF5EB; border-left: 4px solid #2E6B4F; }
+.box-label {
+  display: block; font-family: 'Montserrat', sans-serif;
+  font-size: 12px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; margin-bottom: 10px;
+}
+.box-banca .box-label { color: #8B6914; }
+.box-pegadinha .box-label { color: #8B2E2E; }
+.box-macete .box-label { color: #2E6B4F; }
+
+/* ── Tables ── */
+.styled-table {
+  width: 100%; border-collapse: collapse; margin: 24px 0;
+  font-size: 14px; overflow: hidden; border-radius: 6px;
+  border: 1px solid var(--borda);
+}
+.styled-table thead th {
+  background: var(--azul-profundo); color: var(--branco);
+  font-family: 'Montserrat', sans-serif; font-size: 12px;
+  font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;
+  padding: 14px 16px; text-align: left;
+}
+.styled-table tbody td {
+  padding: 12px 16px; border-bottom: 1px solid var(--borda); vertical-align: top;
+}
+.styled-table tbody tr:last-child td { border-bottom: none; }
+.styled-table tbody tr:nth-child(even) { background: #FAFAF7; }
+
+/* ── Equation Block ── */
+.equation-block {
+  background: var(--cream); border: 2px solid var(--dourado);
+  border-radius: 8px; padding: 28px; margin: 28px 0;
+  text-align: center;
+}
+.equation-block .equation {
+  font-family: 'Montserrat', sans-serif; font-size: 24px;
+  font-weight: 700; color: var(--azul-profundo);
+  letter-spacing: 1px;
+}
+.equation-block .equation-desc {
+  font-size: 14px; color: var(--texto-suave); margin-top: 10px;
+}
+
+/* ── Journal Entry Block ── */
+.lancamento {
+  background: #F8F6F0; border: 1px solid var(--borda);
+  border-radius: 8px; margin: 28px 0; overflow: hidden;
+}
+.lancamento-header {
+  background: var(--azul-profundo); color: var(--branco);
+  padding: 12px 20px; font-family: 'Montserrat', sans-serif;
+  font-size: 13px; font-weight: 600; letter-spacing: 0.5px;
+}
+.lancamento-body {
+  padding: 20px; font-family: 'Quattrocento Sans', monospace;
+  font-size: 15px; line-height: 2;
+}
+.lancamento-body .debito {
+  padding-left: 0; color: var(--azul-profundo); font-weight: 700;
+}
+.lancamento-body .credito {
+  padding-left: 40px; color: var(--texto-suave);
+}
+.lancamento-body .valor {
+  float: right; font-weight: 700; color: var(--azul-profundo);
+}
+.lancamento-desc {
+  padding: 0 20px 16px; font-size: 13px; color: var(--texto-suave);
+  font-style: italic; border-top: 1px dashed var(--borda);
+  padding-top: 12px; margin-top: 4px;
+}
+
+/* ── Sidebar ── */
+.sidebar { display: flex; flex-direction: column; gap: 30px; }
+.sidebar-card {
+  background: var(--cream); border-radius: 8px; padding: 28px;
+  border: 1px solid var(--borda);
+}
+.sidebar-card h3 {
+  font-family: 'Montserrat', sans-serif; font-size: 14px;
+  font-weight: 700; color: var(--azul-profundo);
+  text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 14px;
+}
+.sidebar-card p { font-size: 14px; color: var(--texto-suave); line-height: 1.7; margin-bottom: 12px; }
+.sidebar-related { list-style: none; }
+.sidebar-related li { margin-bottom: 14px; }
+.sidebar-related a {
+  font-size: 14px; color: var(--azul-medio); text-decoration: none;
+  font-weight: 700; line-height: 1.4; display: block; transition: color 0.2s;
+}
+.sidebar-related a:hover { color: var(--dourado); }
+.sidebar-related .rel-cat {
+  font-family: 'Montserrat', sans-serif; font-size: 10px;
+  font-weight: 600; color: var(--texto-suave); text-transform: uppercase;
+  letter-spacing: 0.5px; margin-top: 2px;
+}
+.sidebar-cta {
+  background: var(--azul-profundo); border-radius: 8px; padding: 28px;
+  text-align: center;
+}
+.sidebar-cta h3 {
+  font-family: 'Montserrat', sans-serif; font-size: 16px;
+  font-weight: 700; color: var(--branco); margin-bottom: 10px;
+}
+.sidebar-cta p { font-size: 13px; color: rgba(255,255,255,0.6); margin-bottom: 18px; line-height: 1.6; }
+.sidebar-cta a {
+  display: inline-block; background: var(--dourado); color: var(--azul-profundo);
+  padding: 12px 24px; border-radius: 3px; text-decoration: none;
+  font-family: 'Montserrat', sans-serif; font-size: 12px;
+  font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;
+  transition: all 0.2s;
+}
+.sidebar-cta a:hover { background: #b8973f; color: var(--branco); }
+
+/* ── Newsletter ── */
+.newsletter-section {
+  background: var(--cream); padding: 60px 5%;
+  border-top: 1px solid var(--borda); border-bottom: 1px solid var(--borda);
+  text-align: center;
+}
+.newsletter-section h2 {
+  font-family: 'Montserrat', sans-serif; font-size: 28px;
+  font-weight: 700; color: var(--azul-profundo); margin-bottom: 10px;
+}
+.newsletter-section p {
+  font-size: 15px; color: var(--texto-suave); margin-bottom: 24px; max-width: 500px; margin-inline: auto;
+}
+.newsletter-form { display: flex; gap: 10px; max-width: 460px; margin: 0 auto; }
+.newsletter-form input {
+  flex: 1; padding: 14px 16px; border: 1px solid var(--borda);
+  border-radius: 4px; font-family: 'Quattrocento Sans', sans-serif;
+  font-size: 14px; outline: none; transition: border-color 0.2s;
+}
+.newsletter-form input:focus { border-color: var(--dourado); }
+.newsletter-form button {
+  background: var(--dourado); color: var(--azul-profundo); border: none;
+  padding: 14px 24px; border-radius: 4px; cursor: pointer;
+  font-family: 'Montserrat', sans-serif; font-size: 12px;
+  font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+  transition: background 0.2s; white-space: nowrap;
+}
+.newsletter-form button:hover { background: #b8973f; color: var(--branco); }
+
+/* ── Bottom Nav ── */
+.bottom-nav {
+  max-width: 800px; margin: 0 auto; padding: 40px 5%; text-align: center;
+}
+
+/* ── Footer ── */
+footer { background: #0E1929; padding: 50px 5% 30px; }
+.footer-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px;
+  margin-bottom: 40px;
+}
+.footer-brand .footer-logo {
+  font-family: 'Montserrat', sans-serif; font-size: 18px;
+  font-weight: 700; color: var(--branco); margin-bottom: 12px;
+}
+.footer-brand .footer-logo span { color: var(--dourado); }
+.footer-brand p { font-size: 13px; color: rgba(255,255,255,0.35); line-height: 1.7; max-width: 260px; }
+.footer-col h4 {
+  font-family: 'Montserrat', sans-serif; font-size: 10px;
+  font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--dourado); margin-bottom: 16px;
+}
+.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.footer-col a {
+  font-size: 13px; color: rgba(255,255,255,0.4); text-decoration: none; transition: color 0.2s;
+}
+.footer-col a:hover { color: var(--dourado); }
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.06); padding-top: 20px;
+  text-align: center; font-size: 11px; color: rgba(255,255,255,0.2);
+}
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .content-wrapper { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+}
+@media (max-width: 768px) {
+  .nav-links, .nav-cta { display: none; }
+  .hamburger { display: flex; }
+  .article-hero { padding: 100px 5% 40px; }
+  .article-hero h1 { font-size: 28px; }
+  .article-lead { font-size: 16px; }
+  .article-body h2 { font-size: 22px; }
+  .content-wrapper { padding: 30px 5%; }
+  .footer-inner { grid-template-columns: 1fr 1fr; gap: 30px; }
+  .newsletter-form { flex-direction: column; }
+  .equation-block .equation { font-size: 18px; }
+  .lancamento-body .valor { float: none; display: block; padding-left: 20px; }
+}
+@media (max-width: 480px) {
+  .footer-inner { grid-template-columns: 1fr; }
+  .article-meta { flex-direction: column; gap: 8px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Progress Bar -->
+<div id="progress-bar"></div>
+
+<!-- Navbar -->
+<nav class="navbar" id="navbar">
+  <a href="../index.html" class="nav-logo">Fluência <span>Contábil</span></a>
+  <ul class="nav-links">
+    <li><a href="../index.html">Início</a></li>
+    <li><a href="../cursos.html">Curso</a></li>
+    <li><a href="../blog.html" class="active">Blog</a></li>
+    <li><a href="../professor.html">Sobre</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="../cursos.html" class="nav-cta">Lista de Espera</a>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobile-menu">
+  <a href="../index.html">Início</a>
+  <a href="../cursos.html">Curso</a>
+  <a href="../blog.html">Blog</a>
+  <a href="../professor.html">Sobre</a>
+  <a href="../cursos.html" class="nav-cta">Lista de Espera</a>
+</div>
+
+<!-- Hero -->
+<header class="article-hero">
+  <div class="hero-inner">
+    <a href="../blog.html" class="back-btn">&larr; Voltar ao Blog</a>
+    <div class="breadcrumb">
+      <a href="../blog.html">Blog</a><span>&rsaquo;</span>Demonstrações
+    </div>
+    <span class="category-pill">Demonstrações</span>
+    <h1>Balanço Patrimonial: entenda a estrutura de uma vez por todas</h1>
+    <p class="article-lead">A demonstração mais cobrada em concurso. Se você entender a lógica, vai acertar na raça.</p>
+    <div class="article-meta">
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Prof. Victor Neves</span>
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> 10 Jun 2025</span>
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 10 min de leitura</span>
+    </div>
+  </div>
+</header>
+
+<!-- Content -->
+<div class="content-wrapper">
+  <article class="article-body">
+
+    <h2>O Balanço Patrimonial é uma fotografia</h2>
+    <p>Enquanto a DRE conta a história de um período inteiro (como um filme), o Balanço Patrimonial captura um <strong>instante</strong>. Ele mostra a posição patrimonial e financeira da entidade em uma data específica &mdash; geralmente 31 de dezembro.</p>
+    <p>Essa "fotografia" responde a três perguntas fundamentais:</p>
+    <ul>
+      <li><strong>O que a entidade possui?</strong> &rarr; Ativo (bens e direitos)</li>
+      <li><strong>O que a entidade deve a terceiros?</strong> &rarr; Passivo (obrigações com terceiros)</li>
+      <li><strong>Qual a riqueza própria da entidade?</strong> &rarr; Patrimônio Líquido (obrigações com os sócios)</li>
+    </ul>
+    <p>Compreender essa lógica é o primeiro passo para dominar toda a estrutura. O BP não é uma lista aleatória de contas: ele é uma representação organizada e equilibrada do patrimônio.</p>
+
+    <h2>A equação fundamental da Contabilidade</h2>
+    <p>Toda a Contabilidade se sustenta sobre uma única equação. Se você entendê-la profundamente, vai resolver a maioria das questões de BP sem hesitar.</p>
+
+    <div class="equation-block">
+      <div class="equation">ATIVO = PASSIVO + PATRIMÔNIO LÍQUIDO</div>
+      <div class="equation-desc">Ou de forma equivalente: PL = ATIVO &minus; PASSIVO</div>
+    </div>
+
+    <p>Essa equação <strong>sempre</strong> se mantém equilibrada. Não importa o que aconteça com a entidade &mdash; uma compra, uma venda, um empréstimo, o pagamento de um salário &mdash; a equação se reequilibra. É por isso que chamamos de <strong>método das partidas dobradas</strong>: todo débito tem um crédito correspondente.</p>
+
+    <div class="box-macete">
+      <span class="box-label">&#128161; Macete de Prova</span>
+      Se a banca apresentar um Balanço Patrimonial e o total do Ativo não for igual ao total do Passivo + PL, <strong>há erro no enunciado ou a questão quer que você encontre o valor faltante</strong>. Use a equação para descobrir o item omitido. Essa é uma das formas mais comuns de cobrar raciocínio em provas objetivas.
+    </div>
+
+    <h2>Estrutura do Ativo</h2>
+    <p>O Ativo é organizado por ordem decrescente de liquidez (do mais líquido para o menos líquido) e dividido em dois grandes grupos:</p>
+
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th>Grupo</th>
+          <th>Subgrupo</th>
+          <th>Exemplos de contas</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td rowspan="3"><strong>Ativo Circulante</strong></td>
+          <td>Disponibilidades</td>
+          <td>Caixa, Bancos, Aplicações de liquidez imediata</td>
+        </tr>
+        <tr>
+          <td>Créditos</td>
+          <td>Clientes, Duplicatas a receber, Adiantamentos</td>
+        </tr>
+        <tr>
+          <td>Estoques</td>
+          <td>Mercadorias, Matérias-primas, Produtos acabados</td>
+        </tr>
+        <tr>
+          <td rowspan="4"><strong>Ativo Não Circulante</strong></td>
+          <td>Realizável a longo prazo</td>
+          <td>Empréstimos a coligadas, Depósitos judiciais</td>
+        </tr>
+        <tr>
+          <td>Investimentos</td>
+          <td>Participações societárias, Propriedades para investimento</td>
+        </tr>
+        <tr>
+          <td>Imobilizado</td>
+          <td>Terrenos, Edificações, Máquinas, Veículos</td>
+        </tr>
+        <tr>
+          <td>Intangível</td>
+          <td>Marcas, Patentes, Softwares, Ágio (goodwill)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Estrutura do Passivo e Patrimônio Líquido</h2>
+    <p>O lado direito do Balanço mostra as fontes de financiamento do Ativo &mdash; ou seja, de onde vieram os recursos: de terceiros (Passivo) ou dos próprios sócios (PL).</p>
+
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th>Grupo</th>
+          <th>Subgrupo</th>
+          <th>Exemplos de contas</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td rowspan="2"><strong>Passivo Circulante</strong></td>
+          <td>Obrigações de curto prazo</td>
+          <td>Fornecedores, Salários a pagar, Impostos a recolher</td>
+        </tr>
+        <tr>
+          <td>Empréstimos de curto prazo</td>
+          <td>Empréstimos bancários, Debêntures (parcela circulante)</td>
+        </tr>
+        <tr>
+          <td rowspan="2"><strong>Passivo Não Circulante</strong></td>
+          <td>Obrigações de longo prazo</td>
+          <td>Financiamentos, Provisões para contingências</td>
+        </tr>
+        <tr>
+          <td>Receitas diferidas</td>
+          <td>Adiantamentos de clientes (longo prazo)</td>
+        </tr>
+        <tr>
+          <td rowspan="4"><strong>Patrimônio Líquido</strong></td>
+          <td>Capital Social</td>
+          <td>Capital subscrito, (-) Capital a integralizar</td>
+        </tr>
+        <tr>
+          <td>Reservas de Capital</td>
+          <td>Ágio na emissão de ações, Reserva de incentivos fiscais</td>
+        </tr>
+        <tr>
+          <td>Reservas de Lucros</td>
+          <td>Reserva legal, Reserva estatutária, Reserva para contingências</td>
+        </tr>
+        <tr>
+          <td>Outros</td>
+          <td>Ajustes de avaliação patrimonial, (-) Ações em tesouraria, Lucros/Prejuízos acumulados</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="box-banca">
+      <span class="box-label">&#9888;&#65039; Atenção da Banca</span>
+      A conta <strong>"Lucros Acumulados"</strong> não pode mais apresentar saldo positivo no BP das sociedades por ações, conforme a Lei 11.638/07. O lucro do exercício deve ser integralmente destinado (dividendos, reservas, etc.). Já a conta <strong>"Prejuízos Acumulados"</strong> pode sim apresentar saldo (negativo, naturalmente). As bancas exploram essa diferença com frequência.
+    </div>
+
+    <h2>Lançamentos contábeis na prática</h2>
+    <p>Para consolidar a estrutura do BP, nada melhor do que ver como os fatos contábeis alteram as contas. Vamos a dois exemplos clássicos.</p>
+
+    <p><strong>Exemplo 1:</strong> A empresa adquire um imóvel no valor de R$ 500.000, pagando R$ 200.000 à vista e financiando o restante em longo prazo.</p>
+
+    <div class="lancamento">
+      <div class="lancamento-header">&#128210; Lançamento Contábil</div>
+      <div class="lancamento-body">
+        <div class="debito">D &ndash; Imóveis (Ativo Não Circulante &ndash; Imobilizado) <span class="valor">500.000</span></div>
+        <div class="credito">C &ndash; Bancos (Ativo Circulante &ndash; Disponibilidades) <span class="valor">200.000</span></div>
+        <div class="credito">C &ndash; Financiamentos a Pagar (Passivo Não Circulante) <span class="valor">300.000</span></div>
+      </div>
+      <div class="lancamento-desc">O Ativo aumentou R$ 300.000 líquidos (Imóveis +500 / Bancos -200) e o Passivo aumentou R$ 300.000. A equação se mantém.</div>
+    </div>
+
+    <p><strong>Exemplo 2:</strong> A empresa contrai empréstimo bancário de R$ 150.000, com vencimento em 8 meses.</p>
+
+    <div class="lancamento">
+      <div class="lancamento-header">&#128210; Lançamento Contábil</div>
+      <div class="lancamento-body">
+        <div class="debito">D &ndash; Bancos (Ativo Circulante &ndash; Disponibilidades) <span class="valor">150.000</span></div>
+        <div class="credito">C &ndash; Empréstimos a Pagar (Passivo Circulante) <span class="valor">150.000</span></div>
+      </div>
+      <div class="lancamento-desc">Ativo e Passivo aumentaram no mesmo valor. O PL permanece inalterado. Vencimento inferior a 12 meses: Passivo Circulante.</div>
+    </div>
+
+    <p>Perceba que, em ambos os casos, a equação fundamental se mantém. Cada lançamento altera o BP, mas nunca desequilibra a balança. Essa é a beleza do método das partidas dobradas.</p>
+
+    <h2>A pegadinha do "Ativo Diferido"</h2>
+
+    <div class="box-pegadinha">
+      <span class="box-label">&#127919; Pegadinha</span>
+      O <strong>Ativo Diferido</strong> foi extinto pela Lei 11.941/09 como grupo do Balanço Patrimonial. Antes dessa lei, existia como subgrupo do Ativo Não Circulante e registrava despesas pré-operacionais e gastos de reestruturação. As bancas continuam cobrando esse tema, especialmente a CEBRASPE, afirmando que o Ativo Diferido ainda integra a estrutura do BP &mdash; o que está <strong>errado</strong>. As entidades que possuíam saldos nesse grupo puderam mantê-los até sua completa amortização, mas <strong>novos registros não são permitidos</strong>.
+    </div>
+
+    <h2>O que as bancas mais cobram sobre o Balanço Patrimonial</h2>
+    <ul>
+      <li><strong>Equação patrimonial</strong> &mdash; questões pedem para calcular o PL a partir do Ativo e Passivo, ou vice-versa</li>
+      <li><strong>Classificação de contas</strong> &mdash; distinguir circulante de não circulante, usando o critério dos 12 meses ou do ciclo operacional</li>
+      <li><strong>Ordem de liquidez</strong> &mdash; o Ativo é apresentado do mais líquido para o menos líquido</li>
+      <li><strong>Contas retificadoras</strong> &mdash; depreciação acumulada, PCLD, capital a integralizar, ações em tesouraria (todas com saldo contrário ao grupo)</li>
+      <li><strong>Ativo Diferido extinto</strong> &mdash; não existe mais como grupo desde a Lei 11.941/09</li>
+      <li><strong>Reserva Legal</strong> &mdash; obrigatória, 5% do lucro líquido, limitada a 20% do capital social</li>
+      <li><strong>Lucros Acumulados</strong> &mdash; não pode ter saldo positivo em S/A no encerramento do exercício</li>
+      <li><strong>Efeito dos lançamentos no BP</strong> &mdash; identificar se um fato altera Ativo, Passivo, PL ou combinações</li>
+    </ul>
+
+    <div class="box-macete">
+      <span class="box-label">&#128161; Macete de Prova</span>
+      Quando a questão pedir para classificar uma lista de contas, use esta sequência mental: (1) É bem, direito ou obrigação? (2) Se bem ou direito: é Ativo. Se obrigação com terceiro: Passivo. Se obrigação com sócio: PL. (3) Prazo: realiza/vence em até 12 meses? Circulante. Caso contrário: Não Circulante. Essa sequência resolve a grande maioria das questões de classificação.
+    </div>
+
+    <div class="bottom-nav">
+      <a href="../blog.html" class="back-btn">&larr; Voltar ao Blog</a>
+    </div>
+
+  </article>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-card">
+      <h3>Sobre o Professor</h3>
+      <p><strong>Victor Neves</strong> é professor de Contabilidade para concursos públicos. Criou o projeto Fluência Contábil para transformar a forma como a disciplina é ensinada: com clareza, profundidade e estratégia.</p>
+    </div>
+
+    <div class="sidebar-card">
+      <h3>Artigos Relacionados</h3>
+      <ul class="sidebar-related">
+        <li>
+          <a href="o-que-e-contabilidade.html">O que é Contabilidade? A explicação que nenhum curso de concurso te dá</a>
+          <div class="rel-cat">Fundamentos</div>
+        </li>
+        <li>
+          <a href="cpc-26-o-que-as-bancas-cobram.html">CPC 26: O que as bancas mais cobram sobre apresentação das demonstrações</a>
+          <div class="rel-cat">CPC</div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="sidebar-cta">
+      <h3>Entre na Lista de Espera</h3>
+      <p>Seja avisado quando o curso abrir novas vagas.</p>
+      <a href="../cursos.html">Lista de Espera</a>
+    </div>
+  </aside>
+</div>
+
+<!-- Newsletter -->
+<section class="newsletter-section">
+  <h2>Receba conteúdo direto no seu e-mail</h2>
+  <p>Artigos, dicas de estudo e materiais exclusivos para concursos fiscais e de controle.</p>
+  <form class="newsletter-form" onsubmit="event.preventDefault();">
+    <input type="email" placeholder="Seu melhor e-mail" required>
+    <button type="submit">Inscrever</button>
+  </form>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo">Fluência <span>Contábil</span></div>
+      <p>Contabilidade para quem quer ser fluente. Conteúdo didático e estratégico para concursos públicos.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navegação</h4>
+      <ul>
+        <li><a href="../index.html">Início</a></li>
+        <li><a href="../cursos.html">Curso</a></li>
+        <li><a href="../blog.html">Blog</a></li>
+        <li><a href="../professor.html">Sobre</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Conteúdo</h4>
+      <ul>
+        <li><a href="o-que-e-contabilidade.html">O que é Contabilidade</a></li>
+        <li><a href="cpc-26-o-que-as-bancas-cobram.html">CPC 26</a></li>
+        <li><a href="balanco-patrimonial-estrutura.html">Balanço Patrimonial</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contato</h4>
+      <ul>
+        <li><a href="../contato.html">Fale Conosco</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    &copy; 2026 Fluência Contábil. Todos os direitos reservados.
+  </div>
+</footer>
+
+<script>
+// Reading progress bar
+window.addEventListener('scroll', function() {
+  var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  var scrolled = window.scrollY;
+  var progress = (scrolled / docHeight) * 100;
+  document.getElementById('progress-bar').style.width = progress + '%';
+});
+
+// Sticky navbar shadow
+window.addEventListener('scroll', function() {
+  var navbar = document.getElementById('navbar');
+  if (window.scrollY > 20) {
+    navbar.classList.add('scrolled');
+  } else {
+    navbar.classList.remove('scrolled');
+  }
+});
+
+// Hamburger menu
+document.getElementById('hamburger').addEventListener('click', function() {
+  this.classList.toggle('active');
+  document.getElementById('mobile-menu').classList.toggle('active');
+});
+
+// Close mobile menu on link click
+document.querySelectorAll('#mobile-menu a').forEach(function(link) {
+  link.addEventListener('click', function() {
+    document.getElementById('hamburger').classList.remove('active');
+    document.getElementById('mobile-menu').classList.remove('active');
+  });
+});
+</script>
+</body>
+</html>
