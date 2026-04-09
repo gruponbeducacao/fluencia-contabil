@@ -13,7 +13,7 @@ body{font-family:'Montserrat',sans-serif;color:var(--texto);background:var(--bra
 #mainNav{position:fixed;top:30px;left:0;right:0;z-index:290;height:72px;background:rgba(27,42,74,0.98);backdrop-filter:blur(12px);border-bottom:1px solid rgba(200,168,75,0.2);display:flex;align-items:center;padding:0 4%;gap:24px;transition:top 0.3s,box-shadow 0.3s;}
 #mainNav.scrolled{top:0;box-shadow:0 4px 24px rgba(0,0,0,0.35);}
 .nav-logo{text-decoration:none;display:flex;align-items:center;flex-shrink:0;}
-.nav-logo img{height:52px;width:auto;display:block;mix-blend-mode:screen;}
+.nav-logo img{height:48px;width:auto;display:block;filter:drop-shadow(0 1px 3px rgba(0,0,0,0.15));}
 .nav-links{display:flex;align-items:center;gap:2px;list-style:none;flex:1;}
 .nav-links a{text-decoration:none;color:rgba(255,255,255,0.65);font-size:11px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;padding:8px 10px;border-radius:2px;transition:all 0.2s;white-space:nowrap;}
 .nav-links a:hover,.nav-links a.active{color:var(--dourado);background:rgba(200,168,75,0.08);}
@@ -37,7 +37,7 @@ body{font-family:'Montserrat',sans-serif;color:var(--texto);background:var(--bra
 .bg-grid{background-image:linear-gradient(rgba(200,168,75,0.055) 1px,transparent 1px),linear-gradient(90deg,rgba(200,168,75,0.055) 1px,transparent 1px);background-size:60px 60px;}
 footer{background:#0E1929;padding:60px 5% 32px;}
 .ft-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px;}
-.ft-logo{margin-bottom:16px;}.ft-logo img{height:56px;width:auto;mix-blend-mode:screen;}
+.ft-logo img{height:52px;width:auto;margin-bottom:16px;}
 .ft-brand p{font-size:12px;color:rgba(255,255,255,0.38);line-height:1.7;font-family:'Source Serif 4',serif;max-width:240px;}
 .ft-col h4{font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--dourado);margin-bottom:16px;}
 .ft-col ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
@@ -139,7 +139,7 @@ footer{background:#0E1929;padding:60px 5% 32px;}
   .prod-grid{grid-template-columns:1fr 1fr;}
   .fil-grid{grid-template-columns:1fr;gap:48px;}
 }
-@media(max-width:680px){
+@media(max-width:768px){
   .num-grid{grid-template-columns:1fr 1fr;}
   .prod-grid{grid-template-columns:1fr;}
   .hero-actions{flex-direction:column;align-items:flex-start;}
