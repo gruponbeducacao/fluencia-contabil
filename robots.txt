@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://fluenciacontabil.com.br/sitemap.xml
+
+# Fluência Contábil — fluenciacontabil.com.br
+# Contabilidade para concursos públicos
