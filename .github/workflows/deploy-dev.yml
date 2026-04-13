@@ -1,0 +1,29 @@
+name: Deploy Dev Site
+
+on:
+  push:
+    branches: [dev]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout dev branch
+        uses: actions/checkout@v4
+        with:
+          ref: dev
+
+      - name: Replace CNAME for dev domain
+        run: echo "dev.fluenciacontabil.com.br" > CNAME
+
+      - name: Push to dev repo
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.DEV_DEPLOY_TOKEN }}
+        with:
+          source-directory: "."
+          destination-github-username: "gruponbeducacao"
+          destination-repository-name: "fluencia-contabil-dev"
+          target-branch: main
+          user-email: vfneves94@gmail.com
+          user-name: vfneves94
