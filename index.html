@@ -108,6 +108,9 @@ footer{background:#0E1929;padding:60px 5% 32px;}
 }
 
 
+/* ── CTA RED OVERRIDE ── */
+.nav-btn,.btn-p,.mobile-menu .mob-btn{background:#C0392B!important;color:#fff!important;border-color:#C0392B!important;}
+.nav-btn:hover,.btn-p:hover,.mobile-menu .mob-btn:hover{background:#922B1F!important;border-color:#922B1F!important;color:#fff!important;}
 </style>
 <style>
 #hero{min-height:92vh;background:var(--azul);display:grid;grid-template-columns:1fr 420px;position:relative;overflow:hidden;}
@@ -173,6 +176,69 @@ footer{background:#0E1929;padding:60px 5% 32px;}
 }
 </style>
 
+<!-- NEW STYLES for added sections -->
+<style>
+/* Para Quem section */
+#para-quem .pq-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start;}
+#para-quem .pq-item{display:flex;gap:14px;align-items:flex-start;margin-bottom:20px;}
+#para-quem .pq-check{width:28px;height:28px;min-width:28px;background:rgba(200,168,75,0.15);border:1px solid rgba(200,168,75,0.4);border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--dourado);font-weight:700;}
+#para-quem .pq-text strong{display:block;font-size:14px;font-weight:800;color:var(--branco);margin-bottom:3px;}
+#para-quem .pq-text p{font-size:13px;color:rgba(255,255,255,0.5);line-height:1.6;font-family:'Source Serif 4',serif;}
+#para-quem .pq-nao{margin-top:40px;padding:28px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:4px;}
+#para-quem .pq-nao h3{font-size:13px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:16px;}
+#para-quem .pq-nao-item{display:flex;gap:10px;align-items:center;margin-bottom:10px;font-size:13px;color:rgba(255,255,255,0.35);font-family:'Source Serif 4',serif;}
+#para-quem .pq-nao-item:last-child{margin-bottom:0;}
+
+/* Produto detalhado */
+.mod-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:40px;}
+.mod-card{background:var(--branco);border:1px solid rgba(27,42,74,0.08);border-radius:4px;padding:28px;transition:all 0.3s;}
+.mod-card:hover{box-shadow:0 8px 32px rgba(27,42,74,0.1);border-color:var(--dourado);}
+.mod-num{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--dourado);margin-bottom:8px;}
+.mod-card h3{font-size:16px;font-weight:900;color:var(--azul);margin-bottom:10px;}
+.mod-card p{font-size:13px;color:#666;line-height:1.7;font-family:'Source Serif 4',serif;}
+.prod-features{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:40px;}
+.prod-feat{display:flex;gap:12px;align-items:flex-start;}
+.prod-feat-icon{width:36px;height:36px;min-width:36px;background:rgba(200,168,75,0.1);border:1px solid rgba(200,168,75,0.25);border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:16px;}
+.prod-feat strong{display:block;font-size:13px;font-weight:800;color:var(--azul);margin-bottom:2px;}
+.prod-feat p{font-size:12px;color:#888;line-height:1.5;font-family:'Source Serif 4',serif;}
+
+/* Professor bio */
+#professor-bio .bio-grid{display:grid;grid-template-columns:1fr 1.5fr;gap:56px;align-items:center;}
+#professor-bio .bio-card{background:var(--azul);border-radius:6px;padding:48px 40px;text-align:center;}
+#professor-bio .bio-card .bio-name{font-size:22px;font-weight:900;color:var(--branco);margin-bottom:4px;}
+#professor-bio .bio-card .bio-title{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--dourado);margin-bottom:20px;}
+#professor-bio .bio-card .bio-stats{display:flex;justify-content:center;gap:32px;margin-top:20px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.08);}
+#professor-bio .bio-card .bio-stat-val{font-size:28px;font-weight:900;color:var(--dourado);line-height:1;}
+#professor-bio .bio-card .bio-stat-lbl{font-size:10px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:1px;margin-top:4px;}
+#professor-bio .bio-text p{margin-bottom:16px;}
+#professor-bio .bio-text .bio-cred{display:flex;flex-direction:column;gap:10px;margin:24px 0;}
+#professor-bio .bio-text .bio-cred-item{display:flex;gap:10px;align-items:center;font-size:13px;font-weight:600;color:var(--azul);}
+#professor-bio .bio-text .bio-cred-item span{width:6px;height:6px;min-width:6px;background:var(--dourado);border-radius:50%;}
+
+/* Depoimentos grid */
+.dep-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;margin-top:48px;}
+.dep-card{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:4px;padding:32px;position:relative;}
+.dep-card::before{content:'\201C';position:absolute;top:12px;right:20px;font-size:72px;font-weight:900;color:rgba(200,168,75,0.1);line-height:1;font-family:'Source Serif 4',serif;}
+.dep-card blockquote{font-size:14px;font-style:italic;color:rgba(255,255,255,0.7);line-height:1.7;font-family:'Source Serif 4',serif;margin-bottom:20px;position:relative;z-index:1;}
+.dep-card .dep-name{font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--dourado);}
+.dep-card .dep-info{font-size:11px;color:rgba(255,255,255,0.35);margin-top:3px;}
+
+/* Responsive for new sections */
+@media(max-width:1100px){
+  #para-quem .pq-grid{grid-template-columns:1fr;}
+  .mod-grid{grid-template-columns:1fr 1fr;}
+  #professor-bio .bio-grid{grid-template-columns:1fr;}
+  #professor-bio .bio-card{max-width:400px;margin:0 auto;}
+  .dep-grid{grid-template-columns:1fr;}
+}
+@media(max-width:768px){
+  .mod-grid{grid-template-columns:1fr;}
+  .prod-features{grid-template-columns:1fr;}
+  #professor-bio .bio-card .bio-stats{flex-wrap:wrap;gap:20px;}
+  .dep-grid{grid-template-columns:1fr;}
+}
+</style>
+
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -212,7 +278,7 @@ footer{background:#0E1929;padding:60px 5% 32px;}
     <a href="https://www.instagram.com/prof.viniciusferraz" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8 0 3.2 0 3.6-.1 4.8-.1 3.2-1.7 4.8-4.9 4.9-1.3.1-1.6.1-4.9.1-3.2 0-3.6 0-4.8-.1-3.3-.1-4.8-1.7-4.9-4.9C2.2 15.6 2.2 15.2 2.2 12c0-3.2 0-3.6.1-4.8C2.4 3.9 4 2.3 7.2 2.2c1.2-.1 1.6-.1 4.8-.1zM12 0C8.7 0 8.3 0 7.1.1 2.7.3.3 2.7.1 7.1.0 8.3 0 8.7 0 12c0 3.3 0 3.7.1 4.9.2 4.4 2.6 6.8 7 7C8.3 24 8.7 24 12 24c3.3 0 3.7 0 4.9-.1 4.4-.2 6.8-2.6 7-7 .1-1.2.1-1.6.1-4.9 0-3.3 0-3.7-.1-4.9C23.7 2.7 21.3.3 16.9.1 15.7 0 15.3 0 12 0zm0 5.8a6.2 6.2 0 1 0 0 12.4A6.2 6.2 0 0 0 12 5.8zm0 10.2a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.4-11.8a1.4 1.4 0 1 0 0 2.8 1.4 1.4 0 0 0 0-2.8z"/></svg></a>
     <a href="https://www.youtube.com/@prof.viniciusferraz" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.3 31.3 0 0 0 0 12a31.3 31.3 0 0 0 .6 5.8 3 3 0 0 0 2 2.1c2 .6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.3 31.3 0 0 0 24 12a31.3 31.3 0 0 0-.5-5.8zM9.7 15.5V8.5l6.3 3.5-6.3 3.5z"/></svg></a>
   </div>
-  <a href="cursos.html#lista-espera" class="nav-btn">Lista de Espera</a>
+  <a href="cursos.html#lista-espera" class="nav-btn">Quero Estudar</a>
   <button class="hamburger" id="hamburgerBtn" aria-label="Menu"><span></span><span></span><span></span></button>
 </nav>
 <div class="mobile-menu" id="mobileMenu">
@@ -228,9 +294,10 @@ footer{background:#0E1929;padding:60px 5% 32px;}
     <a href="https://www.instagram.com/prof.viniciusferraz" target="_blank" rel="noopener">📷 Instagram</a>
     <a href="https://www.youtube.com/@prof.viniciusferraz" target="_blank" rel="noopener">▶️ YouTube</a>
   </div>
-  <a href="cursos.html#lista-espera" class="mob-btn">Lista de Espera</a>
+  <a href="cursos.html#lista-espera" class="mob-btn">Quero Estudar</a>
 </div>
 
+<!-- ═══════════════════════════════════════ HERO ═══════════════════════════════════════ -->
 <section id="hero">
   <div class="hero-bg bg-grid"></div>
   <div class="hero-glow"></div>
@@ -238,12 +305,12 @@ footer{background:#0E1929;padding:60px 5% 32px;}
     <div class="hero-logo-wrap">
       <img src="assets/FC_Simbolo_BrancoDourado_FUNDO_AZUL.png" alt="" class="hero-logo" loading="eager">
     </div>
-    <div class="hero-badge"><div class="hero-badge-dot"></div><span>Lançamento — Junho de 2026</span></div>
-    <h1 class="hero-title">Curso completo de<br><em>Contabilidade</em><br>para concursos.</h1>
-    <p class="hero-sub">Do zero ao avançado: aulas em vídeo, aulas em PDF completos, questões comentadas e material de apoio para concursos nas áreas fiscal, controle, para cargos de contadores e qualquer concurso que tenha contabilidade geral e/ou avançada. <strong>Formação completa com o Prof. Vinícius Ferraz.</strong></p>
+    <div class="hero-badge"><div class="hero-badge-dot"></div><span>Lançamento — 18 de Junho de 2026</span></div>
+    <h1 class="hero-title">Pare de perder pontos<br>em <em>contabilidade.</em></h1>
+    <p class="hero-sub">Você estuda, resolve questões, revisa a matéria — e na hora da prova, trava. O problema não é esforço. <strong>É método.</strong> O Fluência Contábil ensina contabilidade como ela deveria ser ensinada: pela lógica. <strong>Prof. Vinícius Ferraz, Auditor Fiscal.</strong></p>
     <div class="hero-actions">
-      <a href="cursos.html#lista-espera" class="btn-p">Quero me matricular</a>
-      <a href="institucional.html" class="btn-o">Conhecer a Fluência →</a>
+      <a href="cursos.html#lista-espera" class="btn-p">Garantir minha vaga</a>
+      <a href="#metodo" class="btn-o">Como funciona o curso →</a>
     </div>
   </div>
   <div class="hero-right">
@@ -257,6 +324,7 @@ footer{background:#0E1929;padding:60px 5% 32px;}
   </div>
 </section>
 
+<!-- ═══════════════════════════════════════ NUM STRIP ═══════════════════════════════════════ -->
 <div class="num-strip">
   <div class="num-grid">
     <div class="num-card reveal"><div class="num-val">3<span>mil+</span></div><div class="num-lbl">Alunos ao longo da trajetória do professor</div></div>
@@ -264,20 +332,21 @@ footer{background:#0E1929;padding:60px 5% 32px;}
     <div class="num-card reveal"><div class="num-val">400<span>h</span></div><div class="num-lbl">Horas de aula ao vivo</div></div>
     <div class="num-card reveal"><div class="num-val">1000<span>+</span></div><div class="num-lbl">Questões comentadas</div></div>
     <div class="num-card reveal"><div class="num-val">34<span>+</span></div><div class="num-lbl">Aulas + bônus</div></div>
-    <div class="num-card reveal"><div class="num-val">4</div><div class="num-lbl">Bancas: CEBRASPE, FGV, FCC e VUNESP</div></div>
+    <div class="num-card reveal"><div class="num-val">4</div><div class="num-lbl">Foco nas principais bancas</div></div>
   </div>
 </div>
 
-<section style="padding:100px 5%;background:var(--branco);">
+<!-- ═══════════════════════════════════════ FILOSOFIA / MÉTODO ═══════════════════════════════════════ -->
+<section id="metodo" style="padding:100px 5%;background:var(--branco);">
   <div class="inner fil-grid">
     <div>
-      <span class="lbl">Nossa Filosofia</span><div class="bar"></div>
-      <h2 class="h2">Por que a maioria falha em contabilidade?</h2>
-      <p class="body-t" style="margin-bottom:32px;">Porque tentam memorizar sem entender. Contabilidade não é uma lista de regras — é um sistema lógico de comunicação.</p>
+      <span class="lbl reveal">O Problema</span><div class="bar"></div>
+      <h2 class="h2 reveal">Se você já estudou muito e ainda erra questões de contabilidade, leia isto.</h2>
+      <p class="body-t reveal" style="margin-bottom:32px;">Você decorou os lançamentos. Treinou dezenas de questões. Na hora da prova, apareceu uma situação diferente — e tudo desmoronou. <strong>Isso não é falta de estudo. É falta de fundamento.</strong></p>
       <div style="display:flex;flex-direction:column;gap:20px;">
-        <div class="pilar reveal"><div class="pilar-n">01</div><div><strong>Conceito antes da regra</strong><p>Primeiro você entende por que algo existe. A norma técnica vem depois.</p></div></div>
-        <div class="pilar reveal"><div class="pilar-n">02</div><div><strong>Lógica antes da decoreba</strong><p>Entendendo a razão, você deriva a regra sozinho.</p></div></div>
-        <div class="pilar reveal"><div class="pilar-n">03</div><div><strong>A prova no centro</strong><p>CEBRASPE, FGV, VUNESP e FCC — filtrado pelo que as bancas realmente cobram.</p></div></div>
+        <div class="pilar reveal"><div class="pilar-n">01</div><div><strong>Conceito antes da regra</strong><p>Primeiro você entende a razão de existir. Depois, a norma técnica faz sentido sozinha.</p></div></div>
+        <div class="pilar reveal"><div class="pilar-n">02</div><div><strong>Lógica antes da decoreba</strong><p>Quem entende a estrutura não precisa memorizar 300 regras. Deriva a resposta na hora.</p></div></div>
+        <div class="pilar reveal"><div class="pilar-n">03</div><div><strong>A banca no centro</strong><p>Cada aula é calibrada para CEBRASPE, FGV, FCC e VUNESP. Você estuda o que cai — do jeito que cai.</p></div></div>
       </div>
     </div>
     <div style="background:var(--azul);border-radius:6px;padding:40px;position:relative;overflow:hidden;">
@@ -289,37 +358,189 @@ footer{background:#0E1929;padding:60px 5% 32px;}
   </div>
 </section>
 
-<section style="padding:100px 5%;background:var(--cinza,#F5F5F5);">
+<!-- ═══════════════════════════════════════ PARA QUEM ═══════════════════════════════════════ -->
+<section id="para-quem" style="padding:100px 5%;background:var(--azul);">
   <div class="inner">
-    <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:48px;flex-wrap:wrap;gap:16px;">
-      <div><span class="lbl">Nossos Produtos</span><h2 class="h2">Tudo que você precisa para ser aprovado.</h2></div>
-      <a href="cursos.html" class="btn-od">Ver todos →</a>
-    </div>
-    <div class="prod-grid">
-      <a href="cursos.html" class="prod-card reveal"><div class="prod-head"><span class="prod-badge">⭐ Produto principal</span><h3>Fluência Contábil — Curso Completo</h3></div><div class="prod-body"><p>Do fundamento ao avançado. 4 módulos, 39 aulas, listas de questões comentadas para concursos fiscais, controle e tribunais de contas.</p><span class="prod-tag">Lançamento Junho 2026</span></div></a>
-      <a href="cursos.html" class="prod-card reveal"><div class="prod-head"><span class="prod-badge">Em breve</span><h3>Mentoria Individual</h3></div><div class="prod-body"><p>Acompanhamento personalizado para candidatos em fase final. Dúvidas, revisão e estratégia de prova sob medida.</p><span class="prod-tag">Em desenvolvimento</span></div></a>
-      <a href="cursos.html" class="prod-card reveal"><div class="prod-head"><span class="prod-badge">Em breve</span><h3>Banco de Questões</h3></div><div class="prod-body"><p>Plataforma de questões comentadas por CPC, banca e nível. Treine com propósito, corrija com contexto.</p><span class="prod-tag">Em desenvolvimento</span></div></a>
+    <span class="lbl reveal">Para quem é</span><div class="bar"></div>
+    <h2 class="h2 lgt reveal">O Fluência Contábil foi feito para quem leva concurso a sério.</h2>
+    <p class="body-t reveal" style="color:rgba(255,255,255,0.5);max-width:640px;margin-bottom:48px;">Se a contabilidade está no seu edital, este curso foi pensado para você — independentemente da banca ou do cargo.</p>
+
+    <div class="pq-grid">
+      <div>
+        <div class="pq-item reveal">
+          <div class="pq-check">&#10003;</div>
+          <div class="pq-text">
+            <strong>Concursos na área fiscal</strong>
+            <p>SEFAZ, Receita Federal, ISS, ICMS. A contabilidade que reprova e aprova nos cargos mais disputados do país.</p>
+          </div>
+        </div>
+        <div class="pq-item reveal">
+          <div class="pq-check">&#10003;</div>
+          <div class="pq-text">
+            <strong>Tribunais de Contas e Polícia Federal</strong>
+            <p>TCE, TCU, CGU e Polícia Federal. Contabilidade com a profundidade que esses concursos exigem.</p>
+          </div>
+        </div>
+        <div class="pq-item reveal">
+          <div class="pq-check">&#10003;</div>
+          <div class="pq-text">
+            <strong>Cargos de contador e analista</strong>
+            <p>Se o edital pede contabilidade geral ou avançada, você está no lugar certo.</p>
+          </div>
+        </div>
+        <div class="pq-item reveal">
+          <div class="pq-check">&#10003;</div>
+          <div class="pq-text">
+            <strong>Quem começa do zero ou quer recomeçar</strong>
+            <p>O curso parte do fundamento. Se a contabilidade nunca fez sentido, agora vai fazer.</p>
+          </div>
+        </div>
+        <div class="pq-item reveal">
+          <div class="pq-check">&#10003;</div>
+          <div class="pq-text">
+            <strong>Quem já estuda mas trava nas questões</strong>
+            <p>Você sabe a teoria, mas não consegue aplicar. O Fluência Contábil fecha essa lacuna.</p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="pq-nao reveal">
+          <h3>Esse curso não é para quem...</h3>
+          <div class="pq-nao-item">&#10007;&nbsp; Procura atalhos ou fórmulas mágicas para passar sem estudar</div>
+          <div class="pq-nao-item">&#10007;&nbsp; Quer apenas um resumo superficial para "dar uma olhada"</div>
+          <div class="pq-nao-item">&#10007;&nbsp; Não está disposto a entender antes de decorar</div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<section style="padding:100px 5%;background:var(--azul);text-align:center;">
-  <div style="max-width:800px;margin:0 auto;">
-    <span class="lbl" style="display:flex;justify-content:center;">O que nossos alunos dizem</span>
-    <p style="font-size:clamp(17px,2.5vw,24px);font-weight:400;font-family:'Source Serif 4',serif;font-style:italic;color:rgba(255,255,255,0.75);line-height:1.6;margin:36px 0 22px;">"Esse estudo acompanhado me fez gostar, novamente, de estudar. Querer mais a cada dia. Ter mais conhecimento hoje do que ontem. O professor Vinícius, com sua dedicação e cuidado conosco, ajudou nesse reinício. ISS-RJ ou outro fiscal, vocês serão parte da caminhada."</p>
-    <div style="font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--dourado);">Érica Freitas</div>
-    <div style="font-size:11px;color:rgba(255,255,255,0.35);margin-top:4px;">Turma ISS-RJ</div>
-    <div style="margin-top:40px;"><a href="depoimentos.html" class="btn-o">Ver todos os depoimentos →</a></div>
+<!-- ═══════════════════════════════════════ PRODUTO ═══════════════════════════════════════ -->
+<section id="produto" style="padding:100px 5%;background:var(--cinza,#F5F5F5);">
+  <div class="inner">
+    <div style="text-align:center;max-width:680px;margin:0 auto 48px;">
+      <span class="lbl reveal" style="display:flex;justify-content:center;">O Curso</span><div class="bar" style="margin-inline:auto;"></div>
+      <h2 class="h2 reveal">4 módulos. 34+ aulas. Uma formação completa em contabilidade para concursos.</h2>
+      <p class="body-t reveal">Do fundamento ao avançado, calibrado para as 4 principais bancas do Brasil. Cada aula foi construída para que você entenda — e nunca mais esqueça.</p>
+    </div>
+
+    <div class="mod-grid">
+      <div class="mod-card reveal">
+        <div class="mod-num">Módulo 01</div>
+        <h3>Fundamentos da Contabilidade</h3>
+        <p>A base que sustenta tudo. Patrimônio, fatos contábeis, partidas dobradas, plano de contas. Você constrói o alicerce lógico que vai sustentar todo o restante do curso.</p>
+      </div>
+      <div class="mod-card reveal">
+        <div class="mod-num">Módulo 02</div>
+        <h3>Demonstrações Contábeis (Contabilidade Geral)</h3>
+        <p>Balanço Patrimonial, DRE, DFC, DVA e DMPL. A estrutura completa das demonstrações contábeis e tudo que as bancas cobram com mais frequência.</p>
+      </div>
+      <div class="mod-card reveal">
+        <div class="mod-num">Módulo 03</div>
+        <h3>Contabilidade Intermediária (CPCs Operacionais)</h3>
+        <p>CPC 16, CPC 27, CPC 04, CPC 47, CPC 48, Equivalência Patrimonial e demais pronunciamentos operacionais. O nível que separa quem passa de quem fica na porta.</p>
+      </div>
+      <div class="mod-card reveal">
+        <div class="mod-num">Módulo 04</div>
+        <h3>Contabilidade Avançada</h3>
+        <p>Arrendamentos, provisões, subvenções, instrumentos financeiros, demonstrações consolidadas e os CPCs mais complexos cobrados em provas de alto nível.</p>
+      </div>
+    </div>
+
+    <div class="prod-features">
+      <div class="prod-feat reveal">
+        <div class="prod-feat-icon">&#127909;</div>
+        <div><strong>Aulas em vídeo</strong><p>Aulas gravadas com didática clara, objetiva e aprofundada.</p></div>
+      </div>
+      <div class="prod-feat reveal">
+        <div class="prod-feat-icon">&#128196;</div>
+        <div><strong>Aulas em PDF</strong><p>Material escrito completo para estudo e revisão a qualquer momento.</p></div>
+      </div>
+      <div class="prod-feat reveal">
+        <div class="prod-feat-icon">&#9999;</div>
+        <div><strong>1000+ questões comentadas</strong><p>Questões das principais bancas com comentários detalhados.</p></div>
+      </div>
+      <div class="prod-feat reveal">
+        <div class="prod-feat-icon">&#128218;</div>
+        <div><strong>Aulas bônus</strong><p>Conteúdos extras sobre temas recentes, relevantes e recorrentes nas provas.</p></div>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:48px;">
+      <a href="cursos.html" class="btn-od reveal">Ver detalhes completos do curso →</a>
+    </div>
   </div>
 </section>
 
-<section style="padding:100px 5%;background:var(--cream);text-align:center;">
-  <div style="max-width:600px;margin:0 auto;">
-    <span class="lbl" style="display:block;">Pronto para começar?</span>
-    <h2 class="h2">Entre na lista de espera.<br>Lançamento em junho de 2026.</h2>
-    <p class="body-t" style="margin:0 auto 36px;">Inscritos recebem acesso antecipado e condições especiais de lançamento.</p>
-    <a href="cursos.html#lista-espera" class="btn-p">Entrar na lista de espera</a>
-    <p style="font-size:11px;color:#aaa;margin-top:14px;letter-spacing:1px;text-transform:uppercase;">Gratuito · Sem compromisso</p>
+<!-- ═══════════════════════════════════════ PROFESSOR ═══════════════════════════════════════ -->
+<section id="professor-bio" style="padding:100px 5%;background:var(--branco);">
+  <div class="inner">
+    <div class="bio-grid">
+      <div class="bio-card reveal">
+        <img src="assets/foto-vinicius.jpg" alt="Prof. Vinícius Ferraz" style="width:140px;height:140px;border-radius:50%;object-fit:cover;object-position:center top;border:3px solid rgba(200,168,75,0.3);margin-bottom:20px;">
+        <div class="bio-name">Vinícius Ferraz</div>
+        <div class="bio-title">Auditor Fiscal</div>
+        <p style="font-size:13px;color:rgba(255,255,255,0.45);font-family:'Source Serif 4',serif;line-height:1.7;">Professor de contabilidade para concursos. Ensina pela lógica, não pela decoreba.</p>
+        <div class="bio-stats">
+          <div><div class="bio-stat-val">3mil+</div><div class="bio-stat-lbl">Alunos</div></div>
+          <div><div class="bio-stat-val">40+</div><div class="bio-stat-lbl">Mentorias</div></div>
+          <div><div class="bio-stat-val">400h+</div><div class="bio-stat-lbl">Aulas ao vivo</div></div>
+        </div>
+      </div>
+      <div class="bio-text">
+        <span class="lbl reveal">O Professor</span><div class="bar"></div>
+        <h2 class="h2 reveal">Quem está por trás do Fluência Contábil.</h2>
+        <p class="body-t reveal"><strong>Vinícius Ferraz é Auditor Fiscal</strong> e professor de contabilidade para concursos públicos. Ao longo da sua trajetória, formou mais de 3.000 alunos em turmas de mentoria, cursos e aulas ao vivo.</p>
+        <p class="body-t reveal">Sua abordagem é única: <strong>ensinar contabilidade como um idioma</strong>, onde cada conceito tem lógica própria e se conecta ao todo.</p>
+        <div class="bio-cred reveal">
+          <div class="bio-cred-item"><span></span> Auditor Fiscal em exercício</div>
+          <div class="bio-cred-item"><span></span> Mais de 3.000 alunos formados</div>
+          <div class="bio-cred-item"><span></span> 40+ turmas de mentoria conduzidas</div>
+          <div class="bio-cred-item"><span></span> 400+ horas de aula ao vivo ministradas</div>
+        </div>
+        <a href="professor.html" class="btn-od reveal">Conhecer a trajetória completa →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════ DEPOIMENTOS ═══════════════════════════════════════ -->
+<section id="depoimentos" style="padding:100px 5%;background:var(--azul);">
+  <div class="inner" style="text-align:center;">
+    <span class="lbl reveal" style="display:flex;justify-content:center;">O que nossos alunos dizem</span><div class="bar" style="margin-inline:auto;"></div>
+    <h2 class="h2 lgt reveal">Quem estudou com o Prof. Vinícius sabe a diferença.</h2>
+
+    <div class="dep-grid" style="text-align:left;">
+      <div class="dep-card reveal">
+        <blockquote>"Excelente aula. Muito obrigada professor Vinícius, estou entendo coisas que achei que nunca iria aprender... Sua didática é ótima. Grava mais por favor... Precisamos da sua ajuda"</blockquote>
+        <div class="dep-name">@carolinnepmaia</div>
+        <div class="dep-info">YouTube</div>
+      </div>
+      <div class="dep-card reveal">
+        <blockquote>"Esse estudo acompanhado me fez gostar, novamente, de estudar. Querer mais a cada dia. Ter mais conhecimento hoje do que ontem. Principalmente o Vinícius, com sua dedicação e cuidado conosco, ajudou nesse reinício."</blockquote>
+        <div class="dep-name">Érica Freitas</div>
+        <div class="dep-info">WhatsApp — Turma ISS-RJ</div>
+      </div>
+      <div class="dep-card reveal">
+        <blockquote>"De altíssimo nível seu conteúdo e aprofundamento de um CPC tão complexo. Muito obrigado por disponibilizar do seu tempo e conteúdo tão rico. Acredito muito na lei do retorno. Você tem uma boa didática, mantenha-se firme, logo seu trabalho vai bombar! Parabéns!"</blockquote>
+        <div class="dep-name">@Mr4lessandro</div>
+        <div class="dep-info">YouTube</div>
+      </div>
+    </div>
+
+    <div style="margin-top:40px;"><a href="depoimentos.html" class="btn-o reveal">Ver todos os depoimentos →</a></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════ CTA FINAL ═══════════════════════════════════════ -->
+<section id="cta-final" style="padding:100px 5%;background:var(--cream);text-align:center;">
+  <div style="max-width:640px;margin:0 auto;">
+    <span class="lbl reveal" style="display:block;">Sua vaga está reservada?</span>
+    <h2 class="h2 reveal">O lançamento acontece em 18 de junho de 2026.<br>Quem entrar na lista de espera terá <em style="color:var(--dourado);font-style:normal;">condições exclusivas.</em></h2>
+    <p class="body-t reveal" style="margin:0 auto 20px;">Acesso antecipado, preço especial de lançamento e bônus exclusivos para quem se inscrever agora. <strong>Vagas limitadas na primeira turma.</strong></p>
+    <p class="body-t reveal" style="margin:0 auto 36px;font-size:14px;color:#888;">Você estudou demais para continuar perdendo pontos em contabilidade. Chegou a hora de entender de verdade.</p>
+    <a href="cursos.html#lista-espera" class="btn-p reveal">Garantir minha vaga na lista de espera</a>
+    <p style="font-size:11px;color:#aaa;margin-top:14px;letter-spacing:1px;text-transform:uppercase;">Gratuito · Sem compromisso · Condições especiais de lançamento</p>
   </div>
 </section>
 
