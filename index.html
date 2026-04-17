@@ -109,8 +109,11 @@ footer{background:#0E1929;padding:60px 5% 32px;}
 
 
 /* ── CTA RED OVERRIDE ── */
-.nav-btn,.btn-p,.mobile-menu .mob-btn,.btn-cta,.nav-cta{background:#C0392B!important;color:#fff!important;border-color:#C0392B!important;}
-.nav-btn:hover,.btn-p:hover,.mobile-menu .mob-btn:hover,.btn-cta:hover,.nav-cta:hover{background:#922B1F!important;border-color:#922B1F!important;color:#fff!important;}
+.nav-btn,.btn-p,.mobile-menu .mob-btn,.btn-cta,.nav-cta,.newsletter-form button,.newsletter button{background:#C0392B!important;color:#fff!important;border-color:#C0392B!important;}
+.nav-btn:hover,.btn-p:hover,.mobile-menu .mob-btn:hover,.btn-cta:hover,.nav-cta:hover,.newsletter-form button:hover,.newsletter button:hover{background:#922B1F!important;border-color:#922B1F!important;color:#fff!important;}
+/* Blog nav logo image */
+.nav-logo img{height:48px!important;width:auto!important;display:block!important;}
+@media(max-width:1100px){.nav-logo img{height:40px!important;}}
 </style>
 <style>
 #hero{min-height:92vh;background:var(--azul);display:grid;grid-template-columns:1fr 420px;position:relative;overflow:hidden;}
@@ -118,7 +121,7 @@ footer{background:#0E1929;padding:60px 5% 32px;}
 .hero-glow{position:absolute;top:-150px;left:30%;width:600px;height:600px;background:radial-gradient(circle,rgba(61,90,153,0.35) 0%,transparent 65%);pointer-events:none;}
 .hero-left{padding:40px 5% 80px;display:flex;flex-direction:column;justify-content:flex-end;position:relative;z-index:2;}
 .hero-logo-wrap{flex:1;display:flex;align-items:center;justify-content:center;pointer-events:none;}
-.hero-logo{width:clamp(260px,28vw,440px);height:auto;opacity:0.95;-webkit-mask-image:radial-gradient(ellipse 68% 82% at center 42%,#000 55%,transparent 92%);mask-image:radial-gradient(ellipse 68% 82% at center 42%,#000 55%,transparent 92%);}
+.hero-logo{width:clamp(280px,30vw,460px);height:auto;opacity:0.78;mix-blend-mode:luminosity;filter:contrast(1.08) brightness(1.05);-webkit-mask-image:radial-gradient(ellipse 62% 78% at center 40%,#000 45%,transparent 88%);mask-image:radial-gradient(ellipse 62% 78% at center 40%,#000 45%,transparent 88%);}
 .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(200,168,75,0.1);border:1px solid rgba(200,168,75,0.3);padding:7px 14px;border-radius:2px;margin-bottom:32px;width:fit-content;}
 .hero-badge-dot{width:6px;height:6px;background:var(--dourado);border-radius:50%;animation:blink 2s infinite;}
 .hero-badge span{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--dourado);}
