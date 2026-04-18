@@ -59,7 +59,7 @@
       +     '<div class="fc-ec-exit-body">'
       +       '<span class="fc-ec-eyebrow">Antes de ir</span>'
       +       '<div class="fc-ec-bar"></div>'
-      +       '<h2 class="fc-ec-title" id="fc-ec-exit-title">Receba aulas gratuitas de contabilidade direto no seu e-mail</h2>'
+      +       '<h2 class="fc-ec-title" id="fc-ec-exit-title">Receba conteúdos gratuitos de contabilidade direto no seu e-mail</h2>'
       +       '<p class="fc-ec-desc">Artigos, dicas de estudo e resoluções de questões para concursos fiscais e de controle. Sem spam — só conteúdo útil.</p>'
       +       '<form class="fc-ec-form" novalidate>'
       +         '<input type="email" placeholder="Seu melhor e-mail" required autocomplete="email">'
