@@ -107,9 +107,36 @@ footer{background:#0E1929;padding:60px 5% 32px;}
 .desafio-inner p{font-size:16px;line-height:1.9;color:#444;font-family:'Source Serif 4',serif;margin-bottom:24px;}
 .desafio-cta{display:inline-block;font-size:13px;font-weight:700;color:var(--dourado-esc);text-decoration:none;letter-spacing:0.5px;transition:all 0.2s;padding:6px 0;border-bottom:1.5px solid rgba(201,168,76,0.3);}
 .desafio-cta:hover{color:var(--azul);border-bottom-color:var(--azul);transform:translateX(4px);}
-.intro-section{padding:80px 5%;background:var(--cream);}
-.intro-inner{max-width:820px;margin-inline:auto;text-align:center;}
-.intro-inner p{font-size:16px;line-height:1.9;color:#555;font-family:'Source Serif 4',serif;}
+.intro-section{padding:96px 5% 80px;background:var(--cream);}
+.intro-inner{max-width:760px;margin-inline:auto;text-align:left;}
+.intro-ornament{width:44px;height:2px;background:var(--dourado);margin-bottom:32px;}
+.intro-lead{font-size:22px;line-height:1.55;color:var(--azul);font-family:'Source Serif 4',serif;margin-bottom:24px;font-weight:400;letter-spacing:-0.3px;}
+.intro-lead strong{font-weight:600;background:linear-gradient(transparent 60%,rgba(201,168,76,0.28) 60%);padding:0 2px;}
+.intro-body{font-size:16px;line-height:1.9;color:#555;font-family:'Source Serif 4',serif;margin-bottom:18px;}
+.intro-body em{color:var(--azul);font-style:italic;}
+.intro-body.closing{color:#444;font-style:italic;font-size:15px;margin-top:18px;}
+.journey-inner{max-width:960px;margin:72px auto 0;}
+.journey-caption{text-align:center;margin-bottom:40px;}
+.journey-caption .lbl{display:block;font-size:10px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--dourado);margin-bottom:8px;}
+.journey-caption h3{font-size:20px;font-weight:700;color:var(--azul);letter-spacing:-0.2px;}
+.journey-track{position:relative;padding:0 20px;}
+.journey-line{position:absolute;top:20px;left:20px;right:20px;height:2px;background:linear-gradient(90deg,rgba(27,42,74,0.18),rgba(201,168,76,0.65));}
+.journey-nodes{display:grid;grid-template-columns:repeat(4,1fr);position:relative;gap:12px;}
+.journey-node{display:flex;flex-direction:column;align-items:center;gap:14px;position:relative;z-index:1;text-decoration:none;cursor:pointer;transition:transform 0.2s ease;}
+.journey-node-dot{display:flex;align-items:center;justify-content:center;width:40px;height:40px;background:var(--branco);border:1.5px solid var(--dourado);border-radius:50%;font-size:14px;font-weight:800;color:var(--azul);box-shadow:0 2px 10px rgba(201,168,76,0.12);transition:all 0.2s ease;}
+.journey-node:last-child .journey-node-dot{background:var(--dourado);color:var(--azul);}
+.journey-node-lbl{font-size:11px;font-weight:700;letter-spacing:0.3px;color:rgba(27,42,74,0.75);text-align:center;line-height:1.45;transition:color 0.2s ease;}
+.journey-node:hover{transform:translateY(-3px);}
+.journey-node:hover .journey-node-dot{background:var(--dourado);color:var(--azul);box-shadow:0 6px 18px rgba(201,168,76,0.35);}
+.journey-node:hover .journey-node-lbl{color:var(--azul);}
+.journey-node:focus-visible{outline:none;}
+.journey-node:focus-visible .journey-node-dot{outline:2px solid var(--dourado);outline-offset:3px;}
+.desafio-section{scroll-margin-top:90px;}
+.desafio-head{display:flex;align-items:center;gap:18px;margin-bottom:22px;}
+.desafio-head .desafio-num{margin-bottom:0;flex-shrink:0;}
+.desafio-icon{width:56px;height:56px;display:flex;align-items:center;justify-content:center;color:var(--dourado-esc);background:rgba(201,168,76,0.08);border-radius:4px;flex-shrink:0;}
+.desafio-icon svg{width:32px;height:32px;}
+.desafio-insight{margin:28px 0;padding:18px 22px;border-left:2px solid var(--dourado);background:rgba(201,168,76,0.05);font-family:'Source Serif 4',serif;font-style:italic;font-size:15.5px;line-height:1.65;color:var(--azul);font-weight:500;}
 .cta-final{padding:100px 5%;background:var(--azul);text-align:center;position:relative;overflow:hidden;}
 .cta-final .bg-grid{position:absolute;inset:0;}
 .cta-final-content{position:relative;z-index:2;max-width:700px;margin-inline:auto;}
@@ -118,7 +145,18 @@ footer{background:#0E1929;padding:60px 5% 32px;}
 .cta-final-content p{font-size:16px;line-height:1.8;color:rgba(255,255,255,0.55);font-family:'Source Serif 4',serif;margin-bottom:40px;}
 .cta-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
 .reveal{opacity:0;transform:translateY(18px);transition:opacity 0.55s ease,transform 0.55s ease;}
-@media(max-width:768px){.desafio-section{padding:56px 5%;}.cta-btns{flex-direction:column;align-items:center;}}
+@media(max-width:768px){.desafio-section{padding:56px 5%;}.cta-btns{flex-direction:column;align-items:center;}
+  .intro-lead{font-size:18px;}
+  .intro-section{padding:72px 5% 56px;}
+  .journey-inner{margin-top:48px;}
+  .journey-nodes{grid-template-columns:repeat(2,1fr);row-gap:28px;}
+  .journey-line{display:none;}
+  .journey-node-lbl{font-size:10px;}
+  .desafio-head{gap:14px;}
+  .desafio-icon{width:48px;height:48px;}
+  .desafio-icon svg{width:28px;height:28px;}
+  .desafio-insight{padding:16px 18px;font-size:14.5px;}
+}
 /* ── CTA RED OVERRIDE ── */
 .nav-btn,.btn-p,.mobile-menu .mob-btn,.btn-cta,.nav-cta,.newsletter-form button,.newsletter button{background:#C0392B!important;color:#fff!important;border-color:#C0392B!important;}
 .nav-btn:hover,.btn-p:hover,.mobile-menu .mob-btn:hover,.btn-cta:hover,.nav-cta:hover,.newsletter-form button:hover,.newsletter button:hover{background:#922B1F!important;border-color:#922B1F!important;color:#fff!important;}
@@ -208,49 +246,116 @@ footer{background:#0E1929;padding:60px 5% 32px;}
   </div>
 </section>
 
-<!-- INTRODUÇÃO -->
+<!-- INTRODUÇÃO + JORNADA -->
 <section class="intro-section">
   <div class="intro-inner reveal">
-    <p>Antes de iniciarmos efetivamente o estudo da disciplina, é importante compreender que a contabilidade possui alguns desafios característicos que costumam dificultar a vida de quem está começando. A experiência mostra que praticamente todos os alunos enfrentam alguns obstáculos ao longo da preparação.</p>
+    <div class="intro-ornament"></div>
+    <p class="intro-lead">Nos anos em que venho ensinando contabilidade para concursos, um padrão se repete: <strong>quase todo aluno enfrenta os mesmos quatro desafios</strong>.</p>
+    <p class="intro-body">Não é falta de dedicação. Não é falta de inteligência. É falta de um mapa. Quando esses obstáculos são reconhecidos no início, a contabilidade deixa de ser um labirinto e passa a ser um percurso com etapas claras — cada uma construindo a próxima.</p>
+    <p class="intro-body closing">A seguir, os quatro desafios — na ordem exata em que aparecem no seu caminho até a fluência contábil.</p>
+  </div>
+  <div class="journey-inner reveal">
+    <div class="journey-caption">
+      <span class="lbl">O caminho</span>
+      <h3>Do primeiro contato até a fluência</h3>
+    </div>
+    <div class="journey-track">
+      <div class="journey-line"></div>
+      <div class="journey-nodes">
+        <a class="journey-node" href="#desafio-1" aria-label="Ir para o desafio 1 — Partidas Dobradas"><div class="journey-node-dot">1</div><div class="journey-node-lbl">Partidas<br>Dobradas</div></a>
+        <a class="journey-node" href="#desafio-2" aria-label="Ir para o desafio 2 — Lógica Contábil"><div class="journey-node-dot">2</div><div class="journey-node-lbl">Lógica<br>Contábil</div></a>
+        <a class="journey-node" href="#desafio-3" aria-label="Ir para o desafio 3 — Demonstrações Contábeis"><div class="journey-node-dot">3</div><div class="journey-node-lbl">Demonstrações<br>Contábeis</div></a>
+        <a class="journey-node" href="#desafio-4" aria-label="Ir para o desafio 4 — CPCs e Normas"><div class="journey-node-dot">4</div><div class="journey-node-lbl">CPCs<br>e Normas</div></a>
+      </div>
+    </div>
   </div>
 </section>
 
 <!-- DESAFIO 1 -->
-<section class="desafio-section">
+<section class="desafio-section" id="desafio-1">
   <div class="desafio-inner reveal">
-    <div class="desafio-num">1</div>
+    <div class="desafio-head">
+      <div class="desafio-num">1</div>
+      <div class="desafio-icon">
+        <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+          <path d="M4 10h24M16 10v18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="10" cy="16" r="1.3" fill="currentColor"/>
+          <circle cx="22" cy="16" r="1.3" fill="currentColor"/>
+          <circle cx="10" cy="21" r="1.3" fill="currentColor"/>
+          <circle cx="22" cy="21" r="1.3" fill="currentColor"/>
+        </svg>
+      </div>
+    </div>
     <h2>Compreender o Método das Partidas Dobradas</h2>
     <p>O primeiro grande desafio da contabilidade é compreender o método das partidas dobradas. Esse método representa, na prática, a linguagem da contabilidade. É por meio dele que os fatos econômicos são registrados e codificados dentro do sistema contábil. Assim como aprender um novo idioma exige compreender sua gramática e sua estrutura básica, aprender contabilidade exige compreender o funcionamento dos débitos, créditos e lançamentos contábeis. Uma vez dominado o método das partidas dobradas, o aluno passa a conseguir ler e interpretar os registros contábeis — o primeiro grande salto na aprendizagem da disciplina.</p>
+    <div class="desafio-insight">É a gramática invisível por trás de toda análise contábil. Sem ela, nenhum lançamento faz sentido — com ela, tudo se ilumina.</div>
     <a href="cursos.html" class="desafio-cta">Veja como o curso aborda as partidas dobradas →</a>
   </div>
 </section>
 
 <!-- DESAFIO 2 -->
-<section class="desafio-section">
+<section class="desafio-section" id="desafio-2">
   <div class="desafio-inner reveal">
-    <div class="desafio-num">2</div>
+    <div class="desafio-head">
+      <div class="desafio-num">2</div>
+      <div class="desafio-icon">
+        <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+          <path d="M16 6v20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <path d="M10 26h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <path d="M6 10h20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="16" cy="6" r="1.5" fill="currentColor"/>
+          <path d="M3 13a3 3 0 0 0 6 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          <path d="M6 10v3" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M23 13a3 3 0 0 0 6 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          <path d="M26 10v3" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+      </div>
+    </div>
     <h2>Entender a Lógica Contábil</h2>
     <p>Superada a etapa inicial, surge o segundo desafio: compreender a lógica da contabilidade. A contabilidade não é apenas um conjunto de regras ou lançamentos. Existe uma lógica econômica por trás de cada registro contábil. O verdadeiro objetivo da contabilidade é representar de forma organizada e fiel a situação patrimonial e o desempenho econômico de uma entidade. Quando o aluno passa a compreender essa lógica, a disciplina deixa de parecer uma sequência de regras isoladas e passa a fazer sentido.</p>
+    <div class="desafio-insight">Quando a lógica econômica se revela, a contabilidade deixa de ser um conjunto de regras e passa a ser um idioma que você fala com naturalidade.</div>
     <a href="cursos.html" class="desafio-cta">Conheça a metodologia do curso →</a>
   </div>
 </section>
 
 <!-- DESAFIO 3 -->
-<section class="desafio-section">
+<section class="desafio-section" id="desafio-3">
   <div class="desafio-inner reveal">
-    <div class="desafio-num">3</div>
+    <div class="desafio-head">
+      <div class="desafio-num">3</div>
+      <div class="desafio-icon">
+        <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+          <rect x="4" y="4" width="24" height="24" rx="2" stroke="currentColor" stroke-width="2"/>
+          <path d="M10 22V14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <path d="M16 22V9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <path d="M22 22V17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
     <h2>Dominar a Estrutura das Demonstrações Contábeis</h2>
     <p>Depois de compreender o método e a lógica contábil, surge um terceiro desafio fundamental: dominar a estrutura das demonstrações contábeis. Entre todas as demonstrações, duas possuem papel central: o Balanço Patrimonial (BP) e a Demonstração do Resultado do Exercício (DRE). Essas duas demonstrações representam o núcleo da contabilidade financeira. Praticamente todas as demais demonstrações contábeis derivam de uma delas ou da combinação entre ambas. Por essa razão, entender, conhecer e até mesmo decorar a estrutura do Balanço Patrimonial e da DRE é uma condição essencial para evoluir na contabilidade.</p>
+    <div class="desafio-insight">Quem domina o Balanço Patrimonial e a DRE domina o coração da contabilidade. O resto deriva daí — e se torna consequência natural.</div>
     <a href="cursos.html" class="desafio-cta">Veja a estrutura completa do curso →</a>
   </div>
 </section>
 
 <!-- DESAFIO 4 -->
-<section class="desafio-section">
+<section class="desafio-section" id="desafio-4">
   <div class="desafio-inner reveal">
-    <div class="desafio-num">4</div>
+    <div class="desafio-head">
+      <div class="desafio-num">4</div>
+      <div class="desafio-icon">
+        <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+          <path d="M7 4h12l6 6v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M19 4v6h6" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+          <circle cx="15" cy="19" r="3.5" stroke="currentColor" stroke-width="1.8"/>
+          <path d="M12.5 22.5V27l2.5-1.2L17.5 27V22.5" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
     <h2>Enfrentar os Detalhes e as Decorebas dos CPCs</h2>
     <p>O último grande desafio: os detalhes normativos. Grande parte das questões de prova cobra pontos específicos dos Pronunciamentos Contábeis (CPCs), que correspondem às normas contábeis brasileiras convergidas às normas internacionais. No entanto, quando o aluno já domina o método das partidas dobradas, compreende a lógica contábil e conhece a estrutura das demonstrações, esse processo se torna muito mais fácil. Os detalhes deixam de parecer arbitrários e passam a se encaixar dentro de uma estrutura lógica já compreendida.</p>
+    <div class="desafio-insight">Os CPCs só parecem intimidadores quando a base é frágil. Com estrutura sólida, cada norma encontra seu lugar — e o que era decoreba vira compreensão.</div>
     <a href="cursos.html" class="desafio-cta">Veja todos os CPCs abordados no curso →</a>
   </div>
 </section>
