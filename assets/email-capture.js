@@ -125,7 +125,7 @@
       var ln = 'https://www.linkedin.com/sharing/share-offsite/?url=' + encURL;
 
       var waGroupBlock = waGroupHref
-        ? '<a class="fc-ec-wa-group" href="' + waGroupHref + '" target="_blank" rel="noopener">&#128172; Entrar no grupo do WhatsApp</a>'
+        ? '<a class="fc-ec-wa-group" href="' + waGroupHref + '" target="_blank" rel="noopener">&#128172; Participe do grupo exclusivo de pré-lançamento</a>'
         : '';
 
       var html;
@@ -149,7 +149,7 @@
           +   '<div class="fc-ec-referral-icon">&#10003;</div>'
           +   '<div class="fc-ec-referral-title">Inscrição confirmada!</div>'
           +   (waGroupHref
-              ? '<div class="fc-ec-referral-sub">Participe do grupo exclusivo dos inscritos e fique por dentro de tudo em primeira mão:</div>'
+              ? '<div class="fc-ec-referral-sub">Receba avisos em primeira mão e tire dúvidas direto com o Prof. Vinícius:</div>'
                 + waGroupBlock
                 + '<div class="fc-ec-referral-divider"></div>'
                 + '<div class="fc-ec-referral-sub">Quer subir na fila? Compartilhe o link com um(a) amigo(a) concurseiro(a) — cada inscrição pelo seu link te aproxima das primeiras vagas quando o curso abrir.</div>'

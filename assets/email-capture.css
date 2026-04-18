@@ -564,23 +564,29 @@
   border-color: #084E96 !important;
 }
 
-/* Botão "Entrar no grupo WhatsApp" dentro do painel de referral */
-.fc-ec-wa-group {
-  display: inline-block;
-  margin: 8px 0 6px;
-  padding: 13px 28px;
-  background: #25D366;
+/* Botão "Participe do grupo" — igual ao da lista de espera em cursos.html.
+   Especificidade .fc-ec-referral a.fc-ec-wa-group (0,2,1) vence .article-body a (0,1,1). */
+.fc-ec-referral a.fc-ec-wa-group,
+.fc-ec-referral-footer a.fc-ec-wa-group {
+  display: inline-block !important;
+  margin: 10px 0 4px !important;
+  padding: 14px 28px !important;
+  background: #25D366 !important;
   color: #fff !important;
-  font-size: 13px;
-  font-weight: 800;
-  letter-spacing: 0.5px;
+  font-size: 13px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.5px !important;
   text-decoration: none !important;
-  border-radius: 3px;
-  transition: background 0.2s, transform 0.2s;
-  font-family: 'Montserrat', sans-serif;
+  border: 2px solid #25D366 !important;
+  border-radius: 3px !important;
+  transition: background 0.2s, border-color 0.2s, transform 0.2s !important;
+  font-family: 'Montserrat', sans-serif !important;
+  line-height: 1 !important;
 }
-.fc-ec-wa-group:hover {
-  background: #1DAE51;
+.fc-ec-referral a.fc-ec-wa-group:hover,
+.fc-ec-referral-footer a.fc-ec-wa-group:hover {
+  background: #1DAE51 !important;
+  border-color: #1DAE51 !important;
   transform: translateY(-1px);
 }
 .fc-ec-referral-divider {
