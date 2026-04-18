@@ -31,8 +31,8 @@
   transition: opacity 0.35s ease;
 }
 .fc-ec-overlay.fc-ec-show {
-  opacity: 1;
-  pointer-events: auto;
+  opacity: 1 !important;
+  pointer-events: auto !important;
 }
 
 .fc-ec-modal {
@@ -48,7 +48,7 @@
   transition: transform 0.35s ease;
 }
 .fc-ec-overlay.fc-ec-show .fc-ec-modal {
-  transform: translateY(0) scale(1);
+  transform: translateY(0) scale(1) !important;
 }
 
 .fc-ec-close {
@@ -660,7 +660,21 @@
 
 /* ================= RESPONSIVE ================= */
 @media (max-width: 720px) {
-  .fc-ec-modal { padding: 40px 24px 28px; max-width: 100%; }
+  /* Bottom-sheet visual: modal no rodapé, largura total, cantos arredondados
+     só no topo. Mantém a transition base (transform 0.35s) sem redefinir
+     transforms aqui para evitar conflito de cascata que trava a transição. */
+  .fc-ec-overlay {
+    align-items: flex-end;
+    padding: 0;
+    background: rgba(14, 25, 41, 0.6);
+  }
+  .fc-ec-modal {
+    max-width: 100%;
+    width: 100%;
+    padding: 40px 24px 28px;
+    border-radius: 14px 14px 0 0;
+  }
+  .fc-ec-close { top: 8px; right: 8px; }
   .fc-ec-title { font-size: 20px; }
   .fc-ec-desc { font-size: 14px; }
 

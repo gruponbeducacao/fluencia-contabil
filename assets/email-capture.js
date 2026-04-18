@@ -20,12 +20,10 @@
   var SHARE_BASE = 'https://fluenciacontabil.com.br/';
   var WHATSAPP_GROUP_URL = 'https://chat.whatsapp.com/KWIP2oAR7KgCSAPW1Lqgtm?mode=gi_t';
 
-  // Posts que recebem o botão "Entrar no grupo WhatsApp" no success do CTA inline.
-  // Rollout gradual: começa só no Balanço Patrimonial; se aprovado, expando.
-  var CTA_WHATSAPP_GROUP_SLUGS = ['balanco-patrimonial-estrutura'];
+  // Botão "Participe do grupo" no success do CTA inline — habilitado em
+  // todos os posts do blog (rollout ampliado após validação no Balanço).
   function ctaShowsWhatsAppGroup() {
-    var p = window.location.pathname.toLowerCase();
-    return CTA_WHATSAPP_GROUP_SLUGS.some(function (s) { return p.indexOf(s) !== -1; });
+    return isBlogPost();
   }
 
   var COOLDOWN_MS = 7 * 24 * 60 * 60 * 1000; // 7 dias
@@ -262,30 +260,37 @@
       showExit();
     }
 
-    // Desktop: mouse saiu pelo topo (direção barra de endereço / fechar aba)
-    document.addEventListener('mouseleave', function (e) {
-      if (e.clientY <= 0) trigger();
-    });
+    var isMobile = window.matchMedia('(max-width: 720px)').matches;
 
-    // Mobile: scroll-up rápido após tempo mínimo OU inatividade longa
-    var lastY = window.scrollY;
-    var lastT = Date.now();
-    var mobileArmed = false;
-    setTimeout(function () { mobileArmed = true; }, 20000); // 20s de leitura antes
+    if (!isMobile) {
+      // Desktop: mouse saiu pelo topo (direção barra de endereço / fechar aba)
+      document.addEventListener('mouseleave', function (e) {
+        if (e.clientY <= 0) trigger();
+      });
+    } else {
+      // Mobile: "engagement peak" — user rolou >70% do conteúdo e parou de
+      // rolar por 4s (terminou de ler, provável saída em seguida).
+      // Evita falso positivo do scroll-up rápido (usuário só voltando ao topo).
+      var reachedDepth = false;
+      var idleTimer = null;
+      var READ_MIN_MS = 12000; // mínimo de permanência antes de armar
+      var armedMobile = false;
+      setTimeout(function () { armedMobile = true; }, READ_MIN_MS);
 
-    window.addEventListener('scroll', function () {
-      if (!mobileArmed || shown) return;
-      var y = window.scrollY;
-      var t = Date.now();
-      var dy = lastY - y;         // positivo = scroll-up
-      var dt = t - lastT;
-      if (dy > 400 && dt < 600 && y < 500) {
-        // subiu rápido >400px em menos de 600ms e está perto do topo = sinal de saída
-        trigger();
-      }
-      lastY = y;
-      lastT = t;
-    }, { passive: true });
+      window.addEventListener('scroll', function () {
+        if (!armedMobile || shown) return;
+        var scrollable = document.documentElement.scrollHeight - window.innerHeight;
+        if (scrollable > 0 && (window.scrollY / scrollable) >= 0.7) {
+          reachedDepth = true;
+        }
+        if (idleTimer) clearTimeout(idleTimer);
+        if (reachedDepth) {
+          idleTimer = setTimeout(function () {
+            if (!shown) trigger();
+          }, 4000);
+        }
+      }, { passive: true });
+    }
 
     closeBtn.addEventListener('click', function () {
       hideExit();
