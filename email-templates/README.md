@@ -9,15 +9,13 @@ email-templates/
 ├── index.html              ← preview local de todos os emails
 ├── README.md               ← este arquivo
 ├── sequencia-a/            ← Newsletter (5 emails automáticos)
-│   ├── A1-bem-vindo.html
-│   ├── A2-idioma.html
-│   ├── A3-pegadinha.html
-│   ├── A4-quem-somos.html
-│   └── A5-lista-espera.html
 ├── sequencia-b/            ← Lista de Espera (6 emails automáticos)
+├── sequencia-c/            ← Lead Magnet Dicionário (6 emails automáticos) ⭐ PRIORIDADE
 ├── sequencia-live/         ← Template reutilizável pras 5 lives (4 emails)
 └── broadcasts/             ← Convite pras lives + lançamento (19 emails)
 ```
+
+**Sequência C é o canal mais importante** — recebe tráfego pago na LP `dicionario.fluenciacontabil.com.br`. Trata o lead como primeira classe.
 
 ## Como testar localmente
 
