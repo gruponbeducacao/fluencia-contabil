@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Preview dos Emails — Fluência Contábil</title>
+  <style>
+    :root {
+      --azul: #1B2A4A;
+      --azul-med: #2A3F6F;
+      --dourado: #C8A84B;
+      --cream: #FBF6E9;
+      --vermelho: #C0392B;
+      --cinza: #6B7280;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--cream);
+      color: var(--azul);
+      line-height: 1.5;
+      padding: 40px 24px;
+    }
+    .wrap { max-width: 960px; margin: 0 auto; }
+    h1 {
+      font-size: 28px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    .subtitle {
+      color: var(--cinza);
+      margin-bottom: 32px;
+      font-size: 15px;
+    }
+    .sect {
+      margin-bottom: 40px;
+      background: white;
+      border-radius: 12px;
+      padding: 24px 28px;
+      box-shadow: 0 2px 12px rgba(27, 42, 74, 0.06);
+    }
+    .sect h2 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--azul);
+      margin-bottom: 4px;
+    }
+    .sect .badge {
+      display: inline-block;
+      background: var(--dourado);
+      color: var(--azul);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 4px;
+      margin-left: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .sect .badge.pending {
+      background: #E5E7EB;
+      color: var(--cinza);
+    }
+    .sect .desc {
+      color: var(--cinza);
+      font-size: 13px;
+      margin-bottom: 18px;
+    }
+    .list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 12px;
+    }
+    .card {
+      display: block;
+      background: var(--cream);
+      border: 1px solid #E8E2D0;
+      border-radius: 8px;
+      padding: 16px 18px;
+      text-decoration: none;
+      color: var(--azul);
+      transition: all 0.15s;
+    }
+    .card:hover {
+      background: white;
+      border-color: var(--dourado);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(200, 168, 75, 0.18);
+    }
+    .card .num {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--dourado);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .card .subj {
+      font-size: 14px;
+      font-weight: 600;
+      margin-top: 4px;
+      line-height: 1.4;
+    }
+    .card .meta {
+      font-size: 11px;
+      color: var(--cinza);
+      margin-top: 6px;
+    }
+    .alert {
+      background: #FEF3C7;
+      border-left: 4px solid var(--dourado);
+      padding: 16px 20px;
+      border-radius: 4px;
+      margin-bottom: 28px;
+      font-size: 14px;
+      color: var(--azul);
+    }
+    .alert strong { color: var(--azul); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>📧 Preview dos Emails</h1>
+    <p class="subtitle">Fluência Contábil — campanha de lançamento 2026. Clique em cada card pra abrir o email em tela cheia.</p>
+
+    <div class="alert">
+      <strong>Como usar:</strong> abra esse arquivo via servidor local (<code>localhost:3000/email-templates/</code>) e clique em cada email pra visualizar. Pra testar no MailerLite: copie o HTML do arquivo <code>.html</code>, cola em <em>MailerLite → Campaigns → Create → HTML editor</em>, clica em <em>"Send test email"</em>.
+    </div>
+
+    <div class="sect">
+      <h2>🟢 Sequência A — Newsletter <span class="badge">5/5 prontos</span></h2>
+      <p class="desc">Dispara pra quem se inscreve na newsletter (exit-intent, sticky bar, rodapé dos posts). Objetivo: educar + migrar pra Lista de Espera.</p>
+      <div class="list">
+        <a class="card" href="sequencia-a/A1-bem-vindo.html" target="_blank">
+          <div class="num">A1 · Dia 0</div>
+          <div class="subj">Bem-vindo(a) à Fluência Contábil — baixe o Dicionário aqui</div>
+          <div class="meta">CTA: Baixar PDF do Dicionário</div>
+        </a>
+        <a class="card" href="sequencia-a/A2-idioma.html" target="_blank">
+          <div class="num">A2 · Dia +2</div>
+          <div class="subj">A contabilidade é um idioma. Você só não sabia.</div>
+          <div class="meta">Posicionamento · sem CTA</div>
+        </a>
+        <a class="card" href="sequencia-a/A3-pegadinha.html" target="_blank">
+          <div class="num">A3 · Dia +4</div>
+          <div class="subj">A pegadinha que 9 em cada 10 concurseiros caem</div>
+          <div class="meta">CTA: Ler artigo do blog</div>
+        </a>
+        <a class="card" href="sequencia-a/A4-quem-somos.html" target="_blank">
+          <div class="num">A4 · Dia +7</div>
+          <div class="subj">Quem está por trás da Fluência Contábil</div>
+          <div class="meta">Trajetória do Vinícius · grid de números</div>
+        </a>
+        <a class="card" href="sequencia-a/A5-lista-espera.html" target="_blank">
+          <div class="num">A5 · Dia +10</div>
+          <div class="subj">Se o método faz sentido pra você, tem um próximo passo</div>
+          <div class="meta">CTA: Entrar na Lista de Espera</div>
+        </a>
+      </div>
+    </div>
+
+    <div class="sect">
+      <h2>🔴 Sequência B — Lista de Espera <span class="badge">6/6 prontos</span></h2>
+      <p class="desc">Dispara pra quem entra na Lista de Espera (CTA inline dos posts, form de <code>/cursos</code>). Objetivo: nutrir lead quente até o lançamento.</p>
+      <div class="list">
+        <a class="card" href="sequencia-b/B1-bem-vindo-lista.html" target="_blank">
+          <div class="num">B1 · Dia 0</div>
+          <div class="subj">Você está dentro. Bem-vindo(a) à Lista de Espera.</div>
+          <div class="meta">CTA duplo: Dicionário + WhatsApp group</div>
+        </a>
+        <a class="card" href="sequencia-b/B2-cinco-camadas.html" target="_blank">
+          <div class="num">B2 · Dia +2</div>
+          <div class="subj">As 5 camadas do método Fluência Contábil</div>
+          <div class="meta">Método em profundidade · sem CTA</div>
+        </a>
+        <a class="card" href="sequencia-b/B3-quem-te-ensina.html" target="_blank">
+          <div class="num">B3 · Dia +5</div>
+          <div class="subj">Quem vai te ensinar no Fluência Contábil</div>
+          <div class="meta">Trajetória do Vinícius · card destacado</div>
+        </a>
+        <a class="card" href="sequencia-b/B4-vip-lives.html" target="_blank">
+          <div class="num">B4 · Dia +8</div>
+          <div class="subj">[Você é VIP] As 4 lives gratuitas</div>
+          <div class="meta">4 cards de live · CTAs pras LPs</div>
+        </a>
+        <a class="card" href="sequencia-b/B5-aula-01.html" target="_blank">
+          <div class="num">B5 · Dia +12</div>
+          <div class="subj">[Aula 01 grátis] Método das Partidas Dobradas</div>
+          <div class="meta">CTA: Baixar PDF da Aula 01</div>
+        </a>
+        <a class="card" href="sequencia-b/B6-rotina.html" target="_blank">
+          <div class="num">B6 · Dia +15</div>
+          <div class="subj">A rotina que separa quem passa de quem desiste</div>
+          <div class="meta">3 ingredientes + receita prática</div>
+        </a>
+      </div>
+    </div>
+
+    <div class="sect">
+      <h2>🎤 Sequência de Live <span class="badge pending">0/4 pendentes</span></h2>
+      <p class="desc">Template reutilizável pras 5 lives. Cada live recebe esses 4 emails com placeholders trocados.</p>
+      <div class="list">
+        <div class="card" style="opacity:0.5; pointer-events:none;">
+          <div class="num">E1 · Na inscrição</div>
+          <div class="subj">Sua vaga na Live {N} está confirmada</div>
+        </div>
+        <div class="card" style="opacity:0.5; pointer-events:none;">
+          <div class="num">E2 · 1 dia antes</div>
+          <div class="subj">Amanhã às 20h: {tema da live}</div>
+        </div>
+        <div class="card" style="opacity:0.5; pointer-events:none;">
+          <div class="num">E3 · 1h antes</div>
+          <div class="subj">Em 1h começa — link aqui</div>
+        </div>
+        <div class="card" style="opacity:0.5; pointer-events:none;">
+          <div class="num">E4 · 24h depois</div>
+          <div class="subj">Replay disponível + próxima live</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sect">
+      <h2>📢 Broadcasts de Convite pras Lives <span class="badge pending">0/10 pendentes</span></h2>
+      <p class="desc">D-3 manhã + D-0 manhã pras 5 lives. Agendados (scheduled) no MailerLite.</p>
+    </div>
+
+    <div class="sect">
+      <h2>🚨 Broadcasts de Lançamento <span class="badge pending">0/8 + 1 pendentes</span></h2>
+      <p class="desc">L1 a L8 entre 08/06 e 30/06 + variante E4 Live Final (revelação de preço).</p>
+    </div>
+
+    <div class="sect">
+      <h2>⚡ Broadcast Extra — Última hora <span class="badge pending">0/1 pendente</span></h2>
+      <p class="desc">Pros leads que entrarem nos 5-7 dias finais antes do lançamento.</p>
+    </div>
+
+  </div>
+</body>
+</html>
