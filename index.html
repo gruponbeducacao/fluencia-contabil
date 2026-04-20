@@ -51,8 +51,8 @@
 .num-val span{color:var(--dourado);}
 .num-lbl{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:#999;margin-top:6px;}
 .prod-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:20px;}
-.prod-card{background:var(--branco);border-radius:4px;overflow:hidden;border:1px solid rgba(27,42,74,0.08);box-shadow:var(--shadow-card);transition:box-shadow 0.25s var(--ease-smooth),transform 0.25s var(--ease-smooth),border-color 0.25s var(--ease-smooth);text-decoration:none;color:inherit;display:flex;flex-direction:column;}
-.prod-card:hover{box-shadow:var(--shadow-card-hover);transform:translateY(-4px);border-color:var(--dourado);}
+.prod-card{background:var(--branco);border-radius:4px;overflow:hidden;border:1px solid rgba(27,42,74,0.08);transition:all 0.3s;text-decoration:none;color:inherit;display:flex;flex-direction:column;}
+.prod-card:hover{box-shadow:0 12px 40px rgba(27,42,74,0.12);transform:translateY(-4px);border-color:var(--dourado);}
 .prod-head{background:var(--azul);padding:26px;position:relative;}
 .prod-head::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--dourado);}
 .prod-badge{font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--dourado);background:rgba(200,168,75,0.15);padding:4px 10px;border-radius:2px;display:inline-block;margin-bottom:12px;}
@@ -105,8 +105,8 @@
 
 /* Produto detalhado */
 .mod-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:40px;}
-.mod-card{background:var(--branco);border:1px solid rgba(27,42,74,0.08);border-radius:4px;padding:28px;box-shadow:var(--shadow-card);transition:box-shadow 0.25s var(--ease-smooth),transform 0.25s var(--ease-smooth),border-color 0.25s var(--ease-smooth);}
-.mod-card:hover{box-shadow:var(--shadow-card-hover);transform:translateY(-3px);border-color:var(--dourado);}
+.mod-card{background:var(--branco);border:1px solid rgba(27,42,74,0.08);border-radius:4px;padding:28px;transition:all 0.3s;}
+.mod-card:hover{box-shadow:0 8px 32px rgba(27,42,74,0.1);border-color:var(--dourado);}
 .mod-num{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--dourado);margin-bottom:8px;}
 .mod-card h3{font-size:16px;font-weight:900;color:var(--azul);margin-bottom:10px;}
 .mod-card p{font-size:13px;color:#666;line-height:1.7;font-family:'Source Serif 4',serif;}
@@ -215,7 +215,7 @@
 </div>
 
 <!-- ═══════════════════════════════════════ HERO ═══════════════════════════════════════ -->
-<section id="hero" class="bg-grad-hero">
+<section id="hero">
   <div class="hero-bg bg-grid"></div>
   <div class="hero-glow"></div>
   <div class="hero-left">
@@ -223,7 +223,7 @@
       <picture><source srcset="assets/FC_Simbolo_BrancoDourado_FUNDO_AZUL.webp" type="image/webp"><img src="assets/FC_Simbolo_BrancoDourado_FUNDO_AZUL.png" alt="" class="hero-logo" loading="eager"></picture>
     </div>
     <div class="hero-badge"><div class="hero-badge-dot"></div><span>Lançamento — 18 de Junho de 2026</span></div>
-    <h1 class="hero-title text-hero-depth">Pare de perder pontos<br>em <em>contabilidade.</em></h1>
+    <h1 class="hero-title">Pare de perder pontos<br>em <em>contabilidade.</em></h1>
     <p class="hero-sub">Você estuda, resolve questões, revisa a matéria — e na hora da prova, trava. O problema não é esforço. <strong>É método.</strong> O Fluência Contábil ensina contabilidade como ela deveria ser ensinada: pela lógica. <strong>Prof. Vinícius Ferraz, Auditor Fiscal.</strong></p>
     <div class="hero-actions">
       <a href="cursos.html#lista-espera" class="btn-p">Garantir minha vaga</a>
@@ -276,7 +276,7 @@
 </section>
 
 <!-- ═══════════════════════════════════════ PARA QUEM ═══════════════════════════════════════ -->
-<section id="para-quem" class="bg-grad-section-azul" style="padding:100px 5%;">
+<section id="para-quem" style="padding:100px 5%;background:var(--azul);">
   <div class="inner">
     <span class="lbl reveal">Para quem é</span><div class="bar"></div>
     <h2 class="h2 lgt reveal">O Fluência Contábil foi feito para quem leva concurso a sério.</h2>
@@ -422,7 +422,7 @@
 </section>
 
 <!-- ═══════════════════════════════════════ DEPOIMENTOS ═══════════════════════════════════════ -->
-<section id="depoimentos" class="bg-grad-section-azul" style="padding:100px 5%;">
+<section id="depoimentos" style="padding:100px 5%;background:var(--azul);">
   <div class="inner" style="text-align:center;">
     <span class="lbl reveal" style="display:flex;justify-content:center;">O que nossos alunos dizem</span><div class="bar" style="margin-inline:auto;"></div>
     <h2 class="h2 lgt reveal">Quem estudou com o Prof. Vinícius sabe a diferença.</h2>
@@ -450,7 +450,7 @@
 </section>
 
 <!-- ═══════════════════════════════════════ CTA FINAL ═══════════════════════════════════════ -->
-<section id="cta-final" class="bg-grad-section-cream" style="padding:100px 5%;text-align:center;">
+<section id="cta-final" style="padding:100px 5%;background:var(--cream);text-align:center;">
   <div style="max-width:640px;margin:0 auto;">
     <span class="lbl reveal" style="display:block;">Sua vaga está reservada?</span>
     <h2 class="h2 reveal">O lançamento acontece em 18 de junho de 2026.<br>Quem entrar na lista de espera terá <em style="color:var(--dourado);font-style:normal;">condições exclusivas.</em></h2>
