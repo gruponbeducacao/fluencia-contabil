@@ -3,6 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-5C2V5DPX');</script>
+<!-- End Google Tag Manager -->
 <meta name="description" content="Em 4 dias, descubra como transformar contabilidade na sua maior vantagem competitiva. 4 lives gratuitas (29/06 a 02/07) com o Prof. Vinícius Ferraz — auditor fiscal e contador do Senado Federal.">
 <link rel="icon" type="image/png" href="assets/favicon.png">
 <link rel="apple-touch-icon" href="assets/favicon.png">
@@ -68,16 +75,27 @@ body{font-family:'Montserrat',sans-serif;color:var(--texto);background:var(--bra
 .hero-sub{font-size:17px;line-height:1.75;color:rgba(255,255,255,0.65);font-family:'Source Serif 4',serif;max-width:580px;margin-bottom:40px;}
 .hero-sub strong{color:rgba(255,255,255,0.95);font-weight:600;}
 
-.hero-meta{display:flex;gap:40px;flex-wrap:wrap;margin-bottom:38px;padding-top:32px;border-top:1px solid rgba(255,255,255,0.08);}
-.hero-meta-item .num{font-size:32px;font-weight:900;color:var(--dourado);line-height:1;letter-spacing:-1px;}
-.hero-meta-item .lbl-meta{font-size:10px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-top:6px;}
+.hero-meta{display:flex;gap:20px;flex-wrap:wrap;align-items:stretch;margin-bottom:32px;padding-top:32px;border-top:1px solid rgba(255,255,255,0.08);}
+.hero-pills{display:flex;flex-direction:column;gap:10px;flex-shrink:0;justify-content:center;}
+.hero-pill{display:inline-flex;align-items:center;gap:10px;background:rgba(200,168,75,0.08);border:1px solid rgba(200,168,75,0.32);color:rgba(255,255,255,0.92);padding:10px 16px;border-radius:2px;font-size:12px;font-weight:700;letter-spacing:0.5px;}
+.hero-pill-ico{width:18px;height:18px;background:var(--dourado);color:var(--azul);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;flex-shrink:0;}
 
-.hero-by{display:flex;align-items:center;gap:14px;}
-.hero-by-foto{width:48px;height:48px;border-radius:50%;background-image:url('assets/foto-vinicius.jpg');background-size:cover;background-position:center;border:2px solid var(--dourado);}
-.hero-by-txt{font-size:13px;line-height:1.45;}
-.hero-by-txt .by-l{color:rgba(255,255,255,0.45);font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;}
-.hero-by-txt .by-n{color:var(--branco);font-weight:700;font-size:14px;margin-top:2px;}
-.hero-by-txt .by-r{color:rgba(255,255,255,0.55);font-size:12px;font-style:italic;font-family:'Source Serif 4',serif;}
+.hero-timer{flex:1;min-width:280px;background:linear-gradient(135deg,rgba(192,57,43,0.14) 0%,rgba(200,168,75,0.04) 100%);border:1px solid rgba(192,57,43,0.32);border-radius:4px;padding:14px 18px;}
+.timer-lbl{font-size:10.5px;font-weight:700;letter-spacing:1.3px;text-transform:uppercase;color:rgba(255,255,255,0.7);margin-bottom:10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.timer-lbl strong{color:var(--dourado);font-weight:800;letter-spacing:0.8px;}
+.timer-pulse{width:8px;height:8px;background:var(--vermelho);border-radius:50%;animation:blink 1.4s infinite;flex-shrink:0;}
+.timer-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;}
+.timer-cell{background:rgba(15,26,48,0.55);border:1px solid rgba(255,255,255,0.05);border-radius:3px;padding:10px 4px;text-align:center;}
+.timer-num{display:block;font-size:26px;font-weight:900;color:var(--dourado);line-height:1;letter-spacing:-0.5px;font-variant-numeric:tabular-nums;}
+.timer-u{display:block;font-size:9px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-top:5px;}
+
+.hero-by{display:flex;align-items:center;gap:16px;}
+.hero-by-foto{width:64px;height:64px;border-radius:50%;object-fit:cover;border:2px solid var(--dourado);box-shadow:0 4px 14px rgba(0,0,0,0.32);flex-shrink:0;display:block;}
+.hero-by-txt{font-size:13px;line-height:1.5;}
+.hero-by-txt .by-l{color:var(--dourado);font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;}
+.hero-by-txt .by-n{color:var(--branco);font-weight:800;font-size:16px;margin-top:3px;letter-spacing:-0.3px;}
+.hero-by-txt .by-r{color:rgba(255,255,255,0.65);font-size:12.5px;font-family:'Source Serif 4',serif;margin-top:3px;}
+.hero-by-txt .by-r strong{color:rgba(255,255,255,0.92);font-weight:700;}
 
 /* Direita: card visual + form */
 .hero-right{background:var(--azul-prof);border-left:1px solid rgba(200,168,75,0.18);padding:48px 36px;display:flex;flex-direction:column;justify-content:center;position:relative;z-index:2;gap:24px;}
@@ -116,51 +134,97 @@ form.lead-form button:disabled{opacity:0.6;cursor:wait;transform:none;}
 }
 @media(max-width:600px){
   .hero-left{padding:48px 5% 40px;}
-  .hero-meta-item .num{font-size:26px;}
+  .hero-meta{gap:14px;}
+  .hero-pills{width:100%;}
+  .hero-pill{justify-content:center;}
+  .hero-timer{min-width:0;width:100%;}
+  .timer-num{font-size:22px;}
+  .hero-by-foto{width:56px;height:56px;}
   .live-mock-play{width:54px;height:54px;}
 }
 
-/* ═══════════════ AGENDA DAS LIVES ═══════════════ */
-#agenda{padding:120px 5%;background:var(--branco);position:relative;}
-.agenda-hd{text-align:center;max-width:720px;margin:0 auto 64px;}
-.agenda-hd .lbl{margin:0 auto 12px;}
-.agenda-hd .bar{margin:0 auto 28px;}
+/* ═══════════════ JORNADA DAS LIVES ═══════════════ */
+#jornada{padding:120px 5%;background:var(--cream);position:relative;overflow:hidden;}
+#jornada .bg-grid{position:absolute;inset:0;opacity:0.5;}
+.jornada-hd{text-align:center;max-width:780px;margin:0 auto 80px;position:relative;z-index:2;}
+.jornada-hd .lbl{margin:0 auto 12px;}
+.jornada-hd .bar{margin:0 auto 28px;}
+.jornada-hd .h2 em{font-style:normal;color:var(--dourado);}
 
-.live-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;max-width:1100px;margin:0 auto;}
-.live-card{background:var(--branco);border:1px solid rgba(27,42,74,0.08);border-radius:6px;padding:36px 36px 32px;position:relative;overflow:hidden;transition:all 0.3s;display:flex;flex-direction:column;min-height:240px;}
-.live-card::before{content:attr(data-num);position:absolute;top:-26px;right:-12px;font-family:'Montserrat',sans-serif;font-size:160px;font-weight:900;color:var(--azul);opacity:0.05;line-height:1;letter-spacing:-6px;pointer-events:none;}
-.live-card:hover{transform:translateY(-4px);box-shadow:0 24px 50px rgba(27,42,74,0.10);border-color:rgba(200,168,75,0.5);}
-.live-card:hover::before{opacity:0.08;}
-.live-card.is-live{border:2px solid var(--vermelho);box-shadow:0 24px 50px rgba(192,57,43,0.18);}
-.live-card .live-date{font-size:10px;font-weight:800;letter-spacing:2.2px;text-transform:uppercase;color:var(--dourado);margin-bottom:12px;position:relative;z-index:1;}
-.live-card .live-title{font-size:21px;font-weight:900;color:var(--azul);line-height:1.2;margin-bottom:14px;letter-spacing:-0.4px;position:relative;z-index:1;}
-.live-card .live-desc{font-size:14px;line-height:1.6;color:#666;font-family:'Source Serif 4',serif;flex:1;position:relative;z-index:1;}
-.live-card .live-status{margin-top:20px;position:relative;z-index:1;}
+.jornada-timeline{position:relative;max-width:1180px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:16px;z-index:2;}
 
-/* Live 3 (Lançamento Oficial) em destaque */
-.live-card.is-final{grid-column:1 / -1;background:linear-gradient(135deg,var(--azul) 0%,var(--azul-med) 100%);color:var(--branco);padding:48px 56px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:48px;min-height:auto;}
-.live-card.is-final::before{color:var(--dourado);opacity:0.12;font-size:240px;top:-50px;right:-30px;}
-.live-card.is-final:hover::before{opacity:0.18;}
-.live-card.is-final .live-date{color:var(--dourado);font-size:11px;}
-.live-card.is-final .live-title{color:var(--branco);font-size:30px;margin-bottom:12px;letter-spacing:-0.8px;}
-.live-card.is-final .live-desc{color:rgba(255,255,255,0.72);font-size:15px;}
-.live-card.is-final .live-final-spec{font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--dourado);margin-top:14px;}
-.live-card.is-final .live-status{margin-top:0;}
+/* Linha conectora (horizontal no desktop) — passa atrás dos orbs */
+.jornada-line{position:absolute;top:54px;left:12.5%;right:12.5%;height:3px;background:repeating-linear-gradient(to right,rgba(27,42,74,0.20) 0,rgba(27,42,74,0.20) 6px,transparent 6px,transparent 12px);z-index:1;}
+.jornada-line-prog{position:absolute;top:54px;left:12.5%;height:3px;background:linear-gradient(90deg,var(--dourado-esc) 0%,var(--dourado) 100%);border-radius:2px;z-index:2;width:0%;transition:width 0.8s ease;box-shadow:0 0 12px rgba(200,168,75,0.5);max-width:75%;}
 
-/* Status tags */
-.status-tag{display:inline-flex;align-items:center;gap:8px;font-size:10px;font-weight:800;letter-spacing:1.8px;text-transform:uppercase;padding:9px 16px;border-radius:2px;}
-.status-upcoming{background:rgba(27,42,74,0.06);color:var(--azul-med);}
-.status-live{background:var(--vermelho);color:var(--branco);text-decoration:none;animation:pulse 1.6s infinite;}
-.status-replay{background:var(--azul);color:var(--branco);text-decoration:none;}
-.status-replay:hover{background:var(--dourado);color:var(--azul);}
-.status-dot{width:6px;height:6px;border-radius:50%;background:currentColor;}
-.status-tag.status-live .status-dot{background:var(--branco);animation:blink 1s infinite;}
-.live-card.is-final .status-upcoming{background:rgba(200,168,75,0.18);color:var(--dourado);}
+.jornada-node{position:relative;z-index:3;text-align:center;padding:0 8px;}
 
+.jornada-orb{width:108px;height:108px;border-radius:50%;background:var(--branco);border:2px solid rgba(27,42,74,0.12);margin:0 auto 22px;display:flex;align-items:center;justify-content:center;position:relative;transition:all 0.4s ease;box-shadow:0 6px 18px rgba(27,42,74,0.06);}
+.jornada-orb-icon{font-size:40px;line-height:1;transition:all 0.3s ease;display:block;filter:grayscale(0.5);opacity:0.55;}
+
+/* Estado: locked (futuras) */
+.jornada-node.is-locked .jornada-orb{opacity:0.7;}
+.jornada-node.is-locked .jornada-name,
+.jornada-node.is-locked .jornada-tag,
+.jornada-node.is-locked .jornada-desc{opacity:0.55;}
+
+/* Estado: active (próxima a acontecer) */
+.jornada-node.is-active .jornada-orb{background:var(--dourado);border-color:var(--dourado-esc);box-shadow:0 0 0 5px rgba(200,168,75,0.22),0 14px 36px rgba(200,168,75,0.40);animation:orbPulse 2.4s infinite;}
+.jornada-node.is-active .jornada-orb-icon{filter:none;opacity:1;}
+@keyframes orbPulse{0%,100%{transform:scale(1);box-shadow:0 0 0 5px rgba(200,168,75,0.22),0 14px 36px rgba(200,168,75,0.40);}50%{transform:scale(1.045);box-shadow:0 0 0 14px rgba(200,168,75,0.08),0 18px 44px rgba(200,168,75,0.55);}}
+
+/* Estado: done (já passou) */
+.jornada-node.is-done .jornada-orb{background:var(--dourado);border-color:var(--dourado);box-shadow:0 4px 14px rgba(200,168,75,0.28);}
+.jornada-node.is-done .jornada-orb-icon{filter:none;opacity:1;}
+
+/* Estado: revealed (usuário clicou) */
+.jornada-node.is-locked{cursor:pointer;}
+.jornada-node.is-locked .jornada-orb{transition:all 0.35s ease;}
+.jornada-node.is-locked:hover .jornada-orb{opacity:0.95;transform:scale(1.05);box-shadow:0 8px 20px rgba(200,168,75,0.25);}
+.jornada-node.is-revealed .jornada-orb{background:var(--dourado);border-color:var(--dourado-esc);box-shadow:0 4px 14px rgba(200,168,75,0.32);}
+.jornada-node.is-revealed .jornada-orb-icon{filter:none;opacity:1;}
+.jornada-node.is-revealed .jornada-name,
+.jornada-node.is-revealed .jornada-tag,
+.jornada-node.is-revealed .jornada-desc{opacity:1;}
+
+/* Textos */
+.jornada-date{font-size:10.5px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--dourado);margin-bottom:6px;}
+.jornada-name{font-size:18px;font-weight:900;color:var(--azul);line-height:1.2;letter-spacing:-0.3px;margin-bottom:14px;}
+.jornada-tag{font-size:13px;font-weight:700;letter-spacing:0.2px;color:var(--azul);margin:0 auto 14px;padding:8px 14px;background:rgba(200,168,75,0.16);border:1px solid rgba(200,168,75,0.32);border-radius:999px;display:inline-flex;align-items:center;gap:6px;line-height:1.3;max-width:100%;text-align:center;}
+.jornada-desc{font-size:13.5px;line-height:1.6;color:#555;font-family:'Source Serif 4',serif;font-style:italic;max-width:240px;margin:0 auto;}
+
+/* Highlight Live 3 — evento único */
+.jornada-node.is-launch .jornada-tag{background:rgba(192,57,43,0.10);border-color:rgba(192,57,43,0.45);color:var(--vermelho);}
+
+/* Frase final */
+.jornada-final{max-width:780px;margin:88px auto 0;text-align:center;font-family:'Source Serif 4',serif;font-size:21px;line-height:1.55;color:var(--azul);font-style:italic;font-weight:300;padding:36px 24px;border-top:2px solid var(--dourado);border-bottom:2px solid var(--dourado);position:relative;z-index:2;}
+.jornada-final strong{color:var(--azul);font-weight:800;font-style:normal;}
+.jornada-final em{color:var(--dourado);font-style:italic;font-weight:600;}
+
+/* Mobile: vertical timeline */
 @media(max-width:900px){
-  .live-grid{grid-template-columns:1fr;}
-  .live-card.is-final{grid-template-columns:1fr;gap:24px;padding:36px 32px;}
-  .live-card.is-final .live-title{font-size:24px;}
+  .jornada-timeline{grid-template-columns:1fr;gap:36px;}
+  .jornada-line,.jornada-line-prog{display:none;}
+  .jornada-node{display:grid;grid-template-columns:108px 1fr;grid-template-rows:auto auto auto auto;column-gap:24px;row-gap:6px;align-items:flex-start;text-align:left;padding:0;position:relative;}
+  .jornada-orb{grid-column:1;grid-row:1 / span 4;margin:0;align-self:flex-start;}
+  .jornada-date,.jornada-name,.jornada-tag,.jornada-desc{grid-column:2;margin-left:0;max-width:none;}
+  .jornada-name{margin-bottom:6px;}
+  .jornada-tag{margin-bottom:6px;margin-right:auto;}
+  .jornada-desc{margin-top:2px;}
+  .jornada-node:not(:last-child)::after{content:"";position:absolute;left:53px;top:118px;height:36px;width:2px;background:repeating-linear-gradient(to bottom,rgba(200,168,75,0.5) 0,rgba(200,168,75,0.5) 4px,transparent 4px,transparent 9px);z-index:0;}
+}
+
+@media(max-width:600px){
+  #jornada{padding:80px 5%;}
+  .jornada-hd{margin-bottom:48px;}
+  .jornada-node{grid-template-columns:80px 1fr;column-gap:16px;}
+  .jornada-orb{width:80px;height:80px;}
+  .jornada-orb-icon{font-size:30px;}
+  .jornada-node:not(:last-child)::after{left:39px;top:90px;}
+  .jornada-name{font-size:16px;}
+  .jornada-tag{font-size:11.5px;padding:6px 11px;}
+  .jornada-desc{font-size:13px;}
+  .jornada-final{font-size:17px;padding:24px 14px;margin-top:60px;}
 }
 
 /* ═══════════════ PRO QUEM ═══════════════ */
@@ -185,7 +249,7 @@ form.lead-form button:disabled{opacity:0.6;cursor:wait;transform:none;}
 .prof-img-w::after{content:'';position:absolute;inset:0;border-radius:6px;box-shadow:inset 0 0 0 6px rgba(200,168,75,0.18),0 30px 60px rgba(27,42,74,0.18);pointer-events:none;}
 .prof-img-w .prof-tag{position:absolute;left:-14px;bottom:28px;background:var(--azul);color:var(--branco);font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:8px 16px;border-radius:2px;border-left:3px solid var(--dourado);box-shadow:0 8px 20px rgba(27,42,74,0.25);}
 
-.prof-quote{margin:24px 0 28px;padding:18px 24px;background:var(--cream);border-left:3px solid var(--dourado);border-radius:0 4px 4px 0;font-family:'Source Serif 4',serif;font-style:italic;font-size:16px;line-height:1.65;color:#444;}
+.prof-quote{margin:24px 0 28px;padding:22px 26px;background:var(--cream);border-radius:4px;font-family:'Source Serif 4',serif;font-style:italic;font-size:16px;line-height:1.65;color:#444;}
 .prof-quote strong{color:var(--azul);font-weight:600;font-style:normal;}
 
 .prof-num-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:36px;border-top:1px solid rgba(27,42,74,0.1);border-bottom:1px solid rgba(27,42,74,0.1);}
@@ -276,6 +340,10 @@ footer{background:var(--azul-prof);color:rgba(255,255,255,0.65);padding:70px 5% 
 </style>
 </head>
 <body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5C2V5DPX"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 
 <div id="topbar">🎤 4 Lives Gratuitas — Pré-lançamento Fluência Contábil &nbsp;·&nbsp; 29/06 a 02/07/2026</div>
 
@@ -301,31 +369,32 @@ footer{background:var(--azul-prof);color:rgba(255,255,255,0.65);padding:70px 5% 
   <div class="hero-left">
     <div class="hero-badge"><span class="hero-badge-dot"></span><span>4 lives ao vivo · 29/06 a 02/07/2026</span></div>
 
-    <h1 class="hero-title">4 dias.<br>Contabilidade vira<br>sua maior <em>vantagem</em><br>competitiva.</h1>
+    <h1 class="hero-title">Em <em>APENAS 4 noites</em> vou te provar que contabilidade pode virar sua maior <em>vantagem competitiva</em> nos concursos.</h1>
 
-    <p class="hero-sub">Em <strong>4 noites consecutivas</strong>, o Prof. Vinícius Ferraz mostra ao vivo como transformar a matéria que mais derruba candidato em <strong>diferencial pra conquistar múltiplas aprovações</strong> — e poder escolher a melhor. <em>Foi assim que cheguei a contador do Senado Federal e auditor fiscal.</em></p>
+    <p class="hero-sub">Aprenda comigo, <strong>ao vivo</strong> e de forma <strong>revolucionária</strong>, como transformar a matéria que mais derruba candidatos em <strong>diferencial para conquistar múltiplas aprovações</strong> e poder escolher o seu caminho — <em>exatamente como eu fiz</em>. Agora eu quero te trazer pro lado de cá também.</p>
 
     <div class="hero-meta">
-      <div class="hero-meta-item">
-        <div class="num">4</div>
-        <div class="lbl-meta">Lives ao vivo</div>
+      <div class="hero-pills">
+        <span class="hero-pill"><span class="hero-pill-ico">✓</span>4 Lives consecutivas</span>
+        <span class="hero-pill"><span class="hero-pill-ico">✓</span>R$ 0 — Inscrição gratuita</span>
       </div>
-      <div class="hero-meta-item">
-        <div class="num">4</div>
-        <div class="lbl-meta">Noites consecutivas</div>
-      </div>
-      <div class="hero-meta-item">
-        <div class="num">R$ 0</div>
-        <div class="lbl-meta">Inscrição gratuita</div>
+      <div class="hero-timer" id="hero-timer">
+        <div class="timer-lbl"><span class="timer-pulse"></span>Próxima: <strong id="timer-live-name">Live 1 · Débito e Crédito</strong></div>
+        <div class="timer-grid">
+          <div class="timer-cell"><span class="timer-num" id="timer-d">--</span><span class="timer-u">dias</span></div>
+          <div class="timer-cell"><span class="timer-num" id="timer-h">--</span><span class="timer-u">horas</span></div>
+          <div class="timer-cell"><span class="timer-num" id="timer-m">--</span><span class="timer-u">min</span></div>
+          <div class="timer-cell"><span class="timer-num" id="timer-s">--</span><span class="timer-u">seg</span></div>
+        </div>
       </div>
     </div>
 
     <div class="hero-by">
-      <div class="hero-by-foto" aria-hidden="true"></div>
+      <img class="hero-by-foto" src="assets/foto-vinicius.jpg" alt="Prof. Vinícius Ferraz" loading="eager">
       <div class="hero-by-txt">
-        <div class="by-l">Conduzido por</div>
+        <div class="by-l">Quem te ensina</div>
         <div class="by-n">Prof. Vinícius Ferraz</div>
-        <div class="by-r">Contador do Senado Federal · Auditor Fiscal</div>
+        <div class="by-r">Auditor Fiscal <strong>RJ &amp; MG</strong> · Contador do <strong>Senado Federal</strong></div>
       </div>
     </div>
   </div>
@@ -362,47 +431,53 @@ footer{background:var(--azul-prof);color:rgba(255,255,255,0.65);padding:70px 5% 
   </aside>
 </section>
 
-<!-- ═══ AGENDA DAS LIVES ═══ -->
-<section id="agenda">
-  <div class="agenda-hd">
-    <span class="lbl">Agenda · 29/06 a 02/07</span>
+<!-- ═══ JORNADA DAS LIVES ═══ -->
+<section id="jornada">
+  <div class="bg-grid"></div>
+  <div class="jornada-hd">
+    <span class="lbl">Sua Jornada</span>
     <div class="bar"></div>
-    <h2 class="h2">4 noites pra contabilidade<br>virar seu trunfo.</h2>
-    <p class="body-t"><strong>Live 1</strong> te dá os códigos. <strong>Live 2</strong> te leva ao caso onde mais gente erra. <strong>Live 3</strong> abre as vagas do curso ao vivo. <strong>Live 4</strong> te mostra a plataforma por dentro. <strong>Uma inscrição cobre as 4.</strong></p>
+    <h2 class="h2">A jornada que vai transformar<br>sua forma de enxergar <em>contabilidade</em>.</h2>
   </div>
 
-  <div class="live-grid">
-    <article class="live-card" data-live="1" data-num="01" data-start="2026-06-29T20:00:00-03:00">
-      <div class="live-date">Segunda · 29/06 · 20h</div>
-      <div class="live-title">Débito e Crédito</div>
-      <div class="live-desc"><em>"Onde tudo começa."</em> Os códigos do idioma. A base do método. Quem domina aqui não precisa decorar nada à frente.</div>
-      <div class="live-status" data-status></div>
+  <div class="jornada-timeline">
+    <div class="jornada-line"></div>
+    <div class="jornada-line-prog" id="jornadaLineProg"></div>
+
+    <article class="jornada-node" data-live="1" data-start="2026-06-29T20:00:00-03:00">
+      <div class="jornada-orb"><span class="jornada-orb-icon">🔒</span></div>
+      <div class="jornada-date">Seg · 29/06 · 20h</div>
+      <div class="jornada-name">Débito e Crédito</div>
+      <div class="jornada-tag">🔓 Desbloqueando a lógica</div>
+      <div class="jornada-desc">Débito não é entrada. Crédito não é saída. Você vai entender a lógica que a maioria dos candidatos apenas decorou.</div>
     </article>
 
-    <article class="live-card" data-live="2" data-num="02" data-start="2026-06-30T20:00:00-03:00">
-      <div class="live-date">Terça · 30/06 · 20h</div>
-      <div class="live-title">CPC 51</div>
-      <div class="live-desc"><em>"O CPC que mais derruba candidato."</em> A norma com mais pegadinha de banca. Aplicação do método em caso real — onde a maioria perde ponto.</div>
-      <div class="live-status" data-status></div>
+    <article class="jornada-node" data-live="2" data-start="2026-06-30T20:00:00-03:00">
+      <div class="jornada-orb"><span class="jornada-orb-icon">🔒</span></div>
+      <div class="jornada-date">Ter · 30/06 · 20h</div>
+      <div class="jornada-name">CPC 51</div>
+      <div class="jornada-tag">🔓 O CPC que vai substituir o 26?</div>
+      <div class="jornada-desc">Os CPCs não são difíceis. Você só nunca aprendeu a interpretar o que eles realmente querem dizer.</div>
     </article>
 
-    <article class="live-card is-final" data-live="3" data-num="03" data-start="2026-07-01T20:00:00-03:00">
-      <div>
-        <div class="live-date">🚨 Quarta · 01/07 · 20h</div>
-        <div class="live-title">Lançamento Oficial</div>
-        <div class="live-desc"><em>"O dia que as vagas abrem."</em> Vagas do Fluência Contábil entram no ar ao vivo, na sua frente. Apresentação da oferta + bônus exclusivo de quem decide na janela.</div>
-        <div class="live-final-spec">Evento único · sem repeteco</div>
-      </div>
-      <div class="live-status" data-status></div>
+    <article class="jornada-node is-launch" data-live="3" data-start="2026-07-01T20:00:00-03:00">
+      <div class="jornada-orb"><span class="jornada-orb-icon">🔒</span></div>
+      <div class="jornada-date">Qua · 01/07 · 20h</div>
+      <div class="jornada-name">O Lançamento</div>
+      <div class="jornada-tag">🔓 A virada de chave</div>
+      <div class="jornada-desc">Contabilidade deixa de ser medo… e começa a virar a vantagem que pode te colocar na frente da concorrência.</div>
     </article>
 
-    <article class="live-card" data-live="4" data-num="04" data-start="2026-07-02T20:00:00-03:00">
-      <div class="live-date">Quinta · 02/07 · 20h</div>
-      <div class="live-title">Apresentação da Plataforma</div>
-      <div class="live-desc"><em>"Por dentro do Fluência Contábil."</em> Tour ao vivo da plataforma. Como o curso vive — módulos, aulas, materiais. Tira-dúvidas pré-decisão.</div>
-      <div class="live-status" data-status></div>
+    <article class="jornada-node" data-live="4" data-start="2026-07-02T20:00:00-03:00">
+      <div class="jornada-orb"><span class="jornada-orb-icon">🔒</span></div>
+      <div class="jornada-date">Qui · 02/07 · 20h</div>
+      <div class="jornada-name">Tour pela Plataforma</div>
+      <div class="jornada-tag">🚀 Conhecendo a nave</div>
+      <div class="jornada-desc">Você vai entrar ao vivo na plataforma criada para transformar estudo em fluência, clareza e evolução real.</div>
     </article>
   </div>
+
+  <p class="jornada-final">"Em <strong>4 noites</strong>, você deixa de apenas estudar contabilidade… e começa a <em>pensar como a banca</em>."</p>
 </section>
 
 <!-- ═══ PRO QUEM É ═══ -->
@@ -412,7 +487,7 @@ footer{background:var(--azul-prof);color:rgba(255,255,255,0.65);padding:70px 5% 
     <div class="pq-hd">
       <span class="lbl">Pra quem é</span>
       <div class="bar"></div>
-      <h2 class="h2 lgt">Essa série é pra quem...</h2>
+      <h2 class="h2 lgt">Essa jornada é pra quem...</h2>
     </div>
 
     <div class="check-grid">
@@ -451,10 +526,14 @@ footer{background:var(--azul-prof);color:rgba(255,255,255,0.65);padding:70px 5% 
       <span class="lbl">O Professor</span>
       <div class="bar"></div>
       <h2 class="h2">Prof. Vinícius Ferraz</h2>
-      <p class="body-t" style="margin-bottom:6px;"><strong>Contador do Senado Federal</strong>, Auditor Fiscal do Município do RJ, ex-Auditor Fiscal de Minas Gerais e ex-APO/RJ. Foi a contabilidade — entendida pela lógica, não pela decoreba — que abriu cada uma dessas portas. Agora, criador da Fluência Contábil pra abrir as suas.</p>
+      <p class="body-t" style="margin-bottom:6px;"><strong>Auditor Fiscal</strong> e nomeado <strong>Analista Legislativo de Contabilidade do Senado Federal</strong>. Criador da <strong>Escola de Fluência Contábil</strong> e aprovado em <strong>múltiplos concursos de elite</strong>. Ao longo da trajetória, já ajudou mais de <strong>3.000 alunos</strong> a começarem a entender de vez a lógica revolucionária que realmente faz candidato ser aprovado.</p>
 
       <div class="prof-quote">
-        Em cada turma, sempre tem aqueles 2 ou 3 alunos que chegam dizendo <em>"contabilidade é meu ponto fraco"</em>. <strong>Três meses depois, descobrem que vai ser uma das matérias em que mais tiram ponto na prova.</strong>
+        "Contabilidade é um <em>idioma…</em> E foi aprendendo a ser fluente e interpretar essa linguagem, ao invés de decorar, que eu comecei a conquistar aprovações diferentes que me deram o poder de escolher meu caminho.<br><br>
+        Hoje, meu objetivo é te ensinar a <strong>transformar a dificuldade da maioria dos candidatos na sua vantagem!</strong><br><br>
+        Porque em cada turma sempre tem aqueles 2 ou 3 alunos que chegam dizendo: <em>"contabilidade é meu ponto fraco."</em><br><br>
+        Meses depois, normalmente são justamente essas pessoas que começam a usar a matéria como diferencial na prova.<br><br>
+        <strong>Você vem pro lado de cá da mesa?</strong>"
       </div>
 
       <div class="prof-num-grid">
@@ -617,39 +696,99 @@ window.LIVE_LINKS = {
 };
 var LIVE_DURATION_MS = 2 * 60 * 60 * 1000;
 
-function renderLiveStatus(){
-  var now = new Date();
-  document.querySelectorAll('.live-card').forEach(function(card){
-    var startStr = card.getAttribute('data-start');
-    var liveKey  = card.getAttribute('data-live');
-    var statusEl = card.querySelector('[data-status]');
-    if (!startStr || !statusEl) return;
-    var start = new Date(startStr);
-    var endLive = new Date(start.getTime() + LIVE_DURATION_MS);
-    var url = (window.LIVE_LINKS[liveKey] || '').trim();
-
-    if (now < start) {
-      statusEl.innerHTML = '<span class="status-tag status-upcoming"><span class="status-dot"></span>Em breve</span>';
-      card.classList.remove('is-live');
-    } else if (now >= start && now < endLive) {
-      card.classList.add('is-live');
-      if (url) {
-        statusEl.innerHTML = '<a class="status-tag status-live" href="'+url+'" target="_blank" rel="noopener"><span class="status-dot"></span>AO VIVO · Entrar →</a>';
-      } else {
-        statusEl.innerHTML = '<span class="status-tag status-live"><span class="status-dot"></span>AO VIVO AGORA</span>';
-      }
+function renderJornadaStatus(){
+  var now = Date.now();
+  var nodes = document.querySelectorAll('.jornada-node');
+  if (!nodes.length) return;
+  var nextIdx = -1;
+  // Acha índice da próxima (primeiro nó cujo end > now)
+  nodes.forEach(function(node, idx){
+    var startStr = node.getAttribute('data-start');
+    if (!startStr) return;
+    var start = new Date(startStr).getTime();
+    var end = start + LIVE_DURATION_MS;
+    if (end > now && nextIdx === -1) nextIdx = idx;
+  });
+  // Aplica estados (preserva is-revealed quando user clicou)
+  nodes.forEach(function(node, idx){
+    var wasRevealed = node.classList.contains('is-revealed');
+    node.classList.remove('is-locked','is-active','is-done','is-revealed');
+    var icon = node.querySelector('.jornada-orb-icon');
+    if (nextIdx === -1 || idx < nextIdx) {
+      node.classList.add('is-done');
+      if (icon) icon.textContent = '✓';
+    } else if (idx === nextIdx) {
+      node.classList.add('is-active');
+      var startStr = node.getAttribute('data-start');
+      var start = new Date(startStr).getTime();
+      var end = start + LIVE_DURATION_MS;
+      if (icon) icon.textContent = (now >= start && now < end) ? '📡' : '🔓';
+    } else if (wasRevealed) {
+      node.classList.add('is-revealed');
+      if (icon) icon.textContent = '🔓';
     } else {
-      card.classList.remove('is-live');
-      if (url) {
-        statusEl.innerHTML = '<a class="status-tag status-replay" href="'+url+'" target="_blank" rel="noopener"><span class="status-dot"></span>▶ Replay</a>';
-      } else {
-        statusEl.innerHTML = '<span class="status-tag status-replay"><span class="status-dot"></span>Replay em breve</span>';
-      }
+      node.classList.add('is-locked');
+      if (icon) icon.textContent = '🔒';
     }
   });
+  // Progress bar (0%, 33%, 66%, 100%)
+  var prog = document.getElementById('jornadaLineProg');
+  if (prog) {
+    var doneCount = 0;
+    nodes.forEach(function(node){if (node.classList.contains('is-done')) doneCount++;});
+    var pct = nodes.length > 1 ? (doneCount / (nodes.length - 1)) * 100 : 0;
+    if (pct > 100) pct = 100;
+    prog.style.width = pct + '%';
+  }
 }
-renderLiveStatus();
-setInterval(renderLiveStatus, 60 * 1000);
+renderJornadaStatus();
+setInterval(renderJornadaStatus, 60 * 1000);
+
+/* Clique no cadeado revela a aula (preview interativo) */
+document.querySelectorAll('.jornada-node').forEach(function(node){
+  node.addEventListener('click', function(){
+    if (node.classList.contains('is-locked')) {
+      node.classList.remove('is-locked');
+      node.classList.add('is-revealed');
+      var icon = node.querySelector('.jornada-orb-icon');
+      if (icon) icon.textContent = '🔓';
+    }
+  });
+});
+
+/* Cronômetro — sempre atualiza pra próxima live, depois pro fim da janela */
+(function(){
+  var events = [
+    { name: 'Live 1 · Débito e Crédito',            date: new Date('2026-06-29T20:00:00-03:00') },
+    { name: 'Live 2 · CPC 51',                       date: new Date('2026-06-30T20:00:00-03:00') },
+    { name: 'Live 3 · Lançamento Oficial',           date: new Date('2026-07-01T20:00:00-03:00') },
+    { name: 'Live 4 · Apresentação da Plataforma',  date: new Date('2026-07-02T20:00:00-03:00') },
+    { name: 'Janela do Acesso Fundador encerra',     date: new Date('2026-07-05T23:59:00-03:00') }
+  ];
+  function pad(n){return n<10?'0'+n:''+n;}
+  var nameEl=document.getElementById('timer-live-name');
+  var d_=document.getElementById('timer-d'), h_=document.getElementById('timer-h'), m_=document.getElementById('timer-m'), s_=document.getElementById('timer-s');
+  var wrap=document.getElementById('hero-timer');
+  if(!nameEl||!d_||!h_||!m_||!s_||!wrap)return;
+  function tick(){
+    var now=Date.now(), next=null;
+    for(var i=0;i<events.length;i++){if(events[i].date.getTime()>now){next=events[i];break;}}
+    if(!next){wrap.style.display='none';return;}
+    var diff=next.date.getTime()-now;
+    var totalSec=Math.floor(diff/1000);
+    var dd=Math.floor(totalSec/86400);
+    var hh=Math.floor((totalSec%86400)/3600);
+    var mm=Math.floor((totalSec%3600)/60);
+    var ss=totalSec%60;
+    nameEl.textContent=next.name;
+    d_.textContent=pad(dd);
+    h_.textContent=pad(hh);
+    m_.textContent=pad(mm);
+    s_.textContent=pad(ss);
+  }
+  tick();
+  setInterval(tick,1000);
+})();
 
 /* UTMs */
 function getUTMs(){
