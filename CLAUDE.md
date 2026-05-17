@@ -183,7 +183,7 @@ Path local: `C:/Fluência_Contábil_OS_C/_MARKETING/Landing_Pages/Fluencia_LP/di
 | 🎤 Sequência Live 2 — 5 CPCs | ⏳ Pendente | 4 | qui 28/05 · 20h |
 | 🎤 Sequência Live 3 — CPC 51 | ⏳ Pendente | 4 | ter 02/06 · 20h |
 | 🎤 Sequência Live 4 — 7 Pegadinhas | ⏳ Pendente | 4 | qui 11/06 · 20h |
-| 🚨 Sequência Live Final — Lançamento | ⏳ Pendente | 4 (c/ E4 variante) | qui 18/06 · 20h |
+| 🚨 Sequência Live 3 Lançamento | ⏳ Pendente | 4 (c/ E4 variante) | qua 01/07 · 20h |
 | 📰 RSS Campaign | ⏳ Pendente | 1/post | imediato |
 
 **Total:** 3 de 9 automações ativas. 17 emails automáticos rodando. Leads reais entrando já recebem.
@@ -199,7 +199,7 @@ Path local: `C:/Fluência_Contábil_OS_C/_MARKETING/Landing_Pages/Fluencia_LP/di
 | **Live 2** (5 CPCs, qui 28/05) | `185203748785620698` |
 | **Live 3** (CPC 51, ter 02/06) | `185203753382578061` |
 | **Live 4** (7 Pegadinhas, qui 11/06) | `185203758274184695` |
-| **Live Final** (Lançamento, qui 18/06) | `185203765515650231` |
+| **Live 3 Lançamento** (qua 01/07) | `185203765515650231` |
 
 ### Custom fields (configurados)
 - `origem` · `pagina_captura` · `referrer` · `utm_source` · `utm_medium` · `utm_campaign` · `dispositivo` · `ref_in`

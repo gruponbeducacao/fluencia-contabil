@@ -87,11 +87,11 @@ LIVES = {
         "Por que você erra Débito e Crédito": "🚨 Lançamento oficial do Fluência Contábil",
         "Débito e Crédito": "Lançamento",
         "Pré-lançamento": "Lançamento Oficial",
-        "quinta-feira, 21 de maio": "quinta-feira, 18 de junho",
-        "21 de maio": "18 de junho",
+        "quinta-feira, 21 de maio": "quarta-feira, 1º de julho",
+        "21 de maio": "1º de julho",
         "A lógica por trás de Débito e Crédito — sem decoreba": "Tudo que o Fluência Contábil entrega: 4 módulos, 40+ aulas, 1.000+ questões",
-        "O erro mais comum em lançamentos (e como evitar)": "Como funciona a turma ao vivo exclusiva (70 vagas)",
-        "Um macete pra nunca mais confundir os dois": "Condições exclusivas pra quem comprar no dia",
+        "O erro mais comum em lançamentos (e como evitar)": "Como funciona o bônus Pioneiros (4 aulas ao vivo · Google Meet · WhatsApp · janela 29/06-02/07)",
+        "Um macete pra nunca mais confundir os dois": "Condições exclusivas da janela de lançamento (29/06-15/07)",
     },
 }
 
