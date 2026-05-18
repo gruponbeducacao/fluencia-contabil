@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Selos 2026 — Pioneiro &amp; Fundador · Fluência Contábil</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800;900&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --azul:#1B2A4A; --azul-med:#2A3F6F; --azul-prof:#0F1A30;
+  --dourado:#C8A84B; --dourado-esc:#A68A3E; --dourado-claro:#E8C962;
+  --bronze:#B85C38; --bronze-esc:#8B3E20; --bronze-claro:#E08453;
+  --cream:#FBF6E9; --texto:#1A1A1A; --branco:#FFFFFF; --cinza:#6B7280;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Montserrat',Arial,sans-serif;background:var(--cream);color:var(--texto);padding:48px 24px;line-height:1.5;}
+.wrap{max-width:1100px;margin:0 auto;}
+h1{font-size:30px;font-weight:900;letter-spacing:-1px;color:var(--azul);margin-bottom:8px;}
+.sub{color:var(--cinza);font-size:15px;margin-bottom:40px;font-family:'Source Serif 4',serif;font-style:italic;}
+
+.selos{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-bottom:48px;}
+@media(max-width:780px){.selos{grid-template-columns:1fr;}}
+.card{background:var(--branco);border-radius:16px;padding:40px 32px;box-shadow:0 4px 20px rgba(27,42,74,0.06);border:1px solid rgba(27,42,74,0.06);text-align:center;}
+.card h2{font-size:22px;font-weight:800;color:var(--azul);margin-top:24px;letter-spacing:-0.3px;}
+.card .tier-tag{display:inline-block;font-size:11px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;padding:6px 14px;border-radius:2px;margin-bottom:8px;}
+.card.pioneiro .tier-tag{background:rgba(184,92,56,0.12);color:var(--bronze-esc);border:1px solid rgba(184,92,56,0.3);}
+.card.fundador .tier-tag{background:rgba(200,168,75,0.18);color:var(--dourado-esc);border:1px solid rgba(200,168,75,0.4);}
+.card .janela{font-size:12px;color:var(--cinza);letter-spacing:1px;text-transform:uppercase;font-weight:700;margin-top:6px;}
+.card .desc{font-family:'Source Serif 4',serif;font-size:15px;color:#444;margin-top:18px;line-height:1.7;}
+.card ul.bonus{list-style:none;padding:0;margin:22px 0 0;text-align:left;}
+.card ul.bonus li{padding:12px 0;border-top:1px solid rgba(27,42,74,0.08);font-size:14px;display:flex;align-items:flex-start;gap:12px;}
+.card ul.bonus li:first-child{border-top:none;}
+.card ul.bonus li .ico{flex-shrink:0;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;}
+.card.pioneiro ul.bonus li .ico{background:var(--bronze);color:var(--branco);}
+.card.fundador ul.bonus li .ico{background:var(--dourado);color:var(--azul);}
+
+.preview-stage{background:var(--azul-prof);border-radius:16px;padding:60px 32px;margin-bottom:32px;display:flex;justify-content:center;align-items:center;gap:80px;flex-wrap:wrap;background-image:linear-gradient(rgba(200,168,75,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(200,168,75,0.04) 1px,transparent 1px);background-size:48px 48px;}
+.notes{background:var(--branco);border-left:4px solid var(--dourado);padding:24px 28px;border-radius:0 8px 8px 0;font-size:14px;line-height:1.7;color:#444;font-family:'Source Serif 4',serif;}
+.notes strong{color:var(--azul);font-family:'Montserrat',sans-serif;}
+.notes h3{font-family:'Montserrat',sans-serif;font-size:14px;color:var(--azul);margin-bottom:10px;letter-spacing:0.5px;text-transform:uppercase;font-weight:800;}
+.notes ul{margin:8px 0 0 18px;}
+.notes ul li{padding:4px 0;}
+
+/* SVG do selo: dimensões controladas */
+.selo-svg{width:220px;height:220px;display:block;margin:0 auto;}
+.selo-card-mini{width:140px;height:140px;}
+
+.dl{margin-top:24px;text-align:center;}
+.dl a{display:inline-block;font-size:13px;font-weight:700;color:var(--azul);text-decoration:none;padding:8px 16px;border:1px solid rgba(27,42,74,0.15);border-radius:4px;margin:4px;}
+.dl a:hover{background:var(--cream);border-color:var(--dourado);}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🏅 Selos 2026 — esboço inicial</h1>
+  <p class="sub">Dois selos pra diferenciar tiers de bônus no lançamento. Esboço pra você aplicar na plataforma (perfil, grupo de WhatsApp, certificado). SVGs prontos pra exportar.</p>
+
+  <!-- ─── PREVIEW NO FUNDO AZUL (como vai aparecer na plataforma) ─── -->
+  <div class="preview-stage">
+
+    <!-- ╔═══ SELO PIONEIRO ═══╗ -->
+    <svg class="selo-svg" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg" aria-label="Selo Pioneiro 2026">
+      <defs>
+        <radialGradient id="pio-bg" cx="50%" cy="40%" r="60%">
+          <stop offset="0%" stop-color="#E08453"/>
+          <stop offset="60%" stop-color="#B85C38"/>
+          <stop offset="100%" stop-color="#8B3E20"/>
+        </radialGradient>
+        <linearGradient id="pio-ring" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#C8A84B"/>
+          <stop offset="100%" stop-color="#A68A3E"/>
+        </linearGradient>
+        <path id="pio-arc-top" d="M 30 110 A 80 80 0 0 1 190 110" fill="none"/>
+        <path id="pio-arc-bot" d="M 35 122 A 75 75 0 0 0 185 122" fill="none"/>
+      </defs>
+      <!-- ring externo dourado -->
+      <circle cx="110" cy="110" r="105" fill="url(#pio-ring)"/>
+      <circle cx="110" cy="110" r="100" fill="#1B2A4A"/>
+      <!-- ring interno bronze -->
+      <circle cx="110" cy="110" r="92" fill="url(#pio-bg)" stroke="#C8A84B" stroke-width="1.5"/>
+      <!-- texto curvo em cima -->
+      <text font-family="Montserrat,sans-serif" font-size="13" font-weight="900" fill="#FFF5E1" letter-spacing="3">
+        <textPath href="#pio-arc-top" startOffset="50%" text-anchor="middle">ALUNO PIONEIRO</textPath>
+      </text>
+      <!-- texto curvo embaixo -->
+      <text font-family="Montserrat,sans-serif" font-size="9" font-weight="700" fill="#FFF5E1" letter-spacing="3.5">
+        <textPath href="#pio-arc-bot" startOffset="50%" text-anchor="middle">FLUÊNCIA CONTÁBIL</textPath>
+      </text>
+      <!-- ícone bússola (centro) -->
+      <g transform="translate(110,108)">
+        <!-- raios -->
+        <circle cx="0" cy="0" r="36" fill="none" stroke="#FFF5E1" stroke-width="1.5" opacity="0.5"/>
+        <circle cx="0" cy="0" r="30" fill="#0F1A30"/>
+        <!-- agulha N -->
+        <polygon points="0,-26 6,0 0,4 -6,0" fill="#E8C962" stroke="#FFF5E1" stroke-width="0.8"/>
+        <!-- agulha S -->
+        <polygon points="0,26 -6,0 0,-4 6,0" fill="#B85C38"/>
+        <!-- centro -->
+        <circle cx="0" cy="0" r="3" fill="#FFF5E1"/>
+        <!-- N marker -->
+        <text x="0" y="-40" font-family="Montserrat,sans-serif" font-size="8" font-weight="900" fill="#FFF5E1" text-anchor="middle">N</text>
+      </g>
+      <!-- "2026" no rodapé central -->
+      <text x="110" y="170" font-family="Montserrat,sans-serif" font-size="20" font-weight="900" fill="#FFF5E1" text-anchor="middle" letter-spacing="3">2026</text>
+      <!-- separador dourado -->
+      <line x1="85" y1="150" x2="135" y2="150" stroke="#C8A84B" stroke-width="1.5"/>
+    </svg>
+
+    <!-- ╔═══ SELO FUNDADOR ═══╗ -->
+    <svg class="selo-svg" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg" aria-label="Selo Fundador 2026">
+      <defs>
+        <radialGradient id="fun-bg" cx="50%" cy="40%" r="60%">
+          <stop offset="0%" stop-color="#E8C962"/>
+          <stop offset="55%" stop-color="#C8A84B"/>
+          <stop offset="100%" stop-color="#8E7530"/>
+        </radialGradient>
+        <linearGradient id="fun-ring" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#1B2A4A"/>
+          <stop offset="100%" stop-color="#0F1A30"/>
+        </linearGradient>
+        <path id="fun-arc-top" d="M 30 110 A 80 80 0 0 1 190 110" fill="none"/>
+        <path id="fun-arc-bot" d="M 35 122 A 75 75 0 0 0 185 122" fill="none"/>
+      </defs>
+      <!-- ring externo azul -->
+      <circle cx="110" cy="110" r="105" fill="url(#fun-ring)"/>
+      <circle cx="110" cy="110" r="100" fill="#C8A84B"/>
+      <!-- ring interno dourado -->
+      <circle cx="110" cy="110" r="92" fill="url(#fun-bg)" stroke="#1B2A4A" stroke-width="1.5"/>
+      <!-- texto curvo em cima -->
+      <text font-family="Montserrat,sans-serif" font-size="13" font-weight="900" fill="#1B2A4A" letter-spacing="3">
+        <textPath href="#fun-arc-top" startOffset="50%" text-anchor="middle">ALUNO FUNDADOR</textPath>
+      </text>
+      <!-- texto curvo embaixo -->
+      <text font-family="Montserrat,sans-serif" font-size="9" font-weight="700" fill="#1B2A4A" letter-spacing="3.5">
+        <textPath href="#fun-arc-bot" startOffset="50%" text-anchor="middle">FLUÊNCIA CONTÁBIL</textPath>
+      </text>
+      <!-- ícone coluna/pilar (centro) -->
+      <g transform="translate(110,108)">
+        <circle cx="0" cy="0" r="36" fill="none" stroke="#1B2A4A" stroke-width="1.5" opacity="0.35"/>
+        <circle cx="0" cy="0" r="30" fill="#1B2A4A"/>
+        <!-- capitel topo -->
+        <rect x="-16" y="-22" width="32" height="5" fill="#E8C962" rx="0.5"/>
+        <rect x="-18" y="-24" width="36" height="3" fill="#C8A84B"/>
+        <!-- coluna estriada -->
+        <rect x="-9" y="-17" width="18" height="28" fill="#E8C962"/>
+        <line x1="-5" y1="-17" x2="-5" y2="11" stroke="#C8A84B" stroke-width="1"/>
+        <line x1="0" y1="-17" x2="0" y2="11" stroke="#C8A84B" stroke-width="1"/>
+        <line x1="5" y1="-17" x2="5" y2="11" stroke="#C8A84B" stroke-width="1"/>
+        <!-- base -->
+        <rect x="-16" y="11" width="32" height="5" fill="#E8C962" rx="0.5"/>
+        <rect x="-18" y="16" width="36" height="3" fill="#C8A84B"/>
+      </g>
+      <!-- "2026" no rodapé central -->
+      <text x="110" y="170" font-family="Montserrat,sans-serif" font-size="20" font-weight="900" fill="#1B2A4A" text-anchor="middle" letter-spacing="3">2026</text>
+      <line x1="85" y1="150" x2="135" y2="150" stroke="#1B2A4A" stroke-width="1.5"/>
+    </svg>
+
+  </div>
+
+  <!-- ─── CARDS COM DETALHES DE CADA TIER ─── -->
+  <div class="selos">
+
+    <!-- PIONEIRO -->
+    <div class="card pioneiro">
+      <svg class="selo-svg selo-card-mini" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="pio-mini-bg" cx="50%" cy="40%" r="60%">
+            <stop offset="0%" stop-color="#E08453"/><stop offset="60%" stop-color="#B85C38"/><stop offset="100%" stop-color="#8B3E20"/>
+          </radialGradient>
+          <linearGradient id="pio-mini-ring" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#C8A84B"/><stop offset="100%" stop-color="#A68A3E"/>
+          </linearGradient>
+        </defs>
+        <circle cx="110" cy="110" r="105" fill="url(#pio-mini-ring)"/>
+        <circle cx="110" cy="110" r="100" fill="#1B2A4A"/>
+        <circle cx="110" cy="110" r="92" fill="url(#pio-mini-bg)" stroke="#C8A84B" stroke-width="1.5"/>
+        <g transform="translate(110,108)">
+          <circle cx="0" cy="0" r="36" fill="none" stroke="#FFF5E1" stroke-width="1.5" opacity="0.5"/>
+          <circle cx="0" cy="0" r="30" fill="#0F1A30"/>
+          <polygon points="0,-26 6,0 0,4 -6,0" fill="#E8C962" stroke="#FFF5E1" stroke-width="0.8"/>
+          <polygon points="0,26 -6,0 0,-4 6,0" fill="#B85C38"/>
+          <circle cx="0" cy="0" r="3" fill="#FFF5E1"/>
+        </g>
+      </svg>
+
+      <span class="tier-tag">🚩 Tier Pioneiro</span>
+      <h2>Aluno Pioneiro 2026</h2>
+      <div class="janela">Janela curta · 29/06 a 02/07</div>
+
+      <p class="desc">Quem decide <strong>durante a semana das 4 lives</strong> ganha o tier mais exclusivo. Grupo pequeno, atendimento próximo, mais ferramentas pra acelerar.</p>
+
+      <ul class="bonus">
+        <li><span class="ico">★</span><div><strong>4 aulas ao vivo em grupo com o Prof. Vinícius</strong> — encontros no Google Meet + canal de suporte WhatsApp dedicado</div></li>
+        <li><span class="ico">🏅</span><div><strong>Selo PIONEIRO 2026</strong> no perfil da plataforma e no grupo de WhatsApp</div></li>
+        <li><span class="ico">🏛️</span><div>Inclui <strong>tudo do tier Fundador</strong> (selo + 12 meses de acesso à edição 2026)</div></li>
+      </ul>
+    </div>
+
+    <!-- FUNDADOR -->
+    <div class="card fundador">
+      <svg class="selo-svg selo-card-mini" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="fun-mini-bg" cx="50%" cy="40%" r="60%">
+            <stop offset="0%" stop-color="#E8C962"/><stop offset="55%" stop-color="#C8A84B"/><stop offset="100%" stop-color="#8E7530"/>
+          </radialGradient>
+          <linearGradient id="fun-mini-ring" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#1B2A4A"/><stop offset="100%" stop-color="#0F1A30"/>
+          </linearGradient>
+        </defs>
+        <circle cx="110" cy="110" r="105" fill="url(#fun-mini-ring)"/>
+        <circle cx="110" cy="110" r="100" fill="#C8A84B"/>
+        <circle cx="110" cy="110" r="92" fill="url(#fun-mini-bg)" stroke="#1B2A4A" stroke-width="1.5"/>
+        <g transform="translate(110,108)">
+          <circle cx="0" cy="0" r="36" fill="none" stroke="#1B2A4A" stroke-width="1.5" opacity="0.35"/>
+          <circle cx="0" cy="0" r="30" fill="#1B2A4A"/>
+          <rect x="-16" y="-22" width="32" height="5" fill="#E8C962" rx="0.5"/>
+          <rect x="-18" y="-24" width="36" height="3" fill="#C8A84B"/>
+          <rect x="-9" y="-17" width="18" height="28" fill="#E8C962"/>
+          <line x1="-5" y1="-17" x2="-5" y2="11" stroke="#C8A84B" stroke-width="1"/>
+          <line x1="0" y1="-17" x2="0" y2="11" stroke="#C8A84B" stroke-width="1"/>
+          <line x1="5" y1="-17" x2="5" y2="11" stroke="#C8A84B" stroke-width="1"/>
+          <rect x="-16" y="11" width="32" height="5" fill="#E8C962" rx="0.5"/>
+          <rect x="-18" y="16" width="36" height="3" fill="#C8A84B"/>
+        </g>
+      </svg>
+
+      <span class="tier-tag">🏛️ Tier Fundador</span>
+      <h2>Aluno Fundador 2026</h2>
+      <div class="janela">Janela estendida · 29/06 a 15/07</div>
+
+      <p class="desc">Quem entra na <strong>janela do lançamento</strong> (17 dias) ganha distinção permanente. Marca quem ajudou a fundar a edição 2026.</p>
+
+      <ul class="bonus">
+        <li><span class="ico">🏅</span><div><strong>Selo FUNDADOR 2026</strong> no perfil da plataforma e no grupo de WhatsApp</div></li>
+        <li><span class="ico">📅</span><div><strong>12 meses</strong> de acesso à edição 2026 a partir da compra</div></li>
+        <li><span class="ico">⚡</span><div>Acesso à <strong>plataforma</strong> assim que liberada · grupo geral de WhatsApp</div></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- ─── NOTAS DE DESIGN + LÓGICA ─── -->
+  <div class="notes">
+    <h3>Notas de design</h3>
+    <ul>
+      <li><strong>Paleta:</strong> Pioneiro = bronze/terracota (cor de "primeiros aventureiros, frontier") · Fundador = dourado (prestígio clássico, fundação de instituição)</li>
+      <li><strong>Ícones:</strong> Pioneiro = bússola (rumo, exploração) · Fundador = coluna grega (pilar, permanência, fundação)</li>
+      <li><strong>Forma:</strong> medalha circular com anéis (referência a moedas comemorativas)</li>
+      <li><strong>Tipografia:</strong> Montserrat 900 — mesma família do site, mantém consistência da marca</li>
+      <li><strong>Hierarquia visual:</strong> os dois selos têm peso visual equivalente — Pioneiro não é "melhor que" Fundador, é "Fundador + 4 aulas exclusivas"</li>
+    </ul>
+  </div>
+
+  <div class="notes" style="margin-top:20px;border-left-color:#B85C38;">
+    <h3>Lógica dos tiers</h3>
+    <ul>
+      <li><strong>Pioneiro ⊂ Fundador.</strong> Todo Pioneiro é também Fundador (ganha os 2 selos). Quem decide na janela curta (29/06–02/07) leva o tier mais alto.</li>
+      <li><strong>Fundador exclusivo.</strong> Quem decide entre 03/07 e 15/07 fica só com o selo Fundador (sem as 4 aulas).</li>
+      <li><strong>Janela total:</strong> 17 dias (29/06 a 15/07 23h59). Pioneiro = primeiros 4 dias · Fundador = janela inteira.</li>
+      <li><strong>Sem prorrogação.</strong> Depois de 15/07, anual sai do ar. Tri e Sem voltam como modalidades padrão.</li>
+    </ul>
+  </div>
+
+  <div class="dl">
+    <a href="#" onclick="copySvg('pio'); return false;">📋 Copiar SVG do Pioneiro</a>
+    <a href="#" onclick="copySvg('fun'); return false;">📋 Copiar SVG do Fundador</a>
+  </div>
+</div>
+
+<script>
+function copySvg(which){
+  // pega o primeiro SVG (não o mini do card) — os 2 primeiros no preview-stage
+  var svgs = document.querySelectorAll('.preview-stage svg');
+  var svg = which === 'pio' ? svgs[0] : svgs[1];
+  if (!svg) return alert('SVG não encontrado');
+  var html = new XMLSerializer().serializeToString(svg);
+  navigator.clipboard.writeText(html).then(function(){
+    alert('SVG do ' + (which === 'pio' ? 'Pioneiro' : 'Fundador') + ' copiado pra área de transferência.');
+  }, function(){
+    alert('Erro ao copiar. Inspeciona o SVG no DevTools e copia o markup manualmente.');
+  });
+}
+</script>
+</body>
+</html>
