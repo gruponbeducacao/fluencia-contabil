@@ -32,7 +32,7 @@ h1{font-size:32px;font-weight:900;color:var(--azul);letter-spacing:-1px;margin-b
 section{background:white;border-radius:10px;padding:32px 36px;margin-bottom:28px;box-shadow:0 2px 12px rgba(27,42,74,0.06);}
 section h2{font-size:22px;font-weight:900;color:var(--azul);margin-bottom:10px;letter-spacing:-0.3px;}
 section h2 .step{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;background:var(--azul);color:var(--dourado);border-radius:50%;font-size:14px;font-weight:900;margin-right:14px;letter-spacing:0;}
-section h3{font-size:16px;font-weight:800;color:var(--azul);margin:22px 0 10px;}
+section h3{font-size:16px;font-weight:800;color:var(--azul);margin:24px 0 12px;}
 section h3:first-of-type{margin-top:18px;}
 section p{margin-bottom:14px;font-family:'Source Serif 4',serif;font-size:15px;color:#333;line-height:1.7;}
 section ul, section ol{margin:0 0 14px 24px;font-family:'Source Serif 4',serif;font-size:15px;}
@@ -55,11 +55,6 @@ table th:first-child{border-top-left-radius:4px;}
 table th:last-child{border-top-right-radius:4px;}
 table td{padding:11px 14px;border-bottom:1px solid #E8E2D0;background:white;color:#333;vertical-align:top;}
 table tr:hover td{background:#FFFEF7;}
-table .tag{font-size:10px;font-weight:800;padding:3px 8px;border-radius:3px;letter-spacing:1px;text-transform:uppercase;display:inline-block;}
-table .tag-d3{background:rgba(200,168,75,0.18);color:var(--dourado-esc);}
-table .tag-d0{background:rgba(27,42,74,0.10);color:var(--azul);}
-table .tag-aovivo{background:rgba(192,57,43,0.12);color:var(--vermelho);}
-table .tag-launch{background:rgba(192,57,43,0.18);color:var(--vermelho);font-weight:900;}
 table code{background:#F4F0E0;padding:2px 6px;border-radius:2px;font-size:12px;color:var(--azul-med);}
 
 code{background:#F4F0E0;padding:2px 6px;border-radius:2px;font-family:'Courier New',monospace;font-size:13px;color:var(--azul-med);}
@@ -72,18 +67,38 @@ pre{background:#0F1A30;color:#C8A84B;padding:14px 18px;border-radius:6px;overflo
 .checkbox-list label{flex:1;cursor:pointer;font-size:14px;font-family:'Source Serif 4',serif;}
 .checkbox-list input[type=checkbox]:checked + label{color:#888;text-decoration:line-through;}
 
-.email-card{background:var(--cream);border:1px solid #E8E2D0;border-radius:5px;padding:14px 18px;margin:8px 0;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;}
-.email-card .info{font-size:13px;}
-.email-card .info strong{display:block;color:var(--azul);font-weight:700;margin-bottom:2px;}
-.email-card .info span{color:var(--cinza);font-size:12px;}
-.email-card .link{font-size:11px;font-weight:800;color:var(--dourado-esc);text-decoration:none;letter-spacing:1px;text-transform:uppercase;padding:6px 12px;border:1px solid var(--dourado);border-radius:3px;white-space:nowrap;transition:all 0.2s;}
-.email-card .link:hover{background:var(--dourado);color:var(--azul);}
-
 .back{display:inline-block;font-size:12px;font-weight:700;color:var(--azul);text-decoration:none;margin-bottom:24px;letter-spacing:0.5px;}
 .back:hover{color:var(--dourado);}
 
+/* ───── Bloco de email ───── */
+.email-block{background:#FAFAF6;border:1px solid #E8E2D0;border-radius:6px;padding:18px 22px;margin:14px 0;}
+.email-block-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;padding-bottom:12px;border-bottom:1px dashed #E0D8BD;}
+.email-block-id{display:inline-block;background:var(--azul);color:var(--dourado);font-weight:900;font-size:11px;letter-spacing:1.5px;padding:4px 10px;border-radius:3px;}
+.email-block-actions{display:flex;gap:8px;align-items:center;}
+.email-block-view{font-size:11px;font-weight:700;color:var(--azul);text-decoration:none;padding:6px 10px;border:1px solid #D0C8AE;border-radius:3px;letter-spacing:0.5px;transition:all 0.2s;}
+.email-block-view:hover{background:white;border-color:var(--azul);}
+.email-block-copy{font-size:11px;font-weight:800;color:var(--azul);background:var(--dourado);border:1px solid var(--dourado-esc);border-radius:3px;padding:6px 12px;cursor:pointer;letter-spacing:0.5px;font-family:'Montserrat',sans-serif;transition:all 0.2s;}
+.email-block-copy:hover{background:var(--dourado-esc);color:white;}
+.email-block-copy.copied{background:var(--verde);border-color:#059669;color:white;}
+.email-meta{display:grid;grid-template-columns:auto 1fr;gap:8px 16px;align-items:start;}
+.email-meta dt{font-size:11px;font-weight:800;color:var(--cinza);text-transform:uppercase;letter-spacing:1px;padding-top:7px;white-space:nowrap;}
+.email-meta dd{font-size:13px;line-height:1.5;}
+.email-meta code.copyable{background:white;border:1px solid #E0D8BD;color:var(--texto);padding:5px 10px;border-radius:3px;font-family:'Montserrat',sans-serif;font-size:13px;cursor:pointer;display:inline-block;max-width:100%;word-break:break-word;transition:all 0.15s;}
+.email-meta code.copyable:hover{background:#FFF8DC;border-color:var(--dourado);}
+.email-meta code.copyable.copied{background:rgba(16,185,129,0.15);border-color:var(--verde);color:#047857;}
+.email-meta code.copyable::after{content:" 📋";opacity:0.4;font-size:11px;}
+.email-meta code.copyable.copied::after{content:" ✓";opacity:1;color:var(--verde);}
+
+.convite-live{margin:24px 0;padding:20px 22px;background:#FFFEF7;border:1px solid #F0E8C8;border-radius:8px;}
+.convite-live h3{margin:0 0 16px !important;font-size:15px !important;color:var(--azul) !important;padding-bottom:10px;border-bottom:2px solid var(--dourado);}
+.schedule-tag{display:inline-block;background:white;border:1px dashed var(--dourado);color:var(--azul);padding:6px 12px;border-radius:3px;font-size:12px;margin:8px 0 4px;font-family:'Montserrat',sans-serif;}
+.schedule-tag code{font-size:11px;padding:1px 5px;}
+
 .legend{display:flex;gap:14px;flex-wrap:wrap;margin:10px 0 20px;font-size:12px;}
 .legend span{display:inline-flex;align-items:center;gap:6px;color:#555;}
+
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--azul);color:var(--dourado);padding:14px 24px;border-radius:6px;font-weight:700;font-size:13px;letter-spacing:0.5px;box-shadow:0 8px 24px rgba(0,0,0,0.2);opacity:0;transition:all 0.3s ease;pointer-events:none;z-index:1000;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 </style>
 </head>
 <body>
@@ -92,37 +107,34 @@ pre{background:#0F1A30;color:#C8A84B;padding:14px 18px;border-radius:6px;overflo
 <a class="back" href="index.html">← Voltar ao dashboard</a>
 
 <h1>📋 Instruções de programação · MailerLite</h1>
-<p class="sub">Passo-a-passo pra ativar as automações pendentes e agendar os 27 broadcasts do lançamento de ago/2026.</p>
+<p class="sub">Passo-a-passo para ativar as automações pendentes e agendar os 27 broadcasts do lançamento de ago/2026.<br>Cada email mostra <strong>Email name</strong>, <strong>Subject</strong>, <strong>Preheader</strong> e botão <strong>📋 Copiar HTML</strong>. Clique em qualquer campo de texto para copiar.</p>
 
-<!-- ──────────────── ÍNDICE ──────────────── -->
+<!-- ÍNDICE -->
 <div class="toc">
   <h2>Roteiro de execução</h2>
   <ol>
     <li><a href="#estado">Estado atual do MailerLite</a></li>
-    <li><a href="#prereq">Pré-requisitos: criar/renomear groups das 4 lives</a></li>
-    <li><a href="#atualizar">Atualizar HTMLs de A5 e B4 nas automations ativas</a></li>
-    <li><a href="#sequencia-d">Criar Sequência D — Bem-vindo às Lives (5 emails)</a></li>
-    <li><a href="#convites">Agendar 12 broadcasts — Convites das 4 lives</a></li>
-    <li><a href="#sequencia-e">Agendar 8 broadcasts — Sequência E enxuta (operacional)</a></li>
-    <li><a href="#broadcasts-lancamento">Agendar 7 broadcasts L1–L7 — Lançamento</a></li>
-    <li><a href="#como-copiar">Como copiar o HTML de cada email</a></li>
+    <li><a href="#prereq">Pré-requisitos · group único das lives</a></li>
+    <li><a href="#atualizar">Atualizar HTMLs de A5, B1, B4 e C6</a></li>
+    <li><a href="#sequencia-d">Criar Sequência D · Bem-vindo às Lives (5 emails)</a></li>
+    <li><a href="#convites">Agendar 12 broadcasts · Convites das 4 lives</a></li>
+    <li><a href="#sequencia-e">Agendar 8 broadcasts · Sequência E enxuta</a></li>
+    <li><a href="#broadcasts-lancamento">Agendar 7 broadcasts L1–L7 · Lançamento</a></li>
+    <li><a href="#como-copiar">Como copiar os textos e o HTML</a></li>
   </ol>
 </div>
 
-<!-- ──────────────── 1. ESTADO ATUAL ──────────────── -->
+<!-- 1. ESTADO ATUAL -->
 <section id="estado">
   <h2><span class="step">1</span>Estado atual do MailerLite</h2>
-  <p>Você tem <strong>3 automações ativas</strong> rodando (Sequências A, B e C). O trabalho agora é (a) atualizar 2 emails dessas sequências, (b) criar 1 nova automação (Sequência D) e (c) agendar <strong>27 broadcasts</strong> (campanhas pontuais).</p>
-
+  <p>Você tem <strong>3 automações ativas</strong> rodando (Sequências A, B e C). O trabalho agora é (a) atualizar 4 emails dessas sequências, (b) criar 1 nova automação (Sequência D) e (c) agendar <strong>27 broadcasts</strong> (campanhas pontuais).</p>
   <table>
-    <thead>
-      <tr><th>Sequência</th><th>Trigger</th><th>Emails</th><th>Status</th></tr>
-    </thead>
+    <thead><tr><th>Sequência</th><th>Trigger</th><th>Emails</th><th>Status</th></tr></thead>
     <tbody>
       <tr><td><strong>A — Newsletter</strong></td><td>Joins group <code>Newsletter</code></td><td>5 (A1-A5)</td><td><span class="badge badge-ok">✓ ATIVA</span> — A5 precisa atualização de HTML</td></tr>
       <tr><td><strong>B — Lista de Espera</strong></td><td>Joins group <code>Lista de Espera</code></td><td>6 (B1-B6)</td><td><span class="badge badge-ok">✓ ATIVA</span> — B1 e B4 precisam atualização de HTML</td></tr>
       <tr><td><strong>C — Lead Magnet</strong></td><td>Joins group <code>Lead Magnet - Dicionário</code></td><td>6 (C1-C6)</td><td><span class="badge badge-ok">✓ ATIVA</span> — C6 precisa atualização de HTML</td></tr>
-      <tr><td><strong>D — Bem-vindo às Lives</strong></td><td>Joins ANY of: Live 1/2/3/4</td><td>5 (D1-D5)</td><td><span class="badge badge-pending">⏳ A CRIAR</span></td></tr>
+      <tr><td><strong>D — Bem-vindo às Lives</strong></td><td>Joins group <code>Inscritos Lives Ago/26</code> (ID <code>188077924412294920</code>)</td><td>5 (D1-D5)</td><td><span class="badge badge-pending">⏳ A CRIAR</span></td></tr>
       <tr><td><strong>E enxuta — Operacional</strong></td><td>Broadcasts agendados (não automation)</td><td>8 (4 lives × 2)</td><td><span class="badge badge-pending">⏳ A AGENDAR</span></td></tr>
       <tr><td><strong>Convites das lives</strong></td><td>Broadcasts agendados</td><td>12 (4 lives × 3)</td><td><span class="badge badge-pending">⏳ A AGENDAR</span></td></tr>
       <tr><td><strong>Broadcasts L1-L7</strong></td><td>Broadcasts agendados</td><td>7</td><td><span class="badge badge-pending">⏳ A AGENDAR</span></td></tr>
@@ -130,258 +142,849 @@ pre{background:#0F1A30;color:#C8A84B;padding:14px 18px;border-radius:6px;overflo
   </table>
 </section>
 
-<!-- ──────────────── 2. PRÉ-REQUISITOS ──────────────── -->
+<!-- 2. PRÉ-REQUISITOS -->
 <section id="prereq">
-  <h2><span class="step">2</span>Pré-requisitos: criar/renomear 4 groups das lives</h2>
-
-  <p>No MailerLite, vá em <strong>Subscribers → Groups</strong>. Você já deve ter groups das lives antigas (Live 1 a 4 + Live Final). Renomeie eles ou crie novos com os nomes abaixo:</p>
-
-  <table>
-    <thead>
-      <tr><th>Nome do group</th><th>Subscribers que entram aqui</th></tr>
-    </thead>
-    <tbody>
-      <tr><td><strong>Live 1 — Débito e Crédito (04/08)</strong></td><td>Quem se inscreveu nas lives via <code>lives.html</code> (o submit já adiciona neste group + nos outros 3)</td></tr>
-      <tr><td><strong>Live 2 — CPC 51 (05/08)</strong></td><td>Mesmo (1 inscrição cobre as 4)</td></tr>
-      <tr><td><strong>Live 3 — Lançamento Oficial (06/08)</strong></td><td>Mesmo</td></tr>
-      <tr><td><strong>Live 4 — Tour da Plataforma (07/08)</strong></td><td>Mesmo</td></tr>
-    </tbody>
-  </table>
-
-  <div class="callout">
-    <strong>⚠ O Apps Script precisa adicionar leads aos 4 groups</strong>
-    Hoje o endpoint <code>AKfycbx8lWrX...</code> roteia leads de <code>lives.html</code> pra UM group só (no momento, talvez "Lives" genérico). Você precisa ajustar o Apps Script pra adicionar o lead nos <strong>4 groups simultaneamente</strong> (ou em "Live 1" e usar Automation/Workflow do MailerLite pra propagar pros outros 3). Sem isso, a Sequência D + Sequência E enxuta não dispara pra todos.
+  <h2><span class="step">2</span>Pré-requisitos · group único das lives</h2>
+  <p>No replanejamento de ago/2026 consolidamos as <strong>4 lives em 1 group único</strong> do MailerLite. Quem se inscreve na LP <code>/lives</code> entra no group <strong>"Inscritos Lives Ago/26"</strong> (ID <code>188077924412294920</code>). Esse é o trigger da Sequência D.</p>
+  <div class="callout success">
+    <strong>✓ Apps Script já está sincronizando</strong>
+    O endpoint unificado (<code>AKfycbx8lWrX...</code>) roteia leads de <code>lives.html</code> pra esse group via trigger temporal de 1min. Validado de ponta a ponta em 21/05/2026. Você só precisa configurar a automation no MailerLite.
   </div>
-
-  <p>Se quiser, podemos atualizar o Apps Script juntos numa próxima rodada — fora do escopo do MailerLite em si.</p>
+  <p>Groups antigos (<code>Live 1</code>, <code>Live 2</code>, <code>Live 3</code>, <code>Live 4</code>, <code>Live 3 Lançamento</code>) do plano de set/2025 podem ser apagados — não são mais referenciados pelo código.</p>
 </section>
 
-<!-- ──────────────── 3. ATUALIZAR HTMLs ──────────────── -->
+<!-- 3. ATUALIZAR HTMLs -->
 <section id="atualizar">
   <h2><span class="step">3</span>Atualizar HTMLs de A5, B1, B4 e C6 nas automations ativas</h2>
-
   <p>Esses emails JÁ ESTÃO no ar (rodando), mas o HTML foi atualizado no repo durante a remarcação ago/2026. Você precisa re-importar:</p>
-
   <ol>
-    <li>Vá em <strong>Automations → [nome da sequência] → clique no email a substituir → Edit content</strong></li>
-    <li>Apague o HTML atual e cole o novo (use o botão <strong>"📋 Copiar"</strong> no <a href="index.html">dashboard</a> — passa o mouse no card)</li>
-    <li>Salve e ative o email (algumas vezes o MailerLite desativa automaticamente após edição grande)</li>
+    <li>Vá em <strong>Automations → [nome da sequência] → clique no email → Edit content</strong></li>
+    <li>Atualize o <strong>Email name</strong>, <strong>Subject</strong> e <strong>Preheader</strong> com os valores abaixo</li>
+    <li>Apague o HTML atual e cole o novo (botão <strong>📋 Copiar HTML</strong> em cada bloco)</li>
+    <li>Salve e ative o email (às vezes o MailerLite desativa após edição grande)</li>
   </ol>
-
-  <div class="email-card">
-    <div class="info"><strong>A5 · Dia +10 · Newsletter</strong><span>CTA agora aponta pra <code>lives.html</code> + benefícios das 4 lives + Acesso Fundador</span></div>
-    <a class="link" href="sequencia-a/A5-lista-espera.html" target="_blank">Abrir email →</a>
-  </div>
-
-  <div class="email-card">
-    <div class="info"><strong>B1 · Dia 0 · Lista de Espera</strong><span>"O curso abre a partir de 4 de agosto de 2026"</span></div>
-    <a class="link" href="sequencia-b/B1-bem-vindo-lista.html" target="_blank">Abrir email →</a>
-  </div>
-
-  <div class="email-card">
-    <div class="info"><strong>B4 · Dia +8 · Lista de Espera</strong><span>Agenda das 4 lives novas (04-07/08) + Live 3 destacada</span></div>
-    <a class="link" href="sequencia-b/B4-vip-lives.html" target="_blank">Abrir email →</a>
-  </div>
-
-  <div class="email-card">
-    <div class="info"><strong>C6 · Dia +15 · Lead Magnet</strong><span>"4 lives gratuitas (04/08 a 07/08)" + lançamento a partir de 4 de agosto</span></div>
-    <a class="link" href="sequencia-c/C6-lista-espera.html" target="_blank">Abrir email →</a>
-  </div>
-
+  
+    <div class="email-block" data-html-path="sequencia-a/A5-lista-espera.html">
+      <div class="email-block-head">
+        <span class="email-block-id">A5</span>
+        <div class="email-block-actions">
+          <a class="email-block-view" href="sequencia-a/A5-lista-espera.html" target="_blank">Abrir preview ↗</a>
+          <button type="button" class="email-block-copy" data-path="sequencia-a/A5-lista-espera.html">📋 Copiar HTML</button>
+        </div>
+      </div>
+      <dl class="email-meta">
+        <dt>Email name</dt>
+        <dd><code class="copyable" title="Clique para copiar">FC · Sequência A · A5 · Lista de Espera</code></dd>
+        <dt>Subject</dt>
+        <dd><code class="copyable" title="Clique para copiar">Se o método faz sentido pra você, tem um próximo passo</code></dd>
+        <dt>Preheader</dt>
+        <dd><code class="copyable" title="Clique para copiar">Como garantir sua vaga quando o curso abrir em junho.</code></dd>
+      </dl>
+    </div>
+    <div class="email-block" data-html-path="sequencia-b/B1-bem-vindo-lista.html">
+      <div class="email-block-head">
+        <span class="email-block-id">B1</span>
+        <div class="email-block-actions">
+          <a class="email-block-view" href="sequencia-b/B1-bem-vindo-lista.html" target="_blank">Abrir preview ↗</a>
+          <button type="button" class="email-block-copy" data-path="sequencia-b/B1-bem-vindo-lista.html">📋 Copiar HTML</button>
+        </div>
+      </div>
+      <dl class="email-meta">
+        <dt>Email name</dt>
+        <dd><code class="copyable" title="Clique para copiar">FC · Sequência B · B1 · Bem-vindo Lista</code></dd>
+        <dt>Subject</dt>
+        <dd><code class="copyable" title="Clique para copiar">Você está dentro. Bem-vindo(a) à Lista de Espera.</code></dd>
+        <dt>Preheader</dt>
+        <dd><code class="copyable" title="Clique para copiar">Seu Dicionário Contábil + convite pro grupo exclusivo de pré-lançamento.</code></dd>
+      </dl>
+    </div>
+    <div class="email-block" data-html-path="sequencia-b/B4-vip-lives.html">
+      <div class="email-block-head">
+        <span class="email-block-id">B4</span>
+        <div class="email-block-actions">
+          <a class="email-block-view" href="sequencia-b/B4-vip-lives.html" target="_blank">Abrir preview ↗</a>
+          <button type="button" class="email-block-copy" data-path="sequencia-b/B4-vip-lives.html">📋 Copiar HTML</button>
+        </div>
+      </div>
+      <dl class="email-meta">
+        <dt>Email name</dt>
+        <dd><code class="copyable" title="Clique para copiar">FC · Sequência B · B4 · VIP nas Lives</code></dd>
+        <dt>Subject</dt>
+        <dd><code class="copyable" title="Clique para copiar">[Você é VIP] As 4 lives gratuitas do Fluência Contábil</code></dd>
+        <dt>Preheader</dt>
+        <dd><code class="copyable" title="Clique para copiar">Seu acesso prioritário às 4 lives de pré-lançamento (04/08 a 07/08). Uma inscrição cobre todas.</code></dd>
+      </dl>
+    </div>
+    <div class="email-block" data-html-path="sequencia-c/C6-lista-espera.html">
+      <div class="email-block-head">
+        <span class="email-block-id">C6</span>
+        <div class="email-block-actions">
+          <a class="email-block-view" href="sequencia-c/C6-lista-espera.html" target="_blank">Abrir preview ↗</a>
+          <button type="button" class="email-block-copy" data-path="sequencia-c/C6-lista-espera.html">📋 Copiar HTML</button>
+        </div>
+      </div>
+      <dl class="email-meta">
+        <dt>Email name</dt>
+        <dd><code class="copyable" title="Clique para copiar">FC · Sequência C · C6 · Lista de Espera</code></dd>
+        <dt>Subject</dt>
+        <dd><code class="copyable" title="Clique para copiar">Seu próximo passo depois de 3 semanas com a gente</code></dd>
+        <dt>Preheader</dt>
+        <dd><code class="copyable" title="Clique para copiar">Como garantir vaga antes do lançamento, que começa em 4 de agosto.</code></dd>
+      </dl>
+    </div>
   <div class="callout success">
-    <strong>✓ Faça TESTE com o "Send test email" antes de salvar</strong>
-    Manda pra teu email pessoal e abre no Gmail + Outlook web pra confirmar que renderiza bem (botões, fontes, imagens). Se algo quebrar, é provável que o MailerLite tenha inserido tracking-pixel ou alterado algum atributo.
+    <strong>✓ Send test email antes de salvar</strong>
+    Manda pra teu email pessoal e abre no Gmail + Outlook web pra confirmar que renderiza bem (botões, fontes, imagens).
   </div>
 </section>
 
-<!-- ──────────────── 4. SEQUÊNCIA D ──────────────── -->
+<!-- 4. SEQUÊNCIA D -->
 <section id="sequencia-d">
-  <h2><span class="step">4</span>Criar Sequência D — Bem-vindo às Lives (5 emails)</h2>
-
+  <h2><span class="step">4</span>Criar Sequência D · Bem-vindo às Lives (5 emails)</h2>
   <p>Em <strong>Automations → New automation → Workflow from scratch</strong>:</p>
-
   <h3>Configuração da automation</h3>
   <ul>
-    <li><strong>Nome:</strong> <code>Sequência D — Bem-vindo às Lives</code></li>
-    <li><strong>Trigger:</strong> <em>Joins a group</em> → selecionar <strong>os 4 groups</strong> (Live 1, 2, 3, 4) — qualquer um dispara a automação</li>
-    <li><strong>Allow re-entry?</strong> ❌ Não (subscriber só passa uma vez pela sequência)</li>
+    <li><strong>Nome:</strong> <code>FC · Sequência D · Bem-vindo às Lives</code></li>
+    <li><strong>Trigger:</strong> <em>When subscriber joins a group</em> → <strong>Inscritos Lives Ago/26</strong> (ID <code>188077924412294920</code>)</li>
+    <li><strong>Allow re-entry?</strong> ❌ Não</li>
   </ul>
-
-  <h3>Sequência de 5 emails com delays</h3>
-
+  <h3>Cadência</h3>
   <table>
-    <thead>
-      <tr><th>#</th><th>Email</th><th>Delay desde trigger</th><th>Conteúdo principal</th></tr>
-    </thead>
+    <thead><tr><th>#</th><th>Delay desde trigger</th><th>Conteúdo principal</th></tr></thead>
     <tbody>
-      <tr><td><strong>D1</strong></td><td><a href="sequencia-d/D1-bem-vindo-lives.html" target="_blank">Abrir →</a></td><td><strong>Imediato</strong> (0 minutos)</td><td>Boas-vindas + agenda 4 lives + Acesso Fundador (teaser) + Dicionário PDF</td></tr>
-      <tr><td><strong>D2</strong></td><td><a href="sequencia-d/D2-cinco-camadas.html" target="_blank">Abrir →</a></td><td><strong>+2 dias</strong></td><td>Tese: Códigos → Palavra mais cobrada → Casa abre → Casa por dentro</td></tr>
-      <tr><td><strong>D3</strong></td><td><a href="sequencia-d/D3-quem-te-ensina.html" target="_blank">Abrir →</a></td><td><strong>+4 dias</strong></td><td>Quem te ensina · trajetória · Senado Federal · grid de números</td></tr>
-      <tr><td><strong>D4</strong></td><td><a href="sequencia-d/D4-aula-01.html" target="_blank">Abrir →</a></td><td><strong>+6 dias</strong></td><td>[Aula 01 grátis] Partidas Dobradas · prepara pra Live 1</td></tr>
-      <tr><td><strong>D5</strong></td><td><a href="sequencia-d/D5-proxima-live.html" target="_blank">Abrir →</a></td><td><strong>+9 dias</strong></td><td>Como aproveitar as 4 noites · 3 dicas · LP única</td></tr>
+      <tr><td><strong>D1</strong></td><td><strong>Imediato</strong> (0 minutos)</td><td>Boas-vindas + agenda 4 lives + Acesso Fundador (teaser) + Dicionário PDF</td></tr>
+      <tr><td><strong>D2</strong></td><td><strong>+2 dias</strong></td><td>Tese: Códigos → Palavra mais cobrada → Casa abre → Casa por dentro</td></tr>
+      <tr><td><strong>D3</strong></td><td><strong>+4 dias</strong></td><td>Quem te ensina · trajetória · Senado Federal · grid de números</td></tr>
+      <tr><td><strong>D4</strong></td><td><strong>+6 dias</strong></td><td>[Aula 01 grátis] Partidas Dobradas · prepara pra Live 1</td></tr>
+      <tr><td><strong>D5</strong></td><td><strong>+9 dias</strong></td><td>Como aproveitar as 4 noites · 3 dicas · LP única</td></tr>
     </tbody>
   </table>
-
+  <h3>Emails da Sequência D</h3>
+  
+    <div class="email-block" data-html-path="sequencia-d/D1-bem-vindo-lives.html">
+      <div class="email-block-head">
+        <span class="email-block-id">D1</span>
+        <div class="email-block-actions">
+          <a class="email-block-view" href="sequencia-d/D1-bem-vindo-lives.html" target="_blank">Abrir preview ↗</a>
+          <button type="button" class="email-block-copy" data-path="sequencia-d/D1-bem-vindo-lives.html">📋 Copiar HTML</button>
+        </div>
+      </div>
+      <dl class="email-meta">
+        <dt>Email name</dt>
+        <dd><code class="copyable" title="Clique para copiar">FC · Sequência D · D1 · Bem-vindo às Lives</code></dd>
+        <dt>Subject</dt>
+        <dd><code class="copyable" title="Clique para copiar">Você está dentro: 4 lives + Dicionário grátis</code></dd>
+        <dt>Preheader</dt>
+        <dd><code class="copyable" title="Clique para copiar">Vaga garantida nas 4 lives + seu Dicionário Contábil já liberado.</code></dd>
+      </dl>
+    </div>
+    <div class="email-block" data-html-path="sequencia-d/D2-cinco-camadas.html">
+      <div class="email-block-head">
+        <span class="email-block-id">D2</span>
+        <div class="email-block-actions">
+          <a class="email-block-view" href="sequencia-d/D2-cinco-camadas.html" target="_blank">Abrir preview ↗</a>
+          <button type="button" class="email-block-copy" data-path="sequencia-d/D2-cinco-camadas.html">📋 Copiar HTML</button>
+        </div>
+      </div>
+      <dl class="email-meta">
+        <dt>Email name</dt>
+        <dd><code class="copyable" title="Clique para copiar">FC · Sequência D · D2 · Cinco Camadas</code></dd>
+        <dt>Subject</dt>
+        <dd><code class="copyable" title="Clique para copiar">Por que essas 4 lives, nessa ordem</code></dd>
+        <dt>Preheader</dt>
+        <dd><code class="copyable" title="Clique para copiar">A ordem das 4 lives não é aleatória. Te explico em 2 minutos.</code></dd>
+      </dl>
+    </div>
+    <div class="email-block" data-html-path="sequencia-d/D3-quem-te-ensina.html">
+      <div class="email-block-head">
+        <span class="email-block-id">D3</span>
+        <div class="email-block-actions">
+          <a class="email-block-view" href="sequencia-d/D3-quem-te-ensina.html" target="_blank">Abrir preview ↗</a>
+          <button type="button" class="email-block-copy" data-path="sequencia-d/D3-quem-te-ensina.html">📋 Copiar HTML</button>
+        </div>
+      </div>
+      <dl class="email-meta">
+        <dt>Email name</dt>
+        <dd><code class="copyable" title="Clique para copiar">FC · Sequência D · D3 · Quem te Ensina</code></dd>
+        <dt>Subject</dt>
+        <dd><code class="copyable" title="Clique para copiar">Quem vai te ensinar nas lives</code></dd>
+        <dt>Preheader</dt>
+        <dd><code class="copyable" title="Clique para copiar">Antes da Live 1, é justo te apresentar o professor.</code></dd>
+      </dl>
+    </div>
+    <div class="email-block" data-html-path="sequencia-d/D4-aula-01.html">
+      <div class="email-block-head">
+        <span class="email-block-id">D4</span>
+        <div class="email-block-actions">
+          <a class="email-block-view" href="sequencia-d/D4-aula-01.html" target="_blank">Abrir preview ↗</a>
+          <button type="button" class="email-block-copy" data-path="sequencia-d/D4-aula-01.html">📋 Copiar HTML</button>
+        </div>
+      </div>
+      <dl class="email-meta">
+        <dt>Email name</dt>
+        <dd><code class="copyable" title="Clique para copiar">FC · Sequência D · D4 · Aula 01 Partidas Dobradas</code></dd>
+        <dt>Subject</dt>
+        <dd><code class="copyable" title="Clique para copiar">[Aula 01 grátis] Método das Partidas Dobradas</code></dd>
+        <dt>Preheader</dt>
+        <dd><code class="copyable" title="Clique para copiar">Aula completa em PDF — a espinha dorsal de toda a contabilidade.</code></dd>
+      </dl>
+    </div>
+    <div class="email-block" data-html-path="sequencia-d/D5-proxima-live.html">
+      <div class="email-block-head">
+        <span class="email-block-id">D5</span>
+        <div class="email-block-actions">
+          <a class="email-block-view" href="sequencia-d/D5-proxima-live.html" target="_blank">Abrir preview ↗</a>
+          <button type="button" class="email-block-copy" data-path="sequencia-d/D5-proxima-live.html">📋 Copiar HTML</button>
+        </div>
+      </div>
+      <dl class="email-meta">
+        <dt>Email name</dt>
+        <dd><code class="copyable" title="Clique para copiar">FC · Sequência D · D5 · Como aproveitar as Lives</code></dd>
+        <dt>Subject</dt>
+        <dd><code class="copyable" title="Clique para copiar">Como aproveitar as lives ao máximo</code></dd>
+        <dt>Preheader</dt>
+        <dd><code class="copyable" title="Clique para copiar">Recap do que você já tem em mãos + dicas pra extrair o máximo das lives.</code></dd>
+      </dl>
+    </div>
   <div class="callout">
     <strong>📅 Cuidado com lead que entrar muito perto da Live 1</strong>
-    Quem se inscrever em 02/08 (2 dias antes da L1) vai receber D1 imediatamente, D2 em 04/08 (dia da Live 1), D3 em 06/08 (dia da Live 3 — Lançamento)... a sequência ainda funciona, mas o aluno pode achar estranho receber emails de "boas-vindas" durante a semana das lives. Considere desativar a Sequência D entre <strong>30/07 e 07/08</strong> (parar de aceitar leads na automação) e usar só os broadcasts operacionais. Ou ajustar os delays.
+    Quem se inscrever em 02/08 (2 dias antes da L1) vai receber D1 imediatamente, D2 em 04/08 (dia da Live 1), D3 em 06/08 (dia da Live 3 — Lançamento)... a sequência ainda funciona, mas o aluno pode achar estranho receber emails de "boas-vindas" durante a semana das lives. Considere desativar a Sequência D entre <strong>30/07 e 07/08</strong> e usar só os broadcasts operacionais.
   </div>
 </section>
 
-<!-- ──────────────── 5. CONVITES DAS LIVES ──────────────── -->
+<!-- 5. CONVITES DAS LIVES -->
 <section id="convites">
-  <h2><span class="step">5</span>Agendar 12 broadcasts — Convites das 4 lives</h2>
-
-  <p>Em <strong>Campaigns → Create campaign → Regular campaign</strong>. <strong>3 broadcasts por live</strong> (D-3 manhã · D-0 manhã · AOVIVO 20h).</p>
-
-  <div class="legend">
-    <span><span class="tag tag-d3">D-3</span> 3 dias antes da live, 09h</span>
-    <span><span class="tag tag-d0">D-0</span> Manhã do dia da live, 09h</span>
-    <span><span class="tag tag-aovivo">AOVIVO</span> Hora exata da live, 20h</span>
-  </div>
-
-  <table>
-    <thead>
-      <tr><th>Live · Data</th><th>Tipo</th><th>Data/hora envio</th><th>Email</th><th>Segmento</th></tr>
-    </thead>
-    <tbody>
-      <tr><td rowspan="3"><strong>Live 1</strong><br>ter 04/08 · 20h<br>Débito e Crédito</td><td><span class="tag tag-d3">D-3</span></td><td>sáb <strong>01/08 09h</strong></td><td><a href="broadcasts/convites-lives/live-1-debito-credito/D-3.html" target="_blank">D-3 →</a></td><td>Newsletter + Lista + Lead Magnet</td></tr>
-      <tr><td><span class="tag tag-d0">D-0</span></td><td>ter <strong>04/08 09h</strong></td><td><a href="broadcasts/convites-lives/live-1-debito-credito/D-0.html" target="_blank">D-0 →</a></td><td>Mesmo + groups Live 1-4</td></tr>
-      <tr><td><span class="tag tag-aovivo">AOVIVO</span></td><td>ter <strong>04/08 20h</strong></td><td><a href="broadcasts/convites-lives/live-1-debito-credito/AOVIVO.html" target="_blank">AOVIVO →</a></td><td>Newsletter + Lista + Lead Magnet</td></tr>
-
-      <tr><td rowspan="3"><strong>Live 2</strong><br>qua 05/08 · 20h<br>CPC 51</td><td><span class="tag tag-d3">D-3</span></td><td>dom <strong>02/08 09h</strong></td><td><a href="broadcasts/convites-lives/live-2-cpc-51/D-3.html" target="_blank">D-3 →</a></td><td>Newsletter + Lista + Lead Magnet</td></tr>
-      <tr><td><span class="tag tag-d0">D-0</span></td><td>qua <strong>05/08 09h</strong></td><td><a href="broadcasts/convites-lives/live-2-cpc-51/D-0.html" target="_blank">D-0 →</a></td><td>Mesmo + groups Live 1-4</td></tr>
-      <tr><td><span class="tag tag-aovivo">AOVIVO</span></td><td>qua <strong>05/08 20h</strong></td><td><a href="broadcasts/convites-lives/live-2-cpc-51/AOVIVO.html" target="_blank">AOVIVO →</a></td><td>Newsletter + Lista + Lead Magnet</td></tr>
-
-      <tr><td rowspan="3"><strong>Live 3 🚨</strong><br>qui 06/08 · 20h<br>Lançamento Oficial</td><td><span class="tag tag-d3">D-3</span></td><td>seg <strong>03/08 09h</strong></td><td><a href="broadcasts/convites-lives/live-3-lancamento/D-3.html" target="_blank">D-3 →</a></td><td>Newsletter + Lista + Lead Magnet</td></tr>
-      <tr><td><span class="tag tag-d0">D-0</span></td><td>qui <strong>06/08 09h</strong></td><td><a href="broadcasts/convites-lives/live-3-lancamento/D-0.html" target="_blank">D-0 →</a></td><td>Mesmo + groups Live 1-4</td></tr>
-      <tr><td><span class="tag tag-launch">AOVIVO 🚨</span></td><td>qui <strong>06/08 20h</strong></td><td><a href="broadcasts/convites-lives/live-3-lancamento/AOVIVO.html" target="_blank">AOVIVO →</a></td><td>TODOS (Newsletter + Lista + Lead Magnet + Lives)</td></tr>
-
-      <tr><td rowspan="3"><strong>Live 4</strong><br>sex 07/08 · 20h<br>Tour Plataforma</td><td><span class="tag tag-d3">D-3</span></td><td>ter <strong>04/08 09h</strong></td><td><a href="broadcasts/convites-lives/live-4-plataforma/D-3.html" target="_blank">D-3 →</a></td><td>Newsletter + Lista + Lead Magnet</td></tr>
-      <tr><td><span class="tag tag-d0">D-0</span></td><td>sex <strong>07/08 09h</strong></td><td><a href="broadcasts/convites-lives/live-4-plataforma/D-0.html" target="_blank">D-0 →</a></td><td>Mesmo + groups Live 1-4</td></tr>
-      <tr><td><span class="tag tag-aovivo">AOVIVO</span></td><td>sex <strong>07/08 20h</strong></td><td><a href="broadcasts/convites-lives/live-4-plataforma/AOVIVO.html" target="_blank">AOVIVO →</a></td><td>Newsletter + Lista + Lead Magnet</td></tr>
-    </tbody>
-  </table>
-
-  <div class="callout">
-    <strong>💡 Subject lines já vêm nos HTMLs</strong>
-    Cada arquivo tem <code>&lt;title&gt;</code> que é o subject line. O MailerLite normalmente pré-preenche, mas confirme antes de salvar.
-  </div>
+  <h2><span class="step">5</span>Agendar 12 broadcasts · Convites das 4 lives</h2>
+  <p>Em <strong>Campaigns → Create campaign → Regular campaign</strong>. <strong>3 broadcasts por live</strong> (D-3 manhã · D-0 manhã · AOVIVO 20h). Segmento padrão: <code>Newsletter + Lista + Lead Magnet + Inscritos Lives Ago/26</code>.</p>
+  
+    <div class="convite-live">
+      <h3>Live 1 · ter 04/08 · 20h · Débito e Crédito</h3>
+      <div class="schedule-tag">📅 Envio: <strong>sáb 01/08 · 09h (D-3)</strong></div>
+    <div class="email-block" data-html-path="broadcasts/convites-lives/live-1-debito-credito/D-3.html">
+      <div class="email-block-head">
+        <span class="email-block-id">LIVE1-D3</span>
+        <div class="email-block-actions">
+          <a class="email-block-view" href="broadcasts/convites-lives/live-1-debito-credito/D-3.html" target="_blank">Abrir preview ↗</a>
+          <button type="button" class="email-block-copy" data-path="broadcasts/convites-lives/live-1-debito-credito/D-3.html">📋 Copiar HTML</button>
+        </div>
+      </div>
+      <dl class="email-meta">
+        <dt>Email name</dt>
+        <dd><code class="copyable" title="Clique para copiar">FC · Convite Live 1 (Débito/Crédito) · D-3</code></dd>
+        <dt>Subject</dt>
+        <dd><code class="copyable" title="Clique para copiar">Em 3 dias: live gratuita sobre Débito e Crédito</code></dd>
+        <dt>Preheader</dt>
+        <dd><code class="copyable" title="Clique para copiar">Terça 04/08 às 20h. Inscrição gratuita — só hoje pra você se inscrever.</code></dd>
+      </dl>
+    </div><div class="schedule-tag">📅 Envio: <strong>ter 04/08 · 09h (D-0)</strong></div>
+    <div class="email-block" data-html-path="broadcasts/convites-lives/live-1-debito-credito/D-0.html">
+      <div class="email-block-head">
+        <span class="email-block-id">LIVE1-D0</span>
+        <div class="email-block-actions">
+          <a class="email-block-view" href="broadcasts/convites-lives/live-1-debito-credito/D-0.html" target="_blank">Abrir preview ↗</a>
+          <button type="button" class="email-block-copy" data-path="broadcasts/convites-lives/live-1-debito-credito/D-0.html">📋 Copiar HTML</button>
+        </div>
+      </div>
+      <dl class="email-meta">
+        <dt>Email name</dt>
+        <dd><code class="copyable" title="Clique para copiar">FC · Convite Live 1 (Débito/Crédito) · D-0</code></dd>
+        <dt>Subject</dt>
+        <dd><code class="copyable" title="Clique para copiar">HOJE 20h: Débito e Crédito ao vivo</code></dd>
+        <dt>Preheader</dt>
+        <dd><code class="copyable" title="Clique para copiar">Em algumas horas a Live 1 começa. Última chamada de inscrição.</code></dd>
+      </dl>
+    </div><div class="schedule-tag">📅 Envio: <strong>ter 04/08 · 20h (AOVIVO)</strong></div>
+    <div class="email-block" data-html-path="broadcasts/convites-lives/live-1-debito-credito/AOVIVO.html">
+      <div class="email-block-head">
+        <span class="email-block-id">LIVE1-AV</span>
+        <div class="email-block-actions">
+          <a class="email-block-view" href="broadcasts/convites-lives/live-1-debito-credito/AOVIVO.html" target="_blank">Abrir preview ↗</a>
+          <button type="button" class="email-block-copy" data-path="broadcasts/convites-lives/live-1-debito-credito/AOVIVO.html">📋 Copiar HTML</button>
+        </div>
+      </div>
+      <dl class="email-meta">
+        <dt>Email name</dt>
+        <dd><code class="copyable" title="Clique para copiar">FC · Convite Live 1 (Débito/Crédito) · AOVIVO</code></dd>
+        <dt>Subject</dt>
+        <dd><code class="copyable" title="Clique para copiar">🔴 AO VIVO AGORA: Débito e Crédito</code></dd>
+        <dt>Preheader</dt>
+        <dd><code class="copyable" title="Clique para copiar">Live 1 começou agora. Entra aqui antes do bicho pegar.</code></dd>
+      </dl>
+    </div>
+    </div>
+    <div class="convite-live">
+      <h3>Live 2 · qua 05/08 · 20h · CPC 51</h3>
+      <div class="schedule-tag">📅 Envio: <strong>dom 02/08 · 09h (D-3)</strong></div>
+    <div class="email-block" data-html-path="broadcasts/convites-lives/live-2-cpc-51/D-3.html">
+      <div class="email-block-head">
+        <span class="email-block-id">LIVE2-D3</span>
+        <div class="email-block-actions">
+          <a class="email-block-view" href="broadcasts/convites-lives/live-2-cpc-51/D-3.html" target="_blank">Abrir preview ↗</a>
+          <button type="button" class="email-block-copy" data-path="broadcasts/convites-lives/live-2-cpc-51/D-3.html">📋 Copiar HTML</button>
+        </div>
+      </div>
+      <dl class="email-meta">
+        <dt>Email name</dt>
+        <dd><code class="copyable" title="Clique para copiar">FC · Convite Live 2 (CPC 51) · D-3</code></dd>
+        <dt>Subject</dt>
+        <dd><code class="copyable" title="Clique para copiar">Em 3 dias: live gratuita sobre CPC 51</code></dd>
+        <dt>Preheader</dt>
+        <dd><code class="copyable" title="Clique para copiar">Quarta 05/08 às 20h. Inscrição gratuita — entra antes do bicho pegar.</code></dd>
+      </dl>
+    </div><div class="schedule-tag">📅 Envio: <strong>qua 05/08 · 09h (D-0)</strong></div>
+    <div class="email-block" data-html-path="broadcasts/convites-lives/live-2-cpc-51/D-0.html">
+      <div class="email-block-head">
+        <span class="email-block-id">LIVE2-D0</span>
+        <div class="email-block-actions">
+          <a class="email-block-view" href="broadcasts/convites-lives/live-2-cpc-51/D-0.html" target="_blank">Abrir preview ↗</a>
+          <button type="button" class="email-block-copy" data-path="broadcasts/convites-lives/live-2-cpc-51/D-0.html">📋 Copiar HTML</button>
+        </div>
+      </div>
+      <dl class="email-meta">
+        <dt>Email name</dt>
+        <dd><code class="copyable" title="Clique para copiar">FC · Convite Live 2 (CPC 51) · D-0</code></dd>
+        <dt>Subject</dt>
+        <dd><code class="copyable" title="Clique para copiar">HOJE 20h: CPC 51 ao vivo</code></dd>
+        <dt>Preheader</dt>
+        <dd><code class="copyable" title="Clique para copiar">Em algumas horas a Live 2 começa. Última chamada de inscrição.</code></dd>
+      </dl>
+    </div><div class="schedule-tag">📅 Envio: <strong>qua 05/08 · 20h (AOVIVO)</strong></div>
+    <div class="email-block" data-html-path="broadcasts/convites-lives/live-2-cpc-51/AOVIVO.html">
+      <div class="email-block-head">
+        <span class="email-block-id">LIVE2-AV</span>
+        <div class="email-block-actions">
+          <a class="email-block-view" href="broadcasts/convites-lives/live-2-cpc-51/AOVIVO.html" target="_blank">Abrir preview ↗</a>
+          <button type="button" class="email-block-copy" data-path="broadcasts/convites-lives/live-2-cpc-51/AOVIVO.html">📋 Copiar HTML</button>
+        </div>
+      </div>
+      <dl class="email-meta">
+        <dt>Email name</dt>
+        <dd><code class="copyable" title="Clique para copiar">FC · Convite Live 2 (CPC 51) · AOVIVO</code></dd>
+        <dt>Subject</dt>
+        <dd><code class="copyable" title="Clique para copiar">🔴 AO VIVO AGORA: CPC 51</code></dd>
+        <dt>Preheader</dt>
+        <dd><code class="copyable" title="Clique para copiar">Live 2 começou agora. Entra aqui antes do bicho pegar.</code></dd>
+      </dl>
+    </div>
+    </div>
+    <div class="convite-live">
+      <h3>Live 3 🚨 · qui 06/08 · 20h · Lançamento Oficial</h3>
+      <div class="schedule-tag">📅 Envio: <strong>seg 03/08 · 09h (D-3)</strong></div>
+    <div class="email-block" data-html-path="broadcasts/convites-lives/live-3-lancamento/D-3.html">
+      <div class="email-block-head">
+        <span class="email-block-id">LIVE3-D3</span>
+        <div class="email-block-actions">
+          <a class="email-block-view" href="broadcasts/convites-lives/live-3-lancamento/D-3.html" target="_blank">Abrir preview ↗</a>
+          <button type="button" class="email-block-copy" data-path="broadcasts/convites-lives/live-3-lancamento/D-3.html">📋 Copiar HTML</button>
+        </div>
+      </div>
+      <dl class="email-meta">
+        <dt>Email name</dt>
+        <dd><code class="copyable" title="Clique para copiar">FC · Convite Live 3 (Lançamento) · D-3</code></dd>
+        <dt>Subject</dt>
+        <dd><code class="copyable" title="Clique para copiar">Em 3 dias: live gratuita sobre o Lançamento Oficial</code></dd>
+        <dt>Preheader</dt>
+        <dd><code class="copyable" title="Clique para copiar">Quinta 06/08 às 20h. Inscrição gratuita — vale estar presente, evento único.</code></dd>
+      </dl>
+    </div><div class="schedule-tag">📅 Envio: <strong>qui 06/08 · 09h (D-0)</strong></div>
+    <div class="email-block" data-html-path="broadcasts/convites-lives/live-3-lancamento/D-0.html">
+      <div class="email-block-head">
+        <span class="email-block-id">LIVE3-D0</span>
+        <div class="email-block-actions">
+          <a class="email-block-view" href="broadcasts/convites-lives/live-3-lancamento/D-0.html" target="_blank">Abrir preview ↗</a>
+          <button type="button" class="email-block-copy" data-path="broadcasts/convites-lives/live-3-lancamento/D-0.html">📋 Copiar HTML</button>
+        </div>
+      </div>
+      <dl class="email-meta">
+        <dt>Email name</dt>
+        <dd><code class="copyable" title="Clique para copiar">FC · Convite Live 3 (Lançamento) · D-0</code></dd>
+        <dt>Subject</dt>
+        <dd><code class="copyable" title="Clique para copiar">HOJE 20h: Lançamento Oficial ao vivo</code></dd>
+        <dt>Preheader</dt>
+        <dd><code class="copyable" title="Clique para copiar">Em algumas horas a Live 3 começa. A janela do Acesso Fundador abre ao vivo.</code></dd>
+      </dl>
+    </div><div class="schedule-tag">📅 Envio: <strong>qui 06/08 · 20h (AOVIVO)</strong></div>
+    <div class="email-block" data-html-path="broadcasts/convites-lives/live-3-lancamento/AOVIVO.html">
+      <div class="email-block-head">
+        <span class="email-block-id">LIVE3-AV</span>
+        <div class="email-block-actions">
+          <a class="email-block-view" href="broadcasts/convites-lives/live-3-lancamento/AOVIVO.html" target="_blank">Abrir preview ↗</a>
+          <button type="button" class="email-block-copy" data-path="broadcasts/convites-lives/live-3-lancamento/AOVIVO.html">📋 Copiar HTML</button>
+        </div>
+      </div>
+      <dl class="email-meta">
+        <dt>Email name</dt>
+        <dd><code class="copyable" title="Clique para copiar">FC · Convite Live 3 (Lançamento) · AOVIVO</code></dd>
+        <dt>Subject</dt>
+        <dd><code class="copyable" title="Clique para copiar">🔴 AO VIVO AGORA: Lançamento Oficial</code></dd>
+        <dt>Preheader</dt>
+        <dd><code class="copyable" title="Clique para copiar">Live 3 começou agora. Entra aqui antes do bicho pegar.</code></dd>
+      </dl>
+    </div>
+    </div>
+    <div class="convite-live">
+      <h3>Live 4 · sex 07/08 · 20h · Tour pela Plataforma</h3>
+      <div class="schedule-tag">📅 Envio: <strong>ter 04/08 · 09h (D-3)</strong></div>
+    <div class="email-block" data-html-path="broadcasts/convites-lives/live-4-plataforma/D-3.html">
+      <div class="email-block-head">
+        <span class="email-block-id">LIVE4-D3</span>
+        <div class="email-block-actions">
+          <a class="email-block-view" href="broadcasts/convites-lives/live-4-plataforma/D-3.html" target="_blank">Abrir preview ↗</a>
+          <button type="button" class="email-block-copy" data-path="broadcasts/convites-lives/live-4-plataforma/D-3.html">📋 Copiar HTML</button>
+        </div>
+      </div>
+      <dl class="email-meta">
+        <dt>Email name</dt>
+        <dd><code class="copyable" title="Clique para copiar">FC · Convite Live 4 (Plataforma) · D-3</code></dd>
+        <dt>Subject</dt>
+        <dd><code class="copyable" title="Clique para copiar">Em 3 dias: live gratuita sobre a Plataforma</code></dd>
+        <dt>Preheader</dt>
+        <dd><code class="copyable" title="Clique para copiar">Sexta 07/08 às 20h. Inscrição gratuita — última chance de ver a plataforma ao vivo.</code></dd>
+      </dl>
+    </div><div class="schedule-tag">📅 Envio: <strong>sex 07/08 · 09h (D-0)</strong></div>
+    <div class="email-block" data-html-path="broadcasts/convites-lives/live-4-plataforma/D-0.html">
+      <div class="email-block-head">
+        <span class="email-block-id">LIVE4-D0</span>
+        <div class="email-block-actions">
+          <a class="email-block-view" href="broadcasts/convites-lives/live-4-plataforma/D-0.html" target="_blank">Abrir preview ↗</a>
+          <button type="button" class="email-block-copy" data-path="broadcasts/convites-lives/live-4-plataforma/D-0.html">📋 Copiar HTML</button>
+        </div>
+      </div>
+      <dl class="email-meta">
+        <dt>Email name</dt>
+        <dd><code class="copyable" title="Clique para copiar">FC · Convite Live 4 (Plataforma) · D-0</code></dd>
+        <dt>Subject</dt>
+        <dd><code class="copyable" title="Clique para copiar">HOJE 20h: Tour pela Plataforma ao vivo</code></dd>
+        <dt>Preheader</dt>
+        <dd><code class="copyable" title="Clique para copiar">Em algumas horas a Live 4 começa. Último encontro da série.</code></dd>
+      </dl>
+    </div><div class="schedule-tag">📅 Envio: <strong>sex 07/08 · 20h (AOVIVO)</strong></div>
+    <div class="email-block" data-html-path="broadcasts/convites-lives/live-4-plataforma/AOVIVO.html">
+      <div class="email-block-head">
+        <span class="email-block-id">LIVE4-AV</span>
+        <div class="email-block-actions">
+          <a class="email-block-view" href="broadcasts/convites-lives/live-4-plataforma/AOVIVO.html" target="_blank">Abrir preview ↗</a>
+          <button type="button" class="email-block-copy" data-path="broadcasts/convites-lives/live-4-plataforma/AOVIVO.html">📋 Copiar HTML</button>
+        </div>
+      </div>
+      <dl class="email-meta">
+        <dt>Email name</dt>
+        <dd><code class="copyable" title="Clique para copiar">FC · Convite Live 4 (Plataforma) · AOVIVO</code></dd>
+        <dt>Subject</dt>
+        <dd><code class="copyable" title="Clique para copiar">🔴 AO VIVO AGORA: Tour pela Plataforma</code></dd>
+        <dt>Preheader</dt>
+        <dd><code class="copyable" title="Clique para copiar">Live 4 começou agora. Entra aqui antes do bicho pegar.</code></dd>
+      </dl>
+    </div>
+    </div>
 </section>
 
-<!-- ──────────────── 6. SEQUÊNCIA E ENXUTA ──────────────── -->
+<!-- 6. SEQUÊNCIA E ENXUTA -->
 <section id="sequencia-e">
-  <h2><span class="step">6</span>Agendar 8 broadcasts — Sequência E enxuta (operacional)</h2>
-
-  <p>Esses são lembretes <strong>SÓ pra quem se inscreveu na live</strong>. 2 emails por live: véspera 18h + AOVIVO 19h55.</p>
-
-  <table>
-    <thead>
-      <tr><th>Live</th><th>Tipo</th><th>Data/hora envio</th><th>Email</th><th>Segmento</th></tr>
-    </thead>
-    <tbody>
-      <tr><td rowspan="2"><strong>Live 1</strong><br>ter 04/08 · 20h</td><td>Véspera 18h</td><td>seg <strong>03/08 18h</strong></td><td><a href="sequencia-e/live-1-vespera.html" target="_blank">Véspera →</a></td><td>Group <strong>Live 1</strong></td></tr>
-      <tr><td>AOVIVO 19h55</td><td>ter <strong>04/08 19h55</strong></td><td><a href="sequencia-e/live-1-aovivo.html" target="_blank">AOVIVO →</a></td><td>Group <strong>Live 1</strong></td></tr>
-
-      <tr><td rowspan="2"><strong>Live 2</strong><br>qua 05/08 · 20h</td><td>Véspera 18h</td><td>ter <strong>04/08 18h</strong></td><td><a href="sequencia-e/live-2-vespera.html" target="_blank">Véspera →</a></td><td>Group <strong>Live 2</strong></td></tr>
-      <tr><td>AOVIVO 19h55</td><td>qua <strong>05/08 19h55</strong></td><td><a href="sequencia-e/live-2-aovivo.html" target="_blank">AOVIVO →</a></td><td>Group <strong>Live 2</strong></td></tr>
-
-      <tr><td rowspan="2"><strong>Live 3 🚨</strong><br>qui 06/08 · 20h</td><td>Véspera 18h</td><td>qua <strong>05/08 18h</strong></td><td><a href="sequencia-e/live-3-vespera.html" target="_blank">Véspera →</a></td><td>Group <strong>Live 3</strong></td></tr>
-      <tr><td><span class="tag tag-launch">AOVIVO</span></td><td>qui <strong>06/08 19h55</strong></td><td><a href="sequencia-e/live-3-aovivo.html" target="_blank">AOVIVO →</a></td><td>Group <strong>Live 3</strong></td></tr>
-
-      <tr><td rowspan="2"><strong>Live 4</strong><br>sex 07/08 · 20h</td><td>Véspera 18h</td><td>qui <strong>06/08 18h</strong></td><td><a href="sequencia-e/live-4-vespera.html" target="_blank">Véspera →</a></td><td>Group <strong>Live 4</strong></td></tr>
-      <tr><td>AOVIVO 19h55</td><td>sex <strong>07/08 19h55</strong></td><td><a href="sequencia-e/live-4-aovivo.html" target="_blank">AOVIVO →</a></td><td>Group <strong>Live 4</strong></td></tr>
-    </tbody>
-  </table>
-
+  <h2><span class="step">6</span>Agendar 8 broadcasts · Sequência E enxuta</h2>
+  <p>Lembretes <strong>SÓ pra quem se inscreveu nas lives</strong> (segmento = group <code>Inscritos Lives Ago/26</code>). 2 emails por live: véspera 18h + AOVIVO 19h55.</p>
+  
+    <div class="convite-live">
+      <h3>Live 1 · ter 04/08 · 20h</h3>
+      <div class="schedule-tag">📅 Envio: <strong>seg 03/08 · 18h (Véspera)</strong> · Segmento: <code>group "Inscritos Lives Ago/26"</code></div>
+    <div class="email-block" data-html-path="sequencia-e/live-1-vespera.html">
+      <div class="email-block-head">
+        <span class="email-block-id">E1-VESP</span>
+        <div class="email-block-actions">
+          <a class="email-block-view" href="sequencia-e/live-1-vespera.html" target="_blank">Abrir preview ↗</a>
+          <button type="button" class="email-block-copy" data-path="sequencia-e/live-1-vespera.html">📋 Copiar HTML</button>
+        </div>
+      </div>
+      <dl class="email-meta">
+        <dt>Email name</dt>
+        <dd><code class="copyable" title="Clique para copiar">FC · Sequência E · Live 1 · Véspera</code></dd>
+        <dt>Subject</dt>
+        <dd><code class="copyable" title="Clique para copiar">Amanhã 20h: Live 1 — Débito e Crédito</code></dd>
+        <dt>Preheader</dt>
+        <dd><code class="copyable" title="Clique para copiar">Amanhã, segunda 04/08, 20h. A base de todo o resto.</code></dd>
+      </dl>
+    </div><div class="schedule-tag">📅 Envio: <strong>ter 04/08 · 19h55 (AOVIVO)</strong> · Segmento: <code>group "Inscritos Lives Ago/26"</code></div>
+    <div class="email-block" data-html-path="sequencia-e/live-1-aovivo.html">
+      <div class="email-block-head">
+        <span class="email-block-id">E1-AV</span>
+        <div class="email-block-actions">
+          <a class="email-block-view" href="sequencia-e/live-1-aovivo.html" target="_blank">Abrir preview ↗</a>
+          <button type="button" class="email-block-copy" data-path="sequencia-e/live-1-aovivo.html">📋 Copiar HTML</button>
+        </div>
+      </div>
+      <dl class="email-meta">
+        <dt>Email name</dt>
+        <dd><code class="copyable" title="Clique para copiar">FC · Sequência E · Live 1 · AOVIVO</code></dd>
+        <dt>Subject</dt>
+        <dd><code class="copyable" title="Clique para copiar">🔴 Live 1 começando agora: Débito e Crédito</code></dd>
+        <dt>Preheader</dt>
+        <dd><code class="copyable" title="Clique para copiar">Tá no ar a Live 1. Entra antes do bicho pegar.</code></dd>
+      </dl>
+    </div>
+    </div>
+    <div class="convite-live">
+      <h3>Live 2 · qua 05/08 · 20h</h3>
+      <div class="schedule-tag">📅 Envio: <strong>ter 04/08 · 18h (Véspera)</strong> · Segmento: <code>group "Inscritos Lives Ago/26"</code></div>
+    <div class="email-block" data-html-path="sequencia-e/live-2-vespera.html">
+      <div class="email-block-head">
+        <span class="email-block-id">E2-VESP</span>
+        <div class="email-block-actions">
+          <a class="email-block-view" href="sequencia-e/live-2-vespera.html" target="_blank">Abrir preview ↗</a>
+          <button type="button" class="email-block-copy" data-path="sequencia-e/live-2-vespera.html">📋 Copiar HTML</button>
+        </div>
+      </div>
+      <dl class="email-meta">
+        <dt>Email name</dt>
+        <dd><code class="copyable" title="Clique para copiar">FC · Sequência E · Live 2 · Véspera</code></dd>
+        <dt>Subject</dt>
+        <dd><code class="copyable" title="Clique para copiar">Amanhã 20h: Live 2 — CPC 51</code></dd>
+        <dt>Preheader</dt>
+        <dd><code class="copyable" title="Clique para copiar">Amanhã, terça 05/08, 20h. Onde mais gente perde ponto.</code></dd>
+      </dl>
+    </div><div class="schedule-tag">📅 Envio: <strong>qua 05/08 · 19h55 (AOVIVO)</strong> · Segmento: <code>group "Inscritos Lives Ago/26"</code></div>
+    <div class="email-block" data-html-path="sequencia-e/live-2-aovivo.html">
+      <div class="email-block-head">
+        <span class="email-block-id">E2-AV</span>
+        <div class="email-block-actions">
+          <a class="email-block-view" href="sequencia-e/live-2-aovivo.html" target="_blank">Abrir preview ↗</a>
+          <button type="button" class="email-block-copy" data-path="sequencia-e/live-2-aovivo.html">📋 Copiar HTML</button>
+        </div>
+      </div>
+      <dl class="email-meta">
+        <dt>Email name</dt>
+        <dd><code class="copyable" title="Clique para copiar">FC · Sequência E · Live 2 · AOVIVO</code></dd>
+        <dt>Subject</dt>
+        <dd><code class="copyable" title="Clique para copiar">🔴 Live 2 começando agora: CPC 51</code></dd>
+        <dt>Preheader</dt>
+        <dd><code class="copyable" title="Clique para copiar">Tá no ar a Live 2. Entra antes do bicho pegar.</code></dd>
+      </dl>
+    </div>
+    </div>
+    <div class="convite-live">
+      <h3>Live 3 🚨 · qui 06/08 · 20h</h3>
+      <div class="schedule-tag">📅 Envio: <strong>qua 05/08 · 18h (Véspera)</strong> · Segmento: <code>group "Inscritos Lives Ago/26"</code></div>
+    <div class="email-block" data-html-path="sequencia-e/live-3-vespera.html">
+      <div class="email-block-head">
+        <span class="email-block-id">E3-VESP</span>
+        <div class="email-block-actions">
+          <a class="email-block-view" href="sequencia-e/live-3-vespera.html" target="_blank">Abrir preview ↗</a>
+          <button type="button" class="email-block-copy" data-path="sequencia-e/live-3-vespera.html">📋 Copiar HTML</button>
+        </div>
+      </div>
+      <dl class="email-meta">
+        <dt>Email name</dt>
+        <dd><code class="copyable" title="Clique para copiar">FC · Sequência E · Live 3 · Véspera</code></dd>
+        <dt>Subject</dt>
+        <dd><code class="copyable" title="Clique para copiar">Amanhã 20h: Live 3 — Lançamento Oficial</code></dd>
+        <dt>Preheader</dt>
+        <dd><code class="copyable" title="Clique para copiar">Amanhã, quarta 06/08, 20h. As vagas do Fluência Contábil entram no ar.</code></dd>
+      </dl>
+    </div><div class="schedule-tag">📅 Envio: <strong>qui 06/08 · 19h55 (AOVIVO)</strong> · Segmento: <code>group "Inscritos Lives Ago/26"</code></div>
+    <div class="email-block" data-html-path="sequencia-e/live-3-aovivo.html">
+      <div class="email-block-head">
+        <span class="email-block-id">E3-AV</span>
+        <div class="email-block-actions">
+          <a class="email-block-view" href="sequencia-e/live-3-aovivo.html" target="_blank">Abrir preview ↗</a>
+          <button type="button" class="email-block-copy" data-path="sequencia-e/live-3-aovivo.html">📋 Copiar HTML</button>
+        </div>
+      </div>
+      <dl class="email-meta">
+        <dt>Email name</dt>
+        <dd><code class="copyable" title="Clique para copiar">FC · Sequência E · Live 3 · AOVIVO</code></dd>
+        <dt>Subject</dt>
+        <dd><code class="copyable" title="Clique para copiar">🔴 Live 3 começando agora: Lançamento Oficial</code></dd>
+        <dt>Preheader</dt>
+        <dd><code class="copyable" title="Clique para copiar">Tá no ar a Live 3. Entra antes do bicho pegar.</code></dd>
+      </dl>
+    </div>
+    </div>
+    <div class="convite-live">
+      <h3>Live 4 · sex 07/08 · 20h</h3>
+      <div class="schedule-tag">📅 Envio: <strong>qui 06/08 · 18h (Véspera)</strong> · Segmento: <code>group "Inscritos Lives Ago/26"</code></div>
+    <div class="email-block" data-html-path="sequencia-e/live-4-vespera.html">
+      <div class="email-block-head">
+        <span class="email-block-id">E4-VESP</span>
+        <div class="email-block-actions">
+          <a class="email-block-view" href="sequencia-e/live-4-vespera.html" target="_blank">Abrir preview ↗</a>
+          <button type="button" class="email-block-copy" data-path="sequencia-e/live-4-vespera.html">📋 Copiar HTML</button>
+        </div>
+      </div>
+      <dl class="email-meta">
+        <dt>Email name</dt>
+        <dd><code class="copyable" title="Clique para copiar">FC · Sequência E · Live 4 · Véspera</code></dd>
+        <dt>Subject</dt>
+        <dd><code class="copyable" title="Clique para copiar">Amanhã 20h: Live 4 — Tour pela Plataforma</code></dd>
+        <dt>Preheader</dt>
+        <dd><code class="copyable" title="Clique para copiar">Amanhã, quinta 07/08, 20h. Tour ao vivo · última noite da série.</code></dd>
+      </dl>
+    </div><div class="schedule-tag">📅 Envio: <strong>sex 07/08 · 19h55 (AOVIVO)</strong> · Segmento: <code>group "Inscritos Lives Ago/26"</code></div>
+    <div class="email-block" data-html-path="sequencia-e/live-4-aovivo.html">
+      <div class="email-block-head">
+        <span class="email-block-id">E4-AV</span>
+        <div class="email-block-actions">
+          <a class="email-block-view" href="sequencia-e/live-4-aovivo.html" target="_blank">Abrir preview ↗</a>
+          <button type="button" class="email-block-copy" data-path="sequencia-e/live-4-aovivo.html">📋 Copiar HTML</button>
+        </div>
+      </div>
+      <dl class="email-meta">
+        <dt>Email name</dt>
+        <dd><code class="copyable" title="Clique para copiar">FC · Sequência E · Live 4 · AOVIVO</code></dd>
+        <dt>Subject</dt>
+        <dd><code class="copyable" title="Clique para copiar">🔴 Live 4 começando agora: Tour pela Plataforma</code></dd>
+        <dt>Preheader</dt>
+        <dd><code class="copyable" title="Clique para copiar">Tá no ar a Live 4. Entra antes do bicho pegar.</code></dd>
+      </dl>
+    </div>
+    </div>
   <div class="callout">
-    <strong>📌 Por que é broadcast e não automation?</strong>
-    Como o disparo é em data/hora <em>fixa</em> (não relativo à inscrição), broadcast agendado é mais simples e confiável. O segmento já filtra só quem entrou no group da live correspondente.
+    <strong>📌 Por que broadcast e não automation?</strong>
+    Como o disparo é em data/hora <em>fixa</em> (não relativo à inscrição), broadcast agendado é mais simples e confiável. O segmento já filtra só quem está no group.
   </div>
 </section>
 
-<!-- ──────────────── 7. BROADCASTS L1-L7 ──────────────── -->
+<!-- 7. LANÇAMENTO L1-L7 -->
 <section id="broadcasts-lancamento">
-  <h2><span class="step">7</span>Agendar 7 broadcasts L1-L7 — Lançamento</h2>
-
-  <p>Esses são os <strong>broadcasts de venda</strong>. L1-L3 trabalham o pré-lives. L4-L7 disparam DEPOIS da Live 3 (carrinho aberto) com CTA pro checkout Kiwify (<code>https://pay.kiwify.com.br/Ze6v1aC</code>).</p>
-
-  <table>
-    <thead>
-      <tr><th>#</th><th>Data/hora envio</th><th>Email</th><th>Tema</th><th>Segmento</th></tr>
-    </thead>
-    <tbody>
-      <tr><td><strong>L1</strong></td><td>seg <strong>27/07 09h</strong></td><td><a href="broadcasts/lancamento/L1-anuncio.html" target="_blank">L1 →</a></td><td>"Em 1 semana abrem as 4 lives" + 2 tiers Pioneiro/Fundador</td><td>Newsletter + Lista + Lead Magnet</td></tr>
-      <tr><td><strong>L2</strong></td><td>sex <strong>31/07 09h</strong></td><td><a href="broadcasts/lancamento/L2-por-que-anual.html" target="_blank">L2 →</a></td><td>"Por que só anual?" — quebra de objeção</td><td>Newsletter + Lista + Lead Magnet</td></tr>
-      <tr><td><strong>L3</strong></td><td>seg <strong>03/08 18h</strong></td><td><a href="broadcasts/lancamento/L3-vespera.html" target="_blank">L3 →</a></td><td>"Amanhã começa" — véspera Live 1</td><td>Todos (Newsletter + Lista + Lead Magnet + groups Live)</td></tr>
-      <tr><td><strong>L4</strong></td><td>sáb <strong>08/08 09h</strong></td><td><a href="broadcasts/lancamento/L4-pos-lives-roi.html" target="_blank">L4 →</a></td><td>Pós-lives · ROI anual · 9 dias na janela</td><td>Todos (com CTA Kiwify)</td></tr>
-      <tr><td><strong>L5</strong></td><td>qui <strong>13/08 18h</strong></td><td><a href="broadcasts/lancamento/L5-depoimentos.html" target="_blank">L5 →</a></td><td>Depoimentos · "faltam 3 dias" · escassez</td><td>Todos engajados (excluir quem já comprou)</td></tr>
-      <tr><td><strong>L6</strong></td><td>dom <strong>16/08 09h</strong></td><td><a href="broadcasts/lancamento/L6-ultimo-dia.html" target="_blank">L6 →</a></td><td>"Hoje encerra" + FAQ rápido</td><td>Todos engajados (excluir compradores)</td></tr>
-      <tr><td><span class="tag tag-launch">L7 · ÚLTIMA</span></td><td>dom <strong>16/08 19h</strong></td><td><a href="broadcasts/lancamento/L7-ultima-chamada.html" target="_blank">L7 →</a></td><td>"ÚLTIMA CHAMADA — 5h pra encerrar"</td><td>Todos engajados (excluir compradores)</td></tr>
-    </tbody>
-  </table>
-
+  <h2><span class="step">7</span>Agendar 7 broadcasts L1-L7 · Lançamento</h2>
+  <p>Broadcasts de venda. L1-L3 pré-lives. L4-L7 pós Live 3 (carrinho aberto) com CTA pro checkout Kiwify (<code>https://pay.kiwify.com.br/Ze6v1aC</code>).</p>
+  <div class="schedule-tag">📅 Envio: <strong>seg 27/07 · 09h</strong> · Segmento: Newsletter + Lista + Lead Magnet + Lives</div>
+    <div class="email-block" data-html-path="broadcasts/lancamento/L1-anuncio.html">
+      <div class="email-block-head">
+        <span class="email-block-id">L1</span>
+        <div class="email-block-actions">
+          <a class="email-block-view" href="broadcasts/lancamento/L1-anuncio.html" target="_blank">Abrir preview ↗</a>
+          <button type="button" class="email-block-copy" data-path="broadcasts/lancamento/L1-anuncio.html">📋 Copiar HTML</button>
+        </div>
+      </div>
+      <dl class="email-meta">
+        <dt>Email name</dt>
+        <dd><code class="copyable" title="Clique para copiar">FC · Lançamento · L1 · Anúncio</code></dd>
+        <dt>Subject</dt>
+        <dd><code class="copyable" title="Clique para copiar">Em 1 semana abrem as 4 lives gratuitas</code></dd>
+        <dt>Preheader</dt>
+        <dd><code class="copyable" title="Clique para copiar">04/08 a 07/08 — Códigos → Palavra → Casa abre → Casa por dentro.</code></dd>
+      </dl>
+    </div><div class="schedule-tag">📅 Envio: <strong>sex 31/07 · 09h</strong> · Segmento: Newsletter + Lista + Lead Magnet + Lives</div>
+    <div class="email-block" data-html-path="broadcasts/lancamento/L2-por-que-anual.html">
+      <div class="email-block-head">
+        <span class="email-block-id">L2</span>
+        <div class="email-block-actions">
+          <a class="email-block-view" href="broadcasts/lancamento/L2-por-que-anual.html" target="_blank">Abrir preview ↗</a>
+          <button type="button" class="email-block-copy" data-path="broadcasts/lancamento/L2-por-que-anual.html">📋 Copiar HTML</button>
+        </div>
+      </div>
+      <dl class="email-meta">
+        <dt>Email name</dt>
+        <dd><code class="copyable" title="Clique para copiar">FC · Lançamento · L2 · Por que só anual</code></dd>
+        <dt>Subject</dt>
+        <dd><code class="copyable" title="Clique para copiar">Por que só anual? (e por que isso te interessa)</code></dd>
+        <dt>Preheader</dt>
+        <dd><code class="copyable" title="Clique para copiar">A modalidade premium da janela do lançamento — e o motivo.</code></dd>
+      </dl>
+    </div><div class="schedule-tag">📅 Envio: <strong>seg 03/08 · 18h</strong> · Segmento: Todos (Newsletter + Lista + Lead Magnet + Lives)</div>
+    <div class="email-block" data-html-path="broadcasts/lancamento/L3-vespera.html">
+      <div class="email-block-head">
+        <span class="email-block-id">L3</span>
+        <div class="email-block-actions">
+          <a class="email-block-view" href="broadcasts/lancamento/L3-vespera.html" target="_blank">Abrir preview ↗</a>
+          <button type="button" class="email-block-copy" data-path="broadcasts/lancamento/L3-vespera.html">📋 Copiar HTML</button>
+        </div>
+      </div>
+      <dl class="email-meta">
+        <dt>Email name</dt>
+        <dd><code class="copyable" title="Clique para copiar">FC · Lançamento · L3 · Véspera Live 1</code></dd>
+        <dt>Subject</dt>
+        <dd><code class="copyable" title="Clique para copiar">Amanhã 20h: começa a semana das 4 lives</code></dd>
+        <dt>Preheader</dt>
+        <dd><code class="copyable" title="Clique para copiar">Live 1 — Débito e Crédito. Onde tudo começa.</code></dd>
+      </dl>
+    </div><div class="schedule-tag">📅 Envio: <strong>sáb 08/08 · 09h</strong> · Segmento: Todos (com CTA Kiwify)</div>
+    <div class="email-block" data-html-path="broadcasts/lancamento/L4-pos-lives-roi.html">
+      <div class="email-block-head">
+        <span class="email-block-id">L4</span>
+        <div class="email-block-actions">
+          <a class="email-block-view" href="broadcasts/lancamento/L4-pos-lives-roi.html" target="_blank">Abrir preview ↗</a>
+          <button type="button" class="email-block-copy" data-path="broadcasts/lancamento/L4-pos-lives-roi.html">📋 Copiar HTML</button>
+        </div>
+      </div>
+      <dl class="email-meta">
+        <dt>Email name</dt>
+        <dd><code class="copyable" title="Clique para copiar">FC · Lançamento · L4 · Pós-Lives ROI</code></dd>
+        <dt>Subject</dt>
+        <dd><code class="copyable" title="Clique para copiar">Acabou a semana de lives — restam 9d na janela</code></dd>
+        <dt>Preheader</dt>
+        <dd><code class="copyable" title="Clique para copiar">Anual R$ 814,80 ou 12× R$ 67,90. ROI de uma aprovação.</code></dd>
+      </dl>
+    </div><div class="schedule-tag">📅 Envio: <strong>qui 13/08 · 18h</strong> · Segmento: Todos engajados (excluir compradores)</div>
+    <div class="email-block" data-html-path="broadcasts/lancamento/L5-depoimentos.html">
+      <div class="email-block-head">
+        <span class="email-block-id">L5</span>
+        <div class="email-block-actions">
+          <a class="email-block-view" href="broadcasts/lancamento/L5-depoimentos.html" target="_blank">Abrir preview ↗</a>
+          <button type="button" class="email-block-copy" data-path="broadcasts/lancamento/L5-depoimentos.html">📋 Copiar HTML</button>
+        </div>
+      </div>
+      <dl class="email-meta">
+        <dt>Email name</dt>
+        <dd><code class="copyable" title="Clique para copiar">FC · Lançamento · L5 · Depoimentos</code></dd>
+        <dt>Subject</dt>
+        <dd><code class="copyable" title="Clique para copiar">Amanhã encerra (alguns que já estão dentro)</code></dd>
+        <dt>Preheader</dt>
+        <dd><code class="copyable" title="Clique para copiar">Quem decidiu cedo na janela — e o que está dizendo.</code></dd>
+      </dl>
+    </div><div class="schedule-tag">📅 Envio: <strong>dom 16/08 · 09h</strong> · Segmento: Todos engajados (excluir compradores)</div>
+    <div class="email-block" data-html-path="broadcasts/lancamento/L6-ultimo-dia.html">
+      <div class="email-block-head">
+        <span class="email-block-id">L6</span>
+        <div class="email-block-actions">
+          <a class="email-block-view" href="broadcasts/lancamento/L6-ultimo-dia.html" target="_blank">Abrir preview ↗</a>
+          <button type="button" class="email-block-copy" data-path="broadcasts/lancamento/L6-ultimo-dia.html">📋 Copiar HTML</button>
+        </div>
+      </div>
+      <dl class="email-meta">
+        <dt>Email name</dt>
+        <dd><code class="copyable" title="Clique para copiar">FC · Lançamento · L6 · Último Dia</code></dd>
+        <dt>Subject</dt>
+        <dd><code class="copyable" title="Clique para copiar">ÚLTIMO DIA · janela do Acesso Fundador encerra hoje 23h59</code></dd>
+        <dt>Preheader</dt>
+        <dd><code class="copyable" title="Clique para copiar">FAQ rápido pra quem tá decidindo agora.</code></dd>
+      </dl>
+    </div><div class="schedule-tag">📅 Envio: <strong>dom 16/08 · 19h</strong> · Segmento: Todos engajados (excluir compradores)</div>
+    <div class="email-block" data-html-path="broadcasts/lancamento/L7-ultima-chamada.html">
+      <div class="email-block-head">
+        <span class="email-block-id">L7</span>
+        <div class="email-block-actions">
+          <a class="email-block-view" href="broadcasts/lancamento/L7-ultima-chamada.html" target="_blank">Abrir preview ↗</a>
+          <button type="button" class="email-block-copy" data-path="broadcasts/lancamento/L7-ultima-chamada.html">📋 Copiar HTML</button>
+        </div>
+      </div>
+      <dl class="email-meta">
+        <dt>Email name</dt>
+        <dd><code class="copyable" title="Clique para copiar">FC · Lançamento · L7 · Última Chamada</code></dd>
+        <dt>Subject</dt>
+        <dd><code class="copyable" title="Clique para copiar">🚨 ÚLTIMA CHAMADA · 5h pra encerrar a janela do Fundador</code></dd>
+        <dt>Preheader</dt>
+        <dd><code class="copyable" title="Clique para copiar">23h59 fecha. Sem prorrogação. Sem reabertura.</code></dd>
+      </dl>
+    </div>
   <div class="callout critical">
     <strong>🚨 Excluir compradores dos L5-L7</strong>
     Crie um segment <code>Não comprou ainda</code> = excluir subscribers tagueados como <code>comprou</code> ou que entraram no group <code>Aluno Fundador</code> (você cria esse group quando começar a receber compras). Mandar email de venda pra quem já comprou destrói confiança.
   </div>
-
-  <div class="callout">
-    <strong>💡 Como receber webhook da Kiwify</strong>
-    A Kiwify tem webhook (Configurações → Integrações → Webhook) que dispara em cada venda. Você pode apontar pro endpoint do Apps Script atual e ele insere o lead num group <code>Aluno Fundador</code> no MailerLite. Isso automatiza a exclusão dos broadcasts L5-L7 pra quem comprou. Fora do escopo desse documento — me chama quando quiser configurar.
-  </div>
 </section>
 
-<!-- ──────────────── 8. COMO COPIAR HTML ──────────────── -->
+<!-- 8. COMO COPIAR -->
 <section id="como-copiar">
-  <h2><span class="step">8</span>Como copiar o HTML de cada email</h2>
-
-  <p>No <a href="index.html">dashboard</a>, passe o mouse sobre qualquer card de email. Aparece um botão <strong>"📋 Copiar"</strong> no canto superior direito. Clica:</p>
-
-  <ol>
-    <li>O navegador faz fetch do HTML completo do email</li>
-    <li>Copia pro clipboard automaticamente</li>
-    <li>Botão muda pra <strong>"✓ Copiado!"</strong> por 1.8s confirmando sucesso</li>
-  </ol>
-
-  <p>No MailerLite, vá em <strong>Edit content → Source/HTML mode</strong> → cola (Ctrl+V) → salva. Sempre faz <strong>"Send test email"</strong> antes de finalizar.</p>
-
-  <h3>Se o botão der erro</h3>
-  <p>Pode acontecer se o navegador bloquear clipboard API (ex: HTTP em vez de HTTPS). Fallback manual:</p>
-  <ol>
-    <li>Clica no card normal (abre o email em nova aba)</li>
-    <li>Botão direito → <strong>"Exibir código-fonte"</strong> (Ctrl+U)</li>
-    <li>Ctrl+A → Ctrl+C → cola no MailerLite</li>
-  </ol>
+  <h2><span class="step">8</span>Como copiar os textos e o HTML</h2>
+  <h3>Email name, Subject e Preheader</h3>
+  <p>Clique em qualquer um dos 3 campos de texto (com cinza claro e ícone 📋) — o conteúdo vai direto pro clipboard. Cola no campo correspondente do MailerLite. Os campos ficam verdes brevemente confirmando a cópia.</p>
+  <h3>HTML completo do email</h3>
+  <p>Clique no botão <strong>📋 Copiar HTML</strong> em cada bloco. O navegador faz <code>fetch</code> do arquivo, copia o HTML pro clipboard e mostra confirmação. No MailerLite: <strong>Edit content → Source/HTML mode</strong> → Ctrl+V → Salvar.</p>
+  <h3>Send test email antes de finalizar</h3>
+  <p>O MailerLite às vezes injeta tracking ou altera atributos. Faz teste pelo menos em 3 emails representativos: D1 (Sequência D), Convite Live 3 D-0 (broadcast pre-live), e L7 (broadcast pós-lives).</p>
 </section>
 
-<!-- ──────────────── CHECKLIST FINAL ──────────────── -->
+<!-- CHECKLIST -->
 <section>
   <h2><span class="step">✓</span>Checklist final · marca conforme avança</h2>
-
   <ul class="checkbox-list">
-    <li><input type="checkbox" id="c1"><label for="c1"><strong>Pré-requisitos:</strong> 4 groups das lives criados/renomeados no MailerLite</label></li>
-    <li><input type="checkbox" id="c2"><label for="c2"><strong>Apps Script:</strong> rota <code>lives_*</code> adiciona lead nos 4 groups</label></li>
-    <li><input type="checkbox" id="c3"><label for="c3"><strong>A5:</strong> HTML atualizado na automation Sequência A</label></li>
-    <li><input type="checkbox" id="c4"><label for="c4"><strong>B1:</strong> HTML atualizado na Sequência B</label></li>
-    <li><input type="checkbox" id="c5"><label for="c5"><strong>B4:</strong> HTML atualizado na Sequência B</label></li>
-    <li><input type="checkbox" id="c6"><label for="c6"><strong>C6:</strong> HTML atualizado na Sequência C</label></li>
-    <li><input type="checkbox" id="c7"><label for="c7"><strong>Sequência D criada</strong> · 5 emails · trigger 4 groups · cadência 0/+2/+4/+6/+9 dias</label></li>
-    <li><input type="checkbox" id="c8"><label for="c8"><strong>12 convites das lives</strong> agendados (Live 1, 2, 3, 4 × 3 broadcasts)</label></li>
-    <li><input type="checkbox" id="c9"><label for="c9"><strong>8 broadcasts Sequência E enxuta</strong> agendados (4 lives × 2)</label></li>
-    <li><input type="checkbox" id="c10"><label for="c10"><strong>7 broadcasts L1-L7</strong> agendados (lançamento)</label></li>
-    <li><input type="checkbox" id="c11"><label for="c11"><strong>Send test email</strong> de pelo menos 3 emails representativos (Sequência D D1 · Convite Live 3 D-0 · Broadcast L7)</label></li>
-    <li><input type="checkbox" id="c12"><label for="c12"><strong>Confirmar UTM</strong> nos CTAs dos emails L1-L7 pra rastrear vendas via Kiwify</label></li>
+    <li><input type="checkbox" id="c1"><label for="c1"><strong>Group único confirmado:</strong> "Inscritos Lives Ago/26" (ID 188077924412294920) recebendo subscribers via Apps Script</label></li>
+    <li><input type="checkbox" id="c2"><label for="c2"><strong>A5:</strong> Email name + Subject + Preheader + HTML atualizado na automation Sequência A</label></li>
+    <li><input type="checkbox" id="c3"><label for="c3"><strong>B1:</strong> atualizado na Sequência B</label></li>
+    <li><input type="checkbox" id="c4"><label for="c4"><strong>B4:</strong> atualizado na Sequência B</label></li>
+    <li><input type="checkbox" id="c5"><label for="c5"><strong>C6:</strong> atualizado na Sequência C</label></li>
+    <li><input type="checkbox" id="c6"><label for="c6"><strong>Sequência D criada</strong> · 5 emails · trigger group "Inscritos Lives Ago/26" · cadência 0/+2/+4/+6/+9 dias</label></li>
+    <li><input type="checkbox" id="c7"><label for="c7"><strong>12 convites das lives</strong> agendados (Live 1, 2, 3, 4 × 3 broadcasts)</label></li>
+    <li><input type="checkbox" id="c8"><label for="c8"><strong>8 broadcasts Sequência E</strong> agendados (4 lives × 2)</label></li>
+    <li><input type="checkbox" id="c9"><label for="c9"><strong>7 broadcasts L1-L7</strong> agendados (lançamento)</label></li>
+    <li><input type="checkbox" id="c10"><label for="c10"><strong>Send test email</strong> de 3 emails representativos (D1, Convite Live 3 D-0, L7)</label></li>
+    <li><input type="checkbox" id="c11"><label for="c11"><strong>UTM nos CTAs</strong> de L1-L7 conferido pra rastrear vendas via Kiwify</label></li>
   </ul>
-
   <div class="callout success">
-    <strong>✅ Quando terminar tudo, ME AVISA</strong>
-    Eu rodo um sanity check (curl + grep) pra garantir que tudo está apontando pras URLs/datas certas em dev/main, e a gente fecha o ciclo. Boa execução! 🚀
+    <strong>✅ Quando terminar tudo, me avisa</strong>
+    Rodamos um sanity check (curl + grep) pra garantir que tudo está apontando pras URLs/datas certas em dev/main. 🚀
   </div>
 </section>
 
 <a class="back" href="index.html">← Voltar ao dashboard</a>
 
 </div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+(function() {
+  const toast = document.getElementById('toast');
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toast._t);
+    toast._t = setTimeout(() => toast.classList.remove('show'), 1800);
+  }
+  async function copyText(text) {
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch(e) {
+      // Fallback
+      const ta = document.createElement('textarea');
+      ta.value = text; ta.style.position='fixed'; ta.style.left='-9999px';
+      document.body.appendChild(ta); ta.select();
+      const ok = document.execCommand('copy');
+      document.body.removeChild(ta);
+      return ok;
+    }
+  }
+
+  // Click em código copiável (Email name / Subject / Preheader)
+  document.querySelectorAll('code.copyable').forEach(el => {
+    el.addEventListener('click', async () => {
+      const text = el.textContent.trim();
+      const ok = await copyText(text);
+      if (ok) {
+        el.classList.add('copied');
+        showToast('✓ Copiado: ' + (text.length > 50 ? text.substring(0,50)+'…' : text));
+        setTimeout(() => el.classList.remove('copied'), 1500);
+      } else {
+        showToast('❌ Erro ao copiar');
+      }
+    });
+  });
+
+  // Click em "Copiar HTML"
+  document.querySelectorAll('.email-block-copy').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const path = btn.dataset.path;
+      const originalText = btn.textContent;
+      btn.textContent = '⏳ Buscando...';
+      btn.disabled = true;
+      try {
+        const resp = await fetch(path);
+        if (!resp.ok) throw new Error('HTTP ' + resp.status);
+        const html = await resp.text();
+        const ok = await copyText(html);
+        if (ok) {
+          btn.textContent = '✓ HTML copiado!';
+          btn.classList.add('copied');
+          showToast('✓ HTML copiado · ' + path);
+          setTimeout(() => {
+            btn.textContent = originalText;
+            btn.classList.remove('copied');
+            btn.disabled = false;
+          }, 1800);
+        } else {
+          throw new Error('clipboard');
+        }
+      } catch(e) {
+        btn.textContent = '❌ Erro';
+        showToast('❌ Erro: ' + e.message);
+        setTimeout(() => {
+          btn.textContent = originalText;
+          btn.disabled = false;
+        }, 2000);
+      }
+    });
+  });
+})();
+</script>
 </body>
 </html>
