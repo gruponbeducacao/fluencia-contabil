@@ -40,12 +40,7 @@ const ML_GROUPS = {
   NEWSLETTER:  '185179968949454391',
   LISTA:       '185179979081843871',
   DICIONARIO:  '185179987559581196',
-  LIVES_LP:    '188077924412294920',
-  LIVE_1:      '185203741114238022',
-  LIVE_2:      '185203748785620698',
-  LIVE_3:      '185203753382578061',
-  LIVE_4:      '185203758274184695',
-  LIVE_FINAL:  '185203765515650231'
+  LIVES_LP:    '188077924412294920'  // group único — todas as 4 lives do replanejamento ago/2026
 };
 
 const ML_API_URL = 'https://connect.mailerlite.com/api/subscribers';
