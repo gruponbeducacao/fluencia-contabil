@@ -122,7 +122,7 @@ Cada dia a sequência operacional é:
 
 ### Site institucional (topbar de todas as páginas)
 - Atualmente: "Lançamento — 1 de Julho de 2026"
-- Novo: "Lançamento — 6 de Agosto de 2026" (data da Live 3 = Lançamento Oficial)
+- Novo: "Lançamento a partir de 04 de Agosto de 2026" (data da Live 3 = Lançamento Oficial)
 
 ### Sequência D (D1-D5)
 - D1, D2, D4, D5 mencionam datas das lives — precisam atualizar
