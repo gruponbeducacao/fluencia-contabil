@@ -1,19 +1,19 @@
 #!/usr/bin/env python3
 """
 Gera os 7 broadcasts de lançamento (L1-L7) refletindo o replanejamento
-de 06/05/2026: janela única só anual (29/06 → dom 05/07 23h59).
+de 06/05/2026: janela única só anual (04/08 → dom 16/08 23h59).
 
 Substitui a estrutura antiga (L1-L8 + extra com janelas Pioneira/Padrão).
 
 Output:
   email-templates/broadcasts/lancamento/
-    L1-anuncio.html       (seg 22/06 09h — "Em 1 semana abrem as 4 lives")
-    L2-por-que-anual.html (sex 26/06 09h — "Por que só anual?")
-    L3-vespera.html       (dom 28/06 18h — "Amanhã começa")
-    L4-pos-lives-roi.html (sex 03/07 09h — "Acabou semana de lives + ROI")
-    L5-depoimentos.html   (sáb 04/07 18h — Depoimentos + escassez)
-    L6-ultimo-dia.html    (dom 05/07 09h — "Último dia" + FAQ)
-    L7-ultima-chamada.html (dom 05/07 19h — ÚLTIMA CHAMADA 5h)
+    L1-anuncio.html       (seg 27/07 09h — "Em 1 semana abrem as 4 lives")
+    L2-por-que-anual.html (sex 31/07 09h — "Por que só anual?")
+    L3-vespera.html       (seg 03/08 18h — "Amanhã começa")
+    L4-pos-lives-roi.html (sáb 08/08 09h — "Acabou semana de lives + ROI")
+    L5-depoimentos.html   (qui 13/08 18h — Depoimentos + escassez)
+    L6-ultimo-dia.html    (dom 16/08 09h — "Último dia" + FAQ)
+    L7-ultima-chamada.html (dom 16/08 19h — ÚLTIMA CHAMADA 5h)
 """
 from __future__ import annotations
 
@@ -99,7 +99,7 @@ ACESSO_FUNDADOR_BOX = """
                 <li><strong style="color:#C8A84B;">Early access 30 dias</strong> antes da turma geral</li>
                 <li><strong style="color:#C8A84B;">Selo "Aluno Fundador 2026"</strong> no perfil e no grupo</li>
               </ul>
-              <div style="font-family:'Source Serif 4', Georgia, serif; font-size:13px; color:#8B97B3; margin-top:14px; font-style:italic;">Vale pra qualquer compra dentro da janela (29/06 a 05/07 23h59).</div>
+              <div style="font-family:'Source Serif 4', Georgia, serif; font-size:13px; color:#8B97B3; margin-top:14px; font-style:italic;">Vale pra qualquer compra dentro da janela (04/08 a 16/08 23h59).</div>
             </td></tr>
           </table>
 """
@@ -124,14 +124,14 @@ EMAILS = [
     {
         "file": "L1-anuncio.html",
         "subject": "Em 1 semana abrem as 4 lives gratuitas",
-        "preview": "29/06 a 02/07 — Códigos → Palavra → Casa abre → Casa por dentro.",
+        "preview": "04/08 a 07/08 — Códigos → Palavra → Casa abre → Casa por dentro.",
         "banner_color": "#C0392B",
         "banner_text": "📅 Faltam 7 dias",
         "h1": "Em 1 semana, abrem as<br>4 lives gratuitas.",
         "body": f"""
           <p style="margin:0 0 18px 0;">Oi,</p>
 
-          <p style="margin:0 0 18px 0;">Daqui a uma semana, na <strong style="color:#1B2A4A;">segunda-feira 29/06</strong>, começa a série inédita de 4 lives gratuitas do Fluência Contábil. Quatro noites consecutivas, com o Prof. Vinícius Ferraz, ao vivo.</p>
+          <p style="margin:0 0 18px 0;">Daqui a uma semana, na <strong style="color:#1B2A4A;">segunda-feira 04/08</strong>, começa a série inédita de 4 lives gratuitas do Fluência Contábil. Quatro noites consecutivas, com o Prof. Vinícius Ferraz, ao vivo.</p>
 
           <p style="margin:0 0 28px 0;">A jornada inteira: <strong style="color:#1B2A4A;">Códigos → Palavra mais cobrada → Casa abre → Casa por dentro</strong>. Cada live encadeada na próxima. Quem acompanha as 4 chega no lançamento entendendo o método inteiro.</p>
 
@@ -139,7 +139,7 @@ EMAILS = [
             <tr><td style="padding:0 0 12px 0;">
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#FBF6E9; border-left:4px solid #C8A84B; border-radius:4px;">
                 <tr><td style="padding:14px 20px;">
-                  <div style="font-family:'Montserrat',Arial,sans-serif; font-size:11px; font-weight:700; color:#C8A84B; letter-spacing:1.5px; text-transform:uppercase;">LIVE 1 · seg 29/06 · 20h</div>
+                  <div style="font-family:'Montserrat',Arial,sans-serif; font-size:11px; font-weight:700; color:#C8A84B; letter-spacing:1.5px; text-transform:uppercase;">LIVE 1 · ter 04/08 · 20h</div>
                   <div style="font-family:'Montserrat',Arial,sans-serif; font-size:16px; font-weight:700; color:#1B2A4A; margin-top:4px;">Débito e Crédito — onde tudo começa</div>
                 </td></tr>
               </table>
@@ -147,7 +147,7 @@ EMAILS = [
             <tr><td style="padding:0 0 12px 0;">
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#FBF6E9; border-left:4px solid #C8A84B; border-radius:4px;">
                 <tr><td style="padding:14px 20px;">
-                  <div style="font-family:'Montserrat',Arial,sans-serif; font-size:11px; font-weight:700; color:#C8A84B; letter-spacing:1.5px; text-transform:uppercase;">LIVE 2 · ter 30/06 · 20h</div>
+                  <div style="font-family:'Montserrat',Arial,sans-serif; font-size:11px; font-weight:700; color:#C8A84B; letter-spacing:1.5px; text-transform:uppercase;">LIVE 2 · qua 05/08 · 20h</div>
                   <div style="font-family:'Montserrat',Arial,sans-serif; font-size:16px; font-weight:700; color:#1B2A4A; margin-top:4px;">CPC 51 — a palavra mais cobrada</div>
                 </td></tr>
               </table>
@@ -155,7 +155,7 @@ EMAILS = [
             <tr><td style="padding:0 0 12px 0;">
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#1B2A4A; border-left:4px solid #C0392B; border-radius:4px;">
                 <tr><td style="padding:16px 20px;">
-                  <div style="font-family:'Montserrat',Arial,sans-serif; font-size:11px; font-weight:700; color:#C8A84B; letter-spacing:1.5px; text-transform:uppercase;">🚨 LIVE 3 · qua 01/07 · 20h</div>
+                  <div style="font-family:'Montserrat',Arial,sans-serif; font-size:11px; font-weight:700; color:#C8A84B; letter-spacing:1.5px; text-transform:uppercase;">🚨 LIVE 3 · qui 06/08 · 20h</div>
                   <div style="font-family:'Montserrat',Arial,sans-serif; font-size:16px; font-weight:700; color:#FFFFFF; margin-top:4px;">Lançamento Oficial — a casa abre</div>
                   <div style="font-family:'Source Serif 4',Georgia,serif; font-size:13px; color:#FBF6E9; margin-top:6px; font-style:italic;">As vagas entram no ar ao vivo. Evento único.</div>
                 </td></tr>
@@ -164,7 +164,7 @@ EMAILS = [
             <tr><td style="padding:0;">
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#FBF6E9; border-left:4px solid #C8A84B; border-radius:4px;">
                 <tr><td style="padding:14px 20px;">
-                  <div style="font-family:'Montserrat',Arial,sans-serif; font-size:11px; font-weight:700; color:#C8A84B; letter-spacing:1.5px; text-transform:uppercase;">LIVE 4 · qui 02/07 · 20h</div>
+                  <div style="font-family:'Montserrat',Arial,sans-serif; font-size:11px; font-weight:700; color:#C8A84B; letter-spacing:1.5px; text-transform:uppercase;">LIVE 4 · sex 07/08 · 20h</div>
                   <div style="font-family:'Montserrat',Arial,sans-serif; font-size:16px; font-weight:700; color:#1B2A4A; margin-top:4px;">Tour pela Plataforma — a casa por dentro</div>
                 </td></tr>
               </table>
@@ -175,7 +175,7 @@ EMAILS = [
 
           <p style="margin:0 0 12px 0;"><em style="color:#6B7280;">E mais um detalhe importante:</em></p>
 {ACESSO_FUNDADOR_BOX}
-          <p style="margin:0 0 18px 0;">Quem aproveitar a janela (anual à vista <strong style="color:#1B2A4A;">R$ 814,80</strong> ou 12× R$ 67,90) vira <strong style="color:#1B2A4A;">Aluno Fundador 2026</strong>. Os detalhes do bônus a gente abre na Live 3 — mas já é bom você saber que ele existe e que <strong style="color:#1B2A4A;">não voltará</strong> depois de 05/07.</p>
+          <p style="margin:0 0 18px 0;">Quem aproveitar a janela (anual à vista <strong style="color:#1B2A4A;">R$ 814,80</strong> ou 12× R$ 67,90) vira <strong style="color:#1B2A4A;">Aluno Fundador 2026</strong>. Os detalhes do bônus a gente abre na Live 3 — mas já é bom você saber que ele existe e que <strong style="color:#1B2A4A;">não voltará</strong> depois de 16/08.</p>
 
           <p style="margin:0 0 18px 0;">Garante sua presença nas 4 lives:</p>
 {cta("https://fluenciacontabil.com.br/lives.html", "QUERO MINHA VAGA NAS 4 LIVES →")}
@@ -198,17 +198,17 @@ EMAILS = [
 
           <p style="margin:0 0 28px 0; font-size:18px; font-family:'Source Serif 4',Georgia,serif; font-style:italic; color:#1B2A4A; border-left:3px solid #C8A84B; padding:8px 0 8px 18px;">"Por que só anual? Cadê o trimestral, o semestral, o mensal?"</p>
 
-          <p style="margin:0 0 18px 0;"><strong style="color:#1B2A4A;">Resposta direta:</strong> porque a janela do lançamento (29/06 a 05/07) é a única do ano onde a edição 2026 do Fluência Contábil entra com o bônus <strong style="color:#1B2A4A;">Acesso Fundador</strong>. Esse bônus só faz sentido em quem fica com a edição inteira — ou seja, anual.</p>
+          <p style="margin:0 0 18px 0;"><strong style="color:#1B2A4A;">Resposta direta:</strong> porque a janela do lançamento (04/08 a 16/08) é a única do ano onde a edição 2026 do Fluência Contábil entra com o bônus <strong style="color:#1B2A4A;">Acesso Fundador</strong>. Esse bônus só faz sentido em quem fica com a edição inteira — ou seja, anual.</p>
 
           <p style="margin:0 0 28px 0;">Não é "anular outras opções pra forçar venda". É o oposto: <strong style="color:#1B2A4A;">é dar a versão mais completa do produto pra quem topa a aposta inteira</strong>.</p>
 
 {ACESSO_FUNDADOR_BOX}
 
-          <p style="margin:0 0 18px 0;"><strong style="color:#1B2A4A;">E depois da janela?</strong> Dia 10/07 voltam as modalidades padrão da casa: Tri (R$ 397) e Sem (R$ 597), pagamento único. Sem bônus de Fundador. Sem early access. Sem selo. <em>São modalidades válidas e boas, mas são outra coisa.</em></p>
+          <p style="margin:0 0 18px 0;"><strong style="color:#1B2A4A;">E depois da janela?</strong> Dia 17/08 voltam as modalidades padrão da casa: Tri (R$ 397) e Sem (R$ 597), pagamento único. Sem bônus de Fundador. Sem early access. Sem selo. <em>São modalidades válidas e boas, mas são outra coisa.</em></p>
 
           <p style="margin:0 0 18px 0;">A janela do lançamento existe pra premiar quem decide cedo, na confiança de quem ainda nem viu o lançamento. <strong style="color:#1B2A4A;">É um deal recíproco</strong>: você se compromete cedo, a gente te entrega a versão inteira da edição.</p>
 
-          <p style="margin:0 0 18px 0;">Live 3 (qua 01/07, 20h) abre a janela ao vivo. Vale estar presente.</p>
+          <p style="margin:0 0 18px 0;">Live 3 (qui 06/08, 20h) abre a janela ao vivo. Vale estar presente.</p>
 {cta("https://fluenciacontabil.com.br/lives.html", "ESTAR NA LIVE 3 (LANÇAMENTO) →")}
           <div style="border-top:1px solid #E8E2D0; margin:32px 0 24px 0;"></div>
           <p style="margin:0; font-family:'Source Serif 4', Georgia, serif; font-size:16px; color:#1A1A1A;">Até segunda,<br><strong style="color:#1B2A4A;">— Equipe Fluência Contábil</strong></p>
@@ -225,7 +225,7 @@ EMAILS = [
         "body": f"""
           <p style="margin:0 0 18px 0;">Oi,</p>
 
-          <p style="margin:0 0 18px 0;"><strong style="color:#1B2A4A;">Amanhã, segunda-feira 29/06, às 20h</strong>, abrimos oficialmente a semana das 4 lives gratuitas do Fluência Contábil.</p>
+          <p style="margin:0 0 18px 0;"><strong style="color:#1B2A4A;">Amanhã, segunda-feira 04/08, às 20h</strong>, abrimos oficialmente a semana das 4 lives gratuitas do Fluência Contábil.</p>
 
           <p style="margin:0 0 28px 0;">Live 1 começa pela base: <strong style="color:#1B2A4A;">Débito e Crédito — onde tudo começa</strong>. A parte que a maioria decora e nunca entende de verdade. A gente vai pela lógica.</p>
 
@@ -233,7 +233,7 @@ EMAILS = [
             <tr><td style="padding:28px 32px; color:#FFFFFF; text-align:center;">
               <div style="font-family:'Montserrat', Arial, sans-serif; font-size:11px; font-weight:700; color:#C8A84B; letter-spacing:2px; text-transform:uppercase; margin-bottom:8px;">🔴 LIVE 1 · DÉBITO E CRÉDITO</div>
               <div style="font-family:'Montserrat', Arial, sans-serif; font-size:30px; font-weight:800; color:#C8A84B; line-height:1; margin-bottom:8px;">amanhã · 20h</div>
-              <div style="font-family:'Source Serif 4', Georgia, serif; font-size:14px; color:#FBF6E9; font-style:italic;">segunda · 29 de junho · ao vivo no YouTube</div>
+              <div style="font-family:'Source Serif 4', Georgia, serif; font-size:14px; color:#FBF6E9; font-style:italic;">segunda · 4 de agosto · ao vivo no YouTube</div>
             </td></tr>
           </table>
 
@@ -255,17 +255,17 @@ EMAILS = [
     # ────────────────────────────────────────────────────────────────────
     {
         "file": "L4-pos-lives-roi.html",
-        "subject": "Acabou a semana de lives — restam 48h na janela",
+        "subject": "Acabou a semana de lives — restam 9d na janela",
         "preview": "Anual R$ 814,80 ou 12× R$ 67,90. ROI de uma aprovação.",
         "banner_color": "#1B2A4A",
-        "banner_text": "🎯 Janela do Acesso Fundador · até 05/07 23h59",
+        "banner_text": "🎯 Janela do Acesso Fundador · até 16/08 23h59",
         "h1": "Acabou a semana de lives.<br>Restam <em style=\"color:#C0392B; font-style:normal;\">48 horas</em> na janela.",
         "body": f"""
           <p style="margin:0 0 18px 0;">Oi,</p>
 
           <p style="margin:0 0 18px 0;">Quatro noites. Da lógica dos débitos e créditos ao tour da plataforma. Você acompanhou a jornada inteira (ou pegou via replay — funciona igual).</p>
 
-          <p style="margin:0 0 28px 0;">Agora <strong style="color:#1B2A4A;">restam exatamente 48 horas</strong> na janela do Acesso Fundador. <strong>Dom 05/07 às 23h59</strong>, o anual sai do ar. Tri e Sem voltam dia 10/07, mas sem o bônus Fundador.</p>
+          <p style="margin:0 0 28px 0;">Agora <strong style="color:#1B2A4A;">restam 9 dias</strong> na janela do Acesso Fundador. <strong>Dom 16/08 às 23h59</strong>, o anual sai do ar. Tri e Sem voltam dia 17/08, mas sem o bônus Fundador.</p>
 {ACESSO_FUNDADOR_BOX}
 
           <p style="margin:0 0 16px 0;"><strong style="color:#1B2A4A; font-size:17px;">A conta do ROI, sem rodeio:</strong></p>
@@ -280,7 +280,7 @@ EMAILS = [
             </td></tr>
           </table>
 
-          <p style="margin:0 0 24px 0;">Se quem foi pras lives está aqui ainda, é porque a tese fez sentido. <strong style="color:#1B2A4A;">A decisão de aproveitar a janela com bônus Fundador é exclusiva desses 48h.</strong></p>
+          <p style="margin:0 0 24px 0;">Se quem foi pras lives está aqui ainda, é porque a tese fez sentido. <strong style="color:#1B2A4A;">A decisão de aproveitar a janela com bônus Fundador é exclusiva desses 9d.</strong></p>
 {cta(LINK_VENDAS, "QUERO O ACESSO FUNDADOR →")}
           <p style="margin:0 0 18px 0; font-size:14px; color:#6B7280; text-align:center;">7 dias de garantia incondicional · sem letra miúda.</p>
 
@@ -299,7 +299,7 @@ EMAILS = [
         "body": f"""
           <p style="margin:0 0 18px 0;">Oi,</p>
 
-          <p style="margin:0 0 28px 0;">Faltam menos de <strong style="color:#1B2A4A;">30 horas</strong> pra janela do Acesso Fundador encerrar (dom 05/07 às 23h59). Quem decidiu cedo já está dentro. Algumas falas que chegaram nos últimos dias:</p>
+          <p style="margin:0 0 28px 0;">Faltam <strong style="color:#1B2A4A;">3 dias</strong> pra janela do Acesso Fundador encerrar (dom 16/08 às 23h59). Quem decidiu cedo já está dentro. Algumas falas que chegaram nos últimos dias:</p>
 
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 22px 0; background-color:#FBF6E9; border-left:4px solid #C8A84B; border-radius:4px;">
             <tr><td style="padding:22px 26px; font-family:'Source Serif 4', Georgia, serif; font-size:15px; color:#1A1A1A; line-height:1.7;">
@@ -322,7 +322,7 @@ EMAILS = [
             </td></tr>
           </table>
 
-          <p style="margin:0 0 18px 0;"><strong style="color:#C0392B;">Amanhã 23h59</strong> o anual sai do ar. Tri e Sem voltam dia 10/07, mas sem o bônus Fundador. <strong style="color:#1B2A4A;">É decisão de janela, não de produto</strong>.</p>
+          <p style="margin:0 0 18px 0;"><strong style="color:#C0392B;">Amanhã 23h59</strong> o anual sai do ar. Tri e Sem voltam dia 17/08, mas sem o bônus Fundador. <strong style="color:#1B2A4A;">É decisão de janela, não de produto</strong>.</p>
 {cta(LINK_VENDAS, "QUERO ENTRAR ANTES DE FECHAR →")}
           <p style="margin:0 0 18px 0; font-size:14px; color:#6B7280; text-align:center;">7 dias de garantia incondicional.</p>
 
@@ -341,7 +341,7 @@ EMAILS = [
         "body": f"""
           <p style="margin:0 0 18px 0;">Oi,</p>
 
-          <p style="margin:0 0 28px 0;"><strong style="color:#C0392B;">Hoje, domingo 05/07, às 23h59</strong>, a janela do Acesso Fundador encerra. Anual sai do ar. Tri e Sem voltam dia 10/07 sem o bônus.</p>
+          <p style="margin:0 0 28px 0;"><strong style="color:#C0392B;">Hoje, domingo 16/08, às 23h59</strong>, a janela do Acesso Fundador encerra. Anual sai do ar. Tri e Sem voltam dia 17/08 sem o bônus.</p>
 
           <p style="margin:0 0 16px 0;"><strong style="color:#1B2A4A;">Pra quem está decidindo agora, FAQ rápido:</strong></p>
 
@@ -364,7 +364,7 @@ EMAILS = [
             </td></tr>
             <tr><td style="padding:16px 0; border-bottom:1px solid #E8E2D0;">
               <div style="font-family:'Montserrat',Arial,sans-serif; font-size:14px; font-weight:700; color:#1B2A4A; margin-bottom:6px;">→ E se eu não decidir hoje?</div>
-              <div style="font-family:'Source Serif 4',Georgia,serif; font-size:15px; color:#1A1A1A; line-height:1.65;">Tri (R$ 397) e Sem (R$ 597) voltam dia 10/07 como modalidades padrão. Sem bônus Fundador, sem early access, sem selo. <em>São produtos diferentes</em>.</div>
+              <div style="font-family:'Source Serif 4',Georgia,serif; font-size:15px; color:#1A1A1A; line-height:1.65;">Tri (R$ 397) e Sem (R$ 597) voltam dia 17/08 como modalidades padrão. Sem bônus Fundador, sem early access, sem selo. <em>São produtos diferentes</em>.</div>
             </td></tr>
           </table>
 
@@ -395,7 +395,7 @@ EMAILS = [
             <tr><td style="padding:30px 32px; color:#FFFFFF; text-align:center;">
               <div style="font-family:'Montserrat', Arial, sans-serif; font-size:11px; font-weight:700; color:#FBF6E9; letter-spacing:2px; text-transform:uppercase; margin-bottom:10px;">JANELA ENCERRA EM</div>
               <div style="font-family:'Montserrat', Arial, sans-serif; font-size:44px; font-weight:900; color:#FFFFFF; line-height:1; margin-bottom:8px; letter-spacing:-1px;">~ 5 HORAS</div>
-              <div style="font-family:'Source Serif 4', Georgia, serif; font-size:14px; color:#FBF6E9; font-style:italic;">domingo · 05/07 · 23h59</div>
+              <div style="font-family:'Source Serif 4', Georgia, serif; font-size:14px; color:#FBF6E9; font-style:italic;">domingo · 16/08 · 23h59</div>
             </td></tr>
           </table>
 
