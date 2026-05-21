@@ -5,7 +5,7 @@
     "path": "sequencia-a/A5-lista-espera.html",
     "name": "FC · Sequência A · A5 · Lista de Espera",
     "subject": "Se o método faz sentido pra você, tem um próximo passo",
-    "preheader": "Como garantir sua vaga quando o curso abrir em junho.",
+    "preheader": "Como garantir sua vaga quando o curso abrir em agosto.",
     "exists": true
   },
   {
@@ -24,6 +24,33 @@
     "name": "FC · Sequência B · B4 · VIP nas Lives",
     "subject": "[Você é VIP] As 4 lives gratuitas do Fluência Contábil",
     "preheader": "Seu acesso prioritário às 4 lives de pré-lançamento (04/08 a 07/08). Uma inscrição cobre todas.",
+    "exists": true
+  },
+  {
+    "id": "B5",
+    "category": "Sequência B",
+    "path": "sequencia-b/B5-aula-01.html",
+    "name": "FC · Sequência B · B5 · Aula 01 Partidas Dobradas",
+    "subject": "[Aula 01 grátis] Método das Partidas Dobradas",
+    "preheader": "Uma aula completa do nosso curso, em PDF, grátis pra você experimentar.",
+    "exists": true
+  },
+  {
+    "id": "B6",
+    "category": "Sequência B",
+    "path": "sequencia-b/B6-rotina.html",
+    "name": "FC · Sequência B · B6 · Rotina de Estudo",
+    "subject": "A rotina que separa quem passa de quem desiste",
+    "preheader": "Como organizar as próximas semanas pra chegar em agosto preparado(a).",
+    "exists": true
+  },
+  {
+    "id": "C5",
+    "category": "Sequência C",
+    "path": "sequencia-c/C5-aula-01.html",
+    "name": "FC · Sequência C · C5 · Aula 01 Partidas Dobradas",
+    "subject": "[Aula 01 grátis] Método das Partidas Dobradas",
+    "preheader": "Você provou o Dicionário. Agora prova uma aula completa do curso.",
     "exists": true
   },
   {
@@ -194,7 +221,7 @@
     "path": "sequencia-e/live-1-vespera.html",
     "name": "FC · Sequência E · Live 1 · Véspera",
     "subject": "Amanhã 20h: Live 1 — Débito e Crédito",
-    "preheader": "Amanhã, segunda 04/08, 20h. A base de todo o resto.",
+    "preheader": "Amanhã, terça 04/08, 20h. A base de todo o resto.",
     "exists": true
   },
   {
@@ -212,7 +239,7 @@
     "path": "sequencia-e/live-2-vespera.html",
     "name": "FC · Sequência E · Live 2 · Véspera",
     "subject": "Amanhã 20h: Live 2 — CPC 51",
-    "preheader": "Amanhã, terça 05/08, 20h. Onde mais gente perde ponto.",
+    "preheader": "Amanhã, quarta 05/08, 20h. Onde mais gente perde ponto.",
     "exists": true
   },
   {
@@ -230,7 +257,7 @@
     "path": "sequencia-e/live-3-vespera.html",
     "name": "FC · Sequência E · Live 3 · Véspera",
     "subject": "Amanhã 20h: Live 3 — Lançamento Oficial",
-    "preheader": "Amanhã, quarta 06/08, 20h. As vagas do Fluência Contábil entram no ar.",
+    "preheader": "Amanhã, quinta 06/08, 20h. As vagas do Fluência Contábil entram no ar.",
     "exists": true
   },
   {
@@ -248,7 +275,7 @@
     "path": "sequencia-e/live-4-vespera.html",
     "name": "FC · Sequência E · Live 4 · Véspera",
     "subject": "Amanhã 20h: Live 4 — Tour pela Plataforma",
-    "preheader": "Amanhã, quinta 07/08, 20h. Tour ao vivo · última noite da série.",
+    "preheader": "Amanhã, sexta 07/08, 20h. Tour ao vivo · última noite da série.",
     "exists": true
   },
   {
