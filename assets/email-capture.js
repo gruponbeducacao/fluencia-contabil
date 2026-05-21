@@ -596,7 +596,7 @@
       +     '<span class="fc-ec-eyebrow">Lista de espera</span>'
       +     '<div class="fc-ec-bar"></div>'
       +     '<h3 class="fc-ec-title">Enquanto você lê, o curso está sendo finalizado.</h3>'
-      +     '<p class="fc-ec-desc">O <strong>Fluência Contábil</strong> — curso completo de contabilidade para concursos — abre vagas em junho de 2026. Entre na lista de espera e seja avisado antes de todo mundo.</p>'
+      +     '<p class="fc-ec-desc">O <strong>Fluência Contábil</strong> — curso completo de contabilidade para concursos — abre vagas em agosto de 2026. Entre na lista de espera e seja avisado antes de todo mundo.</p>'
       +     '<form class="fc-ec-form" novalidate>'
       +       '<input type="email" placeholder="Seu melhor e-mail" required autocomplete="email">'
       +       '<button type="submit">Quero a vaga garantida</button>'

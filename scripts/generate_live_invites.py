@@ -1,24 +1,28 @@
 #!/usr/bin/env python3
 """
-Gera os 8 broadcasts de convite pras Lives 2, 3, 4 e Final
-a partir dos templates D-3 e D-0 da Live 1.
+Gera os 9 broadcasts de convite pras Lives 2, 3 e 4 a partir dos templates
+D-3, D-0 e AOVIVO da Live 1.
+
+Atualizado em 17/05/2026 pra refletir o replanejamento de 06/05/2026:
+4 lives concentradas (ter 04/08 → sex 07/08), janela só anual.
 
 Lê:
-  email-templates/broadcasts/convites-lives/live-1-debito-credito/D-3.html
-  email-templates/broadcasts/convites-lives/live-1-debito-credito/D-0.html
+  email-templates/broadcasts/convites-lives/live-1-debito-credito/
+    D-3.html · D-0.html · AOVIVO.html
 
-Gera (8 arquivos):
-  email-templates/broadcasts/convites-lives/live-2-cpcs/D-3.html, D-0.html
-  email-templates/broadcasts/convites-lives/live-3-cpc-51/D-3.html, D-0.html
-  email-templates/broadcasts/convites-lives/live-4-pegadinhas/D-3.html, D-0.html
-  email-templates/broadcasts/convites-lives/live-final/D-3.html, D-0.html
+Gera (9 arquivos):
+  email-templates/broadcasts/convites-lives/live-2-cpc-51/
+    D-3.html · D-0.html · AOVIVO.html
+  email-templates/broadcasts/convites-lives/live-3-lancamento/
+    D-3.html · D-0.html · AOVIVO.html
+  email-templates/broadcasts/convites-lives/live-4-plataforma/
+    D-3.html · D-0.html · AOVIVO.html
 
 Uso:
     python scripts/generate_live_invites.py
 """
 from __future__ import annotations
 
-import os
 import sys
 from pathlib import Path
 
@@ -29,81 +33,175 @@ if hasattr(sys.stdout, "reconfigure"):
 TEMPLATE_DIR = Path("email-templates/broadcasts/convites-lives/live-1-debito-credito")
 OUTPUT_BASE  = Path("email-templates/broadcasts/convites-lives")
 EMAILS = ["D-3.html", "D-0.html", "AOVIVO.html"]
-# AOVIVO.html adicionado em 20/04/2026 — disparado às 20h00 do dia da live
-# Convida Newsletter + Lista + Lead Magnet pra entrar na live AGORA.
 
-# ========== Substituições ==========
+# Substituições por live. ORDEM IMPORTA — strings longas antes das curtas
+# pra evitar over-replacement (ex: "Débito e Crédito ao vivo" antes de "Débito e Crédito").
 LIVES = {
-    "live-2-cpcs": {
+    # ────────────────────────────────────────────────────────────────────
+    "live-2-cpc-51": [
+        # Slugs e identidade
+        ("live-1-debito-credito", "live-2-cpc-51"),
+        # Tema (ordem importa: composta primeiro)
+        ("Débito e Crédito ao vivo",                "CPC 51 ao vivo"),
+        ("HOJE 20h: Débito e Crédito",              "HOJE 20h: CPC 51"),
+        ("sobre Débito e Crédito",                  "sobre CPC 51"),
+        ("Live 1 sobre <strong style=\"color:#1B2A4A;\">Débito e Crédito</strong>",
+         "Live 2 sobre <strong style=\"color:#1B2A4A;\">CPC 51</strong>"),
+        ("Débito e Crédito — onde tudo começa",     "CPC 51 — a palavra mais cobrada"),
+        ("DÉBITO E CRÉDITO",                        "CPC 51"),
+        ("Débito e Crédito",                        "CPC 51"),
+        # Identidade da live (LIVE/Live)
+        ("LIVE 1 ·",  "LIVE 2 ·"),
+        ("Live 1 ·",  "Live 2 ·"),
+        ("Live 1 começou",  "Live 2 começou"),
+        ("Live 1 começa",   "Live 2 começa"),
+        ("a Live 1",   "a Live 2"),
+        # Datas e dias da semana
+        ("terça-feira, 4 de agosto",   "quarta-feira, 5 de agosto"),
+        ("segunda, 4 de agosto",         "terça, 5 de agosto"),
+        ("Segunda-feira começa",         "Terça-feira continua"),
+        ("Hoje começa a <strong style=\"color:#1B2A4A;\">semana das 4 lives gratuitas</strong>",
+         "Hoje é a <strong style=\"color:#1B2A4A;\">segunda das 4 lives gratuitas</strong>"),
+        ("Terça 04/08",   "Quarta 05/08"),
+        ("segunda · 04/08", "terça · 05/08"),
+        ("4 de agosto",     "5 de agosto"),
+        ("04/08",           "05/08"),
+        ("Até segunda",     "Até terça"),
+        ("segunda às 20h",  "terça às 20h"),
+        ("Não pode segunda",  "Não pode terça"),
+        # Subheads e copy
+        ('"Onde tudo começa."',  '"A palavra mais cobrada."'),
+        ("Onde tudo começa",     "A palavra mais cobrada"),
+        ("tema mais fundamental:",  "tema com mais pegadinha de banca:"),
+        ("A primeira é em",         "A segunda é em"),
+        ("A primeira tem o tema",   "A segunda tem o tema"),
+        # 3 ganchos do D-3
+        ("A <strong style=\"color:#1B2A4A;\">lógica</strong> por trás de Débito e Crédito — sem decoreba",
+         "O que mudou do <strong style=\"color:#1B2A4A;\">CPC 26 pro CPC 51</strong> — na prática"),
+        ("O erro mais comum em lançamentos (e como evitar)",
+         "Por que algumas bancas chamam CPC 51 de \"o CPC que matou o CPC 26\""),
+        ("A base que conecta com as outras 3 lives da semana",
+         "As armadilhas de CPC 51 já cobradas em CEBRASPE, FGV e FCC"),
+        # Preview text
+        ("Em algumas horas a Live 1 começa", "Em algumas horas a Live 2 começa"),
+        ("Última chamada de inscrição.",     "Última chamada de inscrição."),
+        ("Inscrição gratuita — só hoje pra você se inscrever.",
+         "Inscrição gratuita — entra antes do bicho pegar."),
+    ],
+    # ────────────────────────────────────────────────────────────────────
+    "live-3-lancamento": [
+        ("live-1-debito-credito", "live-3-lancamento"),
+        # Tema
+        ("Débito e Crédito ao vivo",                "Lançamento Oficial ao vivo"),
+        ("HOJE 20h: Débito e Crédito",              "HOJE 20h: A CASA ABRE"),
+        ("sobre Débito e Crédito",                  "sobre o Lançamento Oficial"),
+        ("Live 1 sobre <strong style=\"color:#1B2A4A;\">Débito e Crédito</strong>",
+         "Live 3 do <strong style=\"color:#1B2A4A;\">Lançamento Oficial</strong>"),
+        ("Débito e Crédito — onde tudo começa",     "Lançamento Oficial — a casa abre"),
+        ("DÉBITO E CRÉDITO",                        "LANÇAMENTO OFICIAL"),
+        ("Débito e Crédito",                        "Lançamento Oficial"),
         # Identidade
-        "Live 1": "Live 2",
-        "LIVE 1": "LIVE 2",
-        "live-1-debito-credito": "live-2-cpcs",
-        # Tema (ordem importa)
-        "Por que você erra Débito e Crédito (e como parar)": "70 CPCs. Banca cobra 5. Quais?",
-        "Por que você erra Débito e Crédito": "70 CPCs. Banca cobra 5. Quais?",
-        "Débito e Crédito": "5 CPCs da fiscal",
-        # Data
-        "quinta-feira, 21 de maio": "quinta-feira, 28 de maio",
-        "21 de maio": "28 de maio",
-        # "Até quinta" mantém (Live 2 é quinta também)
-        # Ganchos (3 bullets)
-        "A lógica por trás de Débito e Crédito — sem decoreba": "Quais são os 5 CPCs que CEBRASPE, FGV e FCC mais cobram",
-        "O erro mais comum em lançamentos (e como evitar)": "O padrão escondido que conecta esses 5 pronunciamentos",
-        "Um macete pra nunca mais confundir os dois": "Priorização de estudo pras últimas semanas antes da prova",
-    },
-    "live-3-cpc-51": {
-        "Live 1": "Live 3",
-        "LIVE 1": "LIVE 3",
-        "live-1-debito-credito": "live-3-cpc-51",
-        "Por que você erra Débito e Crédito (e como parar)": "O CPC que matou o CPC 26. Será?",
-        "Por que você erra Débito e Crédito": "O CPC que matou o CPC 26. Será?",
-        "Débito e Crédito": "CPC 51",
-        "quinta-feira, 21 de maio": "terça-feira, 2 de junho",
-        "21 de maio": "2 de junho",
-        "Até quinta": "Até terça",
-        "A lógica por trás de Débito e Crédito — sem decoreba": "O que mudou do CPC 26 pro CPC 51 — na prática",
-        "O erro mais comum em lançamentos (e como evitar)": "Por que algumas bancas chamam o CPC 51 de \"o CPC que matou o CPC 26\"",
-        "Um macete pra nunca mais confundir os dois": "As armadilhas que já apareceram em provas recentes",
-    },
-    "live-4-pegadinhas": {
-        "Live 1": "Live 4",
-        "LIVE 1": "LIVE 4",
-        "live-1-debito-credito": "live-4-pegadinhas",
-        "Por que você erra Débito e Crédito (e como parar)": "7 pegadinhas que as bancas adoram. Erre 3 e reprove.",
-        "Por que você erra Débito e Crédito": "7 pegadinhas que as bancas adoram",
-        "Débito e Crédito": "7 Pegadinhas",
-        "quinta-feira, 21 de maio": "quinta-feira, 11 de junho",
-        "21 de maio": "11 de junho",
-        "A lógica por trás de Débito e Crédito — sem decoreba": "As 7 pegadinhas clássicas que 90% dos concurseiros caem",
-        "O erro mais comum em lançamentos (e como evitar)": "O padrão que as bancas usam pra construir essas armadilhas",
-        "Um macete pra nunca mais confundir os dois": "Como desarmar cada uma em menos de 30 segundos",
-    },
-    "live-final": {
-        "Live 1": "Live Final",
-        "LIVE 1": "LIVE FINAL",
-        "live-1-debito-credito": "live-final",
-        "Por que você erra Débito e Crédito (e como parar)": "🚨 Lançamento oficial do Fluência Contábil",
-        "Por que você erra Débito e Crédito": "🚨 Lançamento oficial do Fluência Contábil",
-        "Débito e Crédito": "Lançamento",
-        "Pré-lançamento": "Lançamento Oficial",
-        "quinta-feira, 21 de maio": "quinta-feira, 18 de junho",
-        "21 de maio": "18 de junho",
-        "A lógica por trás de Débito e Crédito — sem decoreba": "Tudo que o Fluência Contábil entrega: 4 módulos, 40+ aulas, 1.000+ questões",
-        "O erro mais comum em lançamentos (e como evitar)": "Como funciona a turma ao vivo exclusiva (70 vagas)",
-        "Um macete pra nunca mais confundir os dois": "Condições exclusivas pra quem comprar no dia",
-    },
+        ("LIVE 1 ·",  "🚨 LIVE 3 ·"),
+        ("Live 1 ·",  "Live 3 ·"),
+        ("Live 1 começou",  "Live 3 começou"),
+        ("Live 1 começa",   "Live 3 começa"),
+        ("a Live 1",   "a Live 3"),
+        # Datas
+        ("terça-feira, 4 de agosto",   "quinta-feira, 6 de agosto"),
+        ("segunda, 4 de agosto",         "quarta, 6 de agosto"),
+        ("Segunda-feira começa",         "Quarta-feira é o dia do lançamento"),
+        ("Hoje começa a <strong style=\"color:#1B2A4A;\">semana das 4 lives gratuitas</strong>",
+         "Hoje é o <strong style=\"color:#C0392B;\">dia do lançamento oficial</strong>"),
+        ("Terça 04/08",   "Quinta 06/08"),
+        ("segunda · 04/08", "quarta · 06/08"),
+        ("4 de agosto",     "6 de agosto"),
+        ("04/08",           "06/08"),
+        ("Até segunda",     "Até quarta"),
+        ("segunda às 20h",  "quarta às 20h"),
+        ("Não pode segunda",  "Não pode quarta"),
+        # Subheads
+        ('"Onde tudo começa."',  '"A casa abre, ao vivo."'),
+        ("Onde tudo começa",     "A casa abre, ao vivo"),
+        ("tema mais fundamental:",  "evento mais importante da semana:"),
+        ("A primeira é em",         "A terceira é em"),
+        ("A primeira tem o tema",   "A terceira é o lançamento"),
+        # 3 ganchos D-3
+        ("A <strong style=\"color:#1B2A4A;\">lógica</strong> por trás de Débito e Crédito — sem decoreba",
+         "As vagas do <strong style=\"color:#1B2A4A;\">Fluência Contábil</strong> entram no ar ao vivo"),
+        ("O erro mais comum em lançamentos (e como evitar)",
+         "Bônus <strong style=\"color:#1B2A4A;\">Acesso Fundador</strong> exclusivo de quem decide na janela"),
+        ("A base que conecta com as outras 3 lives da semana",
+         "Por que essa noite é a virada de chave — sem repeteco"),
+        # Preview text
+        ("Em algumas horas a Live 1 começa", "Em algumas horas a casa abre"),
+        ("Última chamada de inscrição.",     "A janela do Acesso Fundador abre ao vivo."),
+        ("Inscrição gratuita — só hoje pra você se inscrever.",
+         "Inscrição gratuita — vale estar presente, evento único."),
+        # Tom dos CTAs
+        ("QUERO MINHA VAGA →",           "QUERO ESTAR NO LANÇAMENTO →"),
+        ("GARANTIR VAGA GRATUITA →",     "GARANTIR PRESENÇA NO LANÇAMENTO →"),
+    ],
+    # ────────────────────────────────────────────────────────────────────
+    "live-4-plataforma": [
+        ("live-1-debito-credito", "live-4-plataforma"),
+        # Tema
+        ("Débito e Crédito ao vivo",                "Tour pela Plataforma ao vivo"),
+        ("HOJE 20h: Débito e Crédito",              "HOJE 20h: Tour pela Plataforma"),
+        ("sobre Débito e Crédito",                  "sobre a Plataforma"),
+        ("Live 1 sobre <strong style=\"color:#1B2A4A;\">Débito e Crédito</strong>",
+         "Live 4 com o <strong style=\"color:#1B2A4A;\">tour da plataforma</strong>"),
+        ("Débito e Crédito — onde tudo começa",     "Tour pela Plataforma — a casa por dentro"),
+        ("DÉBITO E CRÉDITO",                        "TOUR PELA PLATAFORMA"),
+        ("Débito e Crédito",                        "Tour pela Plataforma"),
+        # Identidade
+        ("LIVE 1 ·",  "LIVE 4 ·"),
+        ("Live 1 ·",  "Live 4 ·"),
+        ("Live 1 começou",  "Live 4 começou"),
+        ("Live 1 começa",   "Live 4 começa"),
+        ("a Live 1",   "a Live 4"),
+        # Datas
+        ("terça-feira, 4 de agosto",   "sexta-feira, 7 de agosto"),
+        ("segunda, 4 de agosto",         "quinta, 7 de agosto"),
+        ("Segunda-feira começa",         "Quinta-feira encerra"),
+        ("Hoje começa a <strong style=\"color:#1B2A4A;\">semana das 4 lives gratuitas</strong>",
+         "Hoje é a <strong style=\"color:#1B2A4A;\">última das 4 lives gratuitas</strong>"),
+        ("Terça 04/08",   "Sexta 07/08"),
+        ("segunda · 04/08", "quinta · 07/08"),
+        ("4 de agosto",     "7 de agosto"),
+        ("04/08",           "07/08"),
+        ("Até segunda",     "Até quinta"),
+        ("segunda às 20h",  "quinta às 20h"),
+        ("Não pode segunda",  "Não pode quinta"),
+        # Subheads
+        ('"Onde tudo começa."',  '"A casa por dentro."'),
+        ("Onde tudo começa",     "A casa por dentro"),
+        ("tema mais fundamental:",  "último encontro da série:"),
+        ("A primeira é em",         "A última é em"),
+        ("A primeira tem o tema",   "A última te leva por dentro da plataforma"),
+        # 3 ganchos
+        ("A <strong style=\"color:#1B2A4A;\">lógica</strong> por trás de Débito e Crédito — sem decoreba",
+         "Tour ao vivo da <strong style=\"color:#1B2A4A;\">plataforma</strong> — módulos, aulas, materiais"),
+        ("O erro mais comum em lançamentos (e como evitar)",
+         "Como o curso vive na prática — não slide bonito"),
+        ("A base que conecta com as outras 3 lives da semana",
+         "Tira-dúvidas pré-decisão antes da janela do Fundador fechar (16/08)"),
+        # Preview text
+        ("Em algumas horas a Live 1 começa", "Em algumas horas a Live 4 começa"),
+        ("Última chamada de inscrição.",     "Último encontro da série."),
+        ("Inscrição gratuita — só hoje pra você se inscrever.",
+         "Inscrição gratuita — última chance de ver a plataforma ao vivo."),
+    ],
 }
 
-# ========== Main ==========
-def generate_live(live_slug: str, substitutions: dict[str, str]) -> None:
+
+def generate_live(live_slug: str, substitutions: list[tuple[str, str]]) -> int:
     output_dir = OUTPUT_BASE / live_slug
     output_dir.mkdir(parents=True, exist_ok=True)
 
     count = 0
     for email_file in EMAILS:
         source = TEMPLATE_DIR / email_file
-        dest   = output_dir / email_file
+        dest = output_dir / email_file
 
         if not source.exists():
             print(f"  [skip] template não existe: {source}")
@@ -112,7 +210,7 @@ def generate_live(live_slug: str, substitutions: dict[str, str]) -> None:
         with open(source, "r", encoding="utf-8") as f:
             content = f.read()
 
-        for old, new in substitutions.items():
+        for old, new in substitutions:
             content = content.replace(old, new)
 
         with open(dest, "w", encoding="utf-8", newline="\n") as f:
@@ -121,7 +219,7 @@ def generate_live(live_slug: str, substitutions: dict[str, str]) -> None:
         count += 1
         print(f"  ok {dest}")
 
-    print(f"  -> {count} broadcasts gerados pra {live_slug}\n")
+    return count
 
 
 def main() -> int:
@@ -133,11 +231,12 @@ def main() -> int:
         return 1
 
     print(f"Gerando broadcasts de convite a partir de {TEMPLATE_DIR}...\n")
+    total = 0
     for slug, subs in LIVES.items():
         print(f"-> {slug}")
-        generate_live(slug, subs)
+        total += generate_live(slug, subs)
+        print()
 
-    total = len(LIVES) * len(EMAILS)
     print(f"Pronto. Total: {total} broadcasts gerados ({len(LIVES)} lives × {len(EMAILS)} emails).")
     return 0
 
