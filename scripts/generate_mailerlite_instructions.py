@@ -40,8 +40,8 @@ def email_block(eid: str) -> str:
 
 # ──────────────── CONTEÚDO ────────────────
 
-# Seção 3 — Atualizar HTMLs (A5, B1, B4, C6)
-SEC3_BLOCKS = ''.join(email_block(x) for x in ['A5', 'B1', 'B4', 'C6'])
+# Seção 3 — Atualizar HTMLs (A5, B1, B4, B5, B6, C5, C6)
+SEC3_BLOCKS = ''.join(email_block(x) for x in ['A5', 'B1', 'B4', 'B5', 'B6', 'C5', 'C6'])
 
 # Seção 4 — Sequência D (D1..D5)
 SEC4_TABLE_ROWS = ''.join(f'''
@@ -261,7 +261,7 @@ pre{{background:#0F1A30;color:#C8A84B;padding:14px 18px;border-radius:6px;overfl
   <ol>
     <li><a href="#estado">Estado atual do MailerLite</a></li>
     <li><a href="#prereq">Pré-requisitos · group único das lives</a></li>
-    <li><a href="#atualizar">Atualizar HTMLs de A5, B1, B4 e C6</a></li>
+    <li><a href="#atualizar">Atualizar HTMLs de 7 emails nas automations ativas</a></li>
     <li><a href="#sequencia-d">Criar Sequência D · Bem-vindo às Lives (5 emails)</a></li>
     <li><a href="#convites">Agendar 12 broadcasts · Convites das 4 lives</a></li>
     <li><a href="#sequencia-e">Agendar 8 broadcasts · Sequência E enxuta</a></li>
@@ -273,13 +273,13 @@ pre{{background:#0F1A30;color:#C8A84B;padding:14px 18px;border-radius:6px;overfl
 <!-- 1. ESTADO ATUAL -->
 <section id="estado">
   <h2><span class="step">1</span>Estado atual do MailerLite</h2>
-  <p>Você tem <strong>3 automações ativas</strong> rodando (Sequências A, B e C). O trabalho agora é (a) atualizar 4 emails dessas sequências, (b) criar 1 nova automação (Sequência D) e (c) agendar <strong>27 broadcasts</strong> (campanhas pontuais).</p>
+  <p>Você tem <strong>3 automações ativas</strong> rodando (Sequências A, B e C). O trabalho agora é (a) atualizar 7 emails dessas sequências, (b) criar 1 nova automação (Sequência D) e (c) agendar <strong>27 broadcasts</strong> (campanhas pontuais).</p>
   <table>
     <thead><tr><th>Sequência</th><th>Trigger</th><th>Emails</th><th>Status</th></tr></thead>
     <tbody>
-      <tr><td><strong>A — Newsletter</strong></td><td>Joins group <code>Newsletter</code></td><td>5 (A1-A5)</td><td><span class="badge badge-ok">✓ ATIVA</span> — A5 precisa atualização de HTML</td></tr>
-      <tr><td><strong>B — Lista de Espera</strong></td><td>Joins group <code>Lista de Espera</code></td><td>6 (B1-B6)</td><td><span class="badge badge-ok">✓ ATIVA</span> — B1 e B4 precisam atualização de HTML</td></tr>
-      <tr><td><strong>C — Lead Magnet</strong></td><td>Joins group <code>Lead Magnet - Dicionário</code></td><td>6 (C1-C6)</td><td><span class="badge badge-ok">✓ ATIVA</span> — C6 precisa atualização de HTML</td></tr>
+      <tr><td><strong>A — Newsletter</strong></td><td>Joins group <code>Newsletter</code></td><td>5 (A1-A5)</td><td><span class="badge badge-ok">✓ ATIVA</span> — A5 precisa atualização</td></tr>
+      <tr><td><strong>B — Lista de Espera</strong></td><td>Joins group <code>Lista de Espera</code></td><td>6 (B1-B6)</td><td><span class="badge badge-ok">✓ ATIVA</span> — B1, B4, B5, B6 precisam atualização</td></tr>
+      <tr><td><strong>C — Lead Magnet</strong></td><td>Joins group <code>Lead Magnet - Dicionário</code></td><td>6 (C1-C6)</td><td><span class="badge badge-ok">✓ ATIVA</span> — C5, C6 precisam atualização</td></tr>
       <tr><td><strong>D — Bem-vindo às Lives</strong></td><td>Joins group <code>Inscritos Lives Ago/26</code> (ID <code>188077924412294920</code>)</td><td>5 (D1-D5)</td><td><span class="badge badge-pending">⏳ A CRIAR</span></td></tr>
       <tr><td><strong>E enxuta — Operacional</strong></td><td>Broadcasts agendados (não automation)</td><td>8 (4 lives × 2)</td><td><span class="badge badge-pending">⏳ A AGENDAR</span></td></tr>
       <tr><td><strong>Convites das lives</strong></td><td>Broadcasts agendados</td><td>12 (4 lives × 3)</td><td><span class="badge badge-pending">⏳ A AGENDAR</span></td></tr>
@@ -301,7 +301,7 @@ pre{{background:#0F1A30;color:#C8A84B;padding:14px 18px;border-radius:6px;overfl
 
 <!-- 3. ATUALIZAR HTMLs -->
 <section id="atualizar">
-  <h2><span class="step">3</span>Atualizar HTMLs de A5, B1, B4 e C6 nas automations ativas</h2>
+  <h2><span class="step">3</span>Atualizar HTMLs de 7 emails nas automations ativas</h2>
   <p>Esses emails JÁ ESTÃO no ar (rodando), mas o HTML foi atualizado no repo durante a remarcação ago/2026. Você precisa re-importar:</p>
   <ol>
     <li>Vá em <strong>Automations → [nome da sequência] → clique no email → Edit content</strong></li>
@@ -385,16 +385,19 @@ pre{{background:#0F1A30;color:#C8A84B;padding:14px 18px;border-radius:6px;overfl
   <h2><span class="step">✓</span>Checklist final · marca conforme avança</h2>
   <ul class="checkbox-list">
     <li><input type="checkbox" id="c1"><label for="c1"><strong>Group único confirmado:</strong> "Inscritos Lives Ago/26" (ID 188077924412294920) recebendo subscribers via Apps Script</label></li>
-    <li><input type="checkbox" id="c2"><label for="c2"><strong>A5:</strong> Email name + Subject + Preheader + HTML atualizado na automation Sequência A</label></li>
+    <li><input type="checkbox" id="c2"><label for="c2"><strong>A5:</strong> Email name + Subject + Preheader + HTML atualizado na Sequência A</label></li>
     <li><input type="checkbox" id="c3"><label for="c3"><strong>B1:</strong> atualizado na Sequência B</label></li>
     <li><input type="checkbox" id="c4"><label for="c4"><strong>B4:</strong> atualizado na Sequência B</label></li>
-    <li><input type="checkbox" id="c5"><label for="c5"><strong>C6:</strong> atualizado na Sequência C</label></li>
-    <li><input type="checkbox" id="c6"><label for="c6"><strong>Sequência D criada</strong> · 5 emails · trigger group "Inscritos Lives Ago/26" · cadência 0/+2/+4/+6/+9 dias</label></li>
-    <li><input type="checkbox" id="c7"><label for="c7"><strong>12 convites das lives</strong> agendados (Live 1, 2, 3, 4 × 3 broadcasts)</label></li>
-    <li><input type="checkbox" id="c8"><label for="c8"><strong>8 broadcasts Sequência E</strong> agendados (4 lives × 2)</label></li>
-    <li><input type="checkbox" id="c9"><label for="c9"><strong>7 broadcasts L1-L7</strong> agendados (lançamento)</label></li>
-    <li><input type="checkbox" id="c10"><label for="c10"><strong>Send test email</strong> de 3 emails representativos (D1, Convite Live 3 D-0, L7)</label></li>
-    <li><input type="checkbox" id="c11"><label for="c11"><strong>UTM nos CTAs</strong> de L1-L7 conferido pra rastrear vendas via Kiwify</label></li>
+    <li><input type="checkbox" id="c5"><label for="c5"><strong>B5:</strong> atualizado na Sequência B (correção "junho" → "agosto")</label></li>
+    <li><input type="checkbox" id="c6"><label for="c6"><strong>B6:</strong> atualizado na Sequência B (preheader)</label></li>
+    <li><input type="checkbox" id="c7"><label for="c7"><strong>C5:</strong> atualizado na Sequência C (correção "junho" → "agosto")</label></li>
+    <li><input type="checkbox" id="c8"><label for="c8"><strong>C6:</strong> atualizado na Sequência C</label></li>
+    <li><input type="checkbox" id="c9"><label for="c9"><strong>Sequência D criada</strong> · 5 emails · trigger group "Inscritos Lives Ago/26" · cadência 0/+2/+4/+6/+9 dias</label></li>
+    <li><input type="checkbox" id="c10"><label for="c10"><strong>12 convites das lives</strong> agendados (Live 1, 2, 3, 4 × 3 broadcasts)</label></li>
+    <li><input type="checkbox" id="c11"><label for="c11"><strong>8 broadcasts Sequência E</strong> agendados (4 lives × 2)</label></li>
+    <li><input type="checkbox" id="c12"><label for="c12"><strong>7 broadcasts L1-L7</strong> agendados (lançamento)</label></li>
+    <li><input type="checkbox" id="c13"><label for="c13"><strong>Send test email</strong> de 3 emails representativos (D1, Convite Live 3 D-0, L7)</label></li>
+    <li><input type="checkbox" id="c14"><label for="c14"><strong>UTM nos CTAs</strong> de L1-L7 conferido pra rastrear vendas via Kiwify</label></li>
   </ul>
   <div class="callout success">
     <strong>✅ Quando terminar tudo, me avisa</strong>

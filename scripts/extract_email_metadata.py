@@ -19,6 +19,9 @@ EMAILS = [
     ('A5', 'Sequência A', 'sequencia-a/A5-lista-espera.html', 'FC · Sequência A · A5 · Lista de Espera'),
     ('B1', 'Sequência B', 'sequencia-b/B1-bem-vindo-lista.html', 'FC · Sequência B · B1 · Bem-vindo Lista'),
     ('B4', 'Sequência B', 'sequencia-b/B4-vip-lives.html', 'FC · Sequência B · B4 · VIP nas Lives'),
+    ('B5', 'Sequência B', 'sequencia-b/B5-aula-01.html', 'FC · Sequência B · B5 · Aula 01 Partidas Dobradas'),
+    ('B6', 'Sequência B', 'sequencia-b/B6-rotina.html', 'FC · Sequência B · B6 · Rotina de Estudo'),
+    ('C5', 'Sequência C', 'sequencia-c/C5-aula-01.html', 'FC · Sequência C · C5 · Aula 01 Partidas Dobradas'),
     ('C6', 'Sequência C', 'sequencia-c/C6-lista-espera.html', 'FC · Sequência C · C6 · Lista de Espera'),
 
     # Seção 4 — Sequência D
