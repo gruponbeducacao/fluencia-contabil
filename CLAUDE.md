@@ -6,7 +6,7 @@
 
 **Fluência Contábil** — curso completo de contabilidade para concursos públicos (áreas fiscal, controle, tribunais de contas). Prof. Vinícius Ferraz (Auditor Fiscal). Posicionamento: "ensinar contabilidade como um idioma, pela lógica".
 
-Lançamento previsto: **agosto de 2026**. Hoje o site está em **pré-venda / lista de espera**. Distribuição inicial pela **Hotmart**; plataforma própria de alunos planejada pra médio prazo.
+Lançamento previsto: **agosto de 2026**. Hoje o site está em **pré-venda / lista de espera**. Distribuição inicial pela **Kiwify**; plataforma própria de alunos planejada pra médio prazo.
 
 ## Domínios
 
@@ -299,15 +299,15 @@ Consolidação em 1 planilha com 2 abas + Dashboard com 9 seções de métricas 
 ### ✅ Fase 2.6 — Sync MailerLite assíncrono (em produção, 02/05/2026)
 Refatoração do Apps Script após incidente onde latência transitória do MailerLite fez `doPost` síncrono pendurar (timeouts de 369s = limite máximo Apps Script) e perder ~50% dos leads do dia. Nova arquitetura queue/worker: `doPost` grava em <2s, trigger temporal a cada 1min processa pendentes em batch (5/run, com `LockService`). Coluna `ML Sync` em cada aba é a fonte de verdade. Latência de API externa nunca mais derruba captura de lead. Detalhes na seção "Endpoint unificado (Apps Script)".
 
-### ⏳ Fase 3a — Integração Hotmart (não iniciada)
+### ⏳ Fase 3a — Integração Kiwify (não iniciada)
 
-**Bloqueio:** produto ainda não criado na Hotmart. Aguardando.
+**Bloqueio:** produto ainda não criado na Kiwify. Aguardando.
 
 Plano quando retomar:
-1. Configurar webhook da Hotmart → novo endpoint do Apps Script
+1. Configurar webhook da Kiwify → novo endpoint do Apps Script
 2. Criar aba "Compras" na planilha
 3. Quando compra chegar: casar pelo email com entradas na aba Lista de Espera / Newsletter. Se tiver `ref` associado, marcar a linha do indicador (futura coluna "Trouxe compras" na mesma planilha).
-4. Email transacional de boas-vindas com link do curso na Hotmart (pode usar Google Apps Script + GmailApp ou serviço terceiro).
+4. Email transacional de boas-vindas com link do curso na Kiwify (pode usar Google Apps Script + GmailApp ou serviço terceiro).
 
 **Ponto de atenção mencionado pelo usuário:** preocupação com o fluxo do funil pós-compra (serviço ao aluno). Discussão aberta.
 
@@ -323,7 +323,7 @@ Exige mais lógica no Apps Script. Factível sem backend externo.
 
 ### ⏳ Fase 3c — Plataforma de alunos própria (médio/longo prazo)
 
-Saída da Hotmart pra plataforma própria.
+Saída da Kiwify pra plataforma própria.
 - Stack sugerida (ainda a validar): **Supabase** (auth + DB) + **Vimeo ou Mux** (vídeos privados) + frontend estático. Baixo custo, boa escala, sem servidor próprio.
 - Mesma base de leads/compras servindo referral e acesso.
 - Funcionalidades: área logada, progresso de aulas, certificado, materiais, fórum (opcional).
