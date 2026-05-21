@@ -116,7 +116,7 @@ def cta(url: str, text: str, bg: str = "#C0392B", border: str = "#8B2819", color
           </table>
 """
 
-LINK_VENDAS = "https://kiwify.app/Lqc9Rqd"  # ⚠ substituir pelo checkout Kiwify quando estiver pronto
+LINK_VENDAS = "https://pay.kiwify.com.br/Ze6v1aC"  # ⚠ substituir pelo checkout Kiwify quando estiver pronto
 
 # ─── 7 emails ───
 EMAILS = [
