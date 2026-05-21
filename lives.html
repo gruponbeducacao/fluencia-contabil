@@ -444,7 +444,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="jornada-line"></div>
     <div class="jornada-line-prog" id="jornadaLineProg"></div>
 
-    <article class="jornada-node" data-live="1" data-start="2026-06-29T20:00:00-03:00">
+    <article class="jornada-node" data-live="1" data-start="2026-08-04T20:00:00-03:00">
       <div class="jornada-orb"><span class="jornada-orb-icon">🔒</span></div>
       <div class="jornada-date">Ter · 04/08 · 20h</div>
       <div class="jornada-name">Débito e Crédito</div>
@@ -452,7 +452,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="jornada-desc">Débito não é entrada. Crédito não é saída. Você vai entender a lógica que a maioria dos candidatos apenas decorou.</div>
     </article>
 
-    <article class="jornada-node" data-live="2" data-start="2026-06-30T20:00:00-03:00">
+    <article class="jornada-node" data-live="2" data-start="2026-08-05T20:00:00-03:00">
       <div class="jornada-orb"><span class="jornada-orb-icon">🔒</span></div>
       <div class="jornada-date">Qua · 05/08 · 20h</div>
       <div class="jornada-name">CPC 51</div>
@@ -460,7 +460,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="jornada-desc">Os CPCs não são difíceis. Você só nunca aprendeu a interpretar o que eles realmente querem dizer.</div>
     </article>
 
-    <article class="jornada-node is-launch" data-live="3" data-start="2026-07-01T20:00:00-03:00">
+    <article class="jornada-node is-launch" data-live="3" data-start="2026-08-06T20:00:00-03:00">
       <div class="jornada-orb"><span class="jornada-orb-icon">🔒</span></div>
       <div class="jornada-date">Qui · 06/08 · 20h</div>
       <div class="jornada-name">O Lançamento</div>
@@ -468,7 +468,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="jornada-desc">Contabilidade deixa de ser medo… e começa a virar a vantagem que pode te colocar na frente da concorrência.</div>
     </article>
 
-    <article class="jornada-node" data-live="4" data-start="2026-07-02T20:00:00-03:00">
+    <article class="jornada-node" data-live="4" data-start="2026-08-07T20:00:00-03:00">
       <div class="jornada-orb"><span class="jornada-orb-icon">🔒</span></div>
       <div class="jornada-date">Sex · 07/08 · 20h</div>
       <div class="jornada-name">Tour pela Plataforma</div>
@@ -759,11 +759,11 @@ document.querySelectorAll('.jornada-node').forEach(function(node){
 /* Cronômetro — sempre atualiza pra próxima live, depois pro fim da janela */
 (function(){
   var events = [
-    { name: 'Live 1 · Débito e Crédito',            date: new Date('2026-06-29T20:00:00-03:00') },
-    { name: 'Live 2 · CPC 51',                       date: new Date('2026-06-30T20:00:00-03:00') },
-    { name: 'Live 3 · Lançamento Oficial',           date: new Date('2026-07-01T20:00:00-03:00') },
-    { name: 'Live 4 · Apresentação da Plataforma',  date: new Date('2026-07-02T20:00:00-03:00') },
-    { name: 'Janela do Acesso Fundador encerra',     date: new Date('2026-07-05T23:59:00-03:00') }
+    { name: 'Live 1 · Débito e Crédito',            date: new Date('2026-08-04T20:00:00-03:00') },
+    { name: 'Live 2 · CPC 51',                       date: new Date('2026-08-05T20:00:00-03:00') },
+    { name: 'Live 3 · Lançamento Oficial',           date: new Date('2026-08-06T20:00:00-03:00') },
+    { name: 'Live 4 · Apresentação da Plataforma',  date: new Date('2026-08-07T20:00:00-03:00') },
+    { name: 'Janela do Acesso Fundador encerra',     date: new Date('2026-08-16T23:59:00-03:00') }
   ];
   function pad(n){return n<10?'0'+n:''+n;}
   var nameEl=document.getElementById('timer-live-name');
