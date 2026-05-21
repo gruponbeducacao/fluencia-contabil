@@ -6,7 +6,7 @@
 
 **Fluência Contábil** — curso completo de contabilidade para concursos públicos (áreas fiscal, controle, tribunais de contas). Prof. Vinícius Ferraz (Auditor Fiscal). Posicionamento: "ensinar contabilidade como um idioma, pela lógica".
 
-Lançamento previsto: **junho de 2026**. Hoje o site está em **pré-venda / lista de espera**. Distribuição inicial pela **Hotmart**; plataforma própria de alunos planejada pra médio prazo.
+Lançamento previsto: **agosto de 2026**. Hoje o site está em **pré-venda / lista de espera**. Distribuição inicial pela **Hotmart**; plataforma própria de alunos planejada pra médio prazo.
 
 ## Domínios
 
