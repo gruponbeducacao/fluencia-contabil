@@ -146,6 +146,57 @@
       letter-spacing: 1px;
       text-transform: uppercase;
     }
+    /* Botão "Copiar HTML" em cada card de email */
+    .card { position: relative; }
+    .card-copy {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      background: rgba(27,42,74,0.85);
+      color: var(--dourado);
+      border: 1px solid rgba(200,168,75,0.4);
+      padding: 4px 8px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      border-radius: 3px;
+      opacity: 0;
+      transition: opacity 0.18s ease, background 0.18s ease;
+      font-family: inherit;
+      z-index: 2;
+    }
+    .card:hover .card-copy { opacity: 1; }
+    .card-copy:hover { background: var(--azul); color: white; }
+    .card-copy.success { background: #10B981; color: white; border-color: #10B981; opacity: 1; }
+    .card-copy.error { background: #C0392B; color: white; border-color: #C0392B; opacity: 1; }
+    /* Banner "instruções MailerLite" */
+    .ml-cta {
+      background: linear-gradient(90deg, #1B2A4A 0%, #2A3F6F 100%);
+      color: white;
+      padding: 20px 24px;
+      border-radius: 8px;
+      margin-bottom: 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .ml-cta strong { color: var(--dourado); }
+    .ml-cta .ml-btn {
+      background: var(--dourado);
+      color: var(--azul);
+      padding: 10px 20px;
+      font-weight: 800;
+      font-size: 12px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      border-radius: 4px;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background 0.2s ease;
+    }
+    .ml-cta .ml-btn:hover { background: #d4b958; }
   </style>
 </head>
 <body>
@@ -163,6 +214,13 @@
 
     <div class="alert" style="background:#D1FAE5; border-left-color:#10B981;">
       <strong>✅ Plano editorial 100% pronto.</strong> 49 emails refletindo o replanejamento de 06/05/2026: <strong>4 lives concentradas</strong> (ter 04/08 → sex 07/08), janela <strong>só anual</strong> de 7 dias (04/08 a dom 16/08 23h59), bônus <strong>Acesso Fundador</strong> (vitalício + early access 30d + selo), tese narrativa <strong>Códigos → Palavra mais cobrada → Casa abre → Casa por dentro</strong>. Documento mestre: <code>_LANCAMENTO_2026_NOVO.md</code>.
+    </div>
+
+    <div class="ml-cta">
+      <div>
+        <strong>📋 Instruções de programação do MailerLite</strong> — passo-a-passo pra ativar automações pendentes, agendar 27 broadcasts e atualizar os emails já no ar.
+      </div>
+      <a class="ml-btn" href="_INSTRUCOES_MAILERLITE.html" target="_blank">Ver instruções →</a>
     </div>
 
     <div class="alert" style="background:#FEF3C7; border-left-color:#C8A84B;">
@@ -439,5 +497,42 @@
     </div>
 
   </div>
+
+  <script>
+    // Adiciona botão "Copiar HTML" em cada card que aponta pra um .html
+    document.querySelectorAll('a.card[href$=".html"]').forEach(function(card) {
+      var btn = document.createElement('button');
+      btn.className = 'card-copy';
+      btn.textContent = '📋 Copiar';
+      btn.title = 'Copiar HTML deste email pra colar no MailerLite';
+      btn.addEventListener('click', async function(ev) {
+        ev.preventDefault();
+        ev.stopPropagation();
+        var originalText = btn.textContent;
+        btn.textContent = '⏳';
+        try {
+          var response = await fetch(card.href);
+          if (!response.ok) throw new Error('HTTP ' + response.status);
+          var html = await response.text();
+          await navigator.clipboard.writeText(html);
+          btn.textContent = '✓ Copiado!';
+          btn.classList.add('success');
+          setTimeout(function() {
+            btn.textContent = originalText;
+            btn.classList.remove('success');
+          }, 1800);
+        } catch (err) {
+          btn.textContent = '✗ Erro';
+          btn.classList.add('error');
+          console.error('Falha ao copiar HTML:', err);
+          setTimeout(function() {
+            btn.textContent = originalText;
+            btn.classList.remove('error');
+          }, 2200);
+        }
+      });
+      card.appendChild(btn);
+    });
+  </script>
 </body>
 </html>
