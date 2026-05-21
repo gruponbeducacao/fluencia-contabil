@@ -348,7 +348,12 @@ Saída da Kiwify pra plataforma própria.
 7. **Engagement peak** (70% scroll + 4s idle) em vez de scroll-up rápido como proxy de exit-intent no mobile (falso positivo demais).
 8. **Cascata CSS dos posts** sobrescreve cores/paddings dos widgets. Sempre usar `!important` com seletores específicos (ex: `.fc-ec-referral a.fc-ec-wa-group`) pra garantir especificidade 0,2,1+ e vencer `.article-body a` (0,1,1).
 9. **Apps Script: nunca chamar API externa síncrona dentro do `doPost`.** `UrlFetchApp.fetch` tem timeout interno fixo de 60s não-configurável, e Apps Script enfileira execuções concorrentes do Web App. Se a API externa fica lenta, a fila explode e leads vão pro limbo (estouram 6min do limite total). Sempre separar em queue (coluna marker na planilha) + trigger temporal worker. Lição aprendida no incidente de 02/05/2026 que originou a Fase 2.6.
-10. **GTM como camada única de tags** na LP do Dicionário (`GTM-WF6P82HX`). Qualquer pixel/tag novo (Meta, GA4, ads de conversão) entra via GTM, não direto no HTML. Mantém o repo limpo e centraliza configuração.
+10. **GTM como camada única de tags.** Containers em uso:
+    - **`GTM-WB2NTFXL`** — site principal (`fluenciacontabil.com.br`). Instalado em 21/05/2026 em todas as 21 páginas públicas (10 top-level + 11 posts de blog). Snippet `<script>` no `<head>` logo após `<head>` + `<noscript>` imediatamente após `<body>`. **Não instalado em `email-templates/`** (clientes de email não rodam JS) nem em `googled2c8f6ea3be1f5ef.html` (arquivo de verificação Google).
+    - **`GTM-WF6P82HX`** — LP do Dicionário (`dicionario.fluenciacontabil.com.br`). Repo separado.
+    - **`GTM-5C2V5DPX`** — legado, instalado **apenas em `lives.html`** antes desta decisão. Mantido coexistindo com `GTM-WB2NTFXL` na página por hora (decisão de 21/05/2026 — não remover sem checagem do que está configurado lá dentro). `lives.html` carrega os 2 containers simultaneamente.
+
+    Qualquer pixel/tag novo (Meta, GA4, ads de conversão) entra via GTM, não direto no HTML. Mantém o repo limpo e centraliza configuração.
 
 ---
 
@@ -365,4 +370,6 @@ Saída da Kiwify pra plataforma própria.
 
 ---
 
-*Última atualização: 02/05/2026 — após incidente de timeout do Apps Script (refatoração v3 com sync assíncrono) + instalação do GTM `GTM-WF6P82HX` na LP do Dicionário. Escrito por Claude Opus 4.7.*
+*Última atualização: 21/05/2026 — instalação do GTM `GTM-WB2NTFXL` em todas as 21 páginas públicas do site principal (10 top-level + 11 posts de blog). `lives.html` ficou com os 2 containers (`WB2NTFXL` + legado `5C2V5DPX`). Escrito por Claude Opus 4.7.*
+
+*Anterior: 02/05/2026 — incidente de timeout do Apps Script (refatoração v3 com sync assíncrono) + instalação do GTM `GTM-WF6P82HX` na LP do Dicionário.*
