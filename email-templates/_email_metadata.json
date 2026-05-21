@@ -1,0 +1,353 @@
+[
+  {
+    "id": "A5",
+    "category": "Sequência A",
+    "path": "sequencia-a/A5-lista-espera.html",
+    "name": "FC · Sequência A · A5 · Lista de Espera",
+    "subject": "Se o método faz sentido pra você, tem um próximo passo",
+    "preheader": "Como garantir sua vaga quando o curso abrir em agosto.",
+    "exists": true
+  },
+  {
+    "id": "B1",
+    "category": "Sequência B",
+    "path": "sequencia-b/B1-bem-vindo-lista.html",
+    "name": "FC · Sequência B · B1 · Bem-vindo Lista",
+    "subject": "Você está dentro. Bem-vindo(a) à Lista de Espera.",
+    "preheader": "Seu Dicionário Contábil + convite pro grupo exclusivo de pré-lançamento.",
+    "exists": true
+  },
+  {
+    "id": "B4",
+    "category": "Sequência B",
+    "path": "sequencia-b/B4-vip-lives.html",
+    "name": "FC · Sequência B · B4 · VIP nas Lives",
+    "subject": "[Você é VIP] As 4 lives gratuitas do Fluência Contábil",
+    "preheader": "Seu acesso prioritário às 4 lives de pré-lançamento (04/08 a 07/08). Uma inscrição cobre todas.",
+    "exists": true
+  },
+  {
+    "id": "B5",
+    "category": "Sequência B",
+    "path": "sequencia-b/B5-aula-01.html",
+    "name": "FC · Sequência B · B5 · Aula 01 Partidas Dobradas",
+    "subject": "[Aula 01 grátis] Método das Partidas Dobradas",
+    "preheader": "Uma aula completa do nosso curso, em PDF, grátis pra você experimentar.",
+    "exists": true
+  },
+  {
+    "id": "B6",
+    "category": "Sequência B",
+    "path": "sequencia-b/B6-rotina.html",
+    "name": "FC · Sequência B · B6 · Rotina de Estudo",
+    "subject": "A rotina que separa quem passa de quem desiste",
+    "preheader": "Como organizar as próximas semanas pra chegar em agosto preparado(a).",
+    "exists": true
+  },
+  {
+    "id": "C5",
+    "category": "Sequência C",
+    "path": "sequencia-c/C5-aula-01.html",
+    "name": "FC · Sequência C · C5 · Aula 01 Partidas Dobradas",
+    "subject": "[Aula 01 grátis] Método das Partidas Dobradas",
+    "preheader": "Você provou o Dicionário. Agora prova uma aula completa do curso.",
+    "exists": true
+  },
+  {
+    "id": "C6",
+    "category": "Sequência C",
+    "path": "sequencia-c/C6-lista-espera.html",
+    "name": "FC · Sequência C · C6 · Lista de Espera",
+    "subject": "Seu próximo passo depois de 3 semanas com a gente",
+    "preheader": "Como garantir vaga antes do lançamento, que começa em 4 de agosto.",
+    "exists": true
+  },
+  {
+    "id": "D1",
+    "category": "Sequência D",
+    "path": "sequencia-d/D1-bem-vindo-lives.html",
+    "name": "FC · Sequência D · D1 · Bem-vindo às Lives",
+    "subject": "Você está dentro: 4 lives + Dicionário grátis",
+    "preheader": "Vaga garantida nas 4 lives + seu Dicionário Contábil já liberado.",
+    "exists": true
+  },
+  {
+    "id": "D2",
+    "category": "Sequência D",
+    "path": "sequencia-d/D2-cinco-camadas.html",
+    "name": "FC · Sequência D · D2 · Cinco Camadas",
+    "subject": "Por que essas 4 lives, nessa ordem",
+    "preheader": "A ordem das 4 lives não é aleatória. Te explico em 2 minutos.",
+    "exists": true
+  },
+  {
+    "id": "D3",
+    "category": "Sequência D",
+    "path": "sequencia-d/D3-quem-te-ensina.html",
+    "name": "FC · Sequência D · D3 · Quem te Ensina",
+    "subject": "Quem vai te ensinar nas lives",
+    "preheader": "Antes da Live 1, é justo te apresentar o professor.",
+    "exists": true
+  },
+  {
+    "id": "D4",
+    "category": "Sequência D",
+    "path": "sequencia-d/D4-aula-01.html",
+    "name": "FC · Sequência D · D4 · Aula 01 Partidas Dobradas",
+    "subject": "[Aula 01 grátis] Método das Partidas Dobradas",
+    "preheader": "Aula completa em PDF — a espinha dorsal de toda a contabilidade.",
+    "exists": true
+  },
+  {
+    "id": "D5",
+    "category": "Sequência D",
+    "path": "sequencia-d/D5-proxima-live.html",
+    "name": "FC · Sequência D · D5 · Como aproveitar as Lives",
+    "subject": "Como aproveitar as lives ao máximo",
+    "preheader": "Recap do que você já tem em mãos + dicas pra extrair o máximo das lives.",
+    "exists": true
+  },
+  {
+    "id": "LIVE1-D3",
+    "category": "Convite Live 1",
+    "path": "broadcasts/convites-lives/live-1-debito-credito/D-3.html",
+    "name": "FC · Convite Live 1 (Débito/Crédito) · D-3",
+    "subject": "Em 3 dias: live gratuita sobre Débito e Crédito",
+    "preheader": "Terça 04/08 às 20h. Inscrição gratuita — só hoje pra você se inscrever.",
+    "exists": true
+  },
+  {
+    "id": "LIVE1-D0",
+    "category": "Convite Live 1",
+    "path": "broadcasts/convites-lives/live-1-debito-credito/D-0.html",
+    "name": "FC · Convite Live 1 (Débito/Crédito) · D-0",
+    "subject": "HOJE 20h: Débito e Crédito ao vivo",
+    "preheader": "Em algumas horas a Live 1 começa. Última chamada de inscrição.",
+    "exists": true
+  },
+  {
+    "id": "LIVE1-AV",
+    "category": "Convite Live 1",
+    "path": "broadcasts/convites-lives/live-1-debito-credito/AOVIVO.html",
+    "name": "FC · Convite Live 1 (Débito/Crédito) · AOVIVO",
+    "subject": "🔴 AO VIVO AGORA: Débito e Crédito",
+    "preheader": "Live 1 começou agora. Entra aqui antes do bicho pegar.",
+    "exists": true
+  },
+  {
+    "id": "LIVE2-D3",
+    "category": "Convite Live 2",
+    "path": "broadcasts/convites-lives/live-2-cpc-51/D-3.html",
+    "name": "FC · Convite Live 2 (CPC 51) · D-3",
+    "subject": "Em 3 dias: live gratuita sobre CPC 51",
+    "preheader": "Quarta 05/08 às 20h. Inscrição gratuita — entra antes do bicho pegar.",
+    "exists": true
+  },
+  {
+    "id": "LIVE2-D0",
+    "category": "Convite Live 2",
+    "path": "broadcasts/convites-lives/live-2-cpc-51/D-0.html",
+    "name": "FC · Convite Live 2 (CPC 51) · D-0",
+    "subject": "HOJE 20h: CPC 51 ao vivo",
+    "preheader": "Em algumas horas a Live 2 começa. Última chamada de inscrição.",
+    "exists": true
+  },
+  {
+    "id": "LIVE2-AV",
+    "category": "Convite Live 2",
+    "path": "broadcasts/convites-lives/live-2-cpc-51/AOVIVO.html",
+    "name": "FC · Convite Live 2 (CPC 51) · AOVIVO",
+    "subject": "🔴 AO VIVO AGORA: CPC 51",
+    "preheader": "Live 2 começou agora. Entra aqui antes do bicho pegar.",
+    "exists": true
+  },
+  {
+    "id": "LIVE3-D3",
+    "category": "Convite Live 3",
+    "path": "broadcasts/convites-lives/live-3-lancamento/D-3.html",
+    "name": "FC · Convite Live 3 (Lançamento) · D-3",
+    "subject": "Em 3 dias: live gratuita sobre o Lançamento Oficial",
+    "preheader": "Quinta 06/08 às 20h. Inscrição gratuita — vale estar presente, evento único.",
+    "exists": true
+  },
+  {
+    "id": "LIVE3-D0",
+    "category": "Convite Live 3",
+    "path": "broadcasts/convites-lives/live-3-lancamento/D-0.html",
+    "name": "FC · Convite Live 3 (Lançamento) · D-0",
+    "subject": "HOJE 20h: Lançamento Oficial ao vivo",
+    "preheader": "Em algumas horas a Live 3 começa. A janela do Acesso Fundador abre ao vivo.",
+    "exists": true
+  },
+  {
+    "id": "LIVE3-AV",
+    "category": "Convite Live 3",
+    "path": "broadcasts/convites-lives/live-3-lancamento/AOVIVO.html",
+    "name": "FC · Convite Live 3 (Lançamento) · AOVIVO",
+    "subject": "🔴 AO VIVO AGORA: Lançamento Oficial",
+    "preheader": "Live 3 começou agora. Entra aqui antes do bicho pegar.",
+    "exists": true
+  },
+  {
+    "id": "LIVE4-D3",
+    "category": "Convite Live 4",
+    "path": "broadcasts/convites-lives/live-4-plataforma/D-3.html",
+    "name": "FC · Convite Live 4 (Plataforma) · D-3",
+    "subject": "Em 3 dias: live gratuita sobre a Plataforma",
+    "preheader": "Sexta 07/08 às 20h. Inscrição gratuita — última chance de ver a plataforma ao vivo.",
+    "exists": true
+  },
+  {
+    "id": "LIVE4-D0",
+    "category": "Convite Live 4",
+    "path": "broadcasts/convites-lives/live-4-plataforma/D-0.html",
+    "name": "FC · Convite Live 4 (Plataforma) · D-0",
+    "subject": "HOJE 20h: Tour pela Plataforma ao vivo",
+    "preheader": "Em algumas horas a Live 4 começa. Último encontro da série.",
+    "exists": true
+  },
+  {
+    "id": "LIVE4-AV",
+    "category": "Convite Live 4",
+    "path": "broadcasts/convites-lives/live-4-plataforma/AOVIVO.html",
+    "name": "FC · Convite Live 4 (Plataforma) · AOVIVO",
+    "subject": "🔴 AO VIVO AGORA: Tour pela Plataforma",
+    "preheader": "Live 4 começou agora. Entra aqui antes do bicho pegar.",
+    "exists": true
+  },
+  {
+    "id": "E1-VESP",
+    "category": "Sequência E",
+    "path": "sequencia-e/live-1-vespera.html",
+    "name": "FC · Sequência E · Live 1 · Véspera",
+    "subject": "Amanhã 20h: Live 1 — Débito e Crédito",
+    "preheader": "Amanhã, terça 04/08, 20h. A base de todo o resto.",
+    "exists": true
+  },
+  {
+    "id": "E1-AV",
+    "category": "Sequência E",
+    "path": "sequencia-e/live-1-aovivo.html",
+    "name": "FC · Sequência E · Live 1 · AOVIVO",
+    "subject": "🔴 Live 1 começando agora: Débito e Crédito",
+    "preheader": "Tá no ar a Live 1. Entra antes do bicho pegar.",
+    "exists": true
+  },
+  {
+    "id": "E2-VESP",
+    "category": "Sequência E",
+    "path": "sequencia-e/live-2-vespera.html",
+    "name": "FC · Sequência E · Live 2 · Véspera",
+    "subject": "Amanhã 20h: Live 2 — CPC 51",
+    "preheader": "Amanhã, quarta 05/08, 20h. Onde mais gente perde ponto.",
+    "exists": true
+  },
+  {
+    "id": "E2-AV",
+    "category": "Sequência E",
+    "path": "sequencia-e/live-2-aovivo.html",
+    "name": "FC · Sequência E · Live 2 · AOVIVO",
+    "subject": "🔴 Live 2 começando agora: CPC 51",
+    "preheader": "Tá no ar a Live 2. Entra antes do bicho pegar.",
+    "exists": true
+  },
+  {
+    "id": "E3-VESP",
+    "category": "Sequência E",
+    "path": "sequencia-e/live-3-vespera.html",
+    "name": "FC · Sequência E · Live 3 · Véspera",
+    "subject": "Amanhã 20h: Live 3 — Lançamento Oficial",
+    "preheader": "Amanhã, quinta 06/08, 20h. As vagas do Fluência Contábil entram no ar.",
+    "exists": true
+  },
+  {
+    "id": "E3-AV",
+    "category": "Sequência E",
+    "path": "sequencia-e/live-3-aovivo.html",
+    "name": "FC · Sequência E · Live 3 · AOVIVO",
+    "subject": "🔴 Live 3 começando agora: Lançamento Oficial",
+    "preheader": "Tá no ar a Live 3. Entra antes do bicho pegar.",
+    "exists": true
+  },
+  {
+    "id": "E4-VESP",
+    "category": "Sequência E",
+    "path": "sequencia-e/live-4-vespera.html",
+    "name": "FC · Sequência E · Live 4 · Véspera",
+    "subject": "Amanhã 20h: Live 4 — Tour pela Plataforma",
+    "preheader": "Amanhã, sexta 07/08, 20h. Tour ao vivo · última noite da série.",
+    "exists": true
+  },
+  {
+    "id": "E4-AV",
+    "category": "Sequência E",
+    "path": "sequencia-e/live-4-aovivo.html",
+    "name": "FC · Sequência E · Live 4 · AOVIVO",
+    "subject": "🔴 Live 4 começando agora: Tour pela Plataforma",
+    "preheader": "Tá no ar a Live 4. Entra antes do bicho pegar.",
+    "exists": true
+  },
+  {
+    "id": "L1",
+    "category": "Lançamento",
+    "path": "broadcasts/lancamento/L1-anuncio.html",
+    "name": "FC · Lançamento · L1 · Anúncio",
+    "subject": "Em 1 semana abrem as 4 lives gratuitas",
+    "preheader": "04/08 a 07/08 — Códigos → Palavra → Casa abre → Casa por dentro.",
+    "exists": true
+  },
+  {
+    "id": "L2",
+    "category": "Lançamento",
+    "path": "broadcasts/lancamento/L2-por-que-anual.html",
+    "name": "FC · Lançamento · L2 · Por que só anual",
+    "subject": "Por que só anual? (e por que isso te interessa)",
+    "preheader": "A modalidade premium da janela do lançamento — e o motivo.",
+    "exists": true
+  },
+  {
+    "id": "L3",
+    "category": "Lançamento",
+    "path": "broadcasts/lancamento/L3-vespera.html",
+    "name": "FC · Lançamento · L3 · Véspera Live 1",
+    "subject": "Amanhã 20h: começa a semana das 4 lives",
+    "preheader": "Live 1 — Débito e Crédito. Onde tudo começa.",
+    "exists": true
+  },
+  {
+    "id": "L4",
+    "category": "Lançamento",
+    "path": "broadcasts/lancamento/L4-pos-lives-roi.html",
+    "name": "FC · Lançamento · L4 · Pós-Lives ROI",
+    "subject": "Acabou a semana de lives — restam 9d na janela",
+    "preheader": "Anual R$ 814,80 ou 12× R$ 67,90. ROI de uma aprovação.",
+    "exists": true
+  },
+  {
+    "id": "L5",
+    "category": "Lançamento",
+    "path": "broadcasts/lancamento/L5-depoimentos.html",
+    "name": "FC · Lançamento · L5 · Depoimentos",
+    "subject": "Amanhã encerra (alguns que já estão dentro)",
+    "preheader": "Quem decidiu cedo na janela — e o que está dizendo.",
+    "exists": true
+  },
+  {
+    "id": "L6",
+    "category": "Lançamento",
+    "path": "broadcasts/lancamento/L6-ultimo-dia.html",
+    "name": "FC · Lançamento · L6 · Último Dia",
+    "subject": "ÚLTIMO DIA · janela do Acesso Fundador encerra hoje 23h59",
+    "preheader": "FAQ rápido pra quem tá decidindo agora.",
+    "exists": true
+  },
+  {
+    "id": "L7",
+    "category": "Lançamento",
+    "path": "broadcasts/lancamento/L7-ultima-chamada.html",
+    "name": "FC · Lançamento · L7 · Última Chamada",
+    "subject": "🚨 ÚLTIMA CHAMADA · 5h pra encerrar a janela do Fundador",
+    "preheader": "23h59 fecha. Sem prorrogação. Sem reabertura.",
+    "exists": true
+  }
+]
