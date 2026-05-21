@@ -229,7 +229,7 @@ Quem entra na janela do lançamento ganha:
 - [ ] `cursos.html` atualizado (Tri+Sem padrão, garantia 7d, anual sai)
 - [ ] Aplicar selos na plataforma (perfil + grupo WhatsApp)
 - [ ] Importar HTMLs no MailerLite
-- [ ] Substituir placeholder `{LINK_VENDAS}` pelo checkout Hotmart
+- [ ] Substituir placeholder `{LINK_VENDAS}` pelo checkout Kiwify
 - [ ] Capturar depoimentos reais pro L5
 
 ---
