@@ -14,7 +14,7 @@
 | # | Tema | Data | Função estratégica |
 |---|---|---|---|
 | **L1** | Débito e Crédito | **ter 04/08** | "Os códigos." Abre a janela. QR no OBS. |
-| **L2** | CPC 51 | **qua 05/08** | "A palavra mais cobrada." |
+| **L2** | CPC 51 | **qua 05/08** | "O CPC que redesenha as demonstrações em 2027 (substitui o CPC 26)." |
 | **L3** | Lançamento Oficial | **qui 06/08** | "A casa abre." (não é "Live Final" — é o gatilho oficial) |
 | **L4** | Apresentação da Plataforma | **sex 07/08** | "A casa por dentro." Demonstração ao vivo. |
 
@@ -67,12 +67,12 @@ Quem decide **dentro da janela do lançamento** (qualquer dia):
 
 ## 2. Tese narrativa das 4 lives
 
-> *"Em 4 noites a gente faz a viagem inteira. L1 te dá os códigos — débito e crédito, onde tudo começa. L2 te leva direto ao caso onde mais gente erra — CPC 51. L3 abre a casa: as vagas do Fluência Contábil entram no ar ao vivo, na sua frente. L4 te mostra a casa por dentro — como o curso vive na plataforma."*
+> *"Em 4 noites a gente faz a viagem inteira. L1 te dá os códigos — débito e crédito, onde tudo começa. L2 te leva direto ao CPC 51 — a norma que vai substituir o CPC 26 em 2027 e redesenhar as demonstrações contábeis. L3 abre a casa: as vagas do Fluência Contábil entram no ar ao vivo, na sua frente. L4 te mostra a casa por dentro — como o curso vive na plataforma."*
 
 ### Microtaglines por live
 
 - **L1:** *"Os códigos. Onde tudo começa."*
-- **L2:** *"A palavra mais cobrada da contabilidade."*
+- **L2:** *"O CPC que redesenha as demonstrações em 2027."*
 - **L3:** *"A casa abre — ao vivo."*
 - **L4:** *"A casa por dentro."*
 
