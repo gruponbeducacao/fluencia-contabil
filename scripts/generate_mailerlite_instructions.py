@@ -48,7 +48,7 @@ SEC4_TABLE_ROWS = ''.join(f'''
       <tr><td><strong>{x}</strong></td><td>{delay}</td><td>{tema}</td></tr>'''
     for x, delay, tema in [
         ('D1', '<strong>Imediato</strong> (0 minutos)', 'Boas-vindas + agenda 4 lives + Acesso Fundador (teaser) + Dicionário PDF'),
-        ('D2', '<strong>+2 dias</strong>', 'Tese: Códigos → Palavra mais cobrada → Casa abre → Casa por dentro'),
+        ('D2', '<strong>+2 dias</strong>', 'Tese: Códigos → Próxima base → Casa abre → Casa por dentro'),
         ('D3', '<strong>+4 dias</strong>', 'Quem te ensina · trajetória · Senado Federal · grid de números'),
         ('D4', '<strong>+6 dias</strong>', '[Aula 01 grátis] Partidas Dobradas · prepara pra Live 1'),
         ('D5', '<strong>+9 dias</strong>', 'Como aproveitar as 4 noites · 3 dicas · LP única'),
