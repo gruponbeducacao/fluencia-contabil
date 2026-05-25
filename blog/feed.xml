@@ -6,18 +6,9 @@
     <atom:link href="https://fluenciacontabil.com.br/blog/feed.xml" rel="self" type="application/rss+xml"/>
     <description>Artigos sobre contabilidade para concursos fiscais, de controle e tribunais de contas.</description>
     <language>pt-br</language>
-    <lastBuildDate>Sun, 25 May 2026 22:00:00 GMT</lastBuildDate>
-    <pubDate>Sun, 25 May 2026 22:00:00 GMT</pubDate>
+    <lastBuildDate>Mon, 25 May 2026 20:53:08 GMT</lastBuildDate>
+    <pubDate>Mon, 27 Apr 2026 03:00:00 GMT</pubDate>
     <ttl>60</ttl>
-    <item>
-      <title>SEFAZ-GO 2026 (Auditor-Fiscal): como a Contabilidade foi cobrada pela FCC</title>
-      <link>https://fluenciacontabil.com.br/blog/sefaz-go-afre-contabilidade</link>
-      <guid isPermaLink="true">https://fluenciacontabil.com.br/blog/sefaz-go-afre-contabilidade</guid>
-      <description>Análise completa das 18 questões de Contabilidade da prova FCC SEFAZ-GO 2026 (Auditor-Fiscal). Geral, Avançada, padrões da FCC, pegadinhas, comparativo com SEFAZ-SP 2025 e a Q32 da DFC destrinchada.</description>
-      <pubDate>Sun, 25 May 2026 22:00:00 GMT</pubDate>
-      <category>Concursos</category>
-      <author>contato@fluenciacontabil.com.br (Vinícius Ferraz)</author>
-    </item>
     <item>
       <title>As 5 categorias da DRE no CPC 51 — guia com paralelo na DFC</title>
       <link>https://fluenciacontabil.com.br/blog/cpc-51-categorias-dre-paralelo-dfc</link>
@@ -114,6 +105,13 @@
       <pubDate>Mon, 23 Feb 2026 00:00:00 GMT</pubDate>
       <category>Fundamentos</category>
       <author>contato@fluenciacontabil.com.br (Vinícius Ferraz)</author>
+    </item>
+    <item>
+      <title>SEFAZ-GO 2026 (Auditor-Fiscal): como a Contabilidade foi cobrada pela FCC</title>
+      <link>https://fluenciacontabil.com.br/blog/sefaz-go-afre-contabilidade</link>
+      <guid isPermaLink="true">https://fluenciacontabil.com.br/blog/sefaz-go-afre-contabilidade</guid>
+      <description>22 questões em dois cadernos, com peso dobrado na Contabilidade Avançada. Veja o que a FCC exigiu — e o que você precisa dominar.</description>
+      <author>contato@fluenciacontabil.com.br (Equipe Fluência Contábil)</author>
     </item>
   </channel>
 </rss>
