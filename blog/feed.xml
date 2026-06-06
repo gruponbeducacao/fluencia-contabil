@@ -6,9 +6,17 @@
     <atom:link href="https://fluenciacontabil.com.br/blog/feed.xml" rel="self" type="application/rss+xml"/>
     <description>Artigos sobre contabilidade para concursos fiscais, de controle e tribunais de contas.</description>
     <language>pt-br</language>
-    <lastBuildDate>Mon, 25 May 2026 20:57:02 GMT</lastBuildDate>
-    <pubDate>Mon, 27 Apr 2026 03:00:00 GMT</pubDate>
+    <lastBuildDate>Sat, 06 Jun 2026 00:38:56 GMT</lastBuildDate>
+    <pubDate>Thu, 04 Jun 2026 03:00:00 GMT</pubDate>
     <ttl>60</ttl>
+    <item>
+      <title>Como calcular a DVA a partir da DRE (passo a passo)</title>
+      <link>https://fluenciacontabil.com.br/blog/como-calcular-dva</link>
+      <guid isPermaLink="true">https://fluenciacontabil.com.br/blog/como-calcular-dva</guid>
+      <description>Aprenda a calcular a DVA a partir da DRE: receita bruta, depreciação, tributos recuperáveis e a amarração que faz a prova real da questão.</description>
+      <pubDate>Thu, 04 Jun 2026 03:00:00 GMT</pubDate>
+      <author>contato@fluenciacontabil.com.br (Equipe Fluência Contábil)</author>
+    </item>
     <item>
       <title>As 5 categorias da DRE no CPC 51 — guia com paralelo na DFC</title>
       <link>https://fluenciacontabil.com.br/blog/cpc-51-categorias-dre-paralelo-dfc</link>
