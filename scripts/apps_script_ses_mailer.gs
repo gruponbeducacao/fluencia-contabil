@@ -958,6 +958,50 @@ function testSesAuth() {
 }
 
 /**
+ * AGENDA OS 5 BROADCASTS REAIS DO BOLSÃO na aba Broadcasts — sem
+ * copiar/colar, sem erro de digitação. Idempotente: pula IDs que já
+ * existem (rodar 2× não duplica). Todos com tópico SÓ `bolsao`.
+ *
+ * ⚠️ Lembrete: prova.html e ranking.html têm placeholders
+ * ({LINK_PDF_PROVA}, {LINK_FORMS}, {LINK_RANKING}) que precisam ser
+ * preenchidos e PUBLICADOS até a noite de 26/06 (cache de 6h).
+ */
+function agendarBroadcastsBolsao() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var bc = ss.getSheetByName(MAILER_SHEETS.BROADCASTS);
+  if (!bc) { Logger.log('❌ Aba Broadcasts não existe — rode setupMailerAfterDeploy() primeiro.'); return; }
+
+  // new Date(ano, mês-1, dia, hora, min) — junho = 5, julho = 6
+  var planos = [
+    ['BOLSAO-VESPERA',       'Amanhã 7h30: sua prova do Bolsão chega neste e-mail',  'bolsao/vespera.html',       'bolsao', new Date(2026, 5, 27, 18, 0, 0)],
+    ['BOLSAO-PROVA',         '🔴 BOLSÃO: sua prova está aqui — envie até 13h00',     'bolsao/prova.html',         'bolsao', new Date(2026, 5, 28, 7, 30, 0)],
+    ['BOLSAO-POS-PROVA',     'E aí, gostou da dinâmica? Tem um próximo passo',        'bolsao/pos-prova.html',     'bolsao', new Date(2026, 5, 28, 18, 0, 0)],
+    ['BOLSAO-RANKING',       'O ranking do Bolsão saiu 🏆',                           'bolsao/ranking.html',       'bolsao', new Date(2026, 5, 29, 18, 0, 0)],
+    ['BOLSAO-CONVITE-LISTA', 'As 5 bolsas foram entregues ontem. E o seu lugar?',     'bolsao/convite-lista.html', 'bolsao', new Date(2026, 6, 2, 9, 0, 0)]
+  ];
+
+  var existentes = bc.getLastRow() > 1
+    ? bc.getRange(2, 1, bc.getLastRow() - 1, 1).getValues().map(function(r) { return String(r[0]); })
+    : [];
+
+  var criados = 0;
+  planos.forEach(function(p) {
+    if (existentes.indexOf(p[0]) >= 0) {
+      Logger.log('↩️ ' + p[0] + ' já agendado — pulando');
+      return;
+    }
+    bc.appendRow([p[0], p[1], p[2], p[3], p[4], '', '', '', '']);
+    Logger.log('📅 ' + p[0] + ' agendado pra ' +
+      Utilities.formatDate(p[4], 'America/Sao_Paulo', 'dd/MM/yyyy HH:mm'));
+    criados++;
+  });
+
+  Logger.log('');
+  Logger.log('✅ ' + criados + ' broadcast(s) agendado(s) (' + (planos.length - criados) + ' já existiam).');
+  Logger.log('⚠️ Até 26/06 à noite: preencher {LINK_PDF_PROVA}/{LINK_FORMS} no prova.html e {LINK_RANKING} no ranking.html + publicar (cache de 6h).');
+}
+
+/**
  * ENSAIO COMPLETO DO MOTOR DE BROADCASTS — 1 clique, evidência em ~1 min.
  *
  * ⚠️ EDITE EMAIL_ENSAIO abaixo antes de rodar (use um email NÃO
