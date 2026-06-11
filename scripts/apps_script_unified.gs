@@ -33,6 +33,7 @@ const SHEETS = {
   LISTA:       'Lista de Espera',
   DICIONARIO:  'Lead Magnet - Dicionário',
   LIVES:       'Lives',
+  BOLSAO:      'Bolsão',
   ERRORS:      '_errors'
 };
 
@@ -79,6 +80,8 @@ function routeByOrigin(p) {
   var origem   = String(p.origem || '').trim().toLowerCase();
   var temNome  = !!(p.nome && String(p.nome).trim());
   var temWhats = !!(p.telefone || p.telefone_digits || p.whatsapp);
+
+  if (origem.indexOf('bolsao') === 0) return handleBolsao(p); // bolsao_lp e variantes
 
   if (origem.indexOf('dicionario_') === 0 || origem === 'lead_magnet_dicionario') {
     return handleDicionario(p);
@@ -137,6 +140,20 @@ function handleDicionario(p) {
     '', ''
   ]);
   return jsonResponse({ ok: true, aba: SHEETS.DICIONARIO });
+}
+
+function handleBolsao(p) {
+  // Aba pós-MailerLite: sem colunas ML Sync (SES/Seq/CRM são adicionadas pelo setupBolsao do ses_mailer.gs)
+  var sheet = ensureSheet(SHEETS.BOLSAO, BOLSAO_HEADERS, BOLSAO_NOTES);
+  sheet.appendRow([
+    new Date(), String(p.nome || '').trim(), p.email,
+    normalizePhone(p.telefone_digits || p.telefone || p.whatsapp || ''),
+    String(p.origem || ''), String(p.ref || ''),
+    String(p.pagina || ''), String(p.referrer || ''),
+    String(p.utm_source || ''), String(p.utm_medium || ''), String(p.utm_campaign || ''),
+    String(p.dispositivo || '')
+  ]);
+  return jsonResponse({ ok: true, aba: SHEETS.BOLSAO });
 }
 
 function handleLives(p) {
@@ -207,6 +224,20 @@ const DICIONARIO_NOTES = [
   'UTM Source', 'UTM Medium', 'UTM Campaign', 'Mobile ou Desktop',
   'Status sync MailerLite: vazio=pendente, ok=enviado, err:...=falhou, migrated=lead anterior à arquitetura assíncrona',
   'Timestamp do último sync'
+];
+
+// Bolsão: aba criada já na era SES — sem colunas ML Sync de propósito
+const BOLSAO_HEADERS = [
+  'Data', 'Nome', 'E-mail', 'WhatsApp', 'Origem', 'Ref',
+  'Página', 'Referrer',
+  'UTM Source', 'UTM Medium', 'UTM Campaign',
+  'Dispositivo'
+];
+const BOLSAO_NOTES = [
+  'Timestamp do submit', 'Nome completo', 'E-mail', 'WhatsApp só dígitos',
+  'Origem: bolsao_lp (variante Copa distinguível pela coluna Página)',
+  'Código de indicação', 'Pathname + query', 'Referrer do navegador',
+  'UTM Source', 'UTM Medium', 'UTM Campaign', 'Mobile ou Desktop'
 ];
 
 const LIVES_HEADERS = [
@@ -448,7 +479,8 @@ function setupAfterDeploy() {
   ensureSheet(SHEETS.LISTA,       LISTA_HEADERS,      LISTA_NOTES);
   ensureSheet(SHEETS.DICIONARIO,  DICIONARIO_HEADERS, DICIONARIO_NOTES);
   ensureSheet(SHEETS.LIVES,       LIVES_HEADERS,      LIVES_NOTES);
-  Logger.log('✅ Colunas ML Sync garantidas em todas as abas');
+  ensureSheet(SHEETS.BOLSAO,      BOLSAO_HEADERS,     BOLSAO_NOTES);
+  Logger.log('✅ Colunas ML Sync garantidas em todas as abas (Bolsão não tem ML Sync — era SES)');
 
   var triggers = ScriptApp.getProjectTriggers();
   var removed = 0;
@@ -552,6 +584,7 @@ function testRegressionAll() {
     { label: 'Dicionário (sticky_bar)',        params: { email: 'rt.dicst.' + t + '@example.com',  origem: 'dicionario_sticky_bar', dispositivo: 'Mobile' }, esperado: 'Lead Magnet - Dicionário' },
     { label: 'Lives (form_top)',               params: { email: 'rt.liv1.' + t + '@example.com',   nome: 'A', telefone_digits: '11900000000', origem: 'lives_form_top',    dispositivo: 'Desktop' }, esperado: 'Lives' },
     { label: 'Lives (form_bottom)',            params: { email: 'rt.liv2.' + t + '@example.com',   nome: 'B', telefone_digits: '11900000000', origem: 'lives_form_bottom', dispositivo: 'Mobile'  }, esperado: 'Lives' },
+    { label: 'Bolsão (bolsao_lp)',             params: { email: 'rt.bol.' + t + '@example.com',    nome: 'W', telefone_digits: '11900000000', origem: 'bolsao_lp',         dispositivo: 'Mobile'  }, esperado: 'Bolsão' },
     { label: 'Fallback com nome (sem origem)', params: { email: 'rt.fbn.' + t + '@example.com',    nome: 'Q', telefone_digits: '11900000000', dispositivo: 'Desktop' }, esperado: 'Lista de Espera' },
     { label: 'Fallback sem nome (sem origem)', params: { email: 'rt.fbe.' + t + '@example.com',    dispositivo: 'Desktop' }, esperado: 'Newsletter' }
   ];
@@ -603,7 +636,8 @@ function setupDashboard() {
     { name: 'Newsletter',                label: 'Newsletter',               dataCol: 'A', emailCol: 'B', origemCol: 'C', dispCol: 'J', utmSrcCol: 'G', referrerCol: 'F' },
     { name: 'Lista de Espera',           label: 'Lista de Espera',          dataCol: 'A', emailCol: 'C', origemCol: 'E', dispCol: 'L', utmSrcCol: 'I', referrerCol: 'H' },
     { name: 'Lead Magnet - Dicionário',  label: 'Lead Magnet — Dicionário', dataCol: 'A', emailCol: 'C', origemCol: 'E', dispCol: 'K', utmSrcCol: 'H', referrerCol: 'G' },
-    { name: 'Lives',                     label: 'Lives',                    dataCol: 'A', emailCol: 'C', origemCol: 'E', dispCol: 'L', utmSrcCol: 'I', referrerCol: 'H' }
+    { name: 'Lives',                     label: 'Lives',                    dataCol: 'A', emailCol: 'C', origemCol: 'E', dispCol: 'L', utmSrcCol: 'I', referrerCol: 'H' },
+    { name: 'Bolsão',                    label: 'Bolsão 28/06',             dataCol: 'A', emailCol: 'C', origemCol: 'E', dispCol: 'L', utmSrcCol: 'I', referrerCol: 'H' }
   ];
 
   var GOLD  = '#C8A84B';
@@ -683,7 +717,8 @@ function setupDashboard() {
     { titulo: 'POR ORIGEM — NEWSLETTER',             sheet: 'Newsletter',               origemCol: 'C', origens: ['exit_intent', 'sticky_bar', 'blog_newsletter', 'newsletter'] },
     { titulo: 'POR ORIGEM — LISTA DE ESPERA',        sheet: 'Lista de Espera',          origemCol: 'E', origens: ['blog_inline_cta', 'lista_espera', 'site_lista_espera'] },
     { titulo: 'POR ORIGEM — LEAD MAGNET DICIONÁRIO', sheet: 'Lead Magnet - Dicionário', origemCol: 'E', origens: ['dicionario_form_top', 'dicionario_form_bottom', 'dicionario_exit_intent', 'dicionario_sticky_bar'] },
-    { titulo: 'POR ORIGEM — LIVES',                  sheet: 'Lives',                    origemCol: 'E', origens: ['lives_form_top', 'lives_form_bottom'] }
+    { titulo: 'POR ORIGEM — LIVES',                  sheet: 'Lives',                    origemCol: 'E', origens: ['lives_form_top', 'lives_form_bottom'] },
+    { titulo: 'POR ORIGEM — BOLSÃO',                 sheet: 'Bolsão',                   origemCol: 'E', origens: ['bolsao_lp'] }
   ];
   origensPorAba.forEach(function(o) {
     sectionHeader(row, o.titulo); row++;
@@ -736,6 +771,7 @@ function setupDashboard() {
     ['Aba Lista de Espera', 'Leads com intenção de COMPRA — querem garantir vaga no curso. Alto compromisso. Prioridade para contato.'],
     ['Aba Lead Magnet — Dicionário', 'Leads que baixaram o Dicionário Contábil em PDF (LP dicionario.fluenciacontabil.com.br). Compromisso médio.'],
     ['Aba Lives', 'Leads inscritos para as 4 lives gratuitas de pré-lançamento (LP lives.html). Compromisso médio-alto.'],
+    ['Aba Bolsão', 'Inscritos no Bolsão da Fluência (prova 28/06, 5 bolsas de 1 ano). Campanha Meta a partir de 13/06. A variante da LP (Copa) é distinguível pela coluna Página.'],
     ['exit_intent', 'Modal "Antes de ir" — aparece no desktop quando o visitante move o mouse pra fora da aba, e no mobile quando ele termina de ler o post (>70% scroll + 4s parado).'],
     ['sticky_bar', 'Barra azul escura fixa no rodapé de todas as páginas. Aparece após 50% de scroll ou 45 segundos de permanência.'],
     ['blog_newsletter', 'Formulário simples "Receba novos artigos" no rodapé dos posts do blog.'],
