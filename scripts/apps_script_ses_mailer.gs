@@ -957,6 +957,81 @@ function testSesAuth() {
   }
 }
 
+/**
+ * ENSAIO COMPLETO DO MOTOR DE BROADCASTS — 1 clique, evidência em ~1 min.
+ *
+ * ⚠️ EDITE EMAIL_ENSAIO abaixo antes de rodar (use um email NÃO
+ * descadastrado — o que recebeu o B1 serve; o que clicou em
+ * "Descadastrar" NÃO serve, o SES vai suprimir).
+ *
+ * O que faz, na ordem, pelo caminho REAL de produção:
+ *   1. Cria 1 lead de ensaio na aba Bolsão
+ *   2. Sincroniza ele com o SES (tópico bolsao)
+ *   3. Cria a linha [ENSAIO] na aba Broadcasts agendada pra AGORA
+ *   4. Roda o motor de broadcasts na hora
+ *   5. Loga o resultado e como limpar
+ */
+function ensaioBroadcastBolsao() {
+  var EMAIL_ENSAIO = 'COLOQUE_SEU_EMAIL_AQUI'; // ← edite!
+
+  if (EMAIL_ENSAIO.indexOf('@') === -1) {
+    Logger.log('❌ Edite a variável EMAIL_ENSAIO no topo da função antes de rodar.');
+    return;
+  }
+  if (PropertiesService.getScriptProperties().getProperty('MAILER_ENABLED') !== 'true') {
+    Logger.log('❌ MAILER_ENABLED != true — habilite antes do ensaio.');
+    return;
+  }
+
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+
+  // 1. Lead de ensaio na aba Bolsão (Seq Passo já marcado pra NÃO receber a sequência —
+  //    o ensaio é do broadcast; a sequência você testa com a inscrição real na LP)
+  var bolsao = ss.getSheetByName('Bolsão');
+  if (!bolsao) { Logger.log('❌ Aba Bolsão não existe — rode setupAfterDeploy() primeiro.'); return; }
+  var cols = headerIndexes_(bolsao);
+  var linha = [];
+  Object.keys(cols).forEach(function(h) { linha[cols[h] - 1] = ''; });
+  linha[cols['Data'] - 1] = new Date();
+  if (cols['Nome']) linha[cols['Nome'] - 1] = 'ENSAIO (apagar)';
+  linha[cols['E-mail'] - 1] = EMAIL_ENSAIO.toLowerCase();
+  if (cols['Origem']) linha[cols['Origem'] - 1] = 'ensaio_broadcast';
+  if (cols['Seq Passo']) linha[cols['Seq Passo'] - 1] = 'pre-cutover';
+  bolsao.appendRow(linha);
+  Logger.log('1/4 ✅ Lead de ensaio criado na aba Bolsão');
+
+  // 2. Sync imediato com o SES
+  try {
+    sesUpsertContact_(EMAIL_ENSAIO.toLowerCase(), 'bolsao', { name: 'ENSAIO', origem: 'ensaio_broadcast' });
+    bolsao.getRange(bolsao.getLastRow(), cols['SES Sync']).setValue('ok');
+    if (cols['SES Sync At']) bolsao.getRange(bolsao.getLastRow(), cols['SES Sync At']).setValue(new Date());
+    Logger.log('2/4 ✅ Contato sincronizado no SES (tópico bolsao)');
+  } catch (err) {
+    Logger.log('2/4 ❌ Sync falhou: ' + err);
+    return;
+  }
+
+  // 3. Linha de ensaio na aba Broadcasts, agendada pra agora
+  var bc = ss.getSheetByName(MAILER_SHEETS.BROADCASTS);
+  bc.appendRow(['ENSAIO', '[ENSAIO] Teste do motor de broadcasts — pode apagar',
+                'bolsao/vespera.html', 'bolsao', new Date(), '', '', '', '']);
+  Logger.log('3/4 ✅ Broadcast [ENSAIO] agendado pra agora');
+
+  // 4. Roda o motor imediatamente
+  processBroadcasts();
+
+  // 5. Resultado
+  var ultima = bc.getRange(bc.getLastRow(), 1, 1, 9).getValues()[0];
+  Logger.log('4/4 → Status do [ENSAIO]: "' + ultima[5] + '" · Enviados: ' + ultima[6] + '/' + ultima[7]);
+  Logger.log('');
+  if (String(ultima[5]).indexOf('ok') === 0) {
+    Logger.log('🎖️ MOTOR DE BROADCASTS PROVADO — confira o email no inbox ' + EMAIL_ENSAIO);
+    Logger.log('Limpeza: apague a linha ENSAIO da aba Broadcasts e a linha "ENSAIO (apagar)" da aba Bolsão.');
+  } else {
+    Logger.log('⚠️ Status inesperado — me mande este log completo.');
+  }
+}
+
 /** Envia o email A1 pra um endereço de teste (edite o destino antes de rodar). */
 function testSendMarketingEmail() {
   var to = 'vinicius.ferraz@gruponbeducacao.com'; // ← edite se quiser testar outro inbox
