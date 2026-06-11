@@ -972,7 +972,7 @@ function testSesAuth() {
  *   5. Loga o resultado e como limpar
  */
 function ensaioBroadcastBolsao() {
-  var EMAIL_ENSAIO = 'COLOQUE_SEU_EMAIL_AQUI'; // ← edite!
+  var EMAIL_ENSAIO = 'vfneves94@gmail.com'; // email de ensaio validado em 11/06 (não descadastrado)
 
   if (EMAIL_ENSAIO.indexOf('@') === -1) {
     Logger.log('❌ Edite a variável EMAIL_ENSAIO no topo da função antes de rodar.');
