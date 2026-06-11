@@ -1,0 +1,1088 @@
+/**
+ * ═══════════════════════════════════════════════════════════════════════
+ * FLUÊNCIA MAILER — Email marketing via AWS SES v2 (substitui MailerLite)
+ * ═══════════════════════════════════════════════════════════════════════
+ *
+ * Arquivo NOVO no mesmo projeto Apps Script da planilha "LEADS Fluência
+ * Contábil" (convive com apps_script_unified.gs — doPost NÃO muda).
+ *
+ * O que este arquivo faz:
+ *   1. SYNC DE CONTATOS  — leads novos da planilha entram na contact list
+ *      do SES (coluna "SES Sync", mesmo padrão da "ML Sync").
+ *   2. SEQUÊNCIAS        — A/B/C/D enviadas pelo SES com cadência
+ *      configurável na aba "Config Sequencias" (estado por linha do lead).
+ *   3. BROADCASTS        — agendados na aba "Broadcasts" (assunto +
+ *      template + tópicos + data/hora), enviados em lotes resumíveis.
+ *   4. UNSUBSCRIBE       — gerenciado pelo PRÓPRIO SES (contact list +
+ *      topics). O placeholder {$unsubscribe} dos templates vira
+ *      {{amazonSESUnsubscribeUrl}}; quem clica é suprimido pelo SES
+ *      automaticamente nos próximos envios.
+ *
+ * ─── PRÉ-REQUISITOS (Script Properties) ───────────────────────────────
+ *   AWS_ACCESS_KEY_ID      = (IAM user fluencia-mailer)
+ *   AWS_SECRET_ACCESS_KEY  = (…)
+ *   SES_REGION             = us-east-1            (opcional, default)
+ *   SES_FROM_MARKETING     = Fluência Contábil <contato@news.fluenciacontabil.com.br>
+ *   SES_REPLY_TO           = contato@fluenciacontabil.com.br
+ *   SES_CONFIG_SET         = fluencia-marketing   (opcional, default)
+ *   SES_CONTACT_LIST       = fluencia             (opcional, default)
+ *   TEMPLATE_BASE_URL      = https://fluenciacontabil.com.br/email-templates/
+ *   MAILER_ENABLED         = true                 (kill switch — qualquer outro valor bloqueia envio)
+ *   MAILER_CUTOVER_AT      = 2026-06-DD           (leads ANTERIORES não entram nas sequências — já passaram pelo MailerLite)
+ *
+ * ─── ORDEM DE ATIVAÇÃO (ver runbook-cutover-mailerlite-ses.md) ────────
+ *   1. setupSesInfra()          — cria contact list + topics + config set (1×)
+ *   2. setupMailerAfterDeploy() — colunas + abas de config + triggers (1×)
+ *   3. testSesAuth()            — valida credenciais
+ *   4. testSendMarketingEmail() — envia A1 pro seu email
+ *   5. importMailerLiteContacts() / importMailerLiteUnsubs() — migração
+ *   6. cutoverDisableMailerLite() — desliga o trigger do MailerLite
+ * ═══════════════════════════════════════════════════════════════════════
+ */
+
+// ══════════════════════ CONFIG ══════════════════════
+
+// Aba da planilha → tópico SES + sequência associada.
+// Os nomes das abas vêm de SHEETS (apps_script_unified.gs).
+const MAILER_TABS = [
+  { sheet: 'Newsletter',               topic: 'newsletter',   sequencia: 'A',      hasNamePhone: false },
+  { sheet: 'Lista de Espera',          topic: 'lista-espera', sequencia: 'B',      hasNamePhone: true  },
+  { sheet: 'Lead Magnet - Dicionário', topic: 'dicionario',   sequencia: 'C',      hasNamePhone: true  },
+  { sheet: 'Lives',                    topic: 'lives',        sequencia: 'D',      hasNamePhone: true  },
+  { sheet: 'Bolsão',                   topic: 'bolsao',       sequencia: 'BOLSAO', hasNamePhone: true  }
+];
+
+const SES_TOPICS = [
+  { TopicName: 'newsletter',   DisplayName: 'Newsletter — artigos e novidades',      DefaultSubscriptionStatus: 'OPT_IN' },
+  { TopicName: 'lista-espera', DisplayName: 'Lista de Espera — curso e lançamento',  DefaultSubscriptionStatus: 'OPT_IN' },
+  { TopicName: 'dicionario',   DisplayName: 'Dicionário Contábil — material e dicas', DefaultSubscriptionStatus: 'OPT_IN' },
+  { TopicName: 'lives',        DisplayName: 'Lives de pré-lançamento',               DefaultSubscriptionStatus: 'OPT_IN' },
+  { TopicName: 'bolsao',       DisplayName: 'Bolsão da Fluência — prova 28/06',      DefaultSubscriptionStatus: 'OPT_IN' }
+];
+
+// Colunas novas adicionadas a cada aba de leads (sem tocar nas ML Sync)
+const MAILER_COLS = ['SES Sync', 'SES Sync At', 'Seq Passo', 'Seq Próximo Em'];
+
+const MAILER_SHEETS = {
+  CONFIG_SEQ: 'Config Sequencias',
+  BROADCASTS: 'Broadcasts',
+  IMPORT_ML:  'Import ML',
+  UNSUBS_ML:  'Unsubs ML'
+};
+
+// Limites por execução (margem folgada sob as quotas SES 50k/dia e
+// UrlFetchApp 20k/dia: sync 1min×10 + seq 1h×30 + broadcasts 5min×80)
+const SES_SYNC_BATCH   = 10;  // contatos/run (trigger 1 min)
+const SEQ_SEND_BATCH   = 30;  // emails de sequência/run (trigger 1 h)
+const BCAST_SEND_BATCH = 80;  // emails de broadcast/run (trigger 5 min)
+
+
+// ══════════════════════ AWS SIGV4 (SES v2 REST) ══════════════════════
+
+/**
+ * Chama a API SES v2 assinando com SigV4.
+ * pathSegments: array de segmentos SEM encoding (ex: ['v2','email','contact-lists','fluencia','contacts','a@b.com'])
+ */
+function sesRequest_(method, pathSegments, payload) {
+  var props  = PropertiesService.getScriptProperties();
+  var akid   = props.getProperty('AWS_ACCESS_KEY_ID');
+  var secret = props.getProperty('AWS_SECRET_ACCESS_KEY');
+  if (!akid || !secret) throw new Error('AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY não configurados em Script Properties');
+
+  var region  = props.getProperty('SES_REGION') || 'us-east-1';
+  var host    = 'email.' + region + '.amazonaws.com';
+  var amzDate = Utilities.formatDate(new Date(), 'UTC', "yyyyMMdd'T'HHmmss'Z'");
+  var dateStamp = amzDate.substring(0, 8);
+
+  // Path real (single-encoded) e path canônico (double-encoded — regra
+  // SigV4 pra serviços não-S3; relevante quando há email no path)
+  var encodedSegs   = pathSegments.map(rfc3986Encode_);
+  var requestPath   = '/' + encodedSegs.join('/');
+  var canonicalPath = '/' + encodedSegs.map(rfc3986Encode_).join('/');
+
+  var body = payload ? JSON.stringify(payload) : '';
+  var payloadHash = sha256Hex_(body);
+
+  var canonicalRequest = [
+    method,
+    canonicalPath,
+    '',                                          // query string (não usamos)
+    'host:' + host + '\n' + 'x-amz-date:' + amzDate + '\n',
+    'host;x-amz-date',
+    payloadHash
+  ].join('\n');
+
+  var scope = dateStamp + '/' + region + '/ses/aws4_request';
+  var stringToSign = ['AWS4-HMAC-SHA256', amzDate, scope, sha256Hex_(canonicalRequest)].join('\n');
+
+  var kDate    = hmacBytes_(dateStamp, Utilities.newBlob('AWS4' + secret).getBytes());
+  var kRegion  = hmacBytes_(region, kDate);
+  var kService = hmacBytes_('ses', kRegion);
+  var kSigning = hmacBytes_('aws4_request', kService);
+  var signature = bytesToHex_(hmacBytes_(stringToSign, kSigning));
+
+  var auth = 'AWS4-HMAC-SHA256 Credential=' + akid + '/' + scope +
+             ', SignedHeaders=host;x-amz-date, Signature=' + signature;
+
+  var options = {
+    method: method.toLowerCase(),
+    headers: { 'X-Amz-Date': amzDate, 'Authorization': auth },
+    muteHttpExceptions: true
+  };
+  if (body) { options.contentType = 'application/json'; options.payload = body; }
+
+  var res  = UrlFetchApp.fetch('https://' + host + requestPath, options);
+  var code = res.getResponseCode();
+  var text = res.getContentText();
+  return { code: code, ok: code >= 200 && code < 300, body: text ? safeParse_(text) : null, raw: text };
+}
+
+function rfc3986Encode_(s) {
+  return encodeURIComponent(s).replace(/[!*'()]/g, function(c) {
+    return '%' + c.charCodeAt(0).toString(16).toUpperCase();
+  });
+}
+
+function sha256Hex_(str) {
+  return bytesToHex_(Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, str, Utilities.Charset.UTF_8));
+}
+
+function hmacBytes_(value, keyBytes) {
+  return Utilities.computeHmacSha256Signature(Utilities.newBlob(value).getBytes(), keyBytes);
+}
+
+function bytesToHex_(bytes) {
+  return bytes.map(function(b) { return ('0' + ((b + 256) % 256).toString(16)).slice(-2); }).join('');
+}
+
+function safeParse_(text) {
+  try { return JSON.parse(text); } catch (_) { return { _raw: text }; }
+}
+
+
+// ══════════════════════ ENVIO ══════════════════════
+
+/**
+ * Envia 1 email de marketing via SES com list management (unsubscribe
+ * automático + supressão de quem já saiu do tópico).
+ */
+function sesSendMarketing_(toEmail, subject, html, topicName) {
+  var props = PropertiesService.getScriptProperties();
+  if (props.getProperty('MAILER_ENABLED') !== 'true') {
+    throw new Error('MAILER_ENABLED != true — envio bloqueado (kill switch)');
+  }
+  var from = props.getProperty('SES_FROM_MARKETING');
+  if (!from) throw new Error('SES_FROM_MARKETING não configurado');
+
+  var payload = {
+    FromEmailAddress: from,
+    Destination: { ToAddresses: [toEmail] },
+    ReplyToAddresses: [props.getProperty('SES_REPLY_TO') || 'contato@fluenciacontabil.com.br'],
+    ConfigurationSetName: props.getProperty('SES_CONFIG_SET') || 'fluencia-marketing',
+    ListManagementOptions: {
+      ContactListName: props.getProperty('SES_CONTACT_LIST') || 'fluencia',
+      TopicName: topicName
+    },
+    Content: { Simple: {
+      Subject: { Data: subject, Charset: 'UTF-8' },
+      Body: { Html: { Data: html, Charset: 'UTF-8' } }
+    } }
+  };
+
+  var res = sesRequest_('POST', ['v2', 'email', 'outbound-emails'], payload);
+  if (!res.ok) throw new Error('SES SendEmail HTTP ' + res.code + ': ' + String(res.raw).substring(0, 300));
+  return res.body && res.body.MessageId;
+}
+
+/**
+ * Busca o template HTML (cache 6h) e aplica personalização:
+ *   {$name|fallback} → primeiro nome ou fallback
+ *   {$unsubscribe}   → {{amazonSESUnsubscribeUrl}} (o SES substitui no envio)
+ */
+function renderTemplate_(templateUrl, nome) {
+  var cache = CacheService.getScriptCache();
+  var key = 'tpl:' + sha256Hex_(templateUrl).substring(0, 32);
+  var html = cache.get(key);
+  if (!html) {
+    var res = UrlFetchApp.fetch(templateUrl, { muteHttpExceptions: true });
+    if (res.getResponseCode() !== 200) throw new Error('Template HTTP ' + res.getResponseCode() + ': ' + templateUrl);
+    html = res.getContentText();
+    try { cache.put(key, html, 21600); } catch (_) {} // template >100KB não cabe no cache — segue sem
+  }
+
+  var firstName = String(nome || '').trim().split(/\s+/)[0] || '';
+  html = html.replace(/\{\$name\|([^}]*)\}/g, function(_, fb) { return firstName || fb; });
+  html = html.replace(/\{\$name\}/g, firstName);
+  html = html.replace(/\{\$unsubscribe\}/g, '{{amazonSESUnsubscribeUrl}}');
+
+  // Garantia: todo email de marketing PRECISA do link de descadastro.
+  if (html.indexOf('{{amazonSESUnsubscribeUrl}}') === -1) {
+    html = html.replace(/<\/body>/i,
+      '<div style="text-align:center;font-size:11px;color:#888;padding:16px;">' +
+      'Não quer mais receber? <a href="{{amazonSESUnsubscribeUrl}}">Cancelar inscrição</a></div></body>');
+  }
+  return html;
+}
+
+function templateUrl_(relPath) {
+  var base = PropertiesService.getScriptProperties().getProperty('TEMPLATE_BASE_URL') ||
+             'https://fluenciacontabil.com.br/email-templates/';
+  if (/^https?:\/\//i.test(relPath)) return relPath;
+  return base.replace(/\/$/, '') + '/' + String(relPath).replace(/^\//, '');
+}
+
+
+// ══════════════════════ 1. SYNC DE CONTATOS (planilha → SES) ══════════════════════
+
+/**
+ * Trigger 1 min. Leads com "SES Sync" vazio entram na contact list do SES
+ * com o tópico da aba. Mesmo padrão da syncPendingToMailerLite.
+ */
+function syncPendingToSES() {
+  var lock = LockService.getScriptLock();
+  if (!lock.tryLock(1000)) return;
+  try {
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var processed = 0;
+
+    for (var t = 0; t < MAILER_TABS.length && processed < SES_SYNC_BATCH; t++) {
+      var cfg = MAILER_TABS[t];
+      var sheet = ss.getSheetByName(cfg.sheet);
+      if (!sheet || sheet.getLastRow() < 2) continue;
+
+      var cols = headerIndexes_(sheet);
+      if (!cols['SES Sync']) continue; // setup ainda não rodou
+
+      var lastRow = sheet.getLastRow();
+      var syncVals = sheet.getRange(2, cols['SES Sync'], lastRow - 1, 1).getValues();
+
+      for (var r = 0; r < syncVals.length && processed < SES_SYNC_BATCH; r++) {
+        if (syncVals[r][0] !== '') continue;
+        var rowNum = r + 2;
+        var row = sheet.getRange(rowNum, 1, 1, sheet.getLastColumn()).getValues()[0];
+        var email = String(row[cols['E-mail'] - 1] || '').trim().toLowerCase();
+
+        if (!isValidEmail(email)) {
+          markCell_(sheet, rowNum, cols, 'SES Sync', 'err:invalid_email');
+          processed++;
+          continue;
+        }
+        try {
+          sesUpsertContact_(email, cfg.topic, buildContactAttributes_(row, cols, cfg));
+          markCell_(sheet, rowNum, cols, 'SES Sync', 'ok');
+        } catch (err) {
+          if (String(err).indexOf('RATE_LIMIT') >= 0) {
+            console.log('SES rate limit — encerrando esta run (linha fica pendente)');
+            return;
+          }
+          markCell_(sheet, rowNum, cols, 'SES Sync', 'err:' + String(err).substring(0, 180));
+          logError('SES sync: ' + err, { parameter: { email: email, sheet: cfg.sheet } });
+        }
+        processed++;
+        Utilities.sleep(300); // respeita o limite de TPS das APIs de contato do SES
+      }
+    }
+    if (processed > 0) console.log('SES sync run: ' + processed + ' contatos');
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+/**
+ * Cria o contato; se já existe, adiciona o tópico via update (preservando
+ * opt-outs). Lança Error('RATE_LIMIT') em HTTP 429 — quem chama deixa a
+ * linha PENDENTE (sem err:) pra re-tentar na próxima execução.
+ */
+function sesUpsertContact_(email, topicName, attributes) {
+  var list = PropertiesService.getScriptProperties().getProperty('SES_CONTACT_LIST') || 'fluencia';
+  var pref = [{ TopicName: topicName, SubscriptionStatus: 'OPT_IN' }];
+
+  var res = sesRequest_('POST', ['v2', 'email', 'contact-lists', list, 'contacts'], {
+    EmailAddress: email,
+    TopicPreferences: pref,
+    AttributesData: JSON.stringify(attributes || {})
+  });
+  if (res.ok) return;
+  if (res.code === 429) throw new Error('RATE_LIMIT');
+
+  // SES responde "<email> already exists in List." — tratar como upsert
+  if (res.code === 400 && /already.{0,2}exists/i.test(res.raw)) {
+    Utilities.sleep(250);
+    var get = sesRequest_('GET', ['v2', 'email', 'contact-lists', list, 'contacts', email], null);
+    if (get.code === 429) throw new Error('RATE_LIMIT');
+    if (get.ok) {
+      if (get.body && get.body.UnsubscribeAll) return; // respeita opt-out global
+      var current = (get.body && get.body.TopicPreferences) || [];
+      var has = current.some(function(p) { return p.TopicName === topicName; });
+      if (has) return; // já está no tópico — nada a fazer
+      current.push({ TopicName: topicName, SubscriptionStatus: 'OPT_IN' });
+      Utilities.sleep(250);
+      var upd = sesRequest_('PUT', ['v2', 'email', 'contact-lists', list, 'contacts', email], {
+        TopicPreferences: current
+      });
+      if (upd.code === 429) throw new Error('RATE_LIMIT');
+      if (!upd.ok) throw new Error('UpdateContact HTTP ' + upd.code + ': ' + String(upd.raw).substring(0, 200));
+      return;
+    }
+  }
+  throw new Error('CreateContact HTTP ' + res.code + ': ' + String(res.raw).substring(0, 200));
+}
+
+function buildContactAttributes_(row, cols, cfg) {
+  var get = function(name) { return cols[name] ? String(row[cols[name] - 1] || '') : ''; };
+  var attrs = {
+    origem: get('Origem'), pagina_captura: get('Página'), referrer: get('Referrer'),
+    utm_source: get('UTM Source'), utm_medium: get('UTM Medium'), utm_campaign: get('UTM Campaign'),
+    dispositivo: get('Dispositivo'), ref_in: get('Ref')
+  };
+  if (cfg.hasNamePhone) {
+    if (get('Nome')) attrs.name = get('Nome');
+    if (get('WhatsApp')) attrs.phone = get('WhatsApp');
+  }
+  return attrs;
+}
+
+
+// ══════════════════════ 2. SEQUÊNCIAS ══════════════════════
+
+/**
+ * Trigger 1 h. Pra cada aba: inscreve leads novos (pós-cutover) e envia
+ * o próximo passo de quem está com "Seq Próximo Em" vencido.
+ */
+function processSequences() {
+  var lock = LockService.getScriptLock();
+  if (!lock.tryLock(1000)) return;
+  try {
+    var props = PropertiesService.getScriptProperties();
+    if (props.getProperty('MAILER_ENABLED') !== 'true') return;
+
+    var cutover = props.getProperty('MAILER_CUTOVER_AT');
+    var cutoverDate = cutover ? new Date(cutover) : null;
+    if (!cutoverDate || isNaN(cutoverDate.getTime())) {
+      console.log('MAILER_CUTOVER_AT ausente/inválida — sequências pausadas (proteção contra duplicar MailerLite)');
+      return;
+    }
+
+    // Dedupe ANTES de inscrever: fecha a janela de quem submeteu 2× na última hora
+    dedupePlanilha();
+
+    var steps = loadSequenceConfig_();
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var now = new Date();
+    var sent = 0;
+
+    for (var t = 0; t < MAILER_TABS.length && sent < SEQ_SEND_BATCH; t++) {
+      var cfg = MAILER_TABS[t];
+      var seqSteps = steps[cfg.sequencia];
+      if (!seqSteps || !seqSteps.length) continue;
+
+      var sheet = ss.getSheetByName(cfg.sheet);
+      if (!sheet || sheet.getLastRow() < 2) continue;
+      var cols = headerIndexes_(sheet);
+      if (!cols['Seq Passo']) continue;
+
+      var lastRow = sheet.getLastRow();
+      var data = sheet.getRange(2, 1, lastRow - 1, sheet.getLastColumn()).getValues();
+
+      for (var r = 0; r < data.length && sent < SEQ_SEND_BATCH; r++) {
+        var rowNum = r + 2;
+        var row = data[r];
+        var sesSync = String(row[cols['SES Sync'] - 1] || '');
+        var passoCell = row[cols['Seq Passo'] - 1];
+        var leadDate = row[cols['Data'] - 1];
+
+        // Inscrição: lead sincronizado, pós-cutover, ainda sem estado
+        if (passoCell === '' && sesSync === 'ok') {
+          if (!(leadDate instanceof Date) || leadDate < cutoverDate) {
+            sheet.getRange(rowNum, cols['Seq Passo']).setValue('pre-cutover');
+            continue;
+          }
+          sheet.getRange(rowNum, cols['Seq Passo']).setValue(0);
+          sheet.getRange(rowNum, cols['Seq Próximo Em']).setValue(now); // passo 1 sai nesta ou na próxima run
+          passoCell = 0;
+          row[cols['Seq Próximo Em'] - 1] = now;
+        }
+
+        var passo = parseInt(passoCell, 10);
+        if (isNaN(passo) || passo >= seqSteps.length) continue;
+        var nextAt = row[cols['Seq Próximo Em'] - 1];
+        if (!(nextAt instanceof Date) || nextAt > now) continue;
+
+        var step = seqSteps[passo]; // próximo passo (0-based)
+        var email = String(row[cols['E-mail'] - 1] || '').trim().toLowerCase();
+        var nome = cols['Nome'] ? String(row[cols['Nome'] - 1] || '') : '';
+
+        try {
+          var html = renderTemplate_(templateUrl_(step.template), nome);
+          sesSendMarketing_(email, step.assunto, html, cfg.topic);
+          var novoPasso = passo + 1;
+          sheet.getRange(rowNum, cols['Seq Passo']).setValue(
+            novoPasso >= seqSteps.length ? 'concluída' : novoPasso);
+          if (novoPasso < seqSteps.length) {
+            var diasAteProximo = seqSteps[novoPasso].dias - step.dias;
+            sheet.getRange(rowNum, cols['Seq Próximo Em'])
+              .setValue(new Date(now.getTime() + diasAteProximo * 86400000));
+          }
+          sent++;
+        } catch (err) {
+          // Não trava a fila: registra e tenta de novo na próxima run
+          logError('Seq ' + cfg.sequencia + ' passo ' + (passo + 1) + ': ' + err,
+                   { parameter: { email: email, sheet: cfg.sheet } });
+          sent++;
+        }
+      }
+    }
+    if (sent > 0) console.log('Sequências: ' + sent + ' emails processados');
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+/** Lê a aba Config Sequencias → { A: [{passo, dias, assunto, template}], ... } */
+function loadSequenceConfig_() {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MAILER_SHEETS.CONFIG_SEQ);
+  if (!sheet || sheet.getLastRow() < 2) return {};
+  var rows = sheet.getRange(2, 1, sheet.getLastRow() - 1, 6).getValues();
+  var out = {};
+  rows.forEach(function(r) {
+    var seq = String(r[0] || '').trim().toUpperCase();
+    if (!seq || String(r[5]).toLowerCase() === 'não' || String(r[5]).toLowerCase() === 'nao') return;
+    if (!out[seq]) out[seq] = [];
+    out[seq].push({ passo: Number(r[1]), dias: Number(r[2]), assunto: String(r[3]), template: String(r[4]) });
+  });
+  Object.keys(out).forEach(function(k) {
+    out[k].sort(function(a, b) { return a.passo - b.passo; });
+  });
+  return out;
+}
+
+
+// ══════════════════════ 3. BROADCASTS ══════════════════════
+
+/**
+ * Trigger 5 min. Aba "Broadcasts": linhas agendadas com data vencida são
+ * enviadas em lotes resumíveis (coluna Enviados = cursor de progresso).
+ * Público = tópicos separados por vírgula; dedupe por email entre abas.
+ */
+function processBroadcasts() {
+  var lock = LockService.getScriptLock();
+  if (!lock.tryLock(1000)) return;
+  try {
+    var props = PropertiesService.getScriptProperties();
+    if (props.getProperty('MAILER_ENABLED') !== 'true') return;
+
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var sheet = ss.getSheetByName(MAILER_SHEETS.BROADCASTS);
+    if (!sheet || sheet.getLastRow() < 2) return;
+
+    var now = new Date();
+    var rows = sheet.getRange(2, 1, sheet.getLastRow() - 1, 9).getValues();
+
+    for (var r = 0; r < rows.length; r++) {
+      var status = String(rows[r][5] || '');
+      if (status.indexOf('ok') === 0 || status.indexOf('err') === 0 || status === 'pausado') continue;
+      var agendado = rows[r][4];
+      if (!(agendado instanceof Date) || agendado > now) continue;
+
+      var rowNum = r + 2;
+      var assunto = String(rows[r][1] || '');
+      var template = String(rows[r][2] || '');
+      var topicos = String(rows[r][3] || '').split(',').map(function(s) { return s.trim(); }).filter(Boolean);
+      if (!assunto || !template || !topicos.length) {
+        sheet.getRange(rowNum, 6).setValue('err:config incompleta (assunto/template/tópicos)');
+        continue;
+      }
+
+      var recipients = collectRecipients_(topicos);
+      var cursor = parseInt(rows[r][6], 10) || 0;
+      sheet.getRange(rowNum, 8).setValue(recipients.length);
+
+      var sentThisRun = 0;
+      var errors = 0;
+      while (cursor < recipients.length && sentThisRun < BCAST_SEND_BATCH) {
+        var rec = recipients[cursor];
+        try {
+          var html = renderTemplate_(templateUrl_(template), rec.nome);
+          sesSendMarketing_(rec.email, assunto, html, rec.topic);
+        } catch (err) {
+          errors++;
+          logError('Broadcast linha ' + rowNum + ': ' + err, { parameter: { email: rec.email } });
+        }
+        cursor++;
+        sentThisRun++;
+      }
+
+      sheet.getRange(rowNum, 6).setValue(
+        cursor >= recipients.length
+          ? 'ok (' + (recipients.length - errors) + '/' + recipients.length + ')'
+          : 'enviando');
+      sheet.getRange(rowNum, 7).setValue(cursor);
+      sheet.getRange(rowNum, 9).setValue(new Date());
+
+      return; // 1 broadcast por run — mantém ritmo previsível e dentro das quotas
+    }
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+/** Coleta destinatários únicos das abas cujos tópicos foram pedidos (1º registro ganha o nome/tópico). */
+function collectRecipients_(topicos) {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var seen = {};
+  var out = [];
+  MAILER_TABS.forEach(function(cfg) {
+    if (topicos.indexOf(cfg.topic) === -1) return;
+    var sheet = ss.getSheetByName(cfg.sheet);
+    if (!sheet || sheet.getLastRow() < 2) return;
+    var cols = headerIndexes_(sheet);
+    var data = sheet.getRange(2, 1, sheet.getLastRow() - 1, sheet.getLastColumn()).getValues();
+    data.forEach(function(row) {
+      var email = String(row[cols['E-mail'] - 1] || '').trim().toLowerCase();
+      if (!isValidEmail(email) || seen[email]) return;
+      // Só envia broadcast pra quem já está na contact list (SES Sync ok)
+      if (String(row[cols['SES Sync'] - 1] || '') !== 'ok') return;
+      seen[email] = true;
+      out.push({
+        email: email,
+        nome: cols['Nome'] ? String(row[cols['Nome'] - 1] || '') : '',
+        topic: cfg.topic
+      });
+    });
+  });
+  return out;
+}
+
+
+// ══════════════════════ MIGRAÇÃO DO MAILERLITE ══════════════════════
+
+/**
+ * Importa assinantes exportados do MailerLite (aba "Import ML":
+ * Email | Nome | Tópico | SES Sync | SES Sync At). Rodar manualmente
+ * quantas vezes precisar — processa 50 por execução.
+ */
+function importMailerLiteContacts() {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MAILER_SHEETS.IMPORT_ML);
+  if (!sheet || sheet.getLastRow() < 2) { Logger.log('Aba "Import ML" vazia.'); return; }
+  var lastRow = sheet.getLastRow();
+  var data = sheet.getRange(2, 1, lastRow - 1, 5).getValues();
+  var done = 0;
+  for (var r = 0; r < data.length && done < 50; r++) {
+    if (String(data[r][3] || '') !== '') continue;
+    var email = String(data[r][0] || '').trim().toLowerCase();
+    var topic = String(data[r][2] || '').trim() || 'newsletter';
+    var rowNum = r + 2;
+    if (!isValidEmail(email)) {
+      sheet.getRange(rowNum, 4).setValue('err:invalid_email');
+      sheet.getRange(rowNum, 5).setValue(new Date());
+      done++;
+      continue;
+    }
+    try {
+      sesUpsertContact_(email, topic, { name: String(data[r][1] || ''), origem: 'import_mailerlite' });
+      sheet.getRange(rowNum, 4).setValue('ok');
+      sheet.getRange(rowNum, 5).setValue(new Date());
+    } catch (err) {
+      if (String(err).indexOf('RATE_LIMIT') >= 0) {
+        Logger.log('⏳ SES rate limit — pausando esta run. Linha fica pendente; rode de novo em ~1 min.');
+        return;
+      }
+      sheet.getRange(rowNum, 4).setValue('err:' + String(err).substring(0, 180));
+      sheet.getRange(rowNum, 5).setValue(new Date());
+    }
+    done++;
+    Utilities.sleep(300); // respeita o limite de TPS das APIs de contato do SES
+  }
+  var pendentes = data.filter(function(d) { return String(d[3] || '') === ''; }).length - done;
+  Logger.log('Import ML: ' + done + ' processados nesta execução. Restam ~' + Math.max(0, pendentes) + ' — rode de novo se houver pendentes.');
+}
+
+/**
+ * Importa DESCADASTRADOS do MailerLite (aba "Unsubs ML": Email | Status).
+ * CRÍTICO pré-cutover: quem saiu lá NUNCA pode receber pelo SES (LGPD).
+ */
+function importMailerLiteUnsubs() {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MAILER_SHEETS.UNSUBS_ML);
+  if (!sheet || sheet.getLastRow() < 2) { Logger.log('Aba "Unsubs ML" vazia.'); return; }
+  var list = PropertiesService.getScriptProperties().getProperty('SES_CONTACT_LIST') || 'fluencia';
+  var data = sheet.getRange(2, 1, sheet.getLastRow() - 1, 2).getValues();
+  var done = 0;
+  for (var r = 0; r < data.length && done < 50; r++) {
+    if (String(data[r][1] || '') !== '') continue;
+    var email = String(data[r][0] || '').trim().toLowerCase();
+    var rowNum = r + 2;
+    if (!isValidEmail(email)) { sheet.getRange(rowNum, 2).setValue('err:invalid_email'); done++; continue; }
+
+    var res = sesRequest_('POST', ['v2', 'email', 'contact-lists', list, 'contacts'],
+                          { EmailAddress: email, UnsubscribeAll: true });
+    if (!res.ok && res.code === 400 && /already.{0,2}exists/i.test(res.raw)) {
+      Utilities.sleep(250);
+      res = sesRequest_('PUT', ['v2', 'email', 'contact-lists', list, 'contacts', email],
+                        { UnsubscribeAll: true });
+    }
+    if (res.code === 429) {
+      Logger.log('⏳ SES rate limit — pausando esta run. Rode de novo em ~1 min.');
+      return;
+    }
+    sheet.getRange(rowNum, 2).setValue(res.ok ? 'ok' : 'err:HTTP ' + res.code);
+    done++;
+    Utilities.sleep(300);
+  }
+  Logger.log('Unsubs ML: ' + done + ' processados nesta execução — rode de novo se houver pendentes.');
+}
+
+
+/**
+ * Limpa células err: (exceto err:invalid_email) na coluna SES Sync das 4
+ * abas de leads e no status da "Import ML" — as linhas voltam a PENDENTE
+ * e os workers/import reprocessam. Rodar 1× depois de corrigir bug/limite.
+ */
+function reprocessarErros() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var limpas = 0;
+
+  MAILER_TABS.forEach(function(cfg) {
+    var sheet = ss.getSheetByName(cfg.sheet);
+    if (!sheet || sheet.getLastRow() < 2) return;
+    var cols = headerIndexes_(sheet);
+    if (!cols['SES Sync']) return;
+    var range = sheet.getRange(2, cols['SES Sync'], sheet.getLastRow() - 1, 1);
+    var vals = range.getValues();
+    var mudou = false;
+    for (var r = 0; r < vals.length; r++) {
+      var v = String(vals[r][0] || '');
+      if (v.indexOf('err:') === 0 && v !== 'err:invalid_email') {
+        vals[r][0] = '';
+        mudou = true;
+        limpas++;
+      }
+    }
+    if (mudou) range.setValues(vals);
+  });
+
+  var im = ss.getSheetByName(MAILER_SHEETS.IMPORT_ML);
+  if (im && im.getLastRow() > 1) {
+    var range2 = im.getRange(2, 4, im.getLastRow() - 1, 1);
+    var vals2 = range2.getValues();
+    var mudou2 = false;
+    for (var r2 = 0; r2 < vals2.length; r2++) {
+      var v2 = String(vals2[r2][0] || '');
+      if (v2.indexOf('err:') === 0 && v2 !== 'err:invalid_email') {
+        vals2[r2][0] = '';
+        mudou2 = true;
+        limpas++;
+      }
+    }
+    if (mudou2) range2.setValues(vals2);
+  }
+
+  Logger.log('✅ ' + limpas + ' célula(s) err: limpas — voltam a pendente. O trigger de 1min e o importMailerLiteContacts reprocessam sozinhos.');
+}
+
+
+// ══════════════════════ SETUP ══════════════════════
+
+/** 1× — cria contact list + topics + configuration set no SES. Idempotente. */
+function setupSesInfra() {
+  var props = PropertiesService.getScriptProperties();
+  var list = props.getProperty('SES_CONTACT_LIST') || 'fluencia';
+  var configSet = props.getProperty('SES_CONFIG_SET') || 'fluencia-marketing';
+
+  var r1 = sesRequest_('POST', ['v2', 'email', 'contact-lists'], {
+    ContactListName: list,
+    Description: 'Leads Fluência Contábil (newsletter, lista de espera, dicionário, lives)',
+    Topics: SES_TOPICS
+  });
+  Logger.log(r1.ok ? '✅ Contact list "' + list + '" criada'
+    : (/AlreadyExists/i.test(r1.raw) ? 'ℹ️ Contact list já existia' : '❌ Contact list: HTTP ' + r1.code + ' ' + r1.raw));
+
+  var r2 = sesRequest_('POST', ['v2', 'email', 'configuration-sets'], { ConfigurationSetName: configSet });
+  Logger.log(r2.ok ? '✅ Configuration set "' + configSet + '" criado'
+    : (/AlreadyExists/i.test(r2.raw) ? 'ℹ️ Configuration set já existia' : '❌ Config set: HTTP ' + r2.code + ' ' + r2.raw));
+
+  Logger.log('Lembrete: a IDENTIDADE (news.fluenciacontabil.com.br) se verifica no console SES — ver runbook.');
+}
+
+/** 1× — colunas novas nas 4 abas + abas de config pré-preenchidas + triggers. Idempotente. */
+function setupMailerAfterDeploy() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+
+  // 1. Colunas novas (NÃO usa ensureSheet — aquele marca ML Sync='migrated' ao detectar coluna nova)
+  MAILER_TABS.forEach(function(cfg) {
+    var sheet = ss.getSheetByName(cfg.sheet);
+    if (!sheet) return;
+    var headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0].map(String);
+    MAILER_COLS.forEach(function(col) {
+      if (headers.indexOf(col) === -1) {
+        var c = sheet.getLastColumn() + 1;
+        sheet.getRange(1, c).setValue(col).setFontWeight('bold')
+          .setBackground('#1B2A4A').setFontColor('#FFFFFF');
+        headers.push(col);
+      }
+    });
+  });
+  Logger.log('✅ Colunas ' + MAILER_COLS.join(' / ') + ' garantidas nas 4 abas');
+
+  // 2. Aba Config Sequencias (pré-preenchida; A/B/C: CONFERIR delays no painel MailerLite antes do cutover)
+  if (!ss.getSheetByName(MAILER_SHEETS.CONFIG_SEQ)) {
+    var cs = ss.insertSheet(MAILER_SHEETS.CONFIG_SEQ);
+    var rows = [
+      ['Sequência', 'Passo', 'Dias após inscrição', 'Assunto', 'Template (relativo a TEMPLATE_BASE_URL)', 'Ativo'],
+      ['A', 1, 0,  'Bem-vindo(a) à Fluência Contábil',                       'sequencia-a/A1-bem-vindo.html', 'sim'],
+      ['A', 2, 2,  'A contabilidade é um idioma. Você só não sabia.',        'sequencia-a/A2-idioma.html', 'sim'],
+      ['A', 3, 4,  'A pegadinha que 9 em cada 10 concurseiros caem',         'sequencia-a/A3-pegadinha.html', 'sim'],
+      ['A', 4, 7,  'Quem está por trás da Fluência Contábil',                'sequencia-a/A4-quem-somos.html', 'sim'],
+      ['A', 5, 10, 'Se o método faz sentido pra você, tem um próximo passo', 'sequencia-a/A5-lista-espera.html', 'sim'],
+      ['B', 1, 0,  'Você está dentro. Bem-vindo(a) à Lista de Espera.',      'sequencia-b/B1-bem-vindo-lista.html', 'sim'],
+      ['B', 2, 3,  'As 5 camadas do método Fluência Contábil',               'sequencia-b/B2-cinco-camadas.html', 'sim'],
+      ['B', 3, 6,  'Quem vai te ensinar no Fluência Contábil',               'sequencia-b/B3-quem-te-ensina.html', 'sim'],
+      ['B', 4, 9,  '[Você é VIP] As 4 lives gratuitas do Fluência Contábil', 'sequencia-b/B4-vip-lives.html', 'sim'],
+      ['B', 5, 12, '[Aula 01 grátis] Método das Partidas Dobradas',          'sequencia-b/B5-aula-01.html', 'sim'],
+      ['B', 6, 15, 'A rotina que separa quem passa de quem desiste',         'sequencia-b/B6-rotina.html', 'sim'],
+      ['C', 1, 0,  'Seu Dicionário chegou — e tem mais história aí',         'sequencia-c/C1-bem-vindo-lead-magnet.html', 'sim'],
+      ['C', 2, 3,  'O Dicionário é só metade. A outra metade é a chave.',    'sequencia-c/C2-dicionario-metade.html', 'sim'],
+      ['C', 3, 6,  'A pegadinha que o Dicionário te salva de cair',          'sequencia-c/C3-pegadinha.html', 'sim'],
+      ['C', 4, 9,  'Quem tá por trás desse Dicionário',                      'sequencia-c/C4-quem-tras-dicionario.html', 'sim'],
+      ['C', 5, 12, '[Aula 01 grátis] Método das Partidas Dobradas',          'sequencia-c/C5-aula-01.html', 'sim'],
+      ['C', 6, 15, 'Seu próximo passo depois de 3 semanas com a gente',      'sequencia-c/C6-lista-espera.html', 'sim'],
+      ['D', 1, 0,  'Você está dentro: 4 lives + Dicionário grátis',          'sequencia-d/D1-bem-vindo-lives.html', 'sim'],
+      ['D', 2, 2,  'Por que essas 4 lives, nessa ordem',                     'sequencia-d/D2-cinco-camadas.html', 'sim'],
+      ['D', 3, 4,  'Quem vai te ensinar nas lives',                          'sequencia-d/D3-quem-te-ensina.html', 'sim'],
+      ['D', 4, 6,  '[Aula 01 grátis] Método das Partidas Dobradas',          'sequencia-d/D4-aula-01.html', 'sim'],
+      ['D', 5, 9,  'Como aproveitar as lives ao máximo',                     'sequencia-d/D5-proxima-live.html', 'sim']
+    ];
+    cs.getRange(1, 1, rows.length, 6).setValues(rows);
+    cs.getRange(1, 1, 1, 6).setFontWeight('bold').setBackground('#1B2A4A').setFontColor('#FFFFFF');
+    cs.setFrozenRows(1);
+    cs.getRange('H1').setValue('⚠️ Cadências A/B/C foram estimadas — conferir os delays reais no painel MailerLite antes do cutover. D é 0/+2/+4/+6/+9 (documentado).');
+    Logger.log('✅ Aba "Config Sequencias" criada e pré-preenchida (22 emails A-D)');
+  }
+
+  // 3. Aba Broadcasts
+  if (!ss.getSheetByName(MAILER_SHEETS.BROADCASTS)) {
+    var bc = ss.insertSheet(MAILER_SHEETS.BROADCASTS);
+    bc.getRange(1, 1, 1, 9).setValues([[
+      'ID', 'Assunto', 'Template (relativo)', 'Tópicos (csv)', 'Agendado para',
+      'Status', 'Enviados', 'Total', 'Última execução'
+    ]]).setFontWeight('bold').setBackground('#1B2A4A').setFontColor('#FFFFFF');
+    bc.setFrozenRows(1);
+    bc.getRange('K1').setValue('Tópicos válidos: newsletter, lista-espera, dicionario, lives. Status: vazio=aguardando · enviando · ok (n/total) · err:... · "pausado" (manual) interrompe.');
+    Logger.log('✅ Aba "Broadcasts" criada');
+  }
+
+  // 4. Abas de migração
+  if (!ss.getSheetByName(MAILER_SHEETS.IMPORT_ML)) {
+    var im = ss.insertSheet(MAILER_SHEETS.IMPORT_ML);
+    im.getRange(1, 1, 1, 5).setValues([['Email', 'Nome', 'Tópico', 'SES Sync', 'SES Sync At']])
+      .setFontWeight('bold').setBackground('#1B2A4A').setFontColor('#FFFFFF');
+    im.setFrozenRows(1);
+    Logger.log('✅ Aba "Import ML" criada');
+  }
+  if (!ss.getSheetByName(MAILER_SHEETS.UNSUBS_ML)) {
+    var un = ss.insertSheet(MAILER_SHEETS.UNSUBS_ML);
+    un.getRange(1, 1, 1, 2).setValues([['Email', 'Status']])
+      .setFontWeight('bold').setBackground('#1B2A4A').setFontColor('#FFFFFF');
+    un.setFrozenRows(1);
+    Logger.log('✅ Aba "Unsubs ML" criada');
+  }
+
+  // 5. Triggers
+  recreateTrigger_('syncPendingToSES', function(b) { return b.timeBased().everyMinutes(1); });
+  // 5min (não 1h): email de boas-vindas/confirmação precisa chegar em minutos, não em até 1h
+  recreateTrigger_('processSequences', function(b) { return b.timeBased().everyMinutes(5); });
+  recreateTrigger_('processBroadcasts', function(b) { return b.timeBased().everyMinutes(5); });
+  recreateTrigger_('dedupeDiario', function(b) { return b.timeBased().everyDays(1).atHour(3); });
+  Logger.log('✅ Triggers: syncPendingToSES (1min) · processSequences (5min) · processBroadcasts (5min) · dedupeDiario (diário ~3h)');
+  Logger.log('');
+  Logger.log('⚠️ O trigger do MailerLite continua ativo. Quando o SES estiver validado, rode cutoverDisableMailerLite().');
+}
+
+/**
+ * 1× — habilita o grupo BOLSÃO (campanha 13–28/06).
+ * Pré-requisito: policy IAM do fluencia-mailer precisa da action
+ * ses:UpdateContactList (adicionar no console IAM antes de rodar).
+ *
+ * Faz: (a) adiciona o tópico 'bolsao' na contact list existente;
+ * (b) garante a aba "Bolsão" com colunas SES/Seq/CRM; (c) adiciona a
+ * sequência BOLSAO (1 email: confirmação imediata) na Config Sequencias;
+ * (d) adiciona a linha Bolsão na Config CRM (se existir). Idempotente.
+ */
+function setupBolsao() {
+  var props = PropertiesService.getScriptProperties();
+  var list = props.getProperty('SES_CONTACT_LIST') || 'fluencia';
+
+  // (a) tópico na contact list (UpdateContactList substitui o conjunto — manda TODOS)
+  var upd = sesRequest_('PUT', ['v2', 'email', 'contact-lists', list], {
+    Description: 'Leads Fluência Contábil (newsletter, lista de espera, dicionário, lives, bolsão)',
+    Topics: SES_TOPICS
+  });
+  Logger.log(upd.ok ? '✅ Tópico "bolsao" adicionado à contact list'
+    : '❌ UpdateContactList HTTP ' + upd.code + ': ' + String(upd.raw).substring(0, 250) +
+      (upd.code === 403 ? ' → adicione ses:UpdateContactList na policy IAM fluencia-mailer' : ''));
+  if (!upd.ok) return;
+
+  // (b) colunas do mailer na aba Bolsão (a aba em si é criada pelo setupAfterDeploy do arquivo unificado)
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getSheetByName('Bolsão');
+  if (!sheet) {
+    Logger.log('⚠️ Aba "Bolsão" não existe ainda — rode setupAfterDeploy() (arquivo unificado) primeiro e rode setupBolsao() de novo.');
+    return;
+  }
+  var headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0].map(String);
+  MAILER_COLS.concat(['CRM Sync', 'CRM Sync At']).forEach(function(col) {
+    if (headers.indexOf(col) === -1) {
+      var c = sheet.getLastColumn() + 1;
+      sheet.getRange(1, c).setValue(col).setFontWeight('bold')
+        .setBackground('#1B2A4A').setFontColor('#FFFFFF');
+      headers.push(col);
+    }
+  });
+  Logger.log('✅ Colunas SES/Seq/CRM garantidas na aba Bolsão');
+
+  // (c) sequência BOLSAO: 1 email — confirmação imediata (véspera/prova/ranking são broadcasts com data fixa)
+  var cs = ss.getSheetByName(MAILER_SHEETS.CONFIG_SEQ);
+  if (cs) {
+    var temBolsao = cs.getRange(2, 1, Math.max(1, cs.getLastRow() - 1), 1).getValues()
+      .some(function(r) { return String(r[0]).toUpperCase() === 'BOLSAO'; });
+    if (!temBolsao) {
+      cs.appendRow(['BOLSAO', 1, 0, 'Inscrição confirmada! Agora é estudar até 28/06 🎯', 'bolsao/confirmacao.html', 'sim']);
+      Logger.log('✅ Sequência BOLSAO adicionada na Config Sequencias (1 passo, imediato)');
+    }
+  }
+
+  // (d) linha na Config CRM (preencher IDs depois de criar o funil no Mensageiro)
+  var cc = ss.getSheetByName('Config CRM');
+  if (cc) {
+    var temLinha = cc.getRange(2, 1, Math.max(1, cc.getLastRow() - 1), 1).getValues()
+      .some(function(r) { return String(r[0]) === 'Bolsão'; });
+    if (!temLinha) {
+      cc.appendRow(['Bolsão', '', '', 'bolsao']);
+      Logger.log('✅ Linha Bolsão adicionada na Config CRM — preencher Pipeline/Stage ID');
+    }
+  }
+
+  Logger.log('');
+  Logger.log('Próximos: testRegressionAll() (unificado) pra validar o roteamento · migrateBolsaoLeads() pra mover os inscritos antigos.');
+}
+
+/**
+ * 1× — move os inscritos ANTIGOS do Bolsão (origem bolsao_lp, que caíam na
+ * "Lista de Espera" por fallback) pra aba "Bolsão". Eles ganham o tópico
+ * 'bolsao' no SES (SES Sync resetado) e NÃO recebem a sequência de
+ * confirmação (Seq Passo = pre-cutover) — só os broadcasts da prova.
+ */
+function migrateBolsaoLeads() {
+  var lock = LockService.getScriptLock();
+  lock.waitLock(30000);
+  try {
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var origem = ss.getSheetByName('Lista de Espera');
+    var destino = ss.getSheetByName('Bolsão');
+    if (!origem || !destino) { Logger.log('❌ Aba Lista de Espera ou Bolsão não encontrada.'); return; }
+
+    var colsO = headerIndexes_(origem);
+    var colsD = headerIndexes_(destino);
+    var data = origem.getRange(2, 1, origem.getLastRow() - 1, origem.getLastColumn()).getValues();
+
+    var paraMover = [];
+    for (var r = 0; r < data.length; r++) {
+      if (String(data[r][colsO['Origem'] - 1] || '').toLowerCase().indexOf('bolsao') === 0) paraMover.push(r);
+    }
+    if (!paraMover.length) { Logger.log('ℹ️ Nenhum lead bolsao_lp na Lista de Espera.'); return; }
+
+    paraMover.forEach(function(r) {
+      var get = function(name) { return colsO[name] ? data[r][colsO[name] - 1] : ''; };
+      var novaLinha = [];
+      Object.keys(colsD).forEach(function(h) { novaLinha[colsD[h] - 1] = ''; });
+      ['Data', 'Nome', 'E-mail', 'WhatsApp', 'Origem', 'Ref', 'Página', 'Referrer',
+       'UTM Source', 'UTM Medium', 'UTM Campaign', 'Dispositivo'].forEach(function(h) {
+        if (colsD[h]) novaLinha[colsD[h] - 1] = get(h);
+      });
+      if (colsD['Seq Passo']) novaLinha[colsD['Seq Passo'] - 1] = 'pre-cutover';
+      // SES Sync fica vazio → trigger re-sincroniza adicionando o tópico bolsao
+      destino.appendRow(novaLinha);
+    });
+    for (var i = paraMover.length - 1; i >= 0; i--) origem.deleteRow(paraMover[i] + 2);
+
+    Logger.log('✅ ' + paraMover.length + ' lead(s) bolsao_lp movidos pra aba Bolsão. O trigger de 1min adiciona o tópico bolsao a todos.');
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+/** CUTOVER: remove o trigger do sync MailerLite (a função fica no código pra rollback). */
+function cutoverDisableMailerLite() {
+  var removed = 0;
+  ScriptApp.getProjectTriggers().forEach(function(tr) {
+    if (tr.getHandlerFunction() === 'syncPendingToMailerLite') { ScriptApp.deleteTrigger(tr); removed++; }
+  });
+  Logger.log(removed > 0
+    ? '✅ Trigger do MailerLite removido. Leads novos agora só sincronizam com SES (e CRM).'
+    : 'ℹ️ Nenhum trigger do MailerLite encontrado (já removido?).');
+  Logger.log('Rollback: rodar setupAfterDeploy() do arquivo unificado recria o trigger do MailerLite.');
+}
+
+function recreateTrigger_(handler, builderFn) {
+  ScriptApp.getProjectTriggers().forEach(function(tr) {
+    if (tr.getHandlerFunction() === handler) ScriptApp.deleteTrigger(tr);
+  });
+  builderFn(ScriptApp.newTrigger(handler)).create();
+}
+
+/** Mapa header→índice 1-based da linha 1. */
+function headerIndexes_(sheet) {
+  var headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+  var map = {};
+  headers.forEach(function(h, i) { if (h) map[String(h)] = i + 1; });
+  return map;
+}
+
+function markCell_(sheet, rowNum, cols, colName, value) {
+  sheet.getRange(rowNum, cols[colName]).setValue(value);
+  var atCol = cols[colName + ' At'];
+  if (atCol) sheet.getRange(rowNum, atCol).setValue(new Date());
+}
+
+
+// ══════════════════════ TESTES ══════════════════════
+
+/** Valida credenciais AWS + estado da conta SES. */
+function testSesAuth() {
+  var res = sesRequest_('GET', ['v2', 'email', 'account'], null);
+  if (res.ok) {
+    Logger.log('✅ SES auth OK. ProductionAccess=' + (res.body && res.body.ProductionAccessEnabled) +
+               ' · Quota 24h=' + (res.body && res.body.SendQuota && res.body.SendQuota.Max24HourSend));
+  } else {
+    Logger.log('❌ HTTP ' + res.code + ': ' + String(res.raw).substring(0, 400));
+  }
+}
+
+/** Envia o email A1 pra um endereço de teste (edite o destino antes de rodar). */
+function testSendMarketingEmail() {
+  var to = 'vinicius.ferraz@gruponbeducacao.com'; // ← edite se quiser testar outro inbox
+  var html = renderTemplate_(templateUrl_('sequencia-a/A1-bem-vindo.html'), 'Vinícius Teste');
+  var id = sesSendMarketing_(to, '[TESTE SES] Bem-vindo(a) à Fluência Contábil', html, 'newsletter');
+  Logger.log('✅ Enviado. MessageId=' + id + ' → confira o inbox ' + to +
+             ' (inclusive o link de descadastro no rodapé).');
+}
+
+
+// ══════════════════════ DEDUPLICAÇÃO ══════════════════════
+
+/**
+ * Marca linhas DUPLICADAS (mesmo email, mesma aba) pra que os motores as
+ * ignorem. A PRIMEIRA ocorrência (mais antiga) permanece ativa — é a
+ * âncora da sequência. As demais recebem:
+ *   SES Sync   = 'dup'        (se ainda pendente — não re-importa)
+ *   Seq Passo  = 'duplicado'  (nunca recebe sequência; interrompe se já recebia)
+ *   CRM Sync   = 'dup'        (se a coluna existir e estiver pendente)
+ *
+ * NÃO apaga linhas — preserva origem/UTM pra análise. Duplicatas ENTRE
+ * abas diferentes (ex: Newsletter + Lista) são legítimas e ficam intactas.
+ * Idempotente: rodar de novo só pega duplicatas novas. Rodar 1×/semana
+ * ou após picos de captura.
+ */
+function dedupePlanilha() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var totalMarcadas = 0;
+
+  MAILER_TABS.forEach(function(cfg) {
+    var sheet = ss.getSheetByName(cfg.sheet);
+    if (!sheet || sheet.getLastRow() < 3) return;
+    var cols = headerIndexes_(sheet);
+    if (!cols['E-mail']) return;
+
+    var lastRow = sheet.getLastRow();
+    var data = sheet.getRange(2, 1, lastRow - 1, sheet.getLastColumn()).getValues();
+    var seen = {};
+    var marcadas = 0;
+
+    for (var r = 0; r < data.length; r++) {
+      var email = String(data[r][cols['E-mail'] - 1] || '').trim().toLowerCase();
+      if (!isValidEmail(email)) continue;
+      if (!seen[email]) { seen[email] = true; continue; }
+
+      var rowNum = r + 2;
+
+      if (cols['SES Sync'] && String(data[r][cols['SES Sync'] - 1] || '') === '') {
+        sheet.getRange(rowNum, cols['SES Sync']).setValue('dup');
+      }
+      if (cols['Seq Passo']) {
+        var passo = String(data[r][cols['Seq Passo'] - 1] || '');
+        if (passo !== 'duplicado' && passo !== 'concluída') {
+          sheet.getRange(rowNum, cols['Seq Passo']).setValue('duplicado');
+        }
+      }
+      if (cols['CRM Sync'] && String(data[r][cols['CRM Sync'] - 1] || '') === '') {
+        sheet.getRange(rowNum, cols['CRM Sync']).setValue('dup');
+      }
+      marcadas++;
+    }
+
+    if (marcadas > 0) Logger.log('🧹 ' + cfg.sheet + ': ' + marcadas + ' duplicata(s) marcada(s)');
+    totalMarcadas += marcadas;
+  });
+
+  Logger.log(totalMarcadas === 0
+    ? '✅ Nenhuma duplicata encontrada nas 4 abas'
+    : '✅ Dedupe concluído: ' + totalMarcadas + ' linha(s) marcada(s). A 1ª ocorrência de cada email segue ativa.');
+}
+
+/**
+ * MOVE as linhas marcadas como duplicadas pra aba de arquivo "_duplicatas"
+ * e as remove das abas principais — Dashboard volta a contar certo, sem
+ * perder os dados de origem/UTM. Roda sob lock (não colide com os workers).
+ */
+function arquivarDuplicatas() {
+  var lock = LockService.getScriptLock();
+  lock.waitLock(30000);
+  try {
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var arquivo = ss.getSheetByName('_duplicatas');
+    if (!arquivo) {
+      arquivo = ss.insertSheet('_duplicatas');
+      arquivo.getRange(1, 1, 1, 3).setValues([['Aba origem', 'Arquivado em', 'Dados da linha (ordem original das colunas) →']])
+        .setFontWeight('bold').setBackground('#1B2A4A').setFontColor('#FFFFFF');
+      arquivo.setFrozenRows(1);
+    }
+
+    var totalMovidas = 0;
+    MAILER_TABS.forEach(function(cfg) {
+      var sheet = ss.getSheetByName(cfg.sheet);
+      if (!sheet || sheet.getLastRow() < 2) return;
+      var cols = headerIndexes_(sheet);
+      var lastRow = sheet.getLastRow();
+      var data = sheet.getRange(2, 1, lastRow - 1, sheet.getLastColumn()).getValues();
+
+      // Coleta de cima pra baixo, deleta de baixo pra cima (índices não mudam)
+      var paraMover = [];
+      for (var r = 0; r < data.length; r++) {
+        var passo = cols['Seq Passo'] ? String(data[r][cols['Seq Passo'] - 1] || '') : '';
+        var sync = cols['SES Sync'] ? String(data[r][cols['SES Sync'] - 1] || '') : '';
+        if (passo === 'duplicado' || sync === 'dup') paraMover.push(r);
+      }
+      if (!paraMover.length) return;
+
+      paraMover.forEach(function(r) {
+        arquivo.appendRow([cfg.sheet, new Date()].concat(data[r].map(String)));
+      });
+      for (var i = paraMover.length - 1; i >= 0; i--) {
+        sheet.deleteRow(paraMover[i] + 2);
+      }
+      Logger.log('📦 ' + cfg.sheet + ': ' + paraMover.length + ' duplicata(s) movida(s) pra _duplicatas');
+      totalMovidas += paraMover.length;
+    });
+
+    Logger.log(totalMovidas === 0
+      ? '✅ Nada a arquivar'
+      : '✅ ' + totalMovidas + ' linha(s) arquivada(s) — Dashboard atualizado automaticamente (fórmulas recalculam sozinhas)');
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+/** Trigger diário (madrugada): marca duplicatas novas e arquiva. */
+function dedupeDiario() {
+  dedupePlanilha();
+  arquivarDuplicatas();
+}
