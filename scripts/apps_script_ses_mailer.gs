@@ -1002,6 +1002,84 @@ function agendarBroadcastsBolsao() {
 }
 
 /**
+ * AGENDA OS 27 BROADCASTS DO LANÇAMENTO (agosto/2026) — datas e assuntos
+ * do plano vigente (confirmados pelo Vinícius em 11/06). Idempotente.
+ *
+ * Composição:
+ *   12 convites das lives (D-3 09h · D-0 09h · AO VIVO 20h, por live)
+ *    7 broadcasts de venda L1–L7 (janela Fundador 04/08→16/08 23h59)
+ *    8 operacionais Sequência E (véspera 18h + AOVIVO 19h55, SÓ inscritos das lives)
+ *
+ * Decisão de público: AO VIVO dos convites NÃO inclui o tópico `lives` —
+ * inscritos das lives recebem a versão própria (E) às 19h55; mandar as
+ * duas seria duplicado. D-3/D-0 vão pra TODOS os grupos (incl. bolsao).
+ *
+ * ⚠️ NÃO RODAR antes da calibragem de vazão de julho + templates L1-L7
+ * atualizados publicados em produção (hoje há mudanças não commitadas).
+ */
+function agendarBroadcastsLancamento() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var bc = ss.getSheetByName(MAILER_SHEETS.BROADCASTS);
+  if (!bc) { Logger.log('❌ Aba Broadcasts não existe — rode setupMailerAfterDeploy() primeiro.'); return; }
+
+  var TODOS   = 'newsletter,lista-espera,dicionario,lives,bolsao';
+  var SEMLIVE = 'newsletter,lista-espera,dicionario,bolsao';
+  var SOLIVE  = 'lives';
+  var CONV = 'broadcasts/convites-lives/';
+
+  // new Date(ano, mês-1, dia, h, m) — julho = 6, agosto = 7
+  var planos = [
+    // ── Venda L1–L7 ──
+    ['L1', 'Em 1 semana abrem as 4 lives gratuitas',                'broadcasts/lancamento/L1-anuncio.html',        TODOS, new Date(2026, 6, 27, 9, 0)],
+    ['L2', 'Por que só anual? (e por que isso te interessa)',       'broadcasts/lancamento/L2-por-que-anual.html',  TODOS, new Date(2026, 6, 31, 9, 0)],
+    ['L3', 'Amanhã 20h: começa a semana das 4 lives',               'broadcasts/lancamento/L3-vespera.html',        TODOS, new Date(2026, 7, 3, 18, 0)],
+    ['L4', 'Acabou a semana de lives — restam 9d na janela',        'broadcasts/lancamento/L4-pos-lives-roi.html',  TODOS, new Date(2026, 7, 8, 9, 0)],
+    ['L5', 'Amanhã encerra (alguns que já estão dentro)',           'broadcasts/lancamento/L5-depoimentos.html',    TODOS, new Date(2026, 7, 13, 18, 0)],
+    ['L6', 'ÚLTIMO DIA · janela do Fundador encerra hoje 23h59',    'broadcasts/lancamento/L6-ultimo-dia.html',     TODOS, new Date(2026, 7, 16, 9, 0)],
+    ['L7', '🚨 ÚLTIMA CHAMADA · 5h pra encerrar a janela',          'broadcasts/lancamento/L7-ultima-chamada.html', TODOS, new Date(2026, 7, 16, 19, 0)],
+    // ── Convites Live 1 (ter 04/08 20h) ──
+    ['CONV-L1-D3',     'Em 3 dias: Live 1 · Débito e Crédito',      CONV + 'live-1-debito-credito/D-3.html',    TODOS,   new Date(2026, 6, 31, 9, 0)],
+    ['CONV-L1-D0',     'HOJE às 20h: Débito e Crédito',             CONV + 'live-1-debito-credito/D-0.html',    TODOS,   new Date(2026, 7, 4, 9, 0)],
+    ['CONV-L1-AOVIVO', 'Começando agora · entra aqui',              CONV + 'live-1-debito-credito/AOVIVO.html', SEMLIVE, new Date(2026, 7, 4, 20, 0)],
+    // ── Convites Live 2 (qua 05/08 20h) ──
+    ['CONV-L2-D3',     'Em 3 dias: Live 2 · CPC 51',                CONV + 'live-2-cpc-51/D-3.html',            TODOS,   new Date(2026, 7, 1, 9, 0)],
+    ['CONV-L2-D0',     'HOJE às 20h: CPC 51',                       CONV + 'live-2-cpc-51/D-0.html',            TODOS,   new Date(2026, 7, 5, 9, 0)],
+    ['CONV-L2-AOVIVO', 'Começando agora · entra aqui',              CONV + 'live-2-cpc-51/AOVIVO.html',         SEMLIVE, new Date(2026, 7, 5, 20, 0)],
+    // ── Convites Live 3 — Lançamento Oficial (qui 06/08 20h) ──
+    ['CONV-L3-D3',     'Em 3 dias: a casa abre · Lançamento Oficial', CONV + 'live-3-lancamento/D-3.html',      TODOS,   new Date(2026, 7, 3, 9, 0)],
+    ['CONV-L3-D0',     'HOJE 20h: A CASA ABRE — lançamento ao vivo',  CONV + 'live-3-lancamento/D-0.html',      TODOS,   new Date(2026, 7, 6, 9, 0)],
+    ['CONV-L3-AOVIVO', 'Lançamento Oficial começando agora',          CONV + 'live-3-lancamento/AOVIVO.html',   SEMLIVE, new Date(2026, 7, 6, 20, 0)],
+    // ── Convites Live 4 (sex 07/08 20h) ──
+    ['CONV-L4-D3',     'Em 3 dias: Tour pela Plataforma',             CONV + 'live-4-plataforma/D-3.html',      TODOS,   new Date(2026, 7, 4, 9, 0)],
+    ['CONV-L4-D0',     'HOJE 20h: Tour pela Plataforma — a casa por dentro', CONV + 'live-4-plataforma/D-0.html', TODOS, new Date(2026, 7, 7, 9, 0)],
+    ['CONV-L4-AOVIVO', 'Tour ao vivo começando agora',                CONV + 'live-4-plataforma/AOVIVO.html',   SEMLIVE, new Date(2026, 7, 7, 20, 0)],
+    // ── Sequência E operacional (SÓ inscritos das lives) ──
+    ['E-L1-VESPERA', 'Amanhã 20h: Live 1 — Débito e Crédito',        'sequencia-e/live-1-vespera.html', SOLIVE, new Date(2026, 7, 3, 18, 30)],
+    ['E-L1-AOVIVO',  '🔴 Live 1 começando agora: Débito e Crédito',  'sequencia-e/live-1-aovivo.html',  SOLIVE, new Date(2026, 7, 4, 19, 55)],
+    ['E-L2-VESPERA', 'Amanhã 20h: Live 2 — CPC 51',                  'sequencia-e/live-2-vespera.html', SOLIVE, new Date(2026, 7, 4, 18, 0)],
+    ['E-L2-AOVIVO',  '🔴 Live 2 começando agora: CPC 51',            'sequencia-e/live-2-aovivo.html',  SOLIVE, new Date(2026, 7, 5, 19, 55)],
+    ['E-L3-VESPERA', 'Amanhã 20h: Live 3 — Lançamento Oficial',      'sequencia-e/live-3-vespera.html', SOLIVE, new Date(2026, 7, 5, 18, 0)],
+    ['E-L3-AOVIVO',  '🔴 Live 3 começando agora: Lançamento Oficial','sequencia-e/live-3-aovivo.html',  SOLIVE, new Date(2026, 7, 6, 19, 55)],
+    ['E-L4-VESPERA', 'Amanhã 20h: Live 4 — Tour pela Plataforma',    'sequencia-e/live-4-vespera.html', SOLIVE, new Date(2026, 7, 6, 18, 0)],
+    ['E-L4-AOVIVO',  '🔴 Live 4 começando agora: Tour pela Plataforma','sequencia-e/live-4-aovivo.html', SOLIVE, new Date(2026, 7, 7, 19, 55)]
+  ];
+
+  var existentes = bc.getLastRow() > 1
+    ? bc.getRange(2, 1, bc.getLastRow() - 1, 1).getValues().map(function(r) { return String(r[0]); })
+    : [];
+
+  var criados = 0;
+  planos.forEach(function(p) {
+    if (existentes.indexOf(p[0]) >= 0) { Logger.log('↩️ ' + p[0] + ' já agendado — pulando'); return; }
+    bc.appendRow([p[0], p[1], p[2], p[3], p[4], '', '', '', '']);
+    criados++;
+  });
+
+  Logger.log('✅ ' + criados + ' broadcast(s) do lançamento agendado(s) (' + (planos.length - criados) + ' já existiam).');
+  Logger.log('⚠️ Antes de 27/07: (1) calibragem de vazão; (2) templates L1-L7/convites ATUALIZADOS publicados em produção; (3) ensaio geral.');
+}
+
+/**
  * ENSAIO COMPLETO DO MOTOR DE BROADCASTS — 1 clique, evidência em ~1 min.
  *
  * ⚠️ EDITE EMAIL_ENSAIO abaixo antes de rodar (use um email NÃO
