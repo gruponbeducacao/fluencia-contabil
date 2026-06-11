@@ -73,8 +73,8 @@ const MAILER_SHEETS = {
 // Limites por execução (margem folgada sob as quotas SES 50k/dia e
 // UrlFetchApp 20k/dia: sync 1min×10 + seq 1h×30 + broadcasts 5min×80)
 const SES_SYNC_BATCH   = 10;  // contatos/run (trigger 1 min)
-const SEQ_SEND_BATCH   = 30;  // emails de sequência/run (trigger 1 h)
-const BCAST_SEND_BATCH = 80;  // emails de broadcast/run (trigger 5 min)
+const SEQ_SEND_BATCH   = 30;  // emails de sequência/run (trigger 5 min)
+const BCAST_SEND_BATCH = 250; // emails de broadcast/run (trigger 5 min ≈ 3.000/h) — calibrado p/ lançamento ago/2026 (SES 14/s aguenta; ~2/s aqui)
 
 
 // ══════════════════════ AWS SIGV4 (SES v2 REST) ══════════════════════
@@ -1014,8 +1014,9 @@ function agendarBroadcastsBolsao() {
  * inscritos das lives recebem a versão própria (E) às 19h55; mandar as
  * duas seria duplicado. D-3/D-0 vão pra TODOS os grupos (incl. bolsao).
  *
- * ⚠️ NÃO RODAR antes da calibragem de vazão de julho + templates L1-L7
- * atualizados publicados em produção (hoje há mudanças não commitadas).
+ * Pode agendar com antecedência: as linhas DORMEM até a data/hora.
+ * ⚠️ Antes de 27/07 (1º envio): garantir que os templates L1-L7 e dos
+ * convites ATUALIZADOS estejam publicados em produção (≥6h antes — cache).
  */
 function agendarBroadcastsLancamento() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -1075,8 +1076,33 @@ function agendarBroadcastsLancamento() {
     criados++;
   });
 
-  Logger.log('✅ ' + criados + ' broadcast(s) do lançamento agendado(s) (' + (planos.length - criados) + ' já existiam).');
-  Logger.log('⚠️ Antes de 27/07: (1) calibragem de vazão; (2) templates L1-L7/convites ATUALIZADOS publicados em produção; (3) ensaio geral.');
+  Logger.log('✅ ' + criados + ' broadcast(s) do lançamento agendado(s) (' + (planos.length - criados) + ' já existiam). As linhas dormem até a data.');
+  Logger.log('⚠️ Antes de 27/07: publicar em produção os templates L1-L7/convites ATUALIZADOS (hoje há versões novas não commitadas no repo).');
+}
+
+/**
+ * SIMULA O PÚBLICO DE UM BROADCAST PRA TODOS OS GRUPOS — SEM ENVIAR NADA.
+ * Roda o coletor real (5 abas + dedupe por email) e loga os números.
+ * É a prova a seco do caminho multi-grupo: coleta provada aqui + envio
+ * provado no ensaio = broadcast de agosto coberto de ponta a ponta.
+ */
+function simularPublicoBroadcast() {
+  var TODOS = ['newsletter', 'lista-espera', 'dicionario', 'lives', 'bolsao'];
+  var recipients = collectRecipients_(TODOS);
+
+  var porGrupo = {};
+  recipients.forEach(function(r) { porGrupo[r.topic] = (porGrupo[r.topic] || 0) + 1; });
+
+  Logger.log('📊 SIMULAÇÃO de broadcast pra TODOS os grupos (nenhum email enviado):');
+  TODOS.forEach(function(t) {
+    Logger.log('   ' + t + ': ' + (porGrupo[t] || 0) + ' destinatário(s)');
+  });
+  Logger.log('   ─────────────────────────');
+  Logger.log('   TOTAL (já deduplicado por email): ' + recipients.length);
+  Logger.log('');
+  Logger.log('⏱️ A ' + BCAST_SEND_BATCH + '/rodada de 5min, esse público é coberto em ~' +
+    Math.ceil(recipients.length / BCAST_SEND_BATCH) * 5 + ' minuto(s).');
+  Logger.log('Obs: quem está em 2+ grupos conta só no grupo de maior prioridade (1ª aba onde aparece) — é o mesmo dedupe do envio real.');
 }
 
 /**
