@@ -73,8 +73,8 @@ const MAILER_SHEETS = {
 // Limites por execução (margem folgada sob as quotas SES 50k/dia e
 // UrlFetchApp 20k/dia: sync 1min×10 + seq 1h×30 + broadcasts 5min×80)
 const SES_SYNC_BATCH   = 10;  // contatos/run (trigger 1 min)
-const SEQ_SEND_BATCH   = 30;  // emails de sequência/run (trigger 1 h)
-const BCAST_SEND_BATCH = 80;  // emails de broadcast/run (trigger 5 min)
+const SEQ_SEND_BATCH   = 30;  // emails de sequência/run (trigger 5 min)
+const BCAST_SEND_BATCH = 250; // emails de broadcast/run (trigger 5 min ≈ 3.000/h) — calibrado p/ lançamento ago/2026 (SES 14/s aguenta; ~2/s aqui)
 
 
 // ══════════════════════ AWS SIGV4 (SES v2 REST) ══════════════════════
@@ -954,6 +954,229 @@ function testSesAuth() {
                ' · Quota 24h=' + (res.body && res.body.SendQuota && res.body.SendQuota.Max24HourSend));
   } else {
     Logger.log('❌ HTTP ' + res.code + ': ' + String(res.raw).substring(0, 400));
+  }
+}
+
+/**
+ * AGENDA OS 5 BROADCASTS REAIS DO BOLSÃO na aba Broadcasts — sem
+ * copiar/colar, sem erro de digitação. Idempotente: pula IDs que já
+ * existem (rodar 2× não duplica). Todos com tópico SÓ `bolsao`.
+ *
+ * ⚠️ Lembrete: prova.html e ranking.html têm placeholders
+ * ({LINK_PDF_PROVA}, {LINK_FORMS}, {LINK_RANKING}) que precisam ser
+ * preenchidos e PUBLICADOS até a noite de 26/06 (cache de 6h).
+ */
+function agendarBroadcastsBolsao() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var bc = ss.getSheetByName(MAILER_SHEETS.BROADCASTS);
+  if (!bc) { Logger.log('❌ Aba Broadcasts não existe — rode setupMailerAfterDeploy() primeiro.'); return; }
+
+  // new Date(ano, mês-1, dia, hora, min) — junho = 5, julho = 6
+  var planos = [
+    ['BOLSAO-VESPERA',       'Amanhã 7h30: sua prova do Bolsão chega neste e-mail',  'bolsao/vespera.html',       'bolsao', new Date(2026, 5, 27, 18, 0, 0)],
+    ['BOLSAO-PROVA',         '🔴 BOLSÃO: sua prova está aqui — envie até 13h00',     'bolsao/prova.html',         'bolsao', new Date(2026, 5, 28, 7, 30, 0)],
+    ['BOLSAO-POS-PROVA',     'E aí, gostou da dinâmica? Tem um próximo passo',        'bolsao/pos-prova.html',     'bolsao', new Date(2026, 5, 28, 18, 0, 0)],
+    ['BOLSAO-RANKING',       'O ranking do Bolsão saiu 🏆',                           'bolsao/ranking.html',       'bolsao', new Date(2026, 5, 29, 18, 0, 0)],
+    ['BOLSAO-CONVITE-LISTA', 'As 5 bolsas foram entregues ontem. E o seu lugar?',     'bolsao/convite-lista.html', 'bolsao', new Date(2026, 6, 2, 9, 0, 0)]
+  ];
+
+  var existentes = bc.getLastRow() > 1
+    ? bc.getRange(2, 1, bc.getLastRow() - 1, 1).getValues().map(function(r) { return String(r[0]); })
+    : [];
+
+  var criados = 0;
+  planos.forEach(function(p) {
+    if (existentes.indexOf(p[0]) >= 0) {
+      Logger.log('↩️ ' + p[0] + ' já agendado — pulando');
+      return;
+    }
+    bc.appendRow([p[0], p[1], p[2], p[3], p[4], '', '', '', '']);
+    Logger.log('📅 ' + p[0] + ' agendado pra ' +
+      Utilities.formatDate(p[4], 'America/Sao_Paulo', 'dd/MM/yyyy HH:mm'));
+    criados++;
+  });
+
+  Logger.log('');
+  Logger.log('✅ ' + criados + ' broadcast(s) agendado(s) (' + (planos.length - criados) + ' já existiam).');
+  Logger.log('⚠️ Até 26/06 à noite: preencher {LINK_PDF_PROVA}/{LINK_FORMS} no prova.html e {LINK_RANKING} no ranking.html + publicar (cache de 6h).');
+}
+
+/**
+ * AGENDA OS 27 BROADCASTS DO LANÇAMENTO (agosto/2026) — datas e assuntos
+ * do plano vigente (confirmados pelo Vinícius em 11/06). Idempotente.
+ *
+ * Composição:
+ *   12 convites das lives (D-3 09h · D-0 09h · AO VIVO 20h, por live)
+ *    7 broadcasts de venda L1–L7 (janela Fundador 04/08→16/08 23h59)
+ *    8 operacionais Sequência E (véspera 18h + AOVIVO 19h55, SÓ inscritos das lives)
+ *
+ * Decisão de público: AO VIVO dos convites NÃO inclui o tópico `lives` —
+ * inscritos das lives recebem a versão própria (E) às 19h55; mandar as
+ * duas seria duplicado. D-3/D-0 vão pra TODOS os grupos (incl. bolsao).
+ *
+ * Pode agendar com antecedência: as linhas DORMEM até a data/hora.
+ * ⚠️ Antes de 27/07 (1º envio): garantir que os templates L1-L7 e dos
+ * convites ATUALIZADOS estejam publicados em produção (≥6h antes — cache).
+ */
+function agendarBroadcastsLancamento() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var bc = ss.getSheetByName(MAILER_SHEETS.BROADCASTS);
+  if (!bc) { Logger.log('❌ Aba Broadcasts não existe — rode setupMailerAfterDeploy() primeiro.'); return; }
+
+  var TODOS   = 'newsletter,lista-espera,dicionario,lives,bolsao';
+  var SEMLIVE = 'newsletter,lista-espera,dicionario,bolsao';
+  var SOLIVE  = 'lives';
+  var CONV = 'broadcasts/convites-lives/';
+
+  // new Date(ano, mês-1, dia, h, m) — julho = 6, agosto = 7
+  var planos = [
+    // ── Venda L1–L7 ──
+    ['L1', 'Em 1 semana abrem as 4 lives gratuitas',                'broadcasts/lancamento/L1-anuncio.html',        TODOS, new Date(2026, 6, 27, 9, 0)],
+    ['L2', 'Por que só anual? (e por que isso te interessa)',       'broadcasts/lancamento/L2-por-que-anual.html',  TODOS, new Date(2026, 6, 31, 9, 0)],
+    ['L3', 'Amanhã 20h: começa a semana das 4 lives',               'broadcasts/lancamento/L3-vespera.html',        TODOS, new Date(2026, 7, 3, 18, 0)],
+    ['L4', 'Acabou a semana de lives — restam 9d na janela',        'broadcasts/lancamento/L4-pos-lives-roi.html',  TODOS, new Date(2026, 7, 8, 9, 0)],
+    ['L5', 'Amanhã encerra (alguns que já estão dentro)',           'broadcasts/lancamento/L5-depoimentos.html',    TODOS, new Date(2026, 7, 13, 18, 0)],
+    ['L6', 'ÚLTIMO DIA · janela do Fundador encerra hoje 23h59',    'broadcasts/lancamento/L6-ultimo-dia.html',     TODOS, new Date(2026, 7, 16, 9, 0)],
+    ['L7', '🚨 ÚLTIMA CHAMADA · 5h pra encerrar a janela',          'broadcasts/lancamento/L7-ultima-chamada.html', TODOS, new Date(2026, 7, 16, 19, 0)],
+    // ── Convites Live 1 (ter 04/08 20h) ──
+    ['CONV-L1-D3',     'Em 3 dias: Live 1 · Débito e Crédito',      CONV + 'live-1-debito-credito/D-3.html',    TODOS,   new Date(2026, 6, 31, 9, 0)],
+    ['CONV-L1-D0',     'HOJE às 20h: Débito e Crédito',             CONV + 'live-1-debito-credito/D-0.html',    TODOS,   new Date(2026, 7, 4, 9, 0)],
+    ['CONV-L1-AOVIVO', 'Começando agora · entra aqui',              CONV + 'live-1-debito-credito/AOVIVO.html', SEMLIVE, new Date(2026, 7, 4, 20, 0)],
+    // ── Convites Live 2 (qua 05/08 20h) ──
+    ['CONV-L2-D3',     'Em 3 dias: Live 2 · CPC 51',                CONV + 'live-2-cpc-51/D-3.html',            TODOS,   new Date(2026, 7, 1, 9, 0)],
+    ['CONV-L2-D0',     'HOJE às 20h: CPC 51',                       CONV + 'live-2-cpc-51/D-0.html',            TODOS,   new Date(2026, 7, 5, 9, 0)],
+    ['CONV-L2-AOVIVO', 'Começando agora · entra aqui',              CONV + 'live-2-cpc-51/AOVIVO.html',         SEMLIVE, new Date(2026, 7, 5, 20, 0)],
+    // ── Convites Live 3 — Lançamento Oficial (qui 06/08 20h) ──
+    ['CONV-L3-D3',     'Em 3 dias: a casa abre · Lançamento Oficial', CONV + 'live-3-lancamento/D-3.html',      TODOS,   new Date(2026, 7, 3, 9, 0)],
+    ['CONV-L3-D0',     'HOJE 20h: A CASA ABRE — lançamento ao vivo',  CONV + 'live-3-lancamento/D-0.html',      TODOS,   new Date(2026, 7, 6, 9, 0)],
+    ['CONV-L3-AOVIVO', 'Lançamento Oficial começando agora',          CONV + 'live-3-lancamento/AOVIVO.html',   SEMLIVE, new Date(2026, 7, 6, 20, 0)],
+    // ── Convites Live 4 (sex 07/08 20h) ──
+    ['CONV-L4-D3',     'Em 3 dias: Tour pela Plataforma',             CONV + 'live-4-plataforma/D-3.html',      TODOS,   new Date(2026, 7, 4, 9, 0)],
+    ['CONV-L4-D0',     'HOJE 20h: Tour pela Plataforma — a casa por dentro', CONV + 'live-4-plataforma/D-0.html', TODOS, new Date(2026, 7, 7, 9, 0)],
+    ['CONV-L4-AOVIVO', 'Tour ao vivo começando agora',                CONV + 'live-4-plataforma/AOVIVO.html',   SEMLIVE, new Date(2026, 7, 7, 20, 0)],
+    // ── Sequência E operacional (SÓ inscritos das lives) ──
+    ['E-L1-VESPERA', 'Amanhã 20h: Live 1 — Débito e Crédito',        'sequencia-e/live-1-vespera.html', SOLIVE, new Date(2026, 7, 3, 18, 30)],
+    ['E-L1-AOVIVO',  '🔴 Live 1 começando agora: Débito e Crédito',  'sequencia-e/live-1-aovivo.html',  SOLIVE, new Date(2026, 7, 4, 19, 55)],
+    ['E-L2-VESPERA', 'Amanhã 20h: Live 2 — CPC 51',                  'sequencia-e/live-2-vespera.html', SOLIVE, new Date(2026, 7, 4, 18, 0)],
+    ['E-L2-AOVIVO',  '🔴 Live 2 começando agora: CPC 51',            'sequencia-e/live-2-aovivo.html',  SOLIVE, new Date(2026, 7, 5, 19, 55)],
+    ['E-L3-VESPERA', 'Amanhã 20h: Live 3 — Lançamento Oficial',      'sequencia-e/live-3-vespera.html', SOLIVE, new Date(2026, 7, 5, 18, 0)],
+    ['E-L3-AOVIVO',  '🔴 Live 3 começando agora: Lançamento Oficial','sequencia-e/live-3-aovivo.html',  SOLIVE, new Date(2026, 7, 6, 19, 55)],
+    ['E-L4-VESPERA', 'Amanhã 20h: Live 4 — Tour pela Plataforma',    'sequencia-e/live-4-vespera.html', SOLIVE, new Date(2026, 7, 6, 18, 0)],
+    ['E-L4-AOVIVO',  '🔴 Live 4 começando agora: Tour pela Plataforma','sequencia-e/live-4-aovivo.html', SOLIVE, new Date(2026, 7, 7, 19, 55)]
+  ];
+
+  var existentes = bc.getLastRow() > 1
+    ? bc.getRange(2, 1, bc.getLastRow() - 1, 1).getValues().map(function(r) { return String(r[0]); })
+    : [];
+
+  var criados = 0;
+  planos.forEach(function(p) {
+    if (existentes.indexOf(p[0]) >= 0) { Logger.log('↩️ ' + p[0] + ' já agendado — pulando'); return; }
+    bc.appendRow([p[0], p[1], p[2], p[3], p[4], '', '', '', '']);
+    criados++;
+  });
+
+  Logger.log('✅ ' + criados + ' broadcast(s) do lançamento agendado(s) (' + (planos.length - criados) + ' já existiam). As linhas dormem até a data.');
+  Logger.log('⚠️ Antes de 27/07: publicar em produção os templates L1-L7/convites ATUALIZADOS (hoje há versões novas não commitadas no repo).');
+}
+
+/**
+ * SIMULA O PÚBLICO DE UM BROADCAST PRA TODOS OS GRUPOS — SEM ENVIAR NADA.
+ * Roda o coletor real (5 abas + dedupe por email) e loga os números.
+ * É a prova a seco do caminho multi-grupo: coleta provada aqui + envio
+ * provado no ensaio = broadcast de agosto coberto de ponta a ponta.
+ */
+function simularPublicoBroadcast() {
+  var TODOS = ['newsletter', 'lista-espera', 'dicionario', 'lives', 'bolsao'];
+  var recipients = collectRecipients_(TODOS);
+
+  var porGrupo = {};
+  recipients.forEach(function(r) { porGrupo[r.topic] = (porGrupo[r.topic] || 0) + 1; });
+
+  Logger.log('📊 SIMULAÇÃO de broadcast pra TODOS os grupos (nenhum email enviado):');
+  TODOS.forEach(function(t) {
+    Logger.log('   ' + t + ': ' + (porGrupo[t] || 0) + ' destinatário(s)');
+  });
+  Logger.log('   ─────────────────────────');
+  Logger.log('   TOTAL (já deduplicado por email): ' + recipients.length);
+  Logger.log('');
+  Logger.log('⏱️ A ' + BCAST_SEND_BATCH + '/rodada de 5min, esse público é coberto em ~' +
+    Math.ceil(recipients.length / BCAST_SEND_BATCH) * 5 + ' minuto(s).');
+  Logger.log('Obs: quem está em 2+ grupos conta só no grupo de maior prioridade (1ª aba onde aparece) — é o mesmo dedupe do envio real.');
+}
+
+/**
+ * ENSAIO COMPLETO DO MOTOR DE BROADCASTS — 1 clique, evidência em ~1 min.
+ *
+ * ⚠️ EDITE EMAIL_ENSAIO abaixo antes de rodar (use um email NÃO
+ * descadastrado — o que recebeu o B1 serve; o que clicou em
+ * "Descadastrar" NÃO serve, o SES vai suprimir).
+ *
+ * O que faz, na ordem, pelo caminho REAL de produção:
+ *   1. Cria 1 lead de ensaio na aba Bolsão
+ *   2. Sincroniza ele com o SES (tópico bolsao)
+ *   3. Cria a linha [ENSAIO] na aba Broadcasts agendada pra AGORA
+ *   4. Roda o motor de broadcasts na hora
+ *   5. Loga o resultado e como limpar
+ */
+function ensaioBroadcastBolsao() {
+  var EMAIL_ENSAIO = 'vfneves94@gmail.com'; // email de ensaio validado em 11/06 (não descadastrado)
+
+  if (EMAIL_ENSAIO.indexOf('@') === -1) {
+    Logger.log('❌ Edite a variável EMAIL_ENSAIO no topo da função antes de rodar.');
+    return;
+  }
+  if (PropertiesService.getScriptProperties().getProperty('MAILER_ENABLED') !== 'true') {
+    Logger.log('❌ MAILER_ENABLED != true — habilite antes do ensaio.');
+    return;
+  }
+
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+
+  // 1. Lead de ensaio na aba Bolsão (Seq Passo já marcado pra NÃO receber a sequência —
+  //    o ensaio é do broadcast; a sequência você testa com a inscrição real na LP)
+  var bolsao = ss.getSheetByName('Bolsão');
+  if (!bolsao) { Logger.log('❌ Aba Bolsão não existe — rode setupAfterDeploy() primeiro.'); return; }
+  var cols = headerIndexes_(bolsao);
+  var linha = [];
+  Object.keys(cols).forEach(function(h) { linha[cols[h] - 1] = ''; });
+  linha[cols['Data'] - 1] = new Date();
+  if (cols['Nome']) linha[cols['Nome'] - 1] = 'ENSAIO (apagar)';
+  linha[cols['E-mail'] - 1] = EMAIL_ENSAIO.toLowerCase();
+  if (cols['Origem']) linha[cols['Origem'] - 1] = 'ensaio_broadcast';
+  if (cols['Seq Passo']) linha[cols['Seq Passo'] - 1] = 'pre-cutover';
+  bolsao.appendRow(linha);
+  Logger.log('1/4 ✅ Lead de ensaio criado na aba Bolsão');
+
+  // 2. Sync imediato com o SES
+  try {
+    sesUpsertContact_(EMAIL_ENSAIO.toLowerCase(), 'bolsao', { name: 'ENSAIO', origem: 'ensaio_broadcast' });
+    bolsao.getRange(bolsao.getLastRow(), cols['SES Sync']).setValue('ok');
+    if (cols['SES Sync At']) bolsao.getRange(bolsao.getLastRow(), cols['SES Sync At']).setValue(new Date());
+    Logger.log('2/4 ✅ Contato sincronizado no SES (tópico bolsao)');
+  } catch (err) {
+    Logger.log('2/4 ❌ Sync falhou: ' + err);
+    return;
+  }
+
+  // 3. Linha de ensaio na aba Broadcasts, agendada pra agora
+  var bc = ss.getSheetByName(MAILER_SHEETS.BROADCASTS);
+  bc.appendRow(['ENSAIO', '[ENSAIO] Teste do motor de broadcasts — pode apagar',
+                'bolsao/vespera.html', 'bolsao', new Date(), '', '', '', '']);
+  Logger.log('3/4 ✅ Broadcast [ENSAIO] agendado pra agora');
+
+  // 4. Roda o motor imediatamente
+  processBroadcasts();
+
+  // 5. Resultado
+  var ultima = bc.getRange(bc.getLastRow(), 1, 1, 9).getValues()[0];
+  Logger.log('4/4 → Status do [ENSAIO]: "' + ultima[5] + '" · Enviados: ' + ultima[6] + '/' + ultima[7]);
+  Logger.log('');
+  if (String(ultima[5]).indexOf('ok') === 0) {
+    Logger.log('🎖️ MOTOR DE BROADCASTS PROVADO — confira o email no inbox ' + EMAIL_ENSAIO);
+    Logger.log('Limpeza: apague a linha ENSAIO da aba Broadcasts e a linha "ENSAIO (apagar)" da aba Bolsão.');
+  } else {
+    Logger.log('⚠️ Status inesperado — me mande este log completo.');
   }
 }
 
