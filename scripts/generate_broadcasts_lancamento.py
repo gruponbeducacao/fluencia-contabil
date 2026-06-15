@@ -87,22 +87,61 @@ FOOT = """
 </html>
 """
 
-# Bloco reutilizável: Acesso Fundador
-ACESSO_FUNDADOR_BOX = """
+# ─── Blocos reutilizáveis dos 2 tiers (Pioneiro + Fundador) ───
+#
+# A janela tem 2 tiers:
+#   🚩 PIONEIRO (04/08 a 07/08) — semana das 4 lives. Ganha 4 aulas ao vivo + selo Pioneiro
+#       + inclui tudo do Fundador.
+#   🏛️ FUNDADOR (04/08 a 16/08) — janela inteira do lançamento. Selo Fundador + 12 meses.
+#
+# BLOCO_PIONEIRO_FUNDADOR: usado em L1-L3 (pré-Live 1 + véspera) e L4 (sáb 08/08 — Pioneiro
+#   já encerrou mas vale lembrar quem perdeu o que). Mostra os 2 tiers lado a lado.
+# BLOCO_SO_FUNDADOR: usado em L5-L7 (semana final, só Fundador disponível).
+
+BLOCO_PIONEIRO_FUNDADOR = """
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 28px 0; background-color:#1B2A4A; border-radius:8px;">
             <tr><td style="padding:26px 30px; color:#FFFFFF;">
-              <div style="font-family:'Montserrat', Arial, sans-serif; font-size:11px; font-weight:700; color:#C8A84B; letter-spacing:2px; text-transform:uppercase; margin-bottom:8px;">⭐ Bônus de lançamento</div>
-              <div style="font-family:'Montserrat', Arial, sans-serif; font-size:22px; font-weight:700; color:#FFFFFF; line-height:1.3; margin-bottom:14px;">Acesso Fundador 2026</div>
-              <div style="height:1px; background-color:#2A3F6F; margin:12px 0;"></div>
-              <ul style="margin:0; padding-left:20px; font-family:'Source Serif 4', Georgia, serif; font-size:15px; color:#FBF6E9; line-height:1.7;">
-                <li><strong style="color:#C8A84B;">Vitalício</strong> da edição 2026 (não 12 meses)</li>
-                <li><strong style="color:#C8A84B;">Early access 30 dias</strong> antes da turma geral</li>
-                <li><strong style="color:#C8A84B;">Selo "Aluno Fundador 2026"</strong> no perfil e no grupo</li>
+              <div style="font-family:'Montserrat', Arial, sans-serif; font-size:11px; font-weight:700; color:#C8A84B; letter-spacing:2px; text-transform:uppercase; margin-bottom:8px;">⭐ Bônus de decisão antecipada — 2 tiers</div>
+
+              <div style="font-family:'Montserrat', Arial, sans-serif; font-size:18px; font-weight:700; color:#FFFFFF; line-height:1.3; margin-bottom:6px;">🚩 Aluno Pioneiro 2026</div>
+              <div style="font-family:'Source Serif 4', Georgia, serif; font-size:13px; color:#C8A84B; margin-bottom:10px; font-style:italic;">Janela curta · 04/08 a 07/08 (semana das 4 lives)</div>
+              <ul style="margin:0 0 18px 0; padding-left:20px; font-family:'Source Serif 4', Georgia, serif; font-size:15px; color:#FBF6E9; line-height:1.7;">
+                <li><strong style="color:#C8A84B;">4 aulas ao vivo em grupo</strong> com o Prof. Vinícius (Google Meet + canal de suporte WhatsApp)</li>
+                <li><strong style="color:#C8A84B;">Selo PIONEIRO 2026</strong> no perfil da plataforma e no grupo</li>
+                <li>Inclui tudo do tier Fundador (selo Fundador + 12 meses de acesso à edição 2026)</li>
               </ul>
-              <div style="font-family:'Source Serif 4', Georgia, serif; font-size:13px; color:#8B97B3; margin-top:14px; font-style:italic;">Vale pra qualquer compra dentro da janela (04/08 a 16/08 23h59).</div>
+
+              <div style="height:1px; background-color:#2A3F6F; margin:18px 0;"></div>
+
+              <div style="font-family:'Montserrat', Arial, sans-serif; font-size:18px; font-weight:700; color:#FFFFFF; line-height:1.3; margin-bottom:6px;">🏛️ Aluno Fundador 2026</div>
+              <div style="font-family:'Source Serif 4', Georgia, serif; font-size:13px; color:#C8A84B; margin-bottom:10px; font-style:italic;">Janela estendida · 04/08 a 16/08 (janela inteira do lançamento)</div>
+              <ul style="margin:0; padding-left:20px; font-family:'Source Serif 4', Georgia, serif; font-size:15px; color:#FBF6E9; line-height:1.7;">
+                <li><strong style="color:#C8A84B;">Selo FUNDADOR 2026</strong> no perfil da plataforma e no grupo</li>
+                <li><strong style="color:#C8A84B;">12 meses de acesso</strong> à edição 2026 (com todas as atualizações no período)</li>
+              </ul>
+
+              <div style="font-family:'Source Serif 4', Georgia, serif; font-size:13px; color:#8B97B3; margin-top:16px; font-style:italic;">Pioneiro ⊂ Fundador: quem entra na semana das lives ganha os 2 selos. Quem entra entre 08/08 e 16/08 fica só com o Fundador.</div>
             </td></tr>
           </table>
 """
+
+BLOCO_SO_FUNDADOR = """
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 28px 0; background-color:#1B2A4A; border-radius:8px;">
+            <tr><td style="padding:26px 30px; color:#FFFFFF;">
+              <div style="font-family:'Montserrat', Arial, sans-serif; font-size:11px; font-weight:700; color:#C8A84B; letter-spacing:2px; text-transform:uppercase; margin-bottom:8px;">🏛️ Bônus de lançamento</div>
+              <div style="font-family:'Montserrat', Arial, sans-serif; font-size:22px; font-weight:700; color:#FFFFFF; line-height:1.3; margin-bottom:14px;">Aluno Fundador 2026</div>
+              <div style="height:1px; background-color:#2A3F6F; margin:12px 0;"></div>
+              <ul style="margin:0; padding-left:20px; font-family:'Source Serif 4', Georgia, serif; font-size:15px; color:#FBF6E9; line-height:1.7;">
+                <li><strong style="color:#C8A84B;">Selo FUNDADOR 2026</strong> no perfil da plataforma e no grupo</li>
+                <li><strong style="color:#C8A84B;">12 meses de acesso</strong> à edição 2026 (com todas as atualizações no período)</li>
+              </ul>
+              <div style="font-family:'Source Serif 4', Georgia, serif; font-size:13px; color:#8B97B3; margin-top:14px; font-style:italic;">Vale pra qualquer compra dentro da janela (04/08 a 16/08 23h59). A janela Pioneiro com as 4 aulas ao vivo encerrou em 07/08.</div>
+            </td></tr>
+          </table>
+"""
+
+# Alias legado pra não quebrar caso outro arquivo importe o nome antigo
+ACESSO_FUNDADOR_BOX = BLOCO_PIONEIRO_FUNDADOR
 
 def cta(url: str, text: str, bg: str = "#C0392B", border: str = "#8B2819", color: str = "#FFFFFF") -> str:
     return f"""
@@ -174,8 +213,8 @@ EMAILS = [
           <p style="margin:0 0 12px 0;"><strong style="color:#1B2A4A;">Uma inscrição cobre as 4 lives.</strong> Replay permanente no YouTube.</p>
 
           <p style="margin:0 0 12px 0;"><em style="color:#6B7280;">E mais um detalhe importante:</em></p>
-{ACESSO_FUNDADOR_BOX}
-          <p style="margin:0 0 18px 0;">Quem aproveitar a janela (anual à vista <strong style="color:#1B2A4A;">R$ 814,80</strong> ou 12× R$ 67,90) vira <strong style="color:#1B2A4A;">Aluno Fundador 2026</strong>. Os detalhes do bônus a gente abre na Live 3 — mas já é bom você saber que ele existe e que <strong style="color:#1B2A4A;">não voltará</strong> depois de 16/08.</p>
+{BLOCO_PIONEIRO_FUNDADOR}
+          <p style="margin:0 0 18px 0;">Quem aproveitar a janela (anual à vista <strong style="color:#1B2A4A;">R$ 814,80</strong> ou 12× R$ 84,27) entra como <strong style="color:#1B2A4A;">Aluno Pioneiro</strong> (decidindo na semana das lives, 04/08 a 07/08) ou como <strong style="color:#1B2A4A;">Aluno Fundador</strong> (decidindo entre 08/08 e 16/08). Os detalhes a gente abre na Live 3 — mas já é bom você saber que esses bônus <strong style="color:#1B2A4A;">não voltam</strong> depois de 16/08.</p>
 
           <p style="margin:0 0 18px 0;">Garante sua presença nas 4 lives:</p>
 {cta("https://fluenciacontabil.com.br/lives.html", "QUERO MINHA VAGA NAS 4 LIVES →")}
@@ -198,13 +237,13 @@ EMAILS = [
 
           <p style="margin:0 0 28px 0; font-size:18px; font-family:'Source Serif 4',Georgia,serif; font-style:italic; color:#1B2A4A; border-left:3px solid #C8A84B; padding:8px 0 8px 18px;">"Por que só anual? Cadê o trimestral, o semestral, o mensal?"</p>
 
-          <p style="margin:0 0 18px 0;"><strong style="color:#1B2A4A;">Resposta direta:</strong> porque a janela do lançamento (04/08 a 16/08) é a única do ano onde a edição 2026 do Fluência Contábil entra com o bônus <strong style="color:#1B2A4A;">Acesso Fundador</strong>. Esse bônus só faz sentido em quem fica com a edição inteira — ou seja, anual.</p>
+          <p style="margin:0 0 18px 0;"><strong style="color:#1B2A4A;">Resposta direta:</strong> porque a janela do lançamento (04/08 a 16/08) é a única do ano onde a edição 2026 do Fluência Contábil entra com os bônus de <strong style="color:#1B2A4A;">Aluno Pioneiro</strong> e <strong style="color:#1B2A4A;">Aluno Fundador</strong>. Esses bônus só fazem sentido em quem fica com a edição inteira — ou seja, anual.</p>
 
           <p style="margin:0 0 28px 0;">Não é "anular outras opções pra forçar venda". É o oposto: <strong style="color:#1B2A4A;">é dar a versão mais completa do produto pra quem topa a aposta inteira</strong>.</p>
 
-{ACESSO_FUNDADOR_BOX}
+{BLOCO_PIONEIRO_FUNDADOR}
 
-          <p style="margin:0 0 18px 0;"><strong style="color:#1B2A4A;">E depois da janela?</strong> Dia 17/08 voltam as modalidades padrão da casa: Tri (R$ 397) e Sem (R$ 597), pagamento único. Sem bônus de Fundador. Sem early access. Sem selo. <em>São modalidades válidas e boas, mas são outra coisa.</em></p>
+          <p style="margin:0 0 18px 0;"><strong style="color:#1B2A4A;">E depois da janela?</strong> Dia 17/08 voltam as modalidades padrão da casa: Tri (R$ 397) e Sem (R$ 597), pagamento único. Sem selo Fundador, sem selo Pioneiro, sem as 4 aulas ao vivo em grupo. <em>São modalidades válidas e boas, mas são outra coisa.</em></p>
 
           <p style="margin:0 0 18px 0;">A janela do lançamento existe pra premiar quem decide cedo, na confiança de quem ainda nem viu o lançamento. <strong style="color:#1B2A4A;">É um deal recíproco</strong>: você se compromete cedo, a gente te entrega a versão inteira da edição.</p>
 
@@ -256,23 +295,23 @@ EMAILS = [
     {
         "file": "L4-pos-lives-roi.html",
         "subject": "Acabou a semana de lives — restam 9d na janela",
-        "preview": "Anual R$ 814,80 ou 12× R$ 67,90. ROI de uma aprovação.",
+        "preview": "Anual R$ 814,80 ou 12× R$ 84,27. ROI de uma aprovação.",
         "banner_color": "#1B2A4A",
-        "banner_text": "🎯 Janela do Acesso Fundador · até 16/08 23h59",
-        "h1": "Acabou a semana de lives.<br>Restam <em style=\"color:#C0392B; font-style:normal;\">48 horas</em> na janela.",
+        "banner_text": "🏛️ Janela Fundador · até 16/08 23h59",
+        "h1": "Acabou a semana de lives.<br>Restam <em style=\"color:#C0392B; font-style:normal;\">9 dias</em> na janela.",
         "body": f"""
           <p style="margin:0 0 18px 0;">Oi,</p>
 
           <p style="margin:0 0 18px 0;">Quatro noites. Da lógica dos débitos e créditos ao tour da plataforma. Você acompanhou a jornada inteira (ou pegou via replay — funciona igual).</p>
 
-          <p style="margin:0 0 28px 0;">Agora <strong style="color:#1B2A4A;">restam 9 dias</strong> na janela do Acesso Fundador. <strong>Dom 16/08 às 23h59</strong>, o anual sai do ar. Tri e Sem voltam dia 17/08, mas sem o bônus Fundador.</p>
-{ACESSO_FUNDADOR_BOX}
+          <p style="margin:0 0 28px 0;">A janela Pioneiro (com as 4 aulas ao vivo em grupo) encerrou ontem. Agora <strong style="color:#1B2A4A;">restam 9 dias</strong> na janela Fundador. <strong>Dom 16/08 às 23h59</strong>, o anual sai do ar. Tri e Sem voltam dia 17/08, mas sem o selo Fundador.</p>
+{BLOCO_SO_FUNDADOR}
 
           <p style="margin:0 0 16px 0;"><strong style="color:#1B2A4A; font-size:17px;">A conta do ROI, sem rodeio:</strong></p>
 
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 28px 0; background-color:#FBF6E9; border-radius:6px;">
             <tr><td style="padding:22px 26px; font-family:'Source Serif 4', Georgia, serif; font-size:15px; color:#1A1A1A; line-height:1.75;">
-              <strong style="color:#1B2A4A;">Anual · R$ 814,80 à vista</strong> ou <strong style="color:#1B2A4A;">12× R$ 67,90</strong><br>
+              <strong style="color:#1B2A4A;">Anual · R$ 814,80 à vista</strong> ou <strong style="color:#1B2A4A;">12× R$ 84,27</strong><br>
               <span style="color:#6B7280; font-style:italic;">≈ R$ 2,23/dia durante 1 ano</span><br><br>
               <strong style="color:#1B2A4A;">Salário inicial de um fiscal estadual:</strong> R$ 20-30 mil/mês<br>
               <strong style="color:#1B2A4A;">Salário inicial Senado (contador):</strong> R$ 30-40 mil/mês<br><br>
@@ -333,7 +372,7 @@ EMAILS = [
     # ────────────────────────────────────────────────────────────────────
     {
         "file": "L6-ultimo-dia.html",
-        "subject": "ÚLTIMO DIA · janela do Acesso Fundador encerra hoje 23h59",
+        "subject": "ÚLTIMO DIA · janela Fundador encerra hoje 23h59",
         "preview": "FAQ rápido pra quem tá decidindo agora.",
         "banner_color": "#C0392B",
         "banner_text": "⏰ HOJE 23h59 · JANELA ENCERRA",
@@ -341,22 +380,22 @@ EMAILS = [
         "body": f"""
           <p style="margin:0 0 18px 0;">Oi,</p>
 
-          <p style="margin:0 0 28px 0;"><strong style="color:#C0392B;">Hoje, domingo 16/08, às 23h59</strong>, a janela do Acesso Fundador encerra. Anual sai do ar. Tri e Sem voltam dia 17/08 sem o bônus.</p>
+          <p style="margin:0 0 28px 0;"><strong style="color:#C0392B;">Hoje, domingo 16/08, às 23h59</strong>, a janela Fundador encerra. Anual sai do ar. Tri e Sem voltam dia 17/08, sem o selo Fundador.</p>
 
           <p style="margin:0 0 16px 0;"><strong style="color:#1B2A4A;">Pra quem está decidindo agora, FAQ rápido:</strong></p>
 
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 18px 0;">
             <tr><td style="padding:16px 0; border-bottom:1px solid #E8E2D0;">
-              <div style="font-family:'Montserrat',Arial,sans-serif; font-size:14px; font-weight:700; color:#1B2A4A; margin-bottom:6px;">→ O Acesso Fundador é vitalício de verdade?</div>
-              <div style="font-family:'Source Serif 4',Georgia,serif; font-size:15px; color:#1A1A1A; line-height:1.65;">Vitalício da edição 2026. Tudo que entrar na edição 2026 (aulas, materiais, atualizações) você tem pra sempre. Edição 2027 será edição nova.</div>
+              <div style="font-family:'Montserrat',Arial,sans-serif; font-size:14px; font-weight:700; color:#1B2A4A; margin-bottom:6px;">→ Quanto tempo de acesso eu tenho?</div>
+              <div style="font-family:'Source Serif 4',Georgia,serif; font-size:15px; color:#1A1A1A; line-height:1.65;"><strong style="color:#1B2A4A;">12 meses corridos</strong> a partir da compra, com todas as atualizações da edição 2026 dentro desse período. Edição 2027 será edição nova.</div>
             </td></tr>
             <tr><td style="padding:16px 0; border-bottom:1px solid #E8E2D0;">
               <div style="font-family:'Montserrat',Arial,sans-serif; font-size:14px; font-weight:700; color:#1B2A4A; margin-bottom:6px;">→ Quanto é o anual?</div>
-              <div style="font-family:'Source Serif 4',Georgia,serif; font-size:15px; color:#1A1A1A; line-height:1.65;"><strong style="color:#1B2A4A;">R$ 814,80 à vista</strong> ou <strong style="color:#1B2A4A;">12× R$ 67,90</strong> no cartão. Ambos no checkout. Sem flash, sem letra miúda — esse É o preço da janela.</div>
+              <div style="font-family:'Source Serif 4',Georgia,serif; font-size:15px; color:#1A1A1A; line-height:1.65;"><strong style="color:#1B2A4A;">R$ 814,80 à vista</strong> ou <strong style="color:#1B2A4A;">12× R$ 84,27</strong> no cartão. Ambos no checkout. Sem flash, sem letra miúda — esse É o preço da janela.</div>
             </td></tr>
             <tr><td style="padding:16px 0; border-bottom:1px solid #E8E2D0;">
-              <div style="font-family:'Montserrat',Arial,sans-serif; font-size:14px; font-weight:700; color:#1B2A4A; margin-bottom:6px;">→ Quando começa o curso?</div>
-              <div style="font-family:'Source Serif 4',Georgia,serif; font-size:15px; color:#1A1A1A; line-height:1.65;">Acesso Fundador: <strong style="color:#1B2A4A;">30 dias antes da turma geral</strong>. Você entra na plataforma sozinho(a) primeiro, organiza o estudo, e depois a turma chega.</div>
+              <div style="font-family:'Montserrat',Arial,sans-serif; font-size:14px; font-weight:700; color:#1B2A4A; margin-bottom:6px;">→ O que vem com o selo Fundador?</div>
+              <div style="font-family:'Source Serif 4',Georgia,serif; font-size:15px; color:#1A1A1A; line-height:1.65;">Quem fechar até hoje 23h59 entra com o <strong style="color:#1B2A4A;">Selo FUNDADOR 2026</strong> no perfil da plataforma e no grupo de WhatsApp + os <strong style="color:#1B2A4A;">12 meses de acesso</strong> à edição 2026. A janela Pioneiro (com as 4 aulas ao vivo em grupo) encerrou em 07/08.</div>
             </td></tr>
             <tr><td style="padding:16px 0; border-bottom:1px solid #E8E2D0;">
               <div style="font-family:'Montserrat',Arial,sans-serif; font-size:14px; font-weight:700; color:#1B2A4A; margin-bottom:6px;">→ Garantia?</div>
@@ -364,7 +403,7 @@ EMAILS = [
             </td></tr>
             <tr><td style="padding:16px 0; border-bottom:1px solid #E8E2D0;">
               <div style="font-family:'Montserrat',Arial,sans-serif; font-size:14px; font-weight:700; color:#1B2A4A; margin-bottom:6px;">→ E se eu não decidir hoje?</div>
-              <div style="font-family:'Source Serif 4',Georgia,serif; font-size:15px; color:#1A1A1A; line-height:1.65;">Tri (R$ 397) e Sem (R$ 597) voltam dia 17/08 como modalidades padrão. Sem bônus Fundador, sem early access, sem selo. <em>São produtos diferentes</em>.</div>
+              <div style="font-family:'Source Serif 4',Georgia,serif; font-size:15px; color:#1A1A1A; line-height:1.65;">Tri (R$ 397) e Sem (R$ 597) voltam dia 17/08 como modalidades padrão. Sem selo Fundador, sem selo Pioneiro. <em>São produtos diferentes</em>.</div>
             </td></tr>
           </table>
 
@@ -379,7 +418,7 @@ EMAILS = [
     # ────────────────────────────────────────────────────────────────────
     {
         "file": "L7-ultima-chamada.html",
-        "subject": "🚨 ÚLTIMA CHAMADA · 5h pra encerrar a janela do Fundador",
+        "subject": "🚨 ÚLTIMA CHAMADA · 5h pra encerrar a janela Fundador",
         "preview": "23h59 fecha. Sem prorrogação. Sem reabertura.",
         "banner_color": "#C0392B",
         "banner_text": "🚨 5 HORAS · JANELA FECHA 23h59",
@@ -387,9 +426,9 @@ EMAILS = [
         "body": f"""
           <p style="margin:0 0 18px 0;">Oi,</p>
 
-          <p style="margin:0 0 18px 0;">Faltam <strong style="color:#C0392B;">5 horas</strong>. Às 23h59 a janela do Acesso Fundador fecha de vez.</p>
+          <p style="margin:0 0 18px 0;">Faltam <strong style="color:#C0392B;">5 horas</strong>. Às 23h59 a janela Fundador fecha de vez.</p>
 
-          <p style="margin:0 0 28px 0;"><strong style="color:#1B2A4A;">Sem prorrogação. Sem reabertura. Sem janela secreta depois.</strong> O anual com bônus Fundador só existe até 23h59 de hoje.</p>
+          <p style="margin:0 0 28px 0;"><strong style="color:#1B2A4A;">Sem prorrogação. Sem reabertura. Sem janela secreta depois.</strong> O anual com selo Fundador só existe até 23h59 de hoje.</p>
 
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 28px 0; background-color:#C0392B; border-radius:8px;">
             <tr><td style="padding:30px 32px; color:#FFFFFF; text-align:center;">
@@ -401,8 +440,8 @@ EMAILS = [
 
           <p style="margin:0 0 18px 0;"><strong style="color:#1B2A4A;">Pra decidir nas próximas horas:</strong></p>
           <ul style="margin:0 0 28px 0; padding-left:22px; font-family:'Source Serif 4', Georgia, serif; font-size:16px; line-height:1.7; color:#1A1A1A;">
-            <li style="margin-bottom:8px;">Anual: R$ 814,80 à vista OU 12× R$ 67,90</li>
-            <li style="margin-bottom:8px;">Bônus Fundador: vitalício + early access 30d + selo (só nessa janela)</li>
+            <li style="margin-bottom:8px;">Anual: R$ 814,80 à vista OU 12× R$ 84,27</li>
+            <li style="margin-bottom:8px;">Bônus Fundador: Selo FUNDADOR 2026 + 12 meses de acesso à edição 2026 (só nessa janela)</li>
             <li style="margin-bottom:8px;">7 dias de garantia incondicional</li>
             <li>Suporte por email: <a href="mailto:contato@fluenciacontabil.com.br" style="color:#1B2A4A;">contato@fluenciacontabil.com.br</a></li>
           </ul>
