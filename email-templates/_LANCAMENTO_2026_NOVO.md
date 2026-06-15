@@ -27,7 +27,7 @@
 - **Após 16/08:** anual desaparece. Tri+Sem voltam como modalidades padrão da casa em `cursos.html`.
 
 ### Preço
-- **Anual:** R$ 814,80 à vista **OU** 12× R$ 67,90 (ambos no checkout). Sem flash, sem escada — esse É o preço da janela.
+- **Anual:** R$ 814,80 à vista **OU** 12× R$ 84,27 (ambos no checkout). Sem flash, sem escada — esse É o preço da janela.
 - **Pós-lançamento (17/08+):** Tri R$ 397 · Sem R$ 597 (pagamento único, não recorrência). Mensal R$ 87,90 sai do gateway.
 
 ### Acesso ao curso
