@@ -172,21 +172,19 @@ Path local: `C:/Fluência_Contábil_OS_C/_MARKETING/Landing_Pages/Fluencia_LP/di
 
 **DMARC:** ativo em modo `p=none` (monitor) desde 19/04/2026. Registro TXT em `_dmarc.fluenciacontabil.com.br`: `v=DMARC1; p=none; rua=mailto:contato@fluenciacontabil.com.br; fo=1`.
 
-### Status das automações (19/04/2026 · fim do dia)
+### Status das automações (atualizado 26/05/2026)
 
 | Automation | Status | Emails | Cadência |
 |---|---|---|---|
 | 🟢 Sequência A — Newsletter | ✅ **ATIVA** | 5 (A1-A5) | 10 dias |
 | 🔴 Sequência B — Lista de Espera | ✅ **ATIVA** | 6 (B1-B6) | 15 dias |
 | 🟡 Sequência C — Lead Magnet Dicionário ⭐ | ✅ **ATIVA** | 6 (C1-C6) | 15 dias |
-| 🎤 Sequência Live 1 — Débito e Crédito | ⏳ Pendente | 4 (E1-E4) | qui 21/05 · 20h |
-| 🎤 Sequência Live 2 — 5 CPCs | ⏳ Pendente | 4 | qui 28/05 · 20h |
-| 🎤 Sequência Live 3 — CPC 51 | ⏳ Pendente | 4 | ter 02/06 · 20h |
-| 🎤 Sequência Live 4 — 7 Pegadinhas | ⏳ Pendente | 4 | qui 11/06 · 20h |
-| 🚨 Sequência Live 3 Lançamento | ⏳ Pendente | 4 (c/ E4 variante) | qua 01/07 · 20h |
+| 🎤 Sequência E — 4 Lives Lançamento 2026 (group `188077924412294920`) | ⏳ Pendente | 8 emails enxutos | ter 04/08 (L1 Débito/Crédito) · qua 05/08 (L2 CPC 51) · qui 06/08 (L3 Lançamento Oficial) · sex 07/08 (L4 Plataforma) |
 | 📰 RSS Campaign | ⏳ Pendente | 1/post | imediato |
 
-**Total:** 3 de 9 automações ativas. 17 emails automáticos rodando. Leads reais entrando já recebem.
+**Total:** 3 de 5 automações ativas. 17 emails automáticos rodando. Leads reais entrando já recebem.
+
+> **Histórico (pré-replanejamento 20/05/2026):** existiam 5 sequências de live separadas (4 lives temáticas em maio/junho + 1 "Live 3 Lançamento" em 01/07), cada uma com seu próprio group. O plano foi remarcado em ~5 semanas (conflito com Copa do Mundo) e consolidado em **4 lives concentradas em uma semana** (04-07/08) com um único group `Lançamento 2026`. Groups antigos `185203...` arquivados (ver tabela abaixo).
 
 ### Group IDs
 
@@ -195,11 +193,21 @@ Path local: `C:/Fluência_Contábil_OS_C/_MARKETING/Landing_Pages/Fluencia_LP/di
 | Newsletter | `185179968949454391` |
 | Lista de Espera | `185179979081843871` |
 | Lead Magnet — Dicionário | `185179987559581196` |
-| **Live 1** (Débito/Crédito, qui 21/05) | `185203741114238022` |
-| **Live 2** (5 CPCs, qui 28/05) | `185203748785620698` |
-| **Live 3** (CPC 51, ter 02/06) | `185203753382578061` |
-| **Live 4** (7 Pegadinhas, qui 11/06) | `185203758274184695` |
-| **Live 3 Lançamento** (qua 01/07) | `185203765515650231` |
+| **Lançamento 2026** (group unificado · 4 lives 04-07/08) | `188077924412294920` |
+
+> **Atenção — nomes no painel MailerLite.** O catálogo acima é a **fonte de verdade local** alinhada ao plano remarcado (`_LANCAMENTO_2026_NOVO.md`, 20/05/2026). Se algum nome no painel MailerLite estiver com rótulo antigo, renomear lá manualmente (sem trocar o ID). Não há automation que dependa do *nome* — só do ID.
+
+**Groups ARQUIVADOS — plano pré-replanejamento (20/05/2026):**
+
+Estes 5 groups eram da estrutura antiga (1 group por live + Live 3 Lançamento separado). Foram substituídos pelo group único `Lançamento 2026` (`188077924412294920`) quando o plano foi remarcado em ~5 semanas (conflito com Copa do Mundo). Mantidos no painel arquivados pra histórico de leads — **não usar em automations/broadcasts novos**.
+
+| ~~Group antigo~~ | ID | Substituído por |
+|---|---|---|
+| ~~Live 1 (Débito/Crédito, qui 21/05)~~ | `185203741114238022` | `188077924412294920` |
+| ~~Live 2 (5 CPCs, qui 28/05)~~ | `185203748785620698` | `188077924412294920` |
+| ~~Live 3 (CPC 51, ter 02/06)~~ | `185203753382578061` | `188077924412294920` |
+| ~~Live 4 (7 Pegadinhas, qui 11/06)~~ | `185203758274184695` | `188077924412294920` |
+| ~~Live 3 Lançamento (qua 01/07)~~ | `185203765515650231` | `188077924412294920` (L3 virou o próprio gatilho de lançamento) |
 
 ### Custom fields (configurados)
 - `origem` · `pagina_captura` · `referrer` · `utm_source` · `utm_medium` · `utm_campaign` · `dispositivo` · `ref_in`
@@ -370,6 +378,8 @@ Saída da Kiwify pra plataforma própria.
 
 ---
 
-*Última atualização: 21/05/2026 — instalação do GTM `GTM-WB2NTFXL` em todas as 21 páginas públicas do site principal (10 top-level + 11 posts de blog). `lives.html` ficou com os 2 containers (`WB2NTFXL` + legado `5C2V5DPX`). Escrito por Claude Opus 4.7.*
+*Última atualização: 26/05/2026 — catálogo de Group IDs realinhado ao plano remarcado (`_LANCAMENTO_2026_NOVO.md`, 20/05/2026): os 5 groups antigos das lives (`185203...`) foram arquivados; novo group único "Lançamento 2026" `188077924412294920` cobre as 4 lives 04-07/08 (L1 Débito/Crédito, L2 CPC 51, L3 Lançamento Oficial, L4 Plataforma). Bloco "Status das automações" também atualizado pra refletir a Sequência E unificada. Escrito por Claude Opus 4.7.*
+
+*Anterior: 21/05/2026 — instalação do GTM `GTM-WB2NTFXL` em todas as 21 páginas públicas do site principal (10 top-level + 11 posts de blog). `lives.html` ficou com os 2 containers (`WB2NTFXL` + legado `5C2V5DPX`).*
 
 *Anterior: 02/05/2026 — incidente de timeout do Apps Script (refatoração v3 com sync assíncrono) + instalação do GTM `GTM-WF6P82HX` na LP do Dicionário.*
