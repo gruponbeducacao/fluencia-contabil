@@ -1,40 +1,97 @@
 /**
  * ═══════════════════════════════════════════════════════════════════════
- * SYNC PLANILHA → CRM MENSAGEIRO (leads com WhatsApp)
+ * SYNC PLANILHA → MENSAGEIRO (WhatsApp Bolsão via webhook)
  * ═══════════════════════════════════════════════════════════════════════
  *
  * Arquivo NOVO no mesmo projeto Apps Script da planilha "LEADS Fluência
  * Contábil". Mesmo padrão queue/worker do ML/SES Sync: coluna "CRM Sync"
  * vazia = pendente; trigger 1min processa em batch.
  *
- * Só sincroniza abas com WhatsApp (Lista de Espera, Dicionário, Lives) —
- * o Mensageiro é WhatsApp-first; Newsletter (só email) fica de fora.
+ * A aba Bolsão dispara a jornada WhatsApp por webhooks do Bot Builder:
+ *   01 boas-vindas: imediato quando a linha entra na planilha
+ *   02 véspera:     27/06/2026 18h00
+ *   03 dia prova:   28/06/2026 07h35
+ *   04 pós-prova:   29/06/2026 18h05
  *
- * API (ver _MARKETING/_CRM/api.md):
- *   POST /tenants/:tenantId/leads   { name, email, phone, tags, pipelineId, stageId }
- *   GET  /tenants/:tenantId/leads?search=...   (dedupe por telefone)
- *   GET  /tenants/:tenantId/pipelines          (descobrir IDs de funil/estágio)
+ * O payload enviado ao Mensageiro fica disponível no flow como:
+ *   webhook.customer.name
+ *   webhook.customer.first_name
+ *   webhook.customer.email
+ *   webhook.customer.phone
+ *   webhook.step
+ *   webhook.template
  *
  * ─── PRÉ-REQUISITOS (Script Properties) ───────────────────────────────
- *   CRM_API_BASE   = https://<host-da-api-do-mensageiro>   (sem barra final)
- *   CRM_TENANT_ID  = <tenantId da Fluência>
- *   CRM_API_TOKEN  = <JWT com role admin>   ← NUNCA no código
+ *   BOLSAO_WPP_WEBHOOK_SECRET = <segredo do webhook do Mensageiro>
+ *   BOLSAO_WPP_WEBHOOK_URL    = <URL comum, se usar 1 flow roteando por step>
+ *
+ *   Ou, se usar 4 flows separados:
+ *   BOLSAO_WPP_01_WEBHOOK_URL = <URL do flow boas-vindas>
+ *   BOLSAO_WPP_02_WEBHOOK_URL = <URL do flow véspera>
+ *   BOLSAO_WPP_03_WEBHOOK_URL = <URL do flow dia da prova>
+ *   BOLSAO_WPP_04_WEBHOOK_URL = <URL do flow pós-prova>
+ *
+ *   Opcional:
+ *   BOLSAO_RANKING_URL        = <link do ranking para a mensagem 04>
  *
  * ─── ATIVAÇÃO ──────────────────────────────────────────────────────────
- *   1. Preencher as 3 Script Properties
- *   2. crmListPipelines()  — loga funis/estágios pra copiar os IDs
- *   3. Preencher a aba "Config CRM" (criada pelo setup) com os IDs
- *   4. setupCrmSync()      — colunas + trigger 1min
- *   5. testCrmCreateLead() — cria 1 lead de teste e loga a resposta
+ *   1. Configurar o trigger Webhook no flow e copiar URL + segredo
+ *   2. Preencher as Script Properties acima
+ *   3. setupCrmSync()              — colunas + triggers
+ *   4. testBolsaoWebhookPayload()  — confere o JSON que será enviado
+ *   5. testBolsaoWebhookConfig()   — valida URLs/segredo configurados
  * ═══════════════════════════════════════════════════════════════════════
  */
 
-// Abas que sobem pro CRM (Newsletter fica de fora — sem WhatsApp)
+// Abas onde garantimos as colunas de status. A jornada automática usa Bolsão.
 const CRM_TABS = ['Lista de Espera', 'Lead Magnet - Dicionário', 'Lives', 'Bolsão'];
 
-const CRM_COLS = ['CRM Sync', 'CRM Sync At'];
+const BOLSAO_TAB = 'Bolsão';
+const CRM_COLS = [
+  'CRM Sync', 'CRM Sync At',
+  'WPP 02 Sync', 'WPP 02 Sync At',
+  'WPP 03 Sync', 'WPP 03 Sync At',
+  'WPP 04 Sync', 'WPP 04 Sync At'
+];
 const CRM_CONFIG_SHEET = 'Config CRM';
-const CRM_BATCH_SIZE = 5;
+const CRM_BATCH_SIZE = 10;
+const BOLSAO_WPP_SCHEDULE_BATCH = 25;
+const BOLSAO_WPP_SECRET_HEADER = 'X-Mensageiro-Webhook-Secret';
+
+const BOLSAO_WPP_STEPS = [
+  {
+    step: 'boas_vindas',
+    label: 'Mensagem 01 — Boas-vindas',
+    template: 'bolsao_boas_vindas',
+    statusCol: 'CRM Sync',
+    urlProp: 'BOLSAO_WPP_01_WEBHOOK_URL',
+    scheduledAt: ''
+  },
+  {
+    step: 'lembrete_vespera',
+    label: 'Mensagem 02 — Lembrete véspera',
+    template: 'bolsao_lembrete_vespera',
+    statusCol: 'WPP 02 Sync',
+    urlProp: 'BOLSAO_WPP_02_WEBHOOK_URL',
+    scheduledAt: '2026-06-27T18:00:00-03:00'
+  },
+  {
+    step: 'dia_prova',
+    label: 'Mensagem 03 — Dia da prova',
+    template: 'bolsao_dia_prova',
+    statusCol: 'WPP 03 Sync',
+    urlProp: 'BOLSAO_WPP_03_WEBHOOK_URL',
+    scheduledAt: '2026-06-28T07:35:00-03:00'
+  },
+  {
+    step: 'pos_prova',
+    label: 'Mensagem 04 — Pós-prova ranking',
+    template: 'bolsao_pos_prova',
+    statusCol: 'WPP 04 Sync',
+    urlProp: 'BOLSAO_WPP_04_WEBHOOK_URL',
+    scheduledAt: '2026-06-29T18:05:00-03:00'
+  }
+];
 
 
 // ══════════════════════ HTTP ══════════════════════
@@ -69,78 +126,167 @@ function crmTenantPath_(suffix) {
 // ══════════════════════ WORKER ══════════════════════
 
 /**
- * Trigger 1 min. Leads com WhatsApp e "CRM Sync" vazio são criados no
- * Mensageiro no funil/estágio configurado na aba "Config CRM".
+ * Trigger 1 min. Leads novos da aba Bolsão com "CRM Sync" vazio disparam
+ * o webhook da mensagem 01 (boas-vindas).
  */
 function syncPendingToCRM() {
   var lock = LockService.getScriptLock();
   if (!lock.tryLock(1000)) return;
   try {
-    var configs = loadCrmConfig_();
-    if (!Object.keys(configs).length) return; // Config CRM ainda sem IDs
-
-    var ss = SpreadsheetApp.getActiveSpreadsheet();
-    var processed = 0;
-
-    for (var t = 0; t < CRM_TABS.length && processed < CRM_BATCH_SIZE; t++) {
-      var tabName = CRM_TABS[t];
-      var cfg = configs[tabName];
-      if (!cfg) continue; // aba sem mapeamento → não sobe
-
-      var sheet = ss.getSheetByName(tabName);
-      if (!sheet || sheet.getLastRow() < 2) continue;
-      var cols = headerIndexes_(sheet);
-      if (!cols['CRM Sync']) continue; // setup ainda não rodou
-
-      var lastRow = sheet.getLastRow();
-      var syncVals = sheet.getRange(2, cols['CRM Sync'], lastRow - 1, 1).getValues();
-
-      for (var r = 0; r < syncVals.length && processed < CRM_BATCH_SIZE; r++) {
-        if (syncVals[r][0] !== '') continue;
-        var rowNum = r + 2;
-        var row = sheet.getRange(rowNum, 1, 1, sheet.getLastColumn()).getValues()[0];
-        var get = function(name) { return cols[name] ? String(row[cols[name] - 1] || '').trim() : ''; };
-
-        var phone = normalizeE164_(get('WhatsApp'));
-        if (!phone) {
-          // Sem WhatsApp não há lead útil no CRM — marca e segue
-          markCell_(sheet, rowNum, cols, 'CRM Sync', 'skip:sem_whatsapp');
-          processed++;
-          continue;
-        }
-
-        try {
-          var existing = crmFindLeadByPhone_(phone);
-          if (existing) {
-            markCell_(sheet, rowNum, cols, 'CRM Sync', 'ok:existia (' + existing + ')');
-          } else {
-            var leadId = crmCreateLead_({
-              name: get('Nome') || get('E-mail'),
-              email: get('E-mail').toLowerCase(),
-              phone: phone,
-              tags: buildCrmTags_(get, cfg),
-              pipelineId: cfg.pipelineId,
-              stageId: cfg.stageId,
-              attributes: {
-                origem: get('Origem'), pagina: get('Página'),
-                utm_source: get('UTM Source'), utm_medium: get('UTM Medium'),
-                utm_campaign: get('UTM Campaign'), ref_in: get('Ref'),
-                fonte: 'planilha_leads'
-              }
-            });
-            markCell_(sheet, rowNum, cols, 'CRM Sync', 'ok' + (leadId ? ' (' + leadId + ')' : ''));
-          }
-        } catch (err) {
-          markCell_(sheet, rowNum, cols, 'CRM Sync', 'err:' + String(err).substring(0, 180));
-          logError('CRM sync: ' + err, { parameter: { phone: phone, sheet: tabName } });
-        }
-        processed++;
-      }
-    }
-    if (processed > 0) console.log('CRM sync run: ' + processed + ' leads processados');
+    var processed = processBolsaoWppStep_(getBolsaoWppStep_('boas_vindas'), CRM_BATCH_SIZE, new Date());
+    if (processed > 0) console.log('Bolsão WhatsApp 01: ' + processed + ' leads processados');
   } finally {
     lock.releaseLock();
   }
+}
+
+/**
+ * Trigger 5 min. Quando a data/hora de uma etapa agendada chega, envia
+ * o respectivo webhook para linhas ainda pendentes daquela etapa.
+ */
+function processBolsaoWhatsAppSchedule() {
+  var lock = LockService.getScriptLock();
+  if (!lock.tryLock(1000)) return;
+  try {
+    var now = new Date();
+    BOLSAO_WPP_STEPS.forEach(function(step) {
+      if (!step.scheduledAt) return; // mensagem 01 é processada por syncPendingToCRM()
+      if (now.getTime() < new Date(step.scheduledAt).getTime()) return;
+      try {
+        var processed = processBolsaoWppStep_(step, BOLSAO_WPP_SCHEDULE_BATCH, now);
+        if (processed > 0) console.log(step.label + ': ' + processed + ' leads processados');
+      } catch (err) {
+        console.log(step.label + ' não processada: ' + err);
+      }
+    });
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function processBolsaoWppStep_(step, batchSize, now) {
+  var endpoint = bolsaoWebhookEndpoint_(step);
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getSheetByName(BOLSAO_TAB);
+  if (!sheet || sheet.getLastRow() < 2) return 0;
+
+  var cols = headerIndexes_(sheet);
+  if (!cols[step.statusCol]) throw new Error('Coluna "' + step.statusCol + '" ausente. Rode setupCrmSync().');
+
+  var lastRow = sheet.getLastRow();
+  var statuses = sheet.getRange(2, cols[step.statusCol], lastRow - 1, 1).getValues();
+  var processed = 0;
+
+  for (var r = 0; r < statuses.length && processed < batchSize; r++) {
+    if (statuses[r][0] !== '') continue;
+
+    var rowNum = r + 2;
+    var row = sheet.getRange(rowNum, 1, 1, sheet.getLastColumn()).getValues()[0];
+    var get = function(name) { return cols[name] ? String(row[cols[name] - 1] || '').trim() : ''; };
+    var phone = normalizeE164_(get('WhatsApp'));
+
+    if (!phone) {
+      markCell_(sheet, rowNum, cols, step.statusCol, 'skip:sem_whatsapp');
+      processed++;
+      continue;
+    }
+
+    try {
+      var payload = bolsaoBuildWebhookPayload_(get, phone, step, now);
+      var result = mensageiroWebhookPost_(endpoint, payload);
+      markCell_(sheet, rowNum, cols, step.statusCol, 'ok:http_' + result.code);
+    } catch (err) {
+      markCell_(sheet, rowNum, cols, step.statusCol, 'err:' + String(err).substring(0, 180));
+      logError('Bolsão WhatsApp webhook: ' + err, { parameter: { phone: phone, step: step.step, sheet: BOLSAO_TAB } });
+    }
+
+    processed++;
+  }
+
+  return processed;
+}
+
+function mensageiroWebhookPost_(endpoint, payload) {
+  var headers = {};
+  headers[endpoint.secretHeader] = endpoint.secret;
+
+  var res = UrlFetchApp.fetch(endpoint.url, {
+    method: 'post',
+    contentType: 'application/json',
+    headers: headers,
+    payload: JSON.stringify(payload),
+    muteHttpExceptions: true
+  });
+
+  var code = res.getResponseCode();
+  var text = res.getContentText();
+  if (code < 200 || code >= 300) {
+    throw new Error('Webhook HTTP ' + code + ': ' + String(text).substring(0, 250));
+  }
+
+  return { code: code, body: text };
+}
+
+function bolsaoWebhookEndpoint_(step) {
+  var props = PropertiesService.getScriptProperties();
+  var url = props.getProperty(step.urlProp) || props.getProperty('BOLSAO_WPP_WEBHOOK_URL');
+  var secret = props.getProperty('BOLSAO_WPP_WEBHOOK_SECRET') || props.getProperty('MENSAGEIRO_WEBHOOK_SECRET');
+  var secretHeader = props.getProperty('BOLSAO_WPP_SECRET_HEADER') || BOLSAO_WPP_SECRET_HEADER;
+
+  if (!url) {
+    throw new Error(step.urlProp + ' ou BOLSAO_WPP_WEBHOOK_URL não configurado em Script Properties');
+  }
+  if (!secret) {
+    throw new Error('BOLSAO_WPP_WEBHOOK_SECRET não configurado em Script Properties');
+  }
+
+  return { url: url, secret: secret, secretHeader: secretHeader };
+}
+
+function bolsaoBuildWebhookPayload_(get, phone, step, now) {
+  var name = get('Nome') || get('E-mail');
+  var email = get('E-mail').toLowerCase();
+  var firstName = firstName_(name);
+  var rankingUrl = PropertiesService.getScriptProperties().getProperty('BOLSAO_RANKING_URL') || '';
+  var secondParam = '';
+
+  if (step.step === 'dia_prova') secondParam = email;
+  if (step.step === 'pos_prova') secondParam = rankingUrl;
+
+  return {
+    campaign: 'bolsao_2026',
+    step: step.step,
+    template: step.template,
+    scheduledAt: step.scheduledAt || '',
+    sentAt: now ? now.toISOString() : new Date().toISOString(),
+    source: get('Origem') || 'bolsao_lp',
+    sheet: BOLSAO_TAB,
+    customer: {
+      name: name,
+      first_name: firstName,
+      email: email,
+      phone: phone
+    },
+    template_params: {
+      body_1: firstName,
+      body_2: secondParam
+    },
+    ranking_url: rankingUrl,
+    page: get('Página'),
+    referrer: get('Referrer'),
+    ref: get('Ref'),
+    utm_source: get('UTM Source'),
+    utm_medium: get('UTM Medium'),
+    utm_campaign: get('UTM Campaign'),
+    device: get('Dispositivo')
+  };
+}
+
+function getBolsaoWppStep_(stepName) {
+  for (var i = 0; i < BOLSAO_WPP_STEPS.length; i++) {
+    if (BOLSAO_WPP_STEPS[i].step === stepName) return BOLSAO_WPP_STEPS[i];
+  }
+  throw new Error('Etapa WhatsApp não encontrada: ' + stepName);
 }
 
 function crmCreateLead_(lead) {
@@ -163,6 +309,12 @@ function buildCrmTags_(get, cfg) {
   if (get('Origem')) tags.push(get('Origem'));
   (cfg.tags || []).forEach(function(t) { if (tags.indexOf(t) === -1) tags.push(t); });
   return tags;
+}
+
+function firstName_(name) {
+  var cleaned = String(name || '').trim();
+  if (!cleaned) return 'concurseiro(a)';
+  return cleaned.split(/\s+/)[0];
 }
 
 /** Dígitos BR (da planilha, sem DDI) → E.164 +55DDDXXXXXXXXX. */
@@ -196,7 +348,7 @@ function loadCrmConfig_() {
 
 // ══════════════════════ SETUP / TESTES ══════════════════════
 
-/** 1× — colunas CRM Sync nas 3 abas + aba Config CRM + trigger 1min. Idempotente. */
+/** 1× — colunas de status WhatsApp + triggers. Idempotente. */
 function setupCrmSync() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
 
@@ -213,25 +365,14 @@ function setupCrmSync() {
       }
     });
   });
-  Logger.log('✅ Colunas CRM Sync / CRM Sync At garantidas em: ' + CRM_TABS.join(', '));
-
-  if (!ss.getSheetByName(CRM_CONFIG_SHEET)) {
-    var cfg = ss.insertSheet(CRM_CONFIG_SHEET);
-    cfg.getRange(1, 1, 5, 4).setValues([
-      ['Aba', 'Pipeline ID', 'Stage ID', 'Tags extras (csv)'],
-      ['Lista de Espera',          '', '', 'lista-espera'],
-      ['Lead Magnet - Dicionário', '', '', 'dicionario'],
-      ['Lives',                    '', '', 'lives'],
-      ['Bolsão',                   '', '', 'bolsao']
-    ]);
-    cfg.getRange(1, 1, 1, 4).setFontWeight('bold').setBackground('#1B2A4A').setFontColor('#FFFFFF');
-    cfg.setFrozenRows(1);
-    cfg.getRange('F1').setValue('Preencher Pipeline ID / Stage ID com os valores logados por crmListPipelines(). Linha sem IDs = aba não sincroniza (proposital).');
-    Logger.log('✅ Aba "Config CRM" criada — preencha os IDs (rode crmListPipelines() pra descobrir)');
-  }
+  Logger.log('✅ Colunas de status WhatsApp garantidas em: ' + CRM_TABS.join(', '));
 
   recreateTrigger_('syncPendingToCRM', function(b) { return b.timeBased().everyMinutes(1); });
-  Logger.log('✅ Trigger criado: syncPendingToCRM roda a cada 1 minuto (não faz nada até a Config CRM ter IDs)');
+  recreateTrigger_('processBolsaoWhatsAppSchedule', function(b) { return b.timeBased().everyMinutes(5); });
+
+  Logger.log('✅ Trigger criado: syncPendingToCRM roda a cada 1 minuto (mensagem 01)');
+  Logger.log('✅ Trigger criado: processBolsaoWhatsAppSchedule roda a cada 5 minutos (mensagens 02–04)');
+  Logger.log('⚙️ Configure BOLSAO_WPP_WEBHOOK_SECRET e BOLSAO_WPP_WEBHOOK_URL ou as URLs BOLSAO_WPP_01/02/03/04_WEBHOOK_URL em Script Properties.');
 }
 
 /** Loga funis e estágios existentes no Mensageiro (pra copiar IDs pra Config CRM). */
@@ -263,4 +404,70 @@ function testCrmCreateLead() {
     attributes: { origem: 'teste_apps_script' }
   });
   Logger.log('✅ Lead de teste criado. id=' + id + ' — apague no painel do Mensageiro depois de conferir.');
+}
+
+/** Mostra o JSON que será recebido pelo flow como variável `webhook`. Não envia. */
+function testBolsaoWebhookPayload() {
+  var sample = {
+    Nome: 'Maria Silva',
+    'E-mail': 'maria@example.com',
+    WhatsApp: '(11) 99999-0000',
+    Origem: 'bolsao_lp',
+    Ref: 'abc123',
+    Página: '/?utm_source=meta&utm_medium=cpc&utm_campaign=bolsao',
+    Referrer: 'https://instagram.com/',
+    'UTM Source': 'meta',
+    'UTM Medium': 'cpc',
+    'UTM Campaign': 'bolsao',
+    Dispositivo: 'Mobile'
+  };
+  var get = function(name) { return String(sample[name] || '').trim(); };
+  var payload = bolsaoBuildWebhookPayload_(get, normalizeE164_(sample.WhatsApp), getBolsaoWppStep_('boas_vindas'), new Date('2026-06-12T12:00:00-03:00'));
+  Logger.log(JSON.stringify(payload, null, 2));
+}
+
+/** Valida se URLs e segredo dos webhooks do Bolsão estão configurados. Não envia. */
+function testBolsaoWebhookConfig() {
+  BOLSAO_WPP_STEPS.forEach(function(step) {
+    var endpoint = bolsaoWebhookEndpoint_(step);
+    Logger.log('✅ ' + step.label + ' → ' + endpoint.url + ' · header=' + endpoint.secretHeader + ' · secret=' + maskSecret_(endpoint.secret));
+  });
+}
+
+/**
+ * Envia um payload de teste para o webhook da mensagem 01.
+ * Exige BOLSAO_WPP_TEST_PHONE em Script Properties para evitar envio acidental.
+ */
+function testBolsaoWebhookSendBoasVindas() {
+  var props = PropertiesService.getScriptProperties();
+  var testPhone = normalizeE164_(props.getProperty('BOLSAO_WPP_TEST_PHONE'));
+  if (!testPhone) {
+    Logger.log('❌ Configure BOLSAO_WPP_TEST_PHONE em Script Properties antes de enviar teste real.');
+    return;
+  }
+
+  var sample = {
+    Nome: props.getProperty('BOLSAO_WPP_TEST_NAME') || 'Teste Bolsão',
+    'E-mail': props.getProperty('BOLSAO_WPP_TEST_EMAIL') || 'teste@example.com',
+    WhatsApp: testPhone,
+    Origem: 'teste_apps_script',
+    Ref: '',
+    Página: '/teste',
+    Referrer: '',
+    'UTM Source': 'teste',
+    'UTM Medium': 'apps_script',
+    'UTM Campaign': 'bolsao',
+    Dispositivo: 'Desktop'
+  };
+  var get = function(name) { return String(sample[name] || '').trim(); };
+  var step = getBolsaoWppStep_('boas_vindas');
+  var payload = bolsaoBuildWebhookPayload_(get, testPhone, step, new Date());
+  var result = mensageiroWebhookPost_(bolsaoWebhookEndpoint_(step), payload);
+  Logger.log('✅ Webhook de teste enviado. HTTP ' + result.code);
+}
+
+function maskSecret_(secret) {
+  var s = String(secret || '');
+  if (s.length <= 6) return '***';
+  return s.substring(0, 3) + '***' + s.substring(s.length - 3);
 }
