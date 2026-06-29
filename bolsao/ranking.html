@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ranking — Bolsão da Fluência 🏆</title>
+<meta name="robots" content="noindex">
+<meta property="og:title" content="Ranking do Bolsão da Fluência Contábil">
+<meta property="og:description" content="O ranking anonimizado do Bolsão da Fluência saiu. Confira sua posição.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Source+Serif+4:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --azul:#1B2A4A; --azul-med:#2A3F6F; --dourado:#C8A84B; --dourado-esc:#A68A3E;
+    --cream:#FBF6E9; --texto:#1A1A1A; --linha:#E8E2D0; --cinza:#5A5F66;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;padding:32px 16px;background:var(--cream);
+    font-family:'Source Serif 4',Georgia,serif;color:var(--texto);}
+  .card{max-width:660px;margin:0 auto;background:#fff;border-radius:12px;overflow:hidden;
+    box-shadow:0 4px 24px rgba(27,42,74,.10);}
+  .hd{background:var(--azul);padding:34px 24px 28px;text-align:center;}
+  .logo{font-family:'Montserrat',Arial,sans-serif;font-size:24px;font-weight:800;
+    color:#fff;letter-spacing:1px;}
+  .logo b{color:var(--dourado);font-weight:800;}
+  .sub{font-family:'Montserrat',Arial,sans-serif;font-size:12px;color:var(--cream);
+    letter-spacing:.5px;margin-top:6px;text-transform:uppercase;}
+  .rule{width:60px;height:3px;background:var(--dourado);margin:16px auto 0;border-radius:2px;}
+  .intro{padding:28px 32px 8px;text-align:center;}
+  .intro h1{font-family:'Montserrat',Arial,sans-serif;font-size:22px;font-weight:700;
+    color:var(--azul);margin:0 0 8px;}
+  .intro p{font-size:15px;line-height:1.6;color:var(--cinza);margin:0 auto;max-width:480px;}
+  /* bloco anti-IA */
+  .antiia{margin:18px 32px 4px;background:var(--azul);color:#fff;border-radius:10px;
+    padding:20px 22px;border:2px solid var(--dourado);}
+  .antiia .tag{font-family:'Montserrat',Arial,sans-serif;font-size:12px;font-weight:800;
+    color:var(--dourado);text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:8px;}
+  .antiia p{margin:0;font-size:14.5px;line-height:1.65;color:#EDEFF5;}
+  .antiia strong{color:#fff;}
+  .stats{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;padding:20px 24px 6px;}
+  .stat{background:var(--cream);border:1px solid var(--linha);border-radius:8px;
+    padding:10px 16px;text-align:center;min-width:120px;}
+  .stat b{display:block;font-family:'Montserrat',Arial,sans-serif;font-size:22px;
+    color:var(--azul);line-height:1;}
+  .stat span{font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--cinza);}
+  table{border-collapse:collapse;width:calc(100% - 48px);margin:18px 24px 8px;}
+  thead th{font-family:'Montserrat',Arial,sans-serif;background:var(--azul);color:var(--dourado);
+    text-transform:uppercase;font-size:11px;letter-spacing:.5px;padding:10px 14px;text-align:left;}
+  thead th.c{text-align:center;}
+  tbody td{padding:10px 14px;border-bottom:1px solid var(--linha);font-size:15px;
+    font-family:'Montserrat',Arial,sans-serif;}
+  .pos{width:60px;color:var(--cinza);font-weight:600;white-space:nowrap;}
+  .med{margin-right:4px;}
+  .nome{font-weight:600;color:var(--texto);letter-spacing:.5px;}
+  .sub2{display:block;font-family:'Montserrat',Arial,sans-serif;font-size:11px;font-weight:400;
+    color:var(--cinza);letter-spacing:.3px;margin-top:3px;}
+  .ac{text-align:center;width:80px;color:var(--azul);font-weight:700;}
+  .ac .de{color:var(--cinza);font-weight:400;font-size:13px;}
+  .env{width:70px;text-align:center;color:var(--cinza);font-size:12.5px;font-weight:400;}
+  .row.top{background:#FBF6E9;}
+  .row.top .nome{color:var(--azul);}
+  .row.corte td{border-bottom:3px solid var(--dourado);}
+  .corte-lbl{font-family:'Montserrat',Arial,sans-serif;font-size:11px;font-weight:700;
+    color:var(--dourado-esc);text-transform:uppercase;letter-spacing:.5px;text-align:center;
+    margin:2px 32px 16px;}
+  .passos{background:var(--cream);border:1px solid var(--linha);border-radius:8px;
+    margin:8px 32px 4px;padding:18px 22px;font-size:14.5px;line-height:1.9;}
+  .passos b{font-family:'Montserrat',Arial,sans-serif;font-size:12px;text-transform:uppercase;
+    letter-spacing:.5px;color:var(--azul);}
+  .anon{font-size:12.5px;color:var(--cinza);text-align:center;padding:16px 32px 4px;line-height:1.6;}
+  .ft{background:var(--azul);color:var(--cream);text-align:center;padding:24px;margin-top:18px;
+    font-family:'Montserrat',Arial,sans-serif;font-size:12px;}
+  .ft a{color:var(--dourado);text-decoration:none;font-weight:600;}
+  @media (max-width:540px){
+    body{padding:16px 8px;}
+    .intro,.antiia,.corte-lbl,.passos,.anon{padding-left:18px;padding-right:18px;margin-left:14px;margin-right:14px;}
+    .intro{margin:0;}
+    table{width:calc(100% - 24px);margin-left:12px;margin-right:12px;}
+    tbody td,thead th{padding:9px 7px;font-size:13.5px;}
+    .pos{width:46px;} .ac{width:64px;} .env{width:54px;}
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="hd">
+      <div class="logo">FLUÊNCIA <b>CONTÁBIL</b></div>
+      <div class="sub">Bolsão da Fluência · Ranking Oficial</div>
+      <div class="rule"></div>
+    </div>
+
+    <div class="intro">
+      <h1>🏆 O ranking saiu</h1>
+      <p>Resultado anonimizado do Bolsão da Fluência. Ache sua linha pelo apelido (2 primeiras letras do nome + inicial do sobrenome), pela <strong>região</strong> e pelos <strong>4 últimos dígitos do seu WhatsApp</strong> — sem dúvida de quem é quem.</p>
+    </div>
+
+    <div class="antiia">
+      <span class="tag">🔒 Verificação anti-IA</span>
+      <p>Aqui <strong>ninguém sobe por nome — sobe por desempenho</strong>. Os mais bem colocados passam por uma <strong>entrevista de validação em 01/07</strong>: quem usou inteligência artificial, "cola" ou qualquer ajuda externa é <strong>desclassificado na hora</strong>. A bolsa só é cravada depois que o resultado é confirmado pessoalmente.</p>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><b>84</b><span>Participantes</span></div>
+      <div class="stat"><b>2</b><span>Gabaritos 30/30</span></div>
+      <div class="stat"><b>5</b><span>Bolsas em jogo</span></div>
+    </div>
+
+    <table>
+      <thead><tr><th>#</th><th>Candidato(a) · região · final do WhatsApp</th><th class="c">Acertos</th><th class="c">Enviado</th></tr></thead>
+      <tbody>
+        <tr class="row top"><td class="pos"><span class="med">🥇</span>1º</td><td class="nome">Ez*** B.<span class="sub2">RJ · ••••5730</span></td><td class="ac"><strong>30</strong><span class="de">/30</span></td><td class="env">10h06</td></tr><tr class="row top"><td class="pos"><span class="med">🥈</span>2º</td><td class="nome">Je*** S.<span class="sub2">CE · ••••1471</span></td><td class="ac"><strong>30</strong><span class="de">/30</span></td><td class="env">12h53</td></tr><tr class="row top"><td class="pos"><span class="med">🥉</span>3º</td><td class="nome">Ju*** T.<span class="sub2">RJ · ••••4260</span></td><td class="ac"><strong>28</strong><span class="de">/30</span></td><td class="env"></td></tr><tr class="row top"><td class="pos"><span class="med">🏅</span>4º</td><td class="nome">Jo*** M.<span class="sub2">PE · ••••9509</span></td><td class="ac"><strong>27</strong><span class="de">/30</span></td><td class="env"></td></tr><tr class="row top corte"><td class="pos"><span class="med">🏅</span>5º</td><td class="nome">Jo*** S.<span class="sub2">PI · ••••0916</span></td><td class="ac"><strong>26</strong><span class="de">/30</span></td><td class="env">11h45</td></tr><tr class="row"><td class="pos">6º</td><td class="nome">Jú*** S.<span class="sub2">RJ · ••••2492</span></td><td class="ac"><strong>26</strong><span class="de">/30</span></td><td class="env">12h19</td></tr><tr class="row"><td class="pos">7º</td><td class="nome">Ka*** M.<span class="sub2">RJ · ••••8567</span></td><td class="ac"><strong>26</strong><span class="de">/30</span></td><td class="env">12h31</td></tr><tr class="row"><td class="pos">8º</td><td class="nome">Da*** G.<span class="sub2">RJ · ••••9300</span></td><td class="ac"><strong>25</strong><span class="de">/30</span></td><td class="env"></td></tr><tr class="row"><td class="pos">9º</td><td class="nome">Jo*** P.<span class="sub2">RJ · ••••0344</span></td><td class="ac"><strong>24</strong><span class="de">/30</span></td><td class="env">09h19</td></tr><tr class="row"><td class="pos">10º</td><td class="nome">Se*** R.<span class="sub2">RJ · ••••1408</span></td><td class="ac"><strong>24</strong><span class="de">/30</span></td><td class="env">12h59</td></tr><tr class="row"><td class="pos">11º</td><td class="nome">Ra*** A.<span class="sub2">GO · ••••7620</span></td><td class="ac"><strong>23</strong><span class="de">/30</span></td><td class="env">10h53</td></tr><tr class="row"><td class="pos">12º</td><td class="nome">Th*** O.<span class="sub2">RJ · ••••1243</span></td><td class="ac"><strong>23</strong><span class="de">/30</span></td><td class="env">12h00</td></tr><tr class="row"><td class="pos">13º</td><td class="nome">Bi*** D.<span class="sub2">RJ · ••••0759</span></td><td class="ac"><strong>21</strong><span class="de">/30</span></td><td class="env"></td></tr><tr class="row"><td class="pos">14º</td><td class="nome">Ha*** S.<span class="sub2">DF · ••••6606</span></td><td class="ac"><strong>19</strong><span class="de">/30</span></td><td class="env">10h04</td></tr><tr class="row"><td class="pos">15º</td><td class="nome">Je*** L.<span class="sub2">PE · ••••7979</span></td><td class="ac"><strong>19</strong><span class="de">/30</span></td><td class="env">12h08</td></tr><tr class="row"><td class="pos">16º</td><td class="nome">Pr*** S.<span class="sub2">SP · ••••9455</span></td><td class="ac"><strong>18</strong><span class="de">/30</span></td><td class="env">08h26</td></tr><tr class="row"><td class="pos">17º</td><td class="nome">Ca*** M.<span class="sub2">SE · ••••3374</span></td><td class="ac"><strong>18</strong><span class="de">/30</span></td><td class="env">09h55</td></tr><tr class="row"><td class="pos">18º</td><td class="nome">Pa*** P.<span class="sub2">SP · ••••3657</span></td><td class="ac"><strong>17</strong><span class="de">/30</span></td><td class="env">08h23</td></tr><tr class="row"><td class="pos">19º</td><td class="nome">Er*** C.<span class="sub2">MA · ••••8687</span></td><td class="ac"><strong>17</strong><span class="de">/30</span></td><td class="env">10h27</td></tr><tr class="row"><td class="pos">20º</td><td class="nome">We*** B.<span class="sub2">BA · ••••6499</span></td><td class="ac"><strong>16</strong><span class="de">/30</span></td><td class="env">08h31</td></tr><tr class="row"><td class="pos">21º</td><td class="nome">La*** P.<span class="sub2">SP · ••••1934</span></td><td class="ac"><strong>16</strong><span class="de">/30</span></td><td class="env">11h20</td></tr><tr class="row"><td class="pos">22º</td><td class="nome">Sa*** M.<span class="sub2">SP · ••••8011</span></td><td class="ac"><strong>16</strong><span class="de">/30</span></td><td class="env">11h36</td></tr><tr class="row"><td class="pos">23º</td><td class="nome">Tá*** M.<span class="sub2">SP · ••••5909</span></td><td class="ac"><strong>16</strong><span class="de">/30</span></td><td class="env">11h41</td></tr><tr class="row"><td class="pos">24º</td><td class="nome">Di*** N.<span class="sub2">BA · ••••3509</span></td><td class="ac"><strong>16</strong><span class="de">/30</span></td><td class="env">12h28</td></tr><tr class="row"><td class="pos">25º</td><td class="nome">In*** A.<span class="sub2">RJ · ••••0614</span></td><td class="ac"><strong>15</strong><span class="de">/30</span></td><td class="env">07h56</td></tr><tr class="row"><td class="pos">26º</td><td class="nome">Ot*** M.<span class="sub2">SP · ••••9120</span></td><td class="ac"><strong>15</strong><span class="de">/30</span></td><td class="env">08h47</td></tr><tr class="row"><td class="pos">27º</td><td class="nome">De*** A.<span class="sub2">AP · ••••2181</span></td><td class="ac"><strong>15</strong><span class="de">/30</span></td><td class="env">08h55</td></tr><tr class="row"><td class="pos">28º</td><td class="nome">In*** F.<span class="sub2">SC · ••••1596</span></td><td class="ac"><strong>15</strong><span class="de">/30</span></td><td class="env">09h35</td></tr><tr class="row"><td class="pos">29º</td><td class="nome">Bi*** F.<span class="sub2">SP · ••••8858</span></td><td class="ac"><strong>14</strong><span class="de">/30</span></td><td class="env">09h16</td></tr><tr class="row"><td class="pos">30º</td><td class="nome">Ev*** C.<span class="sub2">MT · ••••6850</span></td><td class="ac"><strong>14</strong><span class="de">/30</span></td><td class="env">11h21</td></tr><tr class="row"><td class="pos">31º</td><td class="nome">De*** C.<span class="sub2">BA · ••••7474</span></td><td class="ac"><strong>14</strong><span class="de">/30</span></td><td class="env">12h37</td></tr><tr class="row"><td class="pos">32º</td><td class="nome">Gu*** A.<span class="sub2">MG · ••••7767</span></td><td class="ac"><strong>14</strong><span class="de">/30</span></td><td class="env">12h52</td></tr><tr class="row"><td class="pos">33º</td><td class="nome">An*** P.<span class="sub2">GO · ••••5627</span></td><td class="ac"><strong>13</strong><span class="de">/30</span></td><td class="env"></td></tr><tr class="row"><td class="pos">34º</td><td class="nome">Bi*** T.<span class="sub2">RO · ••••8313</span></td><td class="ac"><strong>12</strong><span class="de">/30</span></td><td class="env">07h54</td></tr><tr class="row"><td class="pos">35º</td><td class="nome">Si*** M.<span class="sub2">RR · ••••2961</span></td><td class="ac"><strong>12</strong><span class="de">/30</span></td><td class="env">09h30</td></tr><tr class="row"><td class="pos">36º</td><td class="nome">Sa*** N.<span class="sub2">MS · ••••1028</span></td><td class="ac"><strong>12</strong><span class="de">/30</span></td><td class="env">09h38</td></tr><tr class="row"><td class="pos">37º</td><td class="nome">Ta*** M.<span class="sub2">RS · ••••0642</span></td><td class="ac"><strong>12</strong><span class="de">/30</span></td><td class="env">11h41</td></tr><tr class="row"><td class="pos">38º</td><td class="nome">Na*** O.<span class="sub2">SE · ••••8137</span></td><td class="ac"><strong>12</strong><span class="de">/30</span></td><td class="env">12h32</td></tr><tr class="row"><td class="pos">39º</td><td class="nome">Ma*** B.<span class="sub2">PI · ••••7772</span></td><td class="ac"><strong>12</strong><span class="de">/30</span></td><td class="env">12h57</td></tr><tr class="row"><td class="pos">40º</td><td class="nome">Ma*** O.<span class="sub2">SP · ••••5991</span></td><td class="ac"><strong>11</strong><span class="de">/30</span></td><td class="env">07h47</td></tr><tr class="row"><td class="pos">41º</td><td class="nome">Ro*** O.<span class="sub2">SP · ••••9528</span></td><td class="ac"><strong>11</strong><span class="de">/30</span></td><td class="env">09h31</td></tr><tr class="row"><td class="pos">42º</td><td class="nome">Ma*** S.<span class="sub2">PE · ••••9696</span></td><td class="ac"><strong>11</strong><span class="de">/30</span></td><td class="env">09h51</td></tr><tr class="row"><td class="pos">43º</td><td class="nome">Ge*** T.<span class="sub2">GO · ••••8711</span></td><td class="ac"><strong>11</strong><span class="de">/30</span></td><td class="env">10h01</td></tr><tr class="row"><td class="pos">44º</td><td class="nome">Ma*** A.<span class="sub2">SC · ••••4911</span></td><td class="ac"><strong>11</strong><span class="de">/30</span></td><td class="env">10h11</td></tr><tr class="row"><td class="pos">45º</td><td class="nome">He*** B.<span class="sub2">PI · ••••7353</span></td><td class="ac"><strong>11</strong><span class="de">/30</span></td><td class="env">10h57</td></tr><tr class="row"><td class="pos">46º</td><td class="nome">Na*** C.<span class="sub2">PA · ••••9143</span></td><td class="ac"><strong>11</strong><span class="de">/30</span></td><td class="env">12h23</td></tr><tr class="row"><td class="pos">47º</td><td class="nome">Ot*** C.<span class="sub2">SP · ••••1533</span></td><td class="ac"><strong>11</strong><span class="de">/30</span></td><td class="env">12h46</td></tr><tr class="row"><td class="pos">48º</td><td class="nome">Wi*** A.<span class="sub2">SP · ••••7104</span></td><td class="ac"><strong>10</strong><span class="de">/30</span></td><td class="env">08h08</td></tr><tr class="row"><td class="pos">49º</td><td class="nome">Va*** S.<span class="sub2">ES · ••••1486</span></td><td class="ac"><strong>10</strong><span class="de">/30</span></td><td class="env">08h18</td></tr><tr class="row"><td class="pos">50º</td><td class="nome">Ge*** S.<span class="sub2">SP · ••••9353</span></td><td class="ac"><strong>10</strong><span class="de">/30</span></td><td class="env">09h19</td></tr><tr class="row"><td class="pos">51º</td><td class="nome">Ka*** P.<span class="sub2">RJ · ••••9668</span></td><td class="ac"><strong>10</strong><span class="de">/30</span></td><td class="env">10h03</td></tr><tr class="row"><td class="pos">52º</td><td class="nome">Fl*** C.<span class="sub2">BA · ••••3366</span></td><td class="ac"><strong>10</strong><span class="de">/30</span></td><td class="env">11h13</td></tr><tr class="row"><td class="pos">53º</td><td class="nome">Sa*** O.<span class="sub2">PR · ••••5737</span></td><td class="ac"><strong>10</strong><span class="de">/30</span></td><td class="env">12h28</td></tr><tr class="row"><td class="pos">54º</td><td class="nome">Ri*** B.<span class="sub2">CE · ••••1064</span></td><td class="ac"><strong>10</strong><span class="de">/30</span></td><td class="env">12h53</td></tr><tr class="row"><td class="pos">55º</td><td class="nome">Pe*** N.<span class="sub2">RS · ••••0791</span></td><td class="ac"><strong>9</strong><span class="de">/30</span></td><td class="env">07h44</td></tr><tr class="row"><td class="pos">56º</td><td class="nome">Pa*** F.<span class="sub2">MS · ••••6955</span></td><td class="ac"><strong>9</strong><span class="de">/30</span></td><td class="env">08h21</td></tr><tr class="row"><td class="pos">57º</td><td class="nome">Th*** D.<span class="sub2">BA · ••••0976</span></td><td class="ac"><strong>9</strong><span class="de">/30</span></td><td class="env">09h44</td></tr><tr class="row"><td class="pos">58º</td><td class="nome">Is*** M.<span class="sub2">DF · ••••9593</span></td><td class="ac"><strong>9</strong><span class="de">/30</span></td><td class="env">10h02</td></tr><tr class="row"><td class="pos">59º</td><td class="nome">Pa*** R.<span class="sub2">BA · ••••0950</span></td><td class="ac"><strong>8</strong><span class="de">/30</span></td><td class="env">07h48</td></tr><tr class="row"><td class="pos">60º</td><td class="nome">Am*** C.<span class="sub2">SP · ••••9264</span></td><td class="ac"><strong>8</strong><span class="de">/30</span></td><td class="env">08h22</td></tr><tr class="row"><td class="pos">61º</td><td class="nome">Hu*** C.<span class="sub2">PE · ••••9551</span></td><td class="ac"><strong>8</strong><span class="de">/30</span></td><td class="env">08h26</td></tr><tr class="row"><td class="pos">62º</td><td class="nome">Lu*** R.<span class="sub2">BA · ••••3078</span></td><td class="ac"><strong>8</strong><span class="de">/30</span></td><td class="env">09h32</td></tr><tr class="row"><td class="pos">63º</td><td class="nome">Ta*** B.<span class="sub2">ES · ••••2945</span></td><td class="ac"><strong>8</strong><span class="de">/30</span></td><td class="env">10h34</td></tr><tr class="row"><td class="pos">64º</td><td class="nome">In*** C.<span class="sub2">CE · ••••3999</span></td><td class="ac"><strong>8</strong><span class="de">/30</span></td><td class="env">10h36</td></tr><tr class="row"><td class="pos">65º</td><td class="nome">Re*** B.<span class="sub2">MG · ••••8604</span></td><td class="ac"><strong>8</strong><span class="de">/30</span></td><td class="env">10h47</td></tr><tr class="row"><td class="pos">66º</td><td class="nome">In*** S.<span class="sub2">MG · ••••9977</span></td><td class="ac"><strong>8</strong><span class="de">/30</span></td><td class="env">10h58</td></tr><tr class="row"><td class="pos">67º</td><td class="nome">An*** R.<span class="sub2">RJ · ••••5604</span></td><td class="ac"><strong>8</strong><span class="de">/30</span></td><td class="env">11h21</td></tr><tr class="row"><td class="pos">68º</td><td class="nome">Si*** C.<span class="sub2">MA · ••••0345</span></td><td class="ac"><strong>8</strong><span class="de">/30</span></td><td class="env">12h07</td></tr><tr class="row"><td class="pos">69º</td><td class="nome">Ro*** L.<span class="sub2">TO · ••••9292</span></td><td class="ac"><strong>8</strong><span class="de">/30</span></td><td class="env">12h31</td></tr><tr class="row"><td class="pos">70º</td><td class="nome">Ro*** P.<span class="sub2">— · —</span></td><td class="ac"><strong>8</strong><span class="de">/30</span></td><td class="env">12h59</td></tr><tr class="row"><td class="pos">71º</td><td class="nome">Ev*** R.<span class="sub2">SP · ••••8779</span></td><td class="ac"><strong>7</strong><span class="de">/30</span></td><td class="env">07h45</td></tr><tr class="row"><td class="pos">72º</td><td class="nome">Em*** A.<span class="sub2">RN · ••••1271</span></td><td class="ac"><strong>7</strong><span class="de">/30</span></td><td class="env">12h06</td></tr><tr class="row"><td class="pos">73º</td><td class="nome">Ca*** A.<span class="sub2">DF · ••••5019</span></td><td class="ac"><strong>7</strong><span class="de">/30</span></td><td class="env">12h29</td></tr><tr class="row"><td class="pos">74º</td><td class="nome">De*** R.<span class="sub2">PR · ••••2471</span></td><td class="ac"><strong>6</strong><span class="de">/30</span></td><td class="env">07h34</td></tr><tr class="row"><td class="pos">75º</td><td class="nome">Gi*** F.<span class="sub2">BA · ••••5140</span></td><td class="ac"><strong>6</strong><span class="de">/30</span></td><td class="env">12h28</td></tr><tr class="row"><td class="pos">76º</td><td class="nome">Va*** F.<span class="sub2">BA · ••••3780</span></td><td class="ac"><strong>5</strong><span class="de">/30</span></td><td class="env">08h06</td></tr><tr class="row"><td class="pos">77º</td><td class="nome">Ge*** M.<span class="sub2">RS · ••••1144</span></td><td class="ac"><strong>5</strong><span class="de">/30</span></td><td class="env">08h14</td></tr><tr class="row"><td class="pos">78º</td><td class="nome">Da*** B.<span class="sub2">SP · ••••3622</span></td><td class="ac"><strong>5</strong><span class="de">/30</span></td><td class="env">08h39</td></tr><tr class="row"><td class="pos">79º</td><td class="nome">Ya*** R.<span class="sub2">MG · ••••6867</span></td><td class="ac"><strong>5</strong><span class="de">/30</span></td><td class="env">08h58</td></tr><tr class="row"><td class="pos">80º</td><td class="nome">He*** R.<span class="sub2">MG · ••••9179</span></td><td class="ac"><strong>5</strong><span class="de">/30</span></td><td class="env">09h28</td></tr><tr class="row"><td class="pos">81º</td><td class="nome">Ca*** D.<span class="sub2">SP · ••••9411</span></td><td class="ac"><strong>5</strong><span class="de">/30</span></td><td class="env">10h38</td></tr><tr class="row"><td class="pos">82º</td><td class="nome">Ig*** F.<span class="sub2">RJ · ••••8403</span></td><td class="ac"><strong>5</strong><span class="de">/30</span></td><td class="env">12h21</td></tr><tr class="row"><td class="pos">83º</td><td class="nome">Ma*** F.<span class="sub2">RS · ••••5146</span></td><td class="ac"><strong>4</strong><span class="de">/30</span></td><td class="env"></td></tr><tr class="row"><td class="pos">84º</td><td class="nome">Ka*** C.<span class="sub2">RO · ••••7424</span></td><td class="ac"><strong>3</strong><span class="de">/30</span></td><td class="env"></td></tr>
+      </tbody>
+    </table>
+
+    <div class="corte-lbl">↑ Top 5 — finalistas às bolsas (confirmação nas entrevistas de 01/07)</div>
+
+    <div class="passos">
+      <b>O que acontece agora</b><br>
+      🎥 <strong>durante a semana</strong> — a resolução comentada das 30 questões vai ao ar no YouTube da Fluência.<br>
+      🎤 <strong>01/07 (15h–22h)</strong> — entrevistas de validação 1:1 dos finalistas e suplentes (a verificação anti-IA, por vídeo).<br>
+      🎓 <strong>03/07</strong> — anúncio dos 5 bolsistas confirmados, que entram como alunos(as) beta.
+    </div>
+
+    <div class="anon">
+      Lista anonimizada de propósito. O <strong>horário de envio</strong> aparece nos empates para deixar claro o critério de desempate (quem enviou mais cedo fica na frente). Os finalistas são confirmados ao vivo antes de qualquer bolsa.
+    </div>
+
+    <div class="ft">
+      <a href="https://fluenciacontabil.com.br">fluenciacontabil.com.br</a><br>
+      <span style="color:#8B97B3;font-size:11px;">Prof. Vinícius Ferraz · Fluência Contábil</span>
+    </div>
+  </div>
+</body>
+</html>
