@@ -26,7 +26,12 @@
  *   SES_REPLY_TO           = contato@fluenciacontabil.com.br
  *   SES_CONFIG_SET         = fluencia-marketing   (opcional, default)
  *   SES_CONTACT_LIST       = fluencia             (opcional, default)
- *   TEMPLATE_BASE_URL      = https://fluenciacontabil.com.br/email-templates/
+ *   TEMPLATE_SOURCE        = s3                   ('s3' = bucket privado via SigV4 [recomendado];
+ *                                                   qualquer outro valor = fetch HTTP legado em TEMPLATE_BASE_URL,
+ *                                                   público — mantido só pra rollback, ver migração de 01/07/2026)
+ *   TEMPLATE_S3_BUCKET     = (nome do bucket privado — ver fluencia-email-templates/README.md)
+ *   TEMPLATE_S3_REGION     = us-east-1            (opcional — default SES_REGION)
+ *   TEMPLATE_BASE_URL      = https://fluenciacontabil.com.br/email-templates/  (LEGADO — só usado se TEMPLATE_SOURCE != 's3')
  *   MAILER_ENABLED         = true                 (kill switch — qualquer outro valor bloqueia envio)
  *   MAILER_CUTOVER_AT      = 2026-06-DD           (leads ANTERIORES não entram nas sequências — já passaram pelo MailerLite)
  *
@@ -137,6 +142,59 @@ function sesRequest_(method, pathSegments, payload) {
   return { code: code, ok: code >= 200 && code < 300, body: text ? safeParse_(text) : null, raw: text };
 }
 
+/**
+ * GetObject num bucket S3 privado, assinado SigV4. Diferente de
+ * sesRequest_: a spec SigV4 tem uma EXCEÇÃO documentada pra S3 — o path
+ * do canonical request usa o MESMO encoding do path real (single-encoded),
+ * não o double-encode que os demais serviços AWS exigem. Por isso não
+ * reaproveita sesRequest_ (que é genérico pros outros serviços).
+ */
+function s3GetObject_(bucket, region, key) {
+  var props  = PropertiesService.getScriptProperties();
+  var akid   = props.getProperty('AWS_ACCESS_KEY_ID');
+  var secret = props.getProperty('AWS_SECRET_ACCESS_KEY');
+  if (!akid || !secret) throw new Error('AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY não configurados em Script Properties');
+
+  var host = bucket + '.s3.' + region + '.amazonaws.com';
+  var amzDate = Utilities.formatDate(new Date(), 'UTC', "yyyyMMdd'T'HHmmss'Z'");
+  var dateStamp = amzDate.substring(0, 8);
+
+  var canonicalUri = '/' + key.split('/').map(rfc3986Encode_).join('/');
+  var payloadHash = sha256Hex_(''); // GET sem corpo
+
+  var canonicalRequest = [
+    'GET',
+    canonicalUri,
+    '',
+    'host:' + host + '\n' + 'x-amz-date:' + amzDate + '\n',
+    'host;x-amz-date',
+    payloadHash
+  ].join('\n');
+
+  var scope = dateStamp + '/' + region + '/s3/aws4_request';
+  var stringToSign = ['AWS4-HMAC-SHA256', amzDate, scope, sha256Hex_(canonicalRequest)].join('\n');
+
+  var kDate    = hmacBytes_(dateStamp, Utilities.newBlob('AWS4' + secret).getBytes());
+  var kRegion  = hmacBytes_(region, kDate);
+  var kService = hmacBytes_('s3', kRegion);
+  var kSigning = hmacBytes_('aws4_request', kService);
+  var signature = bytesToHex_(hmacBytes_(stringToSign, kSigning));
+
+  var auth = 'AWS4-HMAC-SHA256 Credential=' + akid + '/' + scope +
+             ', SignedHeaders=host;x-amz-date, Signature=' + signature;
+
+  var res = UrlFetchApp.fetch('https://' + host + canonicalUri, {
+    method: 'get',
+    headers: { 'X-Amz-Date': amzDate, 'Authorization': auth },
+    muteHttpExceptions: true
+  });
+  var code = res.getResponseCode();
+  if (code !== 200) {
+    throw new Error('S3 GetObject HTTP ' + code + ' (key=' + key + '): ' + res.getContentText().substring(0, 300));
+  }
+  return res.getContentText();
+}
+
 function rfc3986Encode_(s) {
   return encodeURIComponent(s).replace(/[!*'()]/g, function(c) {
     return '%' + c.charCodeAt(0).toString(16).toUpperCase();
@@ -198,15 +256,30 @@ function sesSendMarketing_(toEmail, subject, html, topicName) {
  * Busca o template HTML (cache 6h) e aplica personalização:
  *   {$name|fallback} → primeiro nome ou fallback
  *   {$unsubscribe}   → {{amazonSESUnsubscribeUrl}} (o SES substitui no envio)
+ *
+ * relPath é o caminho relativo cru (ex: 'sequencia-a/A1-bem-vindo.html'),
+ * o mesmo valor gravado nas abas Config Sequências/Broadcasts. A fonte de
+ * busca depende de TEMPLATE_SOURCE (ver cabeçalho do arquivo):
+ *   's3' (recomendado, privado)  → GetObject assinado SigV4 em TEMPLATE_S3_BUCKET
+ *   qualquer outro valor (legado)→ fetch HTTP simples em TEMPLATE_BASE_URL (público)
  */
-function renderTemplate_(templateUrl, nome) {
+function renderTemplate_(relPath, nome) {
+  var props = PropertiesService.getScriptProperties();
   var cache = CacheService.getScriptCache();
-  var key = 'tpl:' + sha256Hex_(templateUrl).substring(0, 32);
+  var key = 'tpl:' + sha256Hex_(relPath).substring(0, 32);
   var html = cache.get(key);
   if (!html) {
-    var res = UrlFetchApp.fetch(templateUrl, { muteHttpExceptions: true });
-    if (res.getResponseCode() !== 200) throw new Error('Template HTTP ' + res.getResponseCode() + ': ' + templateUrl);
-    html = res.getContentText();
+    if ((props.getProperty('TEMPLATE_SOURCE') || 'pages') === 's3') {
+      var bucket = props.getProperty('TEMPLATE_S3_BUCKET');
+      if (!bucket) throw new Error('TEMPLATE_S3_BUCKET não configurado em Script Properties (TEMPLATE_SOURCE=s3)');
+      var region = props.getProperty('TEMPLATE_S3_REGION') || props.getProperty('SES_REGION') || 'us-east-1';
+      html = s3GetObject_(bucket, region, String(relPath).replace(/^\//, ''));
+    } else {
+      var templateUrl = templateUrl_(relPath);
+      var res = UrlFetchApp.fetch(templateUrl, { muteHttpExceptions: true });
+      if (res.getResponseCode() !== 200) throw new Error('Template HTTP ' + res.getResponseCode() + ': ' + templateUrl);
+      html = res.getContentText();
+    }
     try { cache.put(key, html, 21600); } catch (_) {} // template >100KB não cabe no cache — segue sem
   }
 
@@ -413,7 +486,7 @@ function processSequences() {
         var nome = cols['Nome'] ? String(row[cols['Nome'] - 1] || '') : '';
 
         try {
-          var html = renderTemplate_(templateUrl_(step.template), nome);
+          var html = renderTemplate_(step.template, nome);
           sesSendMarketing_(email, step.assunto, html, cfg.topic);
           var novoPasso = passo + 1;
           sheet.getRange(rowNum, cols['Seq Passo']).setValue(
@@ -502,7 +575,7 @@ function processBroadcasts() {
       while (cursor < recipients.length && sentThisRun < BCAST_SEND_BATCH) {
         var rec = recipients[cursor];
         try {
-          var html = renderTemplate_(templateUrl_(template), rec.nome);
+          var html = renderTemplate_(template, rec.nome);
           sesSendMarketing_(rec.email, assunto, html, rec.topic);
         } catch (err) {
           errors++;
@@ -1183,10 +1256,31 @@ function ensaioBroadcastBolsao() {
 /** Envia o email A1 pra um endereço de teste (edite o destino antes de rodar). */
 function testSendMarketingEmail() {
   var to = 'vinicius.ferraz@gruponbeducacao.com'; // ← edite se quiser testar outro inbox
-  var html = renderTemplate_(templateUrl_('sequencia-a/A1-bem-vindo.html'), 'Vinícius Teste');
+  var html = renderTemplate_('sequencia-a/A1-bem-vindo.html', 'Vinícius Teste');
   var id = sesSendMarketing_(to, '[TESTE SES] Bem-vindo(a) à Fluência Contábil', html, 'newsletter');
   Logger.log('✅ Enviado. MessageId=' + id + ' → confira o inbox ' + to +
              ' (inclusive o link de descadastro no rodapé).');
+}
+
+/**
+ * TESTE DE MIGRAÇÃO (rodar ANTES de virar TEMPLATE_SOURCE=s3 em produção):
+ * valida que o bucket S3 privado responde e que o conteúdo bate com o
+ * esperado. Não envia nenhum email — só busca e loga.
+ */
+function testFetchTemplateFromS3() {
+  var props = PropertiesService.getScriptProperties();
+  var bucket = props.getProperty('TEMPLATE_S3_BUCKET');
+  if (!bucket) { Logger.log('❌ TEMPLATE_S3_BUCKET não configurado em Script Properties.'); return; }
+  var region = props.getProperty('TEMPLATE_S3_REGION') || props.getProperty('SES_REGION') || 'us-east-1';
+  try {
+    var html = s3GetObject_(bucket, region, 'sequencia-a/A1-bem-vindo.html');
+    Logger.log('✅ S3 GetObject OK — bucket=' + bucket + ' region=' + region +
+               ' — ' + html.length + ' bytes recebidos.');
+    Logger.log('Próximo passo: setar TEMPLATE_SOURCE=s3 em Script Properties pra cutover definitivo.');
+  } catch (err) {
+    Logger.log('❌ Falhou: ' + err);
+    Logger.log('Confira: bucket existe? IAM do fluencia-mailer tem s3:GetObject nesse bucket? Region certa?');
+  }
 }
 
 
