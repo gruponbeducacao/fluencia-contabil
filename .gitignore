@@ -9,5 +9,8 @@ package-lock.json
 # Config local do Claude Code
 .claude/
 
+# Contexto interno do projeto (não deve ficar público via GitHub Pages)
+CLAUDE.md
+
 # Arte bruta / drafts (não versionados)
 artes/
