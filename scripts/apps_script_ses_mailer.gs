@@ -1410,6 +1410,104 @@ function testFetchTemplateFromS3() {
 }
 
 
+// ══════════════════════ ALARME DE SAÚDE DO ENVIO ══════════════════════
+
+/**
+ * Alarme de falha de envio. Trigger horário. Verifica 3 sinais e, se achar
+ * problema, manda email de alerta pra ALERT_EMAIL (Script Property; default
+ * vinicius.ferraz@gruponbeducacao.com). Silêncio = tudo certo.
+ *
+ * Sinais:
+ *   1. Novos erros na aba "_errors" desde a última checagem — cobre falha de
+ *      fetch de template do S3 ("S3 GetObject HTTP..."), erro de SES send, etc.
+ *   2. Broadcast com status "err:..." na aba Broadcasts.
+ *   3. Broadcast VENCIDO (agendado no passado +30min) ainda "aguardando" (nunca
+ *      começou) — sinal de que os triggers do motor pararam de rodar.
+ *
+ * IMPORTANTE: envia via MailApp (Gmail do dono da planilha), NÃO via SES — o
+ * alarme não pode depender do sistema que ele monitora. Rode setupAlarmeSaude()
+ * 1× pra criar o trigger.
+ */
+function verificarSaudeEnvioEmail() {
+  var props = PropertiesService.getScriptProperties();
+  var alertEmail = props.getProperty('ALERT_EMAIL') || 'vinicius.ferraz@gruponbeducacao.com';
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var now = new Date();
+  var problemas = [];
+
+  var lastRaw = props.getProperty('HEALTH_LAST_CHECK');
+  var lastCheck = lastRaw ? new Date(lastRaw) : new Date(now.getTime() - 90 * 60000);
+
+  // 1. Novos erros em _errors
+  var errSheet = ss.getSheetByName('_errors');
+  if (errSheet && errSheet.getLastRow() > 1) {
+    var errData = errSheet.getRange(2, 1, errSheet.getLastRow() - 1, Math.min(3, errSheet.getLastColumn())).getValues();
+    var novos = errData.filter(function(r) { return r[0] instanceof Date && r[0] > lastCheck; });
+    if (novos.length) {
+      problemas.push('🔴 ' + novos.length + ' novo(s) erro(s) na aba _errors desde ' +
+        Utilities.formatDate(lastCheck, 'America/Sao_Paulo', 'dd/MM HH:mm') + ':');
+      novos.slice(-5).forEach(function(r) {
+        problemas.push('   • ' + Utilities.formatDate(r[0], 'America/Sao_Paulo', 'dd/MM HH:mm') +
+          ' — ' + String(r[1] || '').substring(0, 220));
+      });
+    }
+  }
+
+  // 2 e 3. Broadcasts com erro / travados
+  var bc = ss.getSheetByName(MAILER_SHEETS.BROADCASTS);
+  if (bc && bc.getLastRow() > 1) {
+    var rows = bc.getRange(2, 1, bc.getLastRow() - 1, 9).getValues();
+    rows.forEach(function(r) {
+      var id = String(r[0] || '');
+      var agendado = r[4];
+      var status = String(r[5] || '');
+      if (status.indexOf('err') === 0) {
+        problemas.push('🔴 Broadcast "' + id + '" com erro: ' + status);
+      } else if (status === '' && agendado instanceof Date && agendado < new Date(now.getTime() - 30 * 60000)) {
+        // vencido há +30min e nunca começou → triggers do motor podem estar parados
+        problemas.push('🟠 Broadcast "' + id + '" venceu ' +
+          Utilities.formatDate(agendado, 'America/Sao_Paulo', 'dd/MM HH:mm') +
+          ' e ainda está "aguardando" — o motor (processBroadcasts) pode não estar rodando.');
+      }
+    });
+  }
+
+  // Avança o marcador SEMPRE (mesmo sem problema) pra não re-alertar o mesmo erro
+  props.setProperty('HEALTH_LAST_CHECK', now.toISOString());
+
+  if (!problemas.length) {
+    console.log('✅ Saúde do envio OK — nenhum erro novo desde a última checagem.');
+    return;
+  }
+
+  var corpo = 'ALARME DE ENVIO — Fluência Contábil (SES)\n' +
+    Utilities.formatDate(now, 'America/Sao_Paulo', 'dd/MM/yyyy HH:mm') + '\n\n' +
+    problemas.join('\n') + '\n\n' +
+    '── Onde investigar ──\n' +
+    '• Apps Script → Execuções (erros dos triggers)\n' +
+    '• Planilha → aba _errors (detalhe) e aba Broadcasts (coluna Status)\n' +
+    '• Se aparecer "S3 GetObject HTTP..." → o template não está no bucket, ou IAM/Script\n' +
+    '  Properties mudaram. Rode testFetchTemplateFromS3() pra isolar.\n' +
+    '• Rollback rápido de template: TEMPLATE_SOURCE=pages (só se os arquivos ainda\n' +
+    '  existirem no repo público — hoje NÃO existem mais; a fonte é o S3/repo privado).\n';
+  MailApp.sendEmail(alertEmail, '🔴 [Fluência] Falha no envio de e-mail detectada', corpo);
+  console.log('📧 Alerta enviado pra ' + alertEmail + ' (' + problemas.length + ' item(ns)).');
+}
+
+/**
+ * 1× — cria o trigger horário do alarme de saúde do envio. Idempotente.
+ * Pra mudar o destinatário do alerta, crie a Script Property ALERT_EMAIL.
+ */
+function setupAlarmeSaude() {
+  recreateTrigger_('verificarSaudeEnvioEmail', function(b) { return b.timeBased().everyHours(1); });
+  var dest = PropertiesService.getScriptProperties().getProperty('ALERT_EMAIL') ||
+             'vinicius.ferraz@gruponbeducacao.com (default)';
+  Logger.log('✅ Alarme criado: verificarSaudeEnvioEmail roda a cada 1h.');
+  Logger.log('   Alertas vão pra: ' + dest);
+  Logger.log('   Teste agora rodando verificarSaudeEnvioEmail() manualmente (deve logar "Saúde OK").');
+}
+
+
 // ══════════════════════ DEDUPLICAÇÃO ══════════════════════
 
 /**
