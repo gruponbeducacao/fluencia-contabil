@@ -1266,6 +1266,101 @@ function testSendMarketingEmail() {
 }
 
 /**
+ * DIAGNÓSTICO: "o SES devolveu MessageId mas o email não chegou".
+ *
+ * Todo envio passa por sesSendMarketing_ COM ListManagementOptions (contact
+ * list + tópico). Isso liga a supressão automática do SES: se o destinatário
+ * estiver (a) na suppression list DA CONTA [bounce/complaint] ou (b) marcado
+ * OPT_OUT do tópico / UnsubscribeAll na contact list, o SES ACEITA a chamada,
+ * devolve MessageId, e DESCARTA o email sem entregar — sem erro nenhum.
+ *
+ * Esta função consulta a API do SES pra dizer QUAL das duas (ou nenhuma).
+ * Não envia nada. Edite EMAIL_DIAG se quiser checar outro endereço.
+ */
+function diagnosticarEntrega() {
+  var EMAIL_DIAG = 'vinicius.ferraz@gruponbeducacao.com'; // ← edite pra checar outro
+  var email = EMAIL_DIAG.trim().toLowerCase();
+  var list = PropertiesService.getScriptProperties().getProperty('SES_CONTACT_LIST') || 'fluencia';
+  var achouCausa = false;
+
+  Logger.log('🔍 Diagnóstico de entrega — ' + email);
+  Logger.log('────────────────────────────────────────');
+
+  // (a) Suppression list DA CONTA (bounce/complaint). Precisa da permissão
+  // IAM ses:GetSuppressedDestination — se não tiver, cai no 403 e a gente
+  // avisa pra olhar no console (SES → Suppression list).
+  var sup = sesRequest_('GET', ['v2', 'email', 'suppression', 'addresses', email], null);
+  if (sup.code === 200) {
+    var d = (sup.body && sup.body.SuppressedDestination) || {};
+    Logger.log('❌ CAUSA A — está na SUPPRESSION LIST DA CONTA. Motivo: ' + d.Reason +
+               ' · desde: ' + d.LastUpdateTime);
+    Logger.log('   → Todo envio pra esse endereço é descartado. Correção: rodar');
+    Logger.log('     removerDaSuppressionList() (edite o email lá) OU no console');
+    Logger.log('     SES → Suppression list → selecionar o endereço → Remove.');
+    achouCausa = true;
+  } else if (sup.code === 404) {
+    Logger.log('✅ (A) Não está na suppression list da conta.');
+  } else if (sup.code === 403) {
+    Logger.log('⚠️ (A) Sem permissão pra checar via API (falta ses:GetSuppressedDestination');
+    Logger.log('   na policy do fluencia-mailer). Cheque no console: SES → Suppression list');
+    Logger.log('   → buscar ' + email + '.');
+  } else {
+    Logger.log('⚠️ (A) GetSuppressedDestination HTTP ' + sup.code + ': ' + String(sup.raw).substring(0, 160));
+  }
+
+  // (b) Opt-out do tópico / UnsubscribeAll na contact list. Usa ses:GetContact,
+  // que o fluencia-mailer JÁ tem — este check é definitivo.
+  var c = sesRequest_('GET', ['v2', 'email', 'contact-lists', list, 'contacts', email], null);
+  if (c.code === 200) {
+    var b = c.body || {};
+    var prefs = b.TopicPreferences || [];
+    Logger.log('• Contato na lista "' + list + '": UnsubscribeAll=' + (b.UnsubscribeAll === true));
+    prefs.forEach(function(p) { Logger.log('    tópico ' + p.TopicName + ' → ' + p.SubscriptionStatus); });
+    if (b.UnsubscribeAll === true) {
+      Logger.log('❌ CAUSA B — UnsubscribeAll=true → SES suprime TODOS os envios com list management.');
+      Logger.log('   (foi um clique em "Cancelar inscrição" em algum teste anterior)');
+      achouCausa = true;
+    }
+    var news = prefs.filter(function(p) { return p.TopicName === 'newsletter'; })[0];
+    if (news && news.SubscriptionStatus === 'OPT_OUT') {
+      Logger.log('❌ CAUSA B — OPT_OUT do tópico "newsletter" → o teste (que usa newsletter) é suprimido.');
+      achouCausa = true;
+    }
+  } else if (c.code === 404) {
+    Logger.log('✅ (B) Não existe como contato na lista "' + list + '" — não há opt-out a suprimir.');
+    Logger.log('   (tópicos são OPT_IN por padrão, então um não-contato receberia normalmente)');
+  } else {
+    Logger.log('⚠️ (B) GetContact HTTP ' + c.code + ': ' + String(c.raw).substring(0, 160));
+  }
+
+  Logger.log('────────────────────────────────────────');
+  Logger.log(achouCausa
+    ? '🎯 Causa da não-entrega IDENTIFICADA acima — não é bug no código/migração S3.'
+    : 'ℹ️ Nenhuma supressão encontrada via API. Próximo passo: checar o console SES → Suppression list (caso A tenha dado 403) e/ou testar com um email limpo (nunca inscrito).');
+}
+
+/**
+ * Remove um endereço da suppression list DA CONTA (rodar após confirmar a
+ * Causa A no diagnosticarEntrega). NÃO mexe em opt-out de tópico — isso é
+ * escolha legítima do lead. Precisa de ses:DeleteSuppressedDestination na
+ * policy IAM do fluencia-mailer. Edite EMAIL antes de rodar.
+ */
+function removerDaSuppressionList() {
+  var EMAIL = 'vinicius.ferraz@gruponbeducacao.com'; // ← edite
+  var email = EMAIL.trim().toLowerCase();
+  var res = sesRequest_('DELETE', ['v2', 'email', 'suppression', 'addresses', email], null);
+  if (res.ok || res.code === 404) {
+    Logger.log('✅ Removido da suppression list (ou já não estava): ' + email);
+    Logger.log('   Rode testSendMarketingEmail() de novo pra confirmar a entrega.');
+  } else if (res.code === 403) {
+    Logger.log('⚠️ Sem permissão (falta ses:DeleteSuppressedDestination na policy do');
+    Logger.log('   fluencia-mailer). Alternativa: remover pelo console SES → Suppression list.');
+  } else {
+    Logger.log('❌ HTTP ' + res.code + ': ' + String(res.raw).substring(0, 200));
+  }
+}
+
+/**
  * TESTE DE MIGRAÇÃO (rodar ANTES de virar TEMPLATE_SOURCE=s3 em produção):
  * valida que o bucket S3 privado responde e que o conteúdo bate com o
  * esperado. Não envia nenhum email — só busca e loga.
