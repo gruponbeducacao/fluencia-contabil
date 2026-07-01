@@ -12,17 +12,14 @@ package-lock.json
 # Contexto interno do projeto (não deve ficar público via GitHub Pages)
 CLAUDE.md
 
-# Ferramentas internas de preview/planejamento de email-templates/ — NÃO
-# são buscadas pelo motor SES (apps_script_ses_mailer.gs só busca paths
-# dentro de sequencia-*/bolsao/broadcasts via templateUrl_()). Manter as
-# subpastas de template públicas; só estes arquivos soltos saem do tracking.
-email-templates/index.html
-email-templates/README.md
-email-templates/_LANCAMENTO_2026_NOVO.md
-email-templates/_LANCAMENTO_2026_OVERVIEW.html
-email-templates/_INSTRUCOES_MAILERLITE.html
-email-templates/_SELOS_2026.html
-email-templates/_email_metadata.json
+# email-templates/ inteiro sai do repo público (migração pra S3 privado,
+# 01/07/2026). Os templates de campanha têm preço/data/estratégia de
+# lançamento e ficavam expostos via GitHub Pages semanas antes do envio.
+# Agora vivem no repo privado gruponbeducacao/fluencia-email-templates e são
+# servidos ao motor SES via S3 privado (SigV4), NÃO mais por HTTP público.
+# Ver _CRM/runbook-templates-s3-privado.md. A pasta continua no disco local
+# (fora do git) só pra referência; a fonte da verdade é o repo privado.
+email-templates/
 
 # Arte bruta / drafts (não versionados)
 artes/
