@@ -162,12 +162,15 @@ function s3GetObject_(bucket, region, key) {
   var canonicalUri = '/' + key.split('/').map(rfc3986Encode_).join('/');
   var payloadHash = sha256Hex_(''); // GET sem corpo
 
+  // S3 (diferente dos demais serviços AWS) EXIGE o header x-amz-content-sha256
+  // de fato presente na requisição — não basta usar o hash só no cálculo da
+  // assinatura. Por isso entra nos canonical headers/signed headers também.
   var canonicalRequest = [
     'GET',
     canonicalUri,
     '',
-    'host:' + host + '\n' + 'x-amz-date:' + amzDate + '\n',
-    'host;x-amz-date',
+    'host:' + host + '\n' + 'x-amz-content-sha256:' + payloadHash + '\n' + 'x-amz-date:' + amzDate + '\n',
+    'host;x-amz-content-sha256;x-amz-date',
     payloadHash
   ].join('\n');
 
@@ -181,11 +184,11 @@ function s3GetObject_(bucket, region, key) {
   var signature = bytesToHex_(hmacBytes_(stringToSign, kSigning));
 
   var auth = 'AWS4-HMAC-SHA256 Credential=' + akid + '/' + scope +
-             ', SignedHeaders=host;x-amz-date, Signature=' + signature;
+             ', SignedHeaders=host;x-amz-content-sha256;x-amz-date, Signature=' + signature;
 
   var res = UrlFetchApp.fetch('https://' + host + canonicalUri, {
     method: 'get',
-    headers: { 'X-Amz-Date': amzDate, 'Authorization': auth },
+    headers: { 'X-Amz-Date': amzDate, 'X-Amz-Content-Sha256': payloadHash, 'Authorization': auth },
     muteHttpExceptions: true
   });
   var code = res.getResponseCode();
