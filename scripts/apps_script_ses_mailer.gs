@@ -1361,6 +1361,34 @@ function removerDaSuppressionList() {
 }
 
 /**
+ * Reinscreve um endereço que estava com UnsubscribeAll=true / tópicos OPT_OUT
+ * (ex: admin que clicou "Cancelar inscrição" testando). Zera UnsubscribeAll e
+ * volta TODOS os tópicos pra OPT_IN. Usa ses:UpdateContact (já na policy).
+ *
+ * ⚠️ Use SÓ pro seu próprio endereço de teste. Reinscrever lead real que
+ * pediu descadastro é violação de opt-out (LGPD/CAN-SPAM). Edite EMAIL.
+ */
+function reinscreverContato() {
+  var EMAIL = 'vinicius.ferraz@gruponbeducacao.com'; // ← edite
+  var email = EMAIL.trim().toLowerCase();
+  var list = PropertiesService.getScriptProperties().getProperty('SES_CONTACT_LIST') || 'fluencia';
+  var prefs = SES_TOPICS.map(function(t) {
+    return { TopicName: t.TopicName, SubscriptionStatus: 'OPT_IN' };
+  });
+  var res = sesRequest_('PUT', ['v2', 'email', 'contact-lists', list, 'contacts', email], {
+    UnsubscribeAll: false,
+    TopicPreferences: prefs
+  });
+  if (res.ok) {
+    Logger.log('✅ Reinscrito: ' + email);
+    Logger.log('   UnsubscribeAll=false · todos os ' + prefs.length + ' tópicos OPT_IN.');
+    Logger.log('   Agora rode testSendMarketingEmail() — o email deve chegar no inbox.');
+  } else {
+    Logger.log('❌ UpdateContact HTTP ' + res.code + ': ' + String(res.raw).substring(0, 250));
+  }
+}
+
+/**
  * TESTE DE MIGRAÇÃO (rodar ANTES de virar TEMPLATE_SOURCE=s3 em produção):
  * valida que o bucket S3 privado responde e que o conteúdo bate com o
  * esperado. Não envia nenhum email — só busca e loga.
