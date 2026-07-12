@@ -12,9 +12,12 @@
  *
  * ─── PRÉ-REQUISITO ────────────────────────────────────────────────────
  * Script Properties → MAILERLITE_API_KEY = (API key)
+ * Script Properties → MENSAGEIRO_WEBHOOK_URL = (URL do webhook do fluxo)
+ * Script Properties → MENSAGEIRO_WEBHOOK_SECRET = (secret do header)
+ *   (nunca hardcoded no código — este arquivo é público via GitHub Pages)
  *
  * ─── PÓS-DEPLOY (rodar 1× após cada deploy) ───────────────────────────
- *   • setupAfterDeploy()  — adiciona colunas ML Sync + cria trigger 1min
+ *   • setupAfterDeploy()  — adiciona colunas ML/Mensageiro Sync + triggers 1min
  *
  * ─── VALIDAÇÃO ────────────────────────────────────────────────────────
  *   • testMailerLiteAuth()   — checa API key
@@ -23,6 +26,15 @@
  *   • testDicionarioFlow()   — simula lead LP Dicionário
  *   • testLivesFlow()        — simula lead LP Lives
  *   • testRegressionAll()    — roda 4 fluxos + 2 fallbacks (11 cases)
+ *   • testMensageiroWebhook() — dispara 1 mensagem REAL de teste (não é dry-run;
+ *     exige Script Property MENSAGEIRO_TEST_PHONE com seu próprio número)
+ *
+ * ─── SYNC MENSAGEIRO (só LP Dicionário) ────────────────────────────────
+ * Todo novo lead da LP Dicionário com telefone preenchido é encaminhado
+ * via webhook pro Mensageiro (trigger `syncPendingToMensageiro`, 1min,
+ * mesmo padrão assíncrono do sync com MailerLite). Leads sem telefone
+ * (exit_intent/sticky_bar, que só pedem e-mail) ficam marcados
+ * 'skip:sem_telefone' — não há WhatsApp pra acionar.
  * ═══════════════════════════════════════════════════════════════════════
  */
 
@@ -48,6 +60,9 @@ const ML_API_URL = 'https://connect.mailerlite.com/api/subscribers';
 
 // 5 × 60s timeout máx = 5min < 6min limite Apps Script. Seguro.
 const ML_BATCH_SIZE = 5;
+
+// Trigger separado do ML (própria janela de 6min) — só processa a aba Dicionário.
+const MENSAGEIRO_BATCH_SIZE = 5;
 
 
 // ══════════════════════ ROTAS WEB APP ══════════════════════
@@ -214,7 +229,8 @@ const DICIONARIO_HEADERS = [
   'Página', 'Referrer',
   'UTM Source', 'UTM Medium', 'UTM Campaign',
   'Dispositivo',
-  'ML Sync', 'ML Sync At'
+  'ML Sync', 'ML Sync At',
+  'Mensageiro Sync', 'Mensageiro Sync At'
 ];
 const DICIONARIO_NOTES = [
   'Timestamp do submit', 'Nome (só forms completos)', 'E-mail',
@@ -223,7 +239,9 @@ const DICIONARIO_NOTES = [
   'Pathname + query da LP', 'Referrer do navegador',
   'UTM Source', 'UTM Medium', 'UTM Campaign', 'Mobile ou Desktop',
   'Status sync MailerLite: vazio=pendente, ok=enviado, err:...=falhou, migrated=lead anterior à arquitetura assíncrona',
-  'Timestamp do último sync'
+  'Timestamp do último sync MailerLite',
+  'Status sync Mensageiro (WhatsApp): vazio=pendente, ok=enviado, err:...=falhou, skip:sem_telefone=sem WhatsApp pra acionar, migrated=lead anterior a esta integração',
+  'Timestamp do último sync Mensageiro'
 ];
 
 // Bolsão: aba criada já na era SES — sem colunas ML Sync de propósito
@@ -318,14 +336,22 @@ function ensureSheet(name, headers, notes) {
       sheet.getRange(1, firstNewCol, 1, newCount).setNotes([newNotes]);
     }
 
-    // Marca leads existentes como "migrated" — não tentar re-sincronizar
-    // (se quiser forçar re-sync de algum lead específico, apague a célula ML Sync)
+    // Marca leads existentes como "migrated" nas colunas de status REALMENTE
+    // novas (padrão "* Sync" / "* Sync At") — não tentar re-sincronizar retroativo.
+    // Genérico de propósito: cobre ML Sync, Mensageiro Sync e futuras colunas
+    // de sync sem precisar tocar aqui de novo. (Se quiser forçar re-sync de um
+    // lead específico, apague a célula de sync correspondente.)
     var lastRow = sheet.getLastRow();
     if (lastRow > 1) {
-      var mlSyncIdx = headers.indexOf('ML Sync') + 1;
-      var mlSyncAtIdx = headers.indexOf('ML Sync At') + 1;
-      sheet.getRange(2, mlSyncIdx, lastRow - 1, 1).setValue('migrated');
-      sheet.getRange(2, mlSyncAtIdx, lastRow - 1, 1).setValue(new Date());
+      for (var ni = 0; ni < newHeaders.length; ni++) {
+        var colIdx = firstNewCol + ni;
+        var colName = newHeaders[ni];
+        if (/ Sync At$/.test(colName)) {
+          sheet.getRange(2, colIdx, lastRow - 1, 1).setValue(new Date());
+        } else if (/ Sync$/.test(colName)) {
+          sheet.getRange(2, colIdx, lastRow - 1, 1).setValue('migrated');
+        }
+      }
     }
   }
   return sheet;
@@ -467,6 +493,127 @@ function pushToMailerLite(email, groupId, fields) {
 }
 
 
+// ══════════════════════ MENSAGEIRO — SYNC ASSÍNCRONO (só Dicionário) ══════════════════════
+
+/**
+ * Trigger temporal separado do ML: roda a cada 1min, só processa a aba
+ * "Lead Magnet - Dicionário". Cada lead novo com telefone é encaminhado
+ * ao webhook do Mensageiro (chatbot flow) — vira ponto de partida da
+ * qualificação/reativação por WhatsApp descrita na spec-quiz-qualificacao.
+ *
+ * Usa o MESMO LockService.getScriptLock() do sync com MailerLite: se as
+ * duas triggers colidirem no mesmo minuto, uma delas perde a corrida e
+ * tenta de novo no minuto seguinte (self-healing, sem duplicar envio).
+ */
+function syncPendingToMensageiro() {
+  var lock = LockService.getScriptLock();
+  if (!lock.tryLock(1000)) {
+    console.log('Outro sync em andamento — pulando (Mensageiro)');
+    return;
+  }
+
+  try {
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var sheet = ss.getSheetByName(SHEETS.DICIONARIO);
+    if (!sheet) return;
+
+    var lastRow = sheet.getLastRow();
+    if (lastRow < 2) return;
+
+    var h = DICIONARIO_HEADERS;
+    var syncCol   = h.indexOf('Mensageiro Sync') + 1;
+    var syncAtCol = h.indexOf('Mensageiro Sync At') + 1;
+    var nomeCol   = h.indexOf('Nome') + 1;
+    var emailCol  = h.indexOf('E-mail') + 1;
+    var whatsCol  = h.indexOf('WhatsApp') + 1;
+    var origemCol = h.indexOf('Origem') + 1;
+    var paginaCol = h.indexOf('Página') + 1;
+    var utmSCol   = h.indexOf('UTM Source') + 1;
+    var utmMCol   = h.indexOf('UTM Medium') + 1;
+    var utmCCol   = h.indexOf('UTM Campaign') + 1;
+    var dispCol   = h.indexOf('Dispositivo') + 1;
+
+    var values = sheet.getRange(2, 1, lastRow - 1, h.length).getValues();
+    var processed = 0;
+
+    for (var r = 0; r < values.length && processed < MENSAGEIRO_BATCH_SIZE; r++) {
+      if (values[r][syncCol - 1] !== '') continue;
+
+      var rowNum = r + 2;
+      var whatsDigits = String(values[r][whatsCol - 1] || '').replace(/\D+/g, '');
+
+      if (!whatsDigits) {
+        sheet.getRange(rowNum, syncCol).setValue('skip:sem_telefone');
+        sheet.getRange(rowNum, syncAtCol).setValue(new Date());
+        processed++;
+        continue;
+      }
+
+      var payload = {
+        evento: 'dicionario_lead',
+        nome: String(values[r][nomeCol - 1] || ''),
+        email: String(values[r][emailCol - 1] || ''),
+        telefone: formatPhoneE164BR(whatsDigits),
+        origem: String(values[r][origemCol - 1] || ''),
+        pagina: String(values[r][paginaCol - 1] || ''),
+        utm_source: String(values[r][utmSCol - 1] || ''),
+        utm_medium: String(values[r][utmMCol - 1] || ''),
+        utm_campaign: String(values[r][utmCCol - 1] || ''),
+        dispositivo: String(values[r][dispCol - 1] || ''),
+        timestamp: new Date().toISOString()
+      };
+
+      try {
+        pushToMensageiro(payload);
+        sheet.getRange(rowNum, syncCol).setValue('ok');
+        sheet.getRange(rowNum, syncAtCol).setValue(new Date());
+      } catch (err) {
+        var errStr = String(err).substring(0, 200);
+        sheet.getRange(rowNum, syncCol).setValue('err:' + errStr);
+        sheet.getRange(rowNum, syncAtCol).setValue(new Date());
+        logError('Mensageiro sync: ' + err, { parameter: { email: payload.email, sheet: SHEETS.DICIONARIO } });
+      }
+      processed++;
+    }
+
+    if (processed > 0) console.log('Mensageiro sync run: ' + processed + ' leads processados');
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+/** BR sem DDI (10-11 díg) → E.164 (+55DDDNUMERO). Já com 55: só prefixa '+'. */
+function formatPhoneE164BR(tel) {
+  var digits = String(tel || '').replace(/\D+/g, '');
+  if (digits.length === 10 || digits.length === 11) digits = '55' + digits;
+  return '+' + digits;
+}
+
+function pushToMensageiro(payload) {
+  var props = PropertiesService.getScriptProperties();
+  var url = props.getProperty('MENSAGEIRO_WEBHOOK_URL');
+  var secret = props.getProperty('MENSAGEIRO_WEBHOOK_SECRET');
+  if (!url || !secret) {
+    throw new Error('MENSAGEIRO_WEBHOOK_URL / MENSAGEIRO_WEBHOOK_SECRET não configuradas em Script Properties');
+  }
+
+  var response = UrlFetchApp.fetch(url, {
+    method: 'post',
+    contentType: 'application/json',
+    headers: { 'X-Mensageiro-Webhook-Secret': secret },
+    payload: JSON.stringify(payload),
+    muteHttpExceptions: true
+  });
+
+  var code = response.getResponseCode();
+  if (code < 200 || code >= 300) {
+    throw new Error('HTTP ' + code + ': ' + response.getContentText().substring(0, 300));
+  }
+  var text = response.getContentText();
+  try { return JSON.parse(text); } catch (_) { return { raw: text }; }
+}
+
+
 // ══════════════════════ SETUP PÓS-DEPLOY ══════════════════════
 
 /**
@@ -480,12 +627,13 @@ function setupAfterDeploy() {
   ensureSheet(SHEETS.DICIONARIO,  DICIONARIO_HEADERS, DICIONARIO_NOTES);
   ensureSheet(SHEETS.LIVES,       LIVES_HEADERS,      LIVES_NOTES);
   ensureSheet(SHEETS.BOLSAO,      BOLSAO_HEADERS,     BOLSAO_NOTES);
-  Logger.log('✅ Colunas ML Sync garantidas em todas as abas (Bolsão não tem ML Sync — era SES)');
+  Logger.log('✅ Colunas ML Sync + Mensageiro Sync garantidas (Bolsão não tem — era SES)');
 
   var triggers = ScriptApp.getProjectTriggers();
   var removed = 0;
   for (var i = 0; i < triggers.length; i++) {
-    if (triggers[i].getHandlerFunction() === 'syncPendingToMailerLite') {
+    var fn = triggers[i].getHandlerFunction();
+    if (fn === 'syncPendingToMailerLite' || fn === 'syncPendingToMensageiro') {
       ScriptApp.deleteTrigger(triggers[i]);
       removed++;
     }
@@ -494,11 +642,15 @@ function setupAfterDeploy() {
 
   ScriptApp.newTrigger('syncPendingToMailerLite').timeBased().everyMinutes(1).create();
   Logger.log('✅ Trigger criado: syncPendingToMailerLite roda a cada 1 minuto');
+  ScriptApp.newTrigger('syncPendingToMensageiro').timeBased().everyMinutes(1).create();
+  Logger.log('✅ Trigger criado: syncPendingToMensageiro roda a cada 1 minuto (só Dicionário)');
   Logger.log('');
   Logger.log('Setup completo. Próximos passos:');
-  Logger.log('1. Ver trigger em "Acionadores" (menu lateral, 4º ícone)');
-  Logger.log('2. Rodar testNewsletterFlow() — deve completar em <2s');
-  Logger.log('3. Aguardar 1min e ver "ML Sync = ok" no lead de teste');
+  Logger.log('1. Ver triggers em "Acionadores" (menu lateral, 4º ícone)');
+  Logger.log('2. Configurar Script Properties: MENSAGEIRO_WEBHOOK_URL e MENSAGEIRO_WEBHOOK_SECRET');
+  Logger.log('3. Rodar testNewsletterFlow() — deve completar em <2s');
+  Logger.log('4. Aguardar 1min e ver "ML Sync = ok" no lead de teste');
+  Logger.log('5. Rodar testMensageiroWebhook() (exige MENSAGEIRO_TEST_PHONE — dispara msg real)');
 }
 
 
@@ -566,6 +718,39 @@ function testLivesFlow() {
   var result = doPost(fake);
   Logger.log('Lives result: ' + result.getContent());
   Logger.log('(Sync com MailerLite acontece via trigger em até 1min)');
+}
+
+/**
+ * Dispara 1 mensagem REAL de teste via webhook do Mensageiro — NÃO é dry-run.
+ * Exige Script Property MENSAGEIRO_TEST_PHONE (seu próprio número, ex: 11999999999).
+ * Sem essa property configurada, recusa rodar (evita mandar pro número errado por engano).
+ */
+function testMensageiroWebhook() {
+  var props = PropertiesService.getScriptProperties();
+  var testPhone = props.getProperty('MENSAGEIRO_TEST_PHONE');
+  if (!testPhone) {
+    Logger.log('⚠️  Defina a Script Property MENSAGEIRO_TEST_PHONE (seu número, ex: 11999999999) antes de rodar.');
+    Logger.log('    Este teste DISPARA UMA MENSAGEM REAL de WhatsApp via Mensageiro — não é dry-run.');
+    return;
+  }
+  var payload = {
+    evento: 'dicionario_lead',
+    nome: 'Teste Automático Apps Script',
+    email: 'teste.mensageiro.' + Date.now() + '@example.com',
+    telefone: formatPhoneE164BR(testPhone),
+    origem: 'dicionario_form_top',
+    pagina: '/teste-mensageiro',
+    utm_source: 'test', utm_medium: 'script', utm_campaign: 'validation_mensageiro',
+    dispositivo: 'Desktop',
+    timestamp: new Date().toISOString()
+  };
+  try {
+    var result = pushToMensageiro(payload);
+    Logger.log('✅ Webhook Mensageiro respondeu OK: ' + JSON.stringify(result).substring(0, 300));
+    Logger.log('   Confira no WhatsApp de ' + testPhone + ' se a conversa/fluxo iniciou.');
+  } catch (err) {
+    Logger.log('❌ Erro: ' + err);
+  }
 }
 
 /**
