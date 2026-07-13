@@ -207,6 +207,7 @@ function dispatchLiveLeadImmediately_(p, sheet, rowNum) {
   if (typeof pushToMensageiro === 'function' && crmSyncCol) {
     var crmPayload = {
       evento: 'lives_lead', nome: nome, email: email, telefone: telefoneE164,
+      customer: { name: nome, email: email, phone: telefoneE164 },
       origem: String(p.origem || ''), pagina: String(p.pagina || ''),
       utm_source: String(p.utm_source || ''), utm_medium: String(p.utm_medium || ''),
       utm_campaign: String(p.utm_campaign || ''), dispositivo: String(p.dispositivo || ''),
@@ -701,6 +702,11 @@ function syncPendingLivesToMensageiro() {
         nome: String(values[r][nomeCol - 1] || ''),
         email: String(values[r][emailCol - 1] || ''),
         telefone: formatPhoneE164BR(whatsDigits),
+        customer: {
+          name: String(values[r][nomeCol - 1] || ''),
+          email: String(values[r][emailCol - 1] || ''),
+          phone: formatPhoneE164BR(whatsDigits)
+        },
         origem: String(values[r][origemCol - 1] || ''),
         pagina: String(values[r][paginaCol - 1] || ''),
         utm_source: String(values[r][utmSCol - 1] || ''),
