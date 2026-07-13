@@ -201,8 +201,10 @@ function dispatchLiveLeadImmediately_(p, sheet, rowNum) {
   var telefoneE164 = '+55' + telefone;
   var now = new Date();
 
-  // Mensageiro/CRM — imediato via webhook.
-  if (typeof pushToMensageiro === 'function' && cols['Mensageiro Sync']) {
+  // Mensageiro/CRM — imediato via webhook. A aba Lives usa CRM Sync.
+  var crmSyncCol = cols['CRM Sync'] || cols['Mensageiro Sync'];
+  var crmSyncAtCol = cols['CRM Sync At'] || cols['Mensageiro Sync At'];
+  if (typeof pushToMensageiro === 'function' && crmSyncCol) {
     var crmPayload = {
       evento: 'lives_lead', nome: nome, email: email, telefone: telefoneE164,
       origem: String(p.origem || ''), pagina: String(p.pagina || ''),
@@ -212,11 +214,11 @@ function dispatchLiveLeadImmediately_(p, sheet, rowNum) {
     };
     try {
       pushToMensageiro(crmPayload);
-      sheet.getRange(rowNum, cols['Mensageiro Sync']).setValue('ok');
-      if (cols['Mensageiro Sync At']) sheet.getRange(rowNum, cols['Mensageiro Sync At']).setValue(now);
+      sheet.getRange(rowNum, crmSyncCol).setValue('ok');
+      if (crmSyncAtCol) sheet.getRange(rowNum, crmSyncAtCol).setValue(now);
     } catch (err) {
-      sheet.getRange(rowNum, cols['Mensageiro Sync']).setValue('err:' + String(err).substring(0, 180));
-      if (cols['Mensageiro Sync At']) sheet.getRange(rowNum, cols['Mensageiro Sync At']).setValue(now);
+      sheet.getRange(rowNum, crmSyncCol).setValue('err:' + String(err).substring(0, 180));
+      if (crmSyncAtCol) sheet.getRange(rowNum, crmSyncAtCol).setValue(now);
       logError('Mensageiro imediato Lives: ' + err, { parameter: { email: email, sheet: SHEETS.LIVES } });
     }
   }
@@ -328,7 +330,7 @@ const LIVES_HEADERS = [
   'UTM Source', 'UTM Medium', 'UTM Campaign',
   'Dispositivo',
   'ML Sync', 'ML Sync At',
-  'Mensageiro Sync', 'Mensageiro Sync At'
+  'CRM Sync', 'CRM Sync At'
 ];
 const LIVES_NOTES = [
   'Timestamp do submit', 'Nome completo', 'E-mail', 'WhatsApp só dígitos',
@@ -337,8 +339,8 @@ const LIVES_NOTES = [
   'UTM Source', 'UTM Medium', 'UTM Campaign', 'Mobile ou Desktop',
   'Status sync MailerLite: vazio=pendente, ok=enviado, err:...=falhou, migrated=lead anterior à arquitetura assíncrona',
   'Timestamp do último sync MailerLite',
-  'Status sync Mensageiro: vazio=pendente, ok=enviado, skip:sem_telefone ou err:...=falhou',
-  'Timestamp do último sync Mensageiro'
+  'Status sync CRM/Mensageiro: vazio=pendente, ok=enviado, skip:sem_telefone ou err:...=falhou',
+  'Timestamp do último sync CRM/Mensageiro'
 ];
 
 
@@ -666,8 +668,8 @@ function syncPendingLivesToMensageiro() {
     if (!sheet) return;
 
     var h = LIVES_HEADERS;
-    var syncCol   = h.indexOf('Mensageiro Sync') + 1;
-    var syncAtCol = h.indexOf('Mensageiro Sync At') + 1;
+    var syncCol   = h.indexOf('CRM Sync') + 1;
+    var syncAtCol = h.indexOf('CRM Sync At') + 1;
     var nomeCol   = h.indexOf('Nome') + 1;
     var emailCol  = h.indexOf('E-mail') + 1;
     var whatsCol  = h.indexOf('WhatsApp') + 1;
