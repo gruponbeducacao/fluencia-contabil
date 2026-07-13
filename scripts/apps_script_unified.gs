@@ -172,6 +172,7 @@ function handleBolsao(p) {
 
 function handleLives(p) {
   var sheet = ensureSheet(SHEETS.LIVES, LIVES_HEADERS, LIVES_NOTES);
+  var rowNum = sheet.getLastRow() + 1;
   sheet.appendRow([
     new Date(), String(p.nome || '').trim(), p.email,
     normalizePhone(p.telefone_digits || p.telefone || p.whatsapp || ''),
@@ -181,7 +182,71 @@ function handleLives(p) {
     String(p.dispositivo || ''),
     '', '', '', ''
   ]);
+  dispatchLiveLeadImmediately_(p, sheet, rowNum);
   return jsonResponse({ ok: true, aba: SHEETS.LIVES });
+}
+
+/**
+ * Dispara as integrações críticas da LP de Lives ainda dentro do doPost.
+ * Falhas ficam registradas nas colunas de status e podem ser recuperadas
+ * pelos workers assíncronos já existentes.
+ */
+function dispatchLiveLeadImmediately_(p, sheet, rowNum) {
+  var headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0].map(String);
+  var cols = {};
+  headers.forEach(function(name, i) { cols[name] = i + 1; });
+  var email = String(p.email || '').trim().toLowerCase();
+  var nome = String(p.nome || '').trim();
+  var telefone = normalizePhone(p.telefone_digits || p.telefone || p.whatsapp || '');
+  var telefoneE164 = '+55' + telefone;
+  var now = new Date();
+
+  // Mensageiro/CRM — imediato via webhook.
+  if (typeof pushToMensageiro === 'function' && cols['Mensageiro Sync']) {
+    var crmPayload = {
+      evento: 'lives_lead', nome: nome, email: email, telefone: telefoneE164,
+      origem: String(p.origem || ''), pagina: String(p.pagina || ''),
+      utm_source: String(p.utm_source || ''), utm_medium: String(p.utm_medium || ''),
+      utm_campaign: String(p.utm_campaign || ''), dispositivo: String(p.dispositivo || ''),
+      timestamp: now.toISOString()
+    };
+    try {
+      pushToMensageiro(crmPayload);
+      sheet.getRange(rowNum, cols['Mensageiro Sync']).setValue('ok');
+      if (cols['Mensageiro Sync At']) sheet.getRange(rowNum, cols['Mensageiro Sync At']).setValue(now);
+    } catch (err) {
+      sheet.getRange(rowNum, cols['Mensageiro Sync']).setValue('err:' + String(err).substring(0, 180));
+      if (cols['Mensageiro Sync At']) sheet.getRange(rowNum, cols['Mensageiro Sync At']).setValue(now);
+      logError('Mensageiro imediato Lives: ' + err, { parameter: { email: email, sheet: SHEETS.LIVES } });
+    }
+  }
+
+  // AWS SES — contato e primeiro email da sequência D, se o módulo SES estiver no projeto.
+  if (typeof sesUpsertContact_ === 'function' && cols['SES Sync']) {
+    try {
+      sesUpsertContact_(email, 'lives', { name: nome, phone: telefone, origem: String(p.origem || '') });
+      sheet.getRange(rowNum, cols['SES Sync']).setValue('ok');
+      if (cols['SES Sync At']) sheet.getRange(rowNum, cols['SES Sync At']).setValue(now);
+
+      var steps = typeof loadSequenceConfig_ === 'function' ? loadSequenceConfig_() : {};
+      var first = steps.D && steps.D[0];
+      if (first && typeof renderTemplate_ === 'function' && typeof sesSendMarketing_ === 'function') {
+        var html = renderTemplate_(first.template, nome);
+        sesSendMarketing_(email, first.assunto, html, 'lives');
+        var nextStep = steps.D[1];
+        if (cols['Seq Passo']) sheet.getRange(rowNum, cols['Seq Passo']).setValue(nextStep ? 1 : 'concluída');
+        if (cols['Seq Próximo Em'] && nextStep) {
+          sheet.getRange(rowNum, cols['Seq Próximo Em']).setValue(
+            new Date(now.getTime() + (nextStep.dias - first.dias) * 86400000)
+          );
+        }
+      }
+    } catch (err) {
+      if (cols['SES Sync']) sheet.getRange(rowNum, cols['SES Sync']).setValue('err:' + String(err).substring(0, 180));
+      if (cols['SES Sync At']) sheet.getRange(rowNum, cols['SES Sync At']).setValue(now);
+      logError('SES imediato Lives: ' + err, { parameter: { email: email, sheet: SHEETS.LIVES } });
+    }
+  }
 }
 
 
