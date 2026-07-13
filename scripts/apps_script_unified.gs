@@ -29,12 +29,11 @@
  *   • testMensageiroWebhook() — dispara 1 mensagem REAL de teste (não é dry-run;
  *     exige Script Property MENSAGEIRO_TEST_PHONE com seu próprio número)
  *
- * ─── SYNC MENSAGEIRO (só LP Dicionário) ────────────────────────────────
- * Todo novo lead da LP Dicionário com telefone preenchido é encaminhado
+ * ─── SYNC MENSAGEIRO (Dicionário + Lives) ─────────────────────────────
+ * Todo novo lead com telefone das LPs Dicionário e Lives é encaminhado
  * via webhook pro Mensageiro (trigger `syncPendingToMensageiro`, 1min,
  * mesmo padrão assíncrono do sync com MailerLite). Leads sem telefone
- * (exit_intent/sticky_bar, que só pedem e-mail) ficam marcados
- * 'skip:sem_telefone' — não há WhatsApp pra acionar.
+ * ficam marcados 'skip:sem_telefone' — não há WhatsApp pra acionar.
  * ═══════════════════════════════════════════════════════════════════════
  */
 
@@ -180,7 +179,7 @@ function handleLives(p) {
     String(p.pagina || ''), String(p.referrer || ''),
     String(p.utm_source || ''), String(p.utm_medium || ''), String(p.utm_campaign || ''),
     String(p.dispositivo || ''),
-    '', ''
+    '', '', '', ''
   ]);
   return jsonResponse({ ok: true, aba: SHEETS.LIVES });
 }
@@ -263,7 +262,8 @@ const LIVES_HEADERS = [
   'Página', 'Referrer',
   'UTM Source', 'UTM Medium', 'UTM Campaign',
   'Dispositivo',
-  'ML Sync', 'ML Sync At'
+  'ML Sync', 'ML Sync At',
+  'Mensageiro Sync', 'Mensageiro Sync At'
 ];
 const LIVES_NOTES = [
   'Timestamp do submit', 'Nome completo', 'E-mail', 'WhatsApp só dígitos',
@@ -271,7 +271,9 @@ const LIVES_NOTES = [
   'Código de indicação', 'Pathname + query (deve começar com /lives.html)', 'Referrer do navegador',
   'UTM Source', 'UTM Medium', 'UTM Campaign', 'Mobile ou Desktop',
   'Status sync MailerLite: vazio=pendente, ok=enviado, err:...=falhou, migrated=lead anterior à arquitetura assíncrona',
-  'Timestamp do último sync'
+  'Timestamp do último sync MailerLite',
+  'Status sync Mensageiro: vazio=pendente, ok=enviado, skip:sem_telefone ou err:...=falhou',
+  'Timestamp do último sync Mensageiro'
 ];
 
 
@@ -582,6 +584,83 @@ function syncPendingToMensageiro() {
   }
 }
 
+/**
+ * Trigger temporal: sincroniza os leads da aba Lives com o Mensageiro.
+ * Usa status separado para não misturar o resultado do MailerLite.
+ */
+function syncPendingLivesToMensageiro() {
+  var lock = LockService.getScriptLock();
+  if (!lock.tryLock(1000)) {
+    console.log('Outro sync em andamento — Lives pulando');
+    return;
+  }
+
+  try {
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var sheet = ss.getSheetByName(SHEETS.LIVES);
+    if (!sheet) return;
+
+    var h = LIVES_HEADERS;
+    var syncCol   = h.indexOf('Mensageiro Sync') + 1;
+    var syncAtCol = h.indexOf('Mensageiro Sync At') + 1;
+    var nomeCol   = h.indexOf('Nome') + 1;
+    var emailCol  = h.indexOf('E-mail') + 1;
+    var whatsCol  = h.indexOf('WhatsApp') + 1;
+    var origemCol = h.indexOf('Origem') + 1;
+    var paginaCol = h.indexOf('Página') + 1;
+    var utmSCol   = h.indexOf('UTM Source') + 1;
+    var utmMCol   = h.indexOf('UTM Medium') + 1;
+    var utmCCol   = h.indexOf('UTM Campaign') + 1;
+    var dispCol   = h.indexOf('Dispositivo') + 1;
+    var lastRow = sheet.getLastRow();
+    if (lastRow < 2 || syncCol < 1 || syncAtCol < 1) return;
+
+    var values = sheet.getRange(2, 1, lastRow - 1, h.length).getValues();
+    var processed = 0;
+    for (var r = 0; r < values.length && processed < MENSAGEIRO_BATCH_SIZE; r++) {
+      if (String(values[r][syncCol - 1] || '') !== '') continue;
+
+      var rowNum = r + 2;
+      var whatsDigits = String(values[r][whatsCol - 1] || '').replace(/\D+/g, '');
+      if (!whatsDigits) {
+        sheet.getRange(rowNum, syncCol).setValue('skip:sem_telefone');
+        sheet.getRange(rowNum, syncAtCol).setValue(new Date());
+        processed++;
+        continue;
+      }
+
+      var payload = {
+        evento: 'lives_lead',
+        nome: String(values[r][nomeCol - 1] || ''),
+        email: String(values[r][emailCol - 1] || ''),
+        telefone: formatPhoneE164BR(whatsDigits),
+        origem: String(values[r][origemCol - 1] || ''),
+        pagina: String(values[r][paginaCol - 1] || ''),
+        utm_source: String(values[r][utmSCol - 1] || ''),
+        utm_medium: String(values[r][utmMCol - 1] || ''),
+        utm_campaign: String(values[r][utmCCol - 1] || ''),
+        dispositivo: String(values[r][dispCol - 1] || ''),
+        timestamp: new Date().toISOString()
+      };
+
+      try {
+        pushToMensageiro(payload);
+        sheet.getRange(rowNum, syncCol).setValue('ok');
+        sheet.getRange(rowNum, syncAtCol).setValue(new Date());
+      } catch (err) {
+        var errStr = String(err).substring(0, 200);
+        sheet.getRange(rowNum, syncCol).setValue('err:' + errStr);
+        sheet.getRange(rowNum, syncAtCol).setValue(new Date());
+        logError('Mensageiro Lives sync: ' + err, { parameter: { email: payload.email, sheet: SHEETS.LIVES } });
+      }
+      processed++;
+    }
+    if (processed > 0) console.log('Mensageiro Lives sync run: ' + processed + ' leads processados');
+  } finally {
+    lock.releaseLock();
+  }
+}
+
 /** BR sem DDI (10-11 díg) → E.164 (+55DDDNUMERO). Já com 55: só prefixa '+'. */
 function formatPhoneE164BR(tel) {
   var digits = String(tel || '').replace(/\D+/g, '');
@@ -633,7 +712,7 @@ function setupAfterDeploy() {
   var removed = 0;
   for (var i = 0; i < triggers.length; i++) {
     var fn = triggers[i].getHandlerFunction();
-    if (fn === 'syncPendingToMailerLite' || fn === 'syncPendingToMensageiro') {
+    if (fn === 'syncPendingToMailerLite' || fn === 'syncPendingToMensageiro' || fn === 'syncPendingLivesToMensageiro') {
       ScriptApp.deleteTrigger(triggers[i]);
       removed++;
     }
@@ -643,7 +722,9 @@ function setupAfterDeploy() {
   ScriptApp.newTrigger('syncPendingToMailerLite').timeBased().everyMinutes(1).create();
   Logger.log('✅ Trigger criado: syncPendingToMailerLite roda a cada 1 minuto');
   ScriptApp.newTrigger('syncPendingToMensageiro').timeBased().everyMinutes(1).create();
-  Logger.log('✅ Trigger criado: syncPendingToMensageiro roda a cada 1 minuto (só Dicionário)');
+  Logger.log('✅ Trigger criado: syncPendingToMensageiro roda a cada 1 minuto (Dicionário)');
+  ScriptApp.newTrigger('syncPendingLivesToMensageiro').timeBased().everyMinutes(1).create();
+  Logger.log('✅ Trigger criado: syncPendingLivesToMensageiro roda a cada 1 minuto (Lives)');
   Logger.log('');
   Logger.log('Setup completo. Próximos passos:');
   Logger.log('1. Ver triggers em "Acionadores" (menu lateral, 4º ícone)');
