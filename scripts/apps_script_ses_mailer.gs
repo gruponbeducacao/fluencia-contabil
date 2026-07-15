@@ -1111,7 +1111,7 @@ function agendarBroadcastsLancamento() {
     ['L2', 'Por que só anual? (e por que isso te interessa)',       'broadcasts/lancamento/L2-por-que-anual.html',  TODOS, new Date(2026, 6, 31, 9, 0)],
     ['L3', 'Amanhã 20h: começa a semana das 4 lives',               'broadcasts/lancamento/L3-vespera.html',        TODOS, new Date(2026, 7, 3, 18, 0)],
     ['L4', 'Acabou a semana de lives — restam 9d na janela',        'broadcasts/lancamento/L4-pos-lives-roi.html',  TODOS, new Date(2026, 7, 8, 9, 0)],
-    ['L5', 'Amanhã encerra (alguns que já estão dentro)',           'broadcasts/lancamento/L5-depoimentos.html',    TODOS, new Date(2026, 7, 13, 18, 0)],
+    ['L5', 'Faltam 3 dias (e olha quem já decidiu)',                'broadcasts/lancamento/L5-depoimentos.html',    TODOS, new Date(2026, 7, 13, 18, 0)],
     ['L6', 'ÚLTIMO DIA · janela do Fundador encerra hoje 23h59',    'broadcasts/lancamento/L6-ultimo-dia.html',     TODOS, new Date(2026, 7, 16, 9, 0)],
     ['L7', '🚨 ÚLTIMA CHAMADA · 5h pra encerrar a janela',          'broadcasts/lancamento/L7-ultima-chamada.html', TODOS, new Date(2026, 7, 16, 19, 0)],
     // ── Convites Live 1 (ter 04/08 20h) ──
