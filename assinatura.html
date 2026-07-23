@@ -20,7 +20,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta property="og:title" content="Aluno Fundador 2026 — Assinatura Anual da Fluência Contábil">
 <meta property="og:description" content="Contabilidade ensinada como um idioma, pela lógica. Plataforma completa + questões comentadas de banca + bônus Fundador (4 aulas ao vivo com o professor). Janela até 16/08, 23h59.">
 <meta property="og:url" content="https://fluenciacontabil.com.br/assinatura.html">
-<meta property="og:image" content="https://fluenciacontabil.com.br/assets/prof-hero.jpg">
+<meta property="og:image" content="https://fluenciacontabil.com.br/assets/hero-institucional.jpg">
 <meta property="og:locale" content="pt_BR">
 
 <link rel="icon" type="image/png" href="assets/favicon.png">
@@ -28,7 +28,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&family=Instrument+Serif&display=swap" rel="stylesheet">
 
 <style>
   :root {
@@ -207,7 +207,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .hero-foto { position: relative; min-height: 540px; }
   .hero-foto img {
     position: absolute; bottom: 0; right: 0;
-    width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%;
+    width: 100%; height: 100%; object-fit: cover; object-position: 75% 45%;
     border-radius: 0 0 0 18px;
   }
   .hero-foto::before {
@@ -767,6 +767,153 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .demo .destudo.and { color: #A88A32; border-color: #A88A32; }
   .demo .destudo.todo { color: #5E5E5E; border-color: #A8A598; }
 
+  /* ---- Questões: chips de filtros ativos (réplica .fc-fchip) ---- */
+  .demo .dfchips { display: none; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .demo .dfchips.on { display: flex; }
+  .demo .dfchip {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: #fff; border: 1px solid #D4D1C7; border-radius: 999px;
+    padding: 4px 6px 4px 10px; cursor: pointer; font-family: inherit;
+  }
+  .demo .dfchip .k { font-size: 10px; color: #717171; }
+  .demo .dfchip .v { font-size: 10.5px; font-weight: 700; color: #1B2A4A; }
+  .demo .dfchip .x { font-size: 13px; font-weight: 700; color: #A8A598; padding: 0 3px; }
+  .demo .dfchip:hover .x { color: #D93E3E; }
+  .demo .dfchips .limpar { font-size: 10.5px; font-weight: 700; color: #A88A32; background: none; border: none; cursor: pointer; font-family: inherit; text-decoration: underline; }
+
+  /* ---- Simulador: Classificação Contábil (réplica fiel) ---- */
+  .demo .dcl-pills { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+  .demo .dcl-pill { font-size: 10.5px; font-weight: 800; padding: 5px 10px; border-radius: 999px; }
+  .demo .dcl-pill.seq { background: #FBF1D4; color: #A88A32; border: 1px solid rgba(200,168,75,0.34); }
+  .demo .dcl-pill.combo { background: #1B2A4A; color: #fff; }
+  .demo .dcl-pill.xp { background: #fff; color: #1B2A4A; border: 1px solid #e5e7eb; }
+  .demo .dcl-pill.timer { background: #1B2A4A; color: #fff; min-width: 46px; text-align: center; font-weight: 900; }
+  .demo .dcl-pill.timer.warn { background: #FBF1D4; color: #A88A32; }
+  .demo .dcl-pill.timer.danger { background: #FCEAEA; color: #D93E3E; }
+  .demo .dcl-card {
+    background: linear-gradient(135deg, #0F1B33 0%, #1B2A4A 62%, #2E4A7A 100%);
+    border: 1px solid rgba(224,199,120,0.18); border-radius: 14px;
+    padding: 16px; box-shadow: 0 10px 22px rgba(27,42,74,0.14); margin-bottom: 10px;
+  }
+  .demo .dcl-card .lbl { font-size: 9.5px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.72); }
+  .demo .dcl-card .conta { font-size: 23px; font-weight: 900; color: #fff; line-height: 1.12; margin: 4px 0; }
+  .demo .dcl-card .status { font-size: 11.5px; color: rgba(255,255,255,0.78); }
+  .demo .dcl-timer { height: 6px; background: rgba(255,255,255,0.22); border-radius: 999px; overflow: hidden; margin-top: 10px; }
+  .demo .dcl-timer i { display: block; height: 100%; background: #C8A84B; border-radius: 999px; transition: width 220ms linear; }
+  .demo .dcl-timer i.warn { background: #E0C778; }
+  .demo .dcl-timer i.danger { background: #FCEAEA; }
+  .demo .dcl-track { display: flex; gap: 4px; margin-bottom: 12px; }
+  .demo .dcl-track i { flex: 1; height: 7px; border-radius: 999px; background: rgba(27,42,74,0.12); }
+  .demo .dcl-track i.on { background: #C8A84B; }
+  .demo .dcl-hint-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .demo .dcl-hint-note { font-size: 10.5px; color: #6b7280; }
+  .demo .dcl-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 7px; }
+  .demo .dcl-grid button {
+    min-height: 46px; padding: 7px 8px 7px 10px; border-radius: 10px;
+    background: #fff; border: 1px solid #e5e7eb; border-left-width: 5px;
+    font-family: inherit; text-align: left; cursor: pointer;
+    transition: transform 0.12s ease;
+  }
+  .demo .dcl-grid button:hover { transform: translateY(-1px); }
+  .demo .dcl-grid button .l { display: block; font-size: 11px; font-weight: 700; color: #1B2A4A; line-height: 1.25; }
+  .demo .dcl-grid button .g { display: block; font-size: 8.5px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.04em; margin-top: 2px; }
+  .demo .dcl-grid button.certo { border-color: #2E7D32 !important; background: #E8F3E9; }
+  .demo .dcl-grid button.errado { border-color: #D93E3E !important; background: #FCEAEA; }
+  .demo .dcl-grid button.apagada { opacity: 0.22; pointer-events: none; }
+  .demo .dcl-feedback { border-radius: 10px; padding: 12px 14px; margin-top: 10px; display: none; }
+  .demo .dcl-feedback.ok { display: block; background: #ecfdf5; border: 1px solid #a7f3d0; }
+  .demo .dcl-feedback.erro { display: block; background: #fef2f2; border: 1px solid #fecaca; }
+  .demo .dcl-feedback b { font-size: 13.5px; font-weight: 800; color: #1B2A4A; display: block; margin-bottom: 3px; }
+  .demo .dcl-feedback p { font-size: 11.5px; color: #374151; line-height: 1.5; }
+
+  /* ---- Simulador: lançamento nível 1 (réplica fiel) ---- */
+  .demo .dlj-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+  .demo .dlj-head .t { font-size: 14.5px; font-weight: 700; color: #1B2A4A; margin-right: auto; }
+  .demo .dlj-bdif { font-size: 10px; font-weight: 600; background: #fee2e2; color: #991b1b; padding: 3px 10px; border-radius: 12px; }
+  .demo .dlj-bxp { font-size: 10px; font-weight: 700; background: #C8A84B; color: #1B2A4A; padding: 3px 10px; border-radius: 12px; }
+  .demo .dlj-enun { background: #FBF6E9; border-radius: 8px; padding: 12px 14px; margin-bottom: 12px; }
+  .demo .dlj-enun .ov { font-size: 9.5px; font-weight: 700; letter-spacing: 1px; color: #7A6320; margin-bottom: 5px; }
+  .demo .dlj-enun p { font-size: 12.5px; color: #2A2A2A; line-height: 1.6; }
+  .demo .dlj-tab { border: 1px solid #E8E6DF; border-radius: 10px; overflow: hidden; margin-bottom: 10px; }
+  .demo .dlj-tab .ov { font-size: 9.5px; font-weight: 700; letter-spacing: 1px; color: #717171; padding: 9px 12px 0; }
+  .demo .dlj-row { display: flex; gap: 7px; padding: 8px 12px; align-items: center; }
+  .demo .dlj-row select.dc { width: 58px; font-weight: 700; }
+  .demo .dlj-row select.dc.d { color: #2563eb; border-color: #2563eb; }
+  .demo .dlj-row select.dc.c { color: #dc2626; border-color: #dc2626; }
+  .demo .dlj-row input.conta { flex: 1; min-width: 0; font-family: inherit; font-size: 11.5px; border: 1px solid #D4D1C7; border-radius: 8px; padding: 8px 10px; }
+  .demo .dlj-row input.conta:focus { outline: none; border: 2px solid #2A3F6F; padding: 7px 9px; }
+  .demo .dlj-row input.valor { width: 86px; text-align: right; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11.5px; border: 1px solid #D4D1C7; border-radius: 8px; padding: 8px 9px; }
+  .demo .dlj-row input.valor:focus { outline: none; border-color: #2A3F6F; }
+  .demo .dlj-somas { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; background: #FAFAF8; border-radius: 8px; padding: 9px 12px; margin-bottom: 10px; font-size: 11px; color: #3F3F3F; }
+  .demo .dlj-somas .st { font-weight: 800; margin-left: auto; }
+  .demo .dlj-somas .st.ok { color: #059669; }
+  .demo .dlj-somas .st.falta { color: #dc2626; }
+  .demo .dlj-acoes { display: flex; gap: 8px; flex-wrap: wrap; }
+  .demo .dlj-dica { display: none; background: #fffbeb; border: 1px solid #C8A84B; border-radius: 8px; padding: 10px 12px; margin-top: 10px; font-size: 11.5px; color: #3F3F3F; line-height: 1.55; }
+  .demo .dlj-dica.on { display: block; }
+  .demo .dlj-res { display: none; border-radius: 10px; padding: 14px; margin-top: 10px; text-align: center; }
+  .demo .dlj-res.ok { display: block; background: #ecfdf5; border: 1px solid #a7f3d0; }
+  .demo .dlj-res.erro { display: block; background: #fef2f2; border: 1px solid #fecaca; }
+  .demo .dlj-res .tit { font-size: 16px; font-weight: 800; }
+  .demo .dlj-res.ok .tit { color: #059669; }
+  .demo .dlj-res.erro .tit { color: #dc2626; }
+  .demo .dlj-res .xp { font-size: 22px; font-weight: 800; color: #A88A32; margin: 2px 0 6px; }
+  .demo .dlj-res .diag { font-size: 11.5px; color: #991b1b; font-weight: 600; margin-bottom: 4px; }
+  .demo .dlj-macete { background: #FBF6E9; border: 1px solid #C8A84B; border-radius: 8px; padding: 10px 12px; margin-top: 8px; text-align: left; }
+  .demo .dlj-macete .ov { font-size: 9.5px; font-weight: 700; letter-spacing: 1.5px; color: #7A6320; margin-bottom: 4px; }
+  .demo .dlj-macete p { font-size: 11.5px; color: #2A2A2A; line-height: 1.55; }
+  .demo .dlj-gab { background: #f0f9ff; border: 1px solid #93c5fd; border-radius: 8px; padding: 10px 12px; margin-top: 8px; text-align: left; }
+  .demo .dlj-gab .ov { font-size: 9.5px; font-weight: 800; letter-spacing: 1px; color: #1B2A4A; margin-bottom: 6px; }
+  .demo .dlj-gab table { width: 100%; border-collapse: collapse; font-size: 11px; }
+  .demo .dlj-gab td { padding: 3px 6px; color: #2A2A2A; }
+  .demo .dlj-gab td.dc-d { color: #2563eb; font-weight: 800; width: 22px; }
+  .demo .dlj-gab td.dc-c { color: #dc2626; font-weight: 800; width: 22px; }
+  .demo .dlj-gab td.val { text-align: right; font-family: 'JetBrains Mono', ui-monospace, monospace; }
+
+  /* ---- Plano de Estudos (réplica fiel) ---- */
+  .demo .dpe-faixa {
+    background: radial-gradient(circle at 30% 20%, rgba(200,168,75,0.12), transparent 55%), linear-gradient(135deg, #24365C, #1B2A4A);
+    border-radius: 12px 12px 0 0; padding: 14px 16px; color: #fff;
+  }
+  .demo .dpe-kicker { font-size: 9.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: #E0C778; }
+  .demo .dpe-faixa-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-top: 4px; }
+  .demo .dpe-meta { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.9); }
+  .demo .dpe-selo { display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; color: #E0C778; white-space: nowrap; }
+  .demo .dpe-selo .sep { width: 1px; height: 14px; background: rgba(255,255,255,0.25); }
+  .demo .dpe-bar { width: 168px; max-width: 100%; height: 6px; background: rgba(255,255,255,0.18); border-radius: 999px; overflow: hidden; margin-top: 8px; }
+  .demo .dpe-bar i { display: block; height: 100%; background: linear-gradient(90deg, #C8A84B, #E0C778); }
+  .demo .dpe-sub { font-size: 10.5px; color: rgba(255,255,255,0.7); margin-top: 5px; }
+  .demo .dpe-grade {
+    display: grid; grid-template-columns: repeat(7, minmax(0,1fr)); gap: 6px;
+    background: #fff; border: 1px solid #E8E6DF; border-top: none;
+    border-radius: 0 0 12px 12px; padding: 12px; margin-bottom: 12px;
+  }
+  .demo .dpe-dia { position: relative; min-height: 116px; background: #fff; border: 1px solid #E8E6DF; border-radius: 8px; padding: 7px 6px; }
+  .demo .dpe-dia.hoje { border: 1.5px solid #C8A84B; box-shadow: 0 4px 12px rgba(200,168,75,0.22); }
+  .demo .dpe-dia.livre { background: #FAFAF8; border-style: dashed; }
+  .demo .dpe-dia .wd { font-size: 8.5px; font-weight: 800; text-transform: uppercase; color: #717171; display: block; }
+  .demo .dpe-dia .num { font-family: 'Instrument Serif', Georgia, serif; font-size: 17px; color: #1B2A4A; line-height: 1.2; }
+  .demo .dpe-dia.hoje .num { color: #7A6320; }
+  .demo .dpe-hoje-badge {
+    position: absolute; top: -8px; left: 50%; transform: translateX(-50%);
+    background: #C8A84B; color: #1B2A4A;
+    font-size: 8px; font-weight: 800; text-transform: uppercase;
+    padding: 2px 8px; border-radius: 999px; white-space: nowrap;
+  }
+  .demo .dpe-chip { font-size: 8.5px; font-weight: 500; border-radius: 5px; padding: 3px 5px; margin-top: 4px; line-height: 1.35; }
+  .demo .dpe-chip.estudo { background: #E7EDF5; color: #2E4A7A; }
+  .demo .dpe-chip.quest { background: rgba(200,168,75,0.11); color: #7A6320; }
+  .demo .dpe-chip.rev { background: #E8F3E9; color: #2E7D32; }
+  .demo .dpe-chip.venc { background: #FBF1D4; color: #7A5A07; }
+  .demo .dpe-chip.prev { background: #fff; border: 1px dashed #D4D1C7; color: #717171; }
+  .demo .dpe-chip .mini { display: block; font-size: 7.5px; opacity: 0.85; }
+  .demo .dpe-livre-txt { font-size: 9.5px; color: #A8A598; margin-top: 8px; }
+  .demo .dpe-ok { font-size: 8.5px; color: #2E7D32; font-weight: 700; margin-top: 4px; }
+  .demo .dpe-tarefa { display: flex; gap: 10px; align-items: flex-start; }
+  .demo .dpe-tarefa-ic { flex-shrink: 0; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+  .demo .dpe-kick { font-size: 8.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: #7A5A07; }
+  .demo .dpe-caption { font-size: 10px; color: #A8A598; margin-top: 8px; text-align: center; line-height: 1.5; }
+
   /* ---- Toast (itens fora da demo) ---- */
   .demo-toast {
     position: absolute; left: 50%; bottom: 18px; transform: translateX(-50%) translateY(8px);
@@ -813,6 +960,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .demo .dvideo { width: 100%; height: 92px; }
     .demo .dq-foot { flex-wrap: wrap; }
     .demo .dtabs { overflow-x: auto; scrollbar-width: none; }
+    .demo .dpe-grade { display: flex; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .demo .dpe-dia { flex: 0 0 96px; }
+    .demo .dcl-grid { grid-template-columns: repeat(2, 1fr); }
+    .demo .dlj-row { flex-wrap: wrap; }
+    .demo .dlj-row input.conta { flex: 1 1 100%; order: 3; }
   }
   .plat-grid {
     display: grid; grid-template-columns: repeat(4, 1fr);
@@ -1094,7 +1246,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .hero-grid { grid-template-columns: 1fr; gap: 0; padding: 0; }
     .hero-texto { padding: 0 24px 56px; margin-top: -52px; position: relative; z-index: 3; }
     .hero-foto { order: -1; min-height: 0; height: 380px; }
-    .hero-foto img { border-radius: 0; object-position: 50% 14%; }
+    .hero-foto img { border-radius: 0; object-position: 68% 55%; }
     .hero-foto::before { background: linear-gradient(180deg, rgba(19,31,56,0) 55%, var(--azul-noite) 100%); }
     .hero-foto::after { display: none; }
     .hero-logo { width: 80px; margin-bottom: 18px; }
@@ -1180,8 +1332,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <div class="hero-foto">
       <picture>
-        <source srcset="assets/prof-hero.webp" type="image/webp">
-        <img src="assets/prof-hero.jpg" alt="Prof. Vinícius Ferraz, Auditor Fiscal e fundador da Fluência Contábil" width="1200" height="900" fetchpriority="high">
+        <source srcset="assets/hero-institucional.webp" type="image/webp">
+        <img src="assets/hero-institucional.jpg" alt="Livro da Fluência Contábil sobre mesa de escritório, com plano de contas, balancete e calculadora" width="1400" height="932" fetchpriority="high">
       </picture>
     </div>
   </div>
@@ -1303,7 +1455,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <div class="demo-side-scroll">
             <div class="demo-side-label">Estudo</div>
             <button type="button" class="active" data-screen="inicio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Início</button>
-            <button type="button" data-fake="Plano de Estudos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Plano de Estudos <em>Beta</em></button>
+            <button type="button" data-screen="plano"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Plano de Estudos <em>Beta</em></button>
             <button type="button" data-screen="aulas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>Aulas</button>
             <button type="button" data-screen="questoes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Questões</button>
             <button type="button" data-screen="mapa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>Mapa de Incidência <em>Beta</em></button>
@@ -1475,6 +1627,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                   </select>
                 </div>
               </div>
+              <div class="dfchips" id="demoFChips" aria-live="polite"></div>
               <div class="dtoolbar"><b id="demoQNum">6</b><span>questões encontradas</span></div>
               <div id="demoQLista"></div>
               <p class="dnote">Questões de demonstração, criadas pra esta prévia. Na plataforma real, o banco tem questões de bancas reais (CEBRASPE, FGV, FCC, VUNESP) — todas com comentário do professor.</p>
@@ -1517,7 +1670,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     <span class="stars" aria-hidden="true">★☆☆☆☆</span>
                     <p>Lançamentos de 2-3 linhas. Conceitos básicos.</p>
                     <span class="dmeta"><b>36 lançamentos</b> · 30 XP cada</span>
-                    <div class="dnivel-foot"><span class="dnivel-chip">✓ 12/36</span><span class="dnivel-go">Praticar →</span></div>
+                    <div class="dnivel-foot"><span class="dnivel-chip">✓ 12/36</span><button type="button" class="dbtn-sec" id="demoSimNivel1" style="padding:5px 11px;font-size:10.5px;">⏵ Praticar</button></div>
                   </div>
                   <div class="dcard dnivel">
                     <span class="emo" aria-hidden="true">🌿</span>
@@ -1537,20 +1690,73 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                   </div>
                 </div>
               </div>
-              <div id="demoSimJogo" hidden>
-                <button type="button" class="dvoltar" id="demoSimVoltar">← Voltar pro Simulador</button>
-                <div class="dcard dsim-jogo">
-                  <div class="dsim-pergunta">Em que grupo entra a conta:</div>
-                  <div class="dsim-conta" id="demoSimConta">—</div>
-                  <div class="dsim-ops" id="demoSimOps">
-                    <button type="button" data-g="Ativo">Ativo</button>
-                    <button type="button" data-g="Passivo">Passivo</button>
-                    <button type="button" data-g="PL">Patrimônio Líquido</button>
-                    <button type="button" data-g="Receita">Receita</button>
-                    <button type="button" data-g="Despesa">Despesa</button>
+              <!-- Sub-tela: Classificação Contábil (réplica fiel: 15s, streak, combo, 14 categorias) -->
+              <div id="demoSimClassif" hidden>
+                <button type="button" class="dvoltar" data-simvolta>← Voltar pro Simulador</button>
+                <div class="dcl-pills">
+                  <span class="dcl-pill seq" id="dclSeq">Sequência 0</span>
+                  <span class="dcl-pill combo" id="dclCombo">Combo x1</span>
+                  <span class="dcl-pill xp" id="dclXp">0/120 XP hoje</span>
+                  <span class="dcl-pill timer" id="dclTimer">15s</span>
+                </div>
+                <div class="dcl-card">
+                  <div class="lbl">Conta</div>
+                  <div class="conta" id="dclConta">—</div>
+                  <div class="status" id="dclStatus">Rodada em andamento</div>
+                  <div class="dcl-timer"><i id="dclTimerBar" style="width:100%"></i></div>
+                </div>
+                <div class="dcl-track" id="dclTrack" aria-hidden="true"></div>
+                <div class="dcl-hint-row">
+                  <button type="button" class="dbtn-sec" id="dclDica">Usar dica</button>
+                  <span class="dcl-hint-note">Acerto com dica vale metade do XP.</span>
+                </div>
+                <div class="dcl-grid" id="dclGrid"></div>
+                <div class="dcl-feedback" id="dclFeedback" aria-live="polite"></div>
+              </div>
+
+              <!-- Sub-tela: lançamento nível 1 (enunciado real do banco do Simulador) -->
+              <div id="demoSimLanc" hidden>
+                <button type="button" class="dvoltar" data-simvolta>← Voltar pro Simulador</button>
+                <div class="dcard" style="padding:14px;">
+                  <div class="dlj-head">
+                    <span class="t">4.1 — Reconhecimento da Receita à Vista</span>
+                    <span class="dlj-bdif">Dificuldade 1</span>
+                    <span class="dlj-bxp">30 XP</span>
                   </div>
-                  <div class="dsim-msg" id="demoSimMsg" aria-live="polite"></div>
-                  <div class="dsim-score" id="demoSimScore"></div>
+                  <div class="dlj-enun">
+                    <div class="ov">📋 ENUNCIADO</div>
+                    <p>A <strong>Phi Comercial Ltda.</strong> realizou uma venda <strong>à vista</strong> de mercadorias por <strong>R$ 5.000</strong>. Faça o lançamento do recebimento da receita.</p>
+                  </div>
+                  <div class="dlj-tab">
+                    <div class="ov">📝 PARTIDA DOBRADA</div>
+                    <div class="dlj-row">
+                      <select class="dc d" id="dljDc1" aria-label="Débito ou crédito, linha 1"><option value="D" selected>D</option><option value="C">C</option></select>
+                      <input type="text" class="conta" id="dljConta1" list="dljContas" placeholder="Comece a digitar…" aria-label="Conta da linha 1" autocomplete="off">
+                      <input type="text" class="valor" id="dljValor1" placeholder="0,00" inputmode="numeric" aria-label="Valor da linha 1" autocomplete="off">
+                    </div>
+                    <div class="dlj-row" style="border-top:1px dashed #E8E6DF;">
+                      <select class="dc c" id="dljDc2" aria-label="Débito ou crédito, linha 2"><option value="D">D</option><option value="C" selected>C</option></select>
+                      <input type="text" class="conta" id="dljConta2" list="dljContas" placeholder="Comece a digitar…" aria-label="Conta da linha 2" autocomplete="off">
+                      <input type="text" class="valor" id="dljValor2" placeholder="0,00" inputmode="numeric" aria-label="Valor da linha 2" autocomplete="off">
+                    </div>
+                    <datalist id="dljContas">
+                      <option value="Caixa e Equivalentes"></option>
+                      <option value="Receita de Vendas"></option>
+                      <option value="Estoques"></option>
+                      <option value="Clientes"></option>
+                      <option value="Fornecedores"></option>
+                      <option value="Custo das Mercadorias Vendidas"></option>
+                      <option value="Capital Social"></option>
+                      <option value="Empréstimos a Pagar"></option>
+                    </datalist>
+                  </div>
+                  <div class="dlj-somas"><span id="dljSomaD">Soma D = R$ 0,00</span><span id="dljSomaC">Soma C = R$ 0,00</span><span class="st" id="dljStatus">Preencha as linhas</span></div>
+                  <div class="dlj-acoes">
+                    <button type="button" class="dbtn-sec" id="dljDica">💡 Pedir dica (–50% XP)</button>
+                    <button type="button" class="dbtn-primary" id="dljVerificar">✓ Verificar</button>
+                  </div>
+                  <div class="dlj-dica" id="dljDicaBox">💡 <b>DICA:</b> pergunte "o que entra?" — dinheiro entra no Caixa (débito). E "de onde veio?" — da Receita de Vendas (crédito). <b>XP do acerto agora vale 50%.</b></div>
+                  <div class="dlj-res" id="dljRes" aria-live="polite"></div>
                 </div>
               </div>
             </div>
@@ -1642,6 +1848,45 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 </div>
               </div>
               <p class="dnote">Concurso e números de exemplo. Na plataforma real, você escolhe seu concurso num catálogo com busca — e pode solicitar editais que ainda não estão lá.</p>
+            </div>
+
+            <!-- TELA: PLANO DE ESTUDOS (réplica: faixa de comando, grade semanal, sessão de hoje) -->
+            <div class="demo-screen" id="scr-plano">
+              <h3 class="dh1">Plano de Estudos <span class="dbadge gold" style="vertical-align:3px;">Beta</span></h3>
+              <p class="dsub">Focado no seu edital · revisões espaçadas (método Chaves).</p>
+              <div class="dpe-faixa">
+                <div class="dpe-kicker">Semana atual</div>
+                <div class="dpe-faixa-row">
+                  <span class="dpe-meta">Meta da semana — concluir a Aula 09 + 3 revisões</span>
+                  <span class="dpe-selo">🔥 12 dias <span class="sep"></span> 2.430 XP</span>
+                </div>
+                <div class="dpe-bar"><i style="width:40%"></i></div>
+                <div class="dpe-sub">2 de 5 sessões · 1h40 de ~4h planejadas</div>
+              </div>
+              <div class="dpe-grade">
+                <div class="dpe-dia"><span class="wd">seg</span><span class="num">20</span><div class="dpe-ok">✓ Sessão concluída</div><div class="dpe-chip estudo">Vídeos 1–2 · Aula 9 · 45 min</div></div>
+                <div class="dpe-dia hoje"><span class="dpe-hoje-badge">Hoje</span><span class="wd">ter</span><span class="num">21</span><div class="dpe-chip venc">Rev. Aula 3 · 15 min<span class="mini">venceu ontem</span></div><div class="dpe-chip quest">10 questões · Aula 8 · 20 min</div></div>
+                <div class="dpe-dia"><span class="wd">qua</span><span class="num">22</span><div class="dpe-chip estudo">Vídeos 3–4 · Aula 9 · 45 min</div><div class="dpe-chip rev">Rev. Aula 5 · 15 min</div></div>
+                <div class="dpe-dia livre"><span class="wd">qui</span><span class="num">23</span><div class="dpe-livre-txt">Livre</div></div>
+                <div class="dpe-dia"><span class="wd">sex</span><span class="num">24</span><div class="dpe-chip quest">10 questões · Aula 9 · 20 min</div></div>
+                <div class="dpe-dia livre"><span class="wd">sáb</span><span class="num">25</span><div class="dpe-livre-txt">Livre</div></div>
+                <div class="dpe-dia"><span class="wd">dom</span><span class="num">26</span><div class="dpe-chip prev">~ rev. Aula 9 · D+3</div></div>
+              </div>
+              <div class="dcard" style="margin-bottom:10px;">
+                <div class="dover gold">Sessão de hoje · terça</div>
+                <div class="dpe-tarefa">
+                  <span class="dpe-tarefa-ic" style="background:#FBF1D4;color:#B45309;">↻</span>
+                  <div>
+                    <div class="dpe-kick">Revisão espaçada · D+16 · venceu ontem</div>
+                    <div class="dh4">Aula 03 — CPC 26 (Apresentação das Demonstrações)</div>
+                    <p class="dcap" style="margin-top:2px;">Releia seus destaques e resolva questões de fixação (~15 min) · <b style="color:#A88A32;">+30 XP</b></p>
+                    <div class="dbtns" style="margin-top:8px;"><button type="button" class="dbtn-primary" data-goto="aulas">Abrir aula</button><button type="button" class="dbtn-sec" data-goto="questoes">Resolver questões</button></div>
+                  </div>
+                </div>
+                <p class="dcap" style="margin-top:10px;">Tem revisão vencida esperando — sem culpa: ela só entra primeiro na fila.</p>
+              </div>
+              <p class="dpe-caption">D+3 · 7 · 16 · 35 — o relógio de cada revisão reinicia quando você conclui a anterior. Faltou um dia? A grade recalcula sozinha — nada acumula culpa.</p>
+              <p class="dnote">Agenda de exemplo. Na plataforma real, o plano é montado pra sua rotina (dias e minutos por sessão) e pode seguir a ordem do que mais cai na sua banca.</p>
             </div>
 
           </div>
@@ -2142,6 +2387,7 @@ window.addEventListener('resize', function () {
     backdrop.classList.remove('show');
   }
   function demoGo(screen) {
+    clPara(); // pausa o timer da Classificação ao trocar de tela
     side.querySelectorAll('button[data-screen]').forEach(function (b) {
       b.classList.toggle('active', b.getAttribute('data-screen') === screen);
     });
@@ -2164,7 +2410,7 @@ window.addEventListener('resize', function () {
     if (!b) return;
     if (b.hasAttribute('data-screen')) { demoGo(b.getAttribute('data-screen')); return; }
     if (b.hasAttribute('data-fake')) {
-      toast('“' + b.getAttribute('data-fake') + '” está na plataforma real — a demo mostra 6 telas 😉');
+      toast('“' + b.getAttribute('data-fake') + '” está na plataforma real — a demo mostra 7 telas 😉');
       fecharDrawer();
     }
   });
@@ -2177,14 +2423,14 @@ window.addEventListener('resize', function () {
   });
   if (backdrop) backdrop.addEventListener('click', fecharDrawer);
 
-  /* --- Aulas: accordion de módulos (módulo 3 bloqueado não abre) --- */
+  /* --- Aulas: accordion de módulos (módulo bloqueado não abre) --- */
   document.querySelectorAll('.dmod').forEach(function (mod) {
     var head = mod.querySelector('.dmod-head');
     if (!head || !mod.querySelector('.dmod-body')) return;
     head.addEventListener('click', function () { mod.classList.toggle('open'); });
   });
 
-  /* --- Questões: dataset de demonstração + filtros + resolução --- */
+  /* --- Questões: dataset de demonstração + filtros com chips + resolução --- */
   var QS = [
     { cod: 'FC-D001', assunto: 'Balanço Patrimonial', banca: 'FGV', dif: 'Fácil', tipo: 'ME',
       enun: 'No Balanço Patrimonial de uma companhia, o saldo da conta Fornecedores, com vencimento em 60 dias, deve ser classificado em:',
@@ -2216,13 +2462,47 @@ window.addEventListener('resize', function () {
       fB = document.getElementById('demoFBanca'),
       fD = document.getElementById('demoFDif'),
       lista = document.getElementById('demoQLista'),
-      qNum = document.getElementById('demoQNum');
+      qNum = document.getElementById('demoQNum'),
+      fchips = document.getElementById('demoFChips');
+  var FILTROS = [
+    { sel: fA, k: 'Assunto' },
+    { sel: fB, k: 'Estilo' },
+    { sel: fD, k: 'Dificuldade' }
+  ];
+
+  function renderChips() {
+    fchips.innerHTML = '';
+    var ativos = FILTROS.filter(function (f) { return f.sel.value; });
+    fchips.classList.toggle('on', ativos.length > 0);
+    ativos.forEach(function (f) {
+      var chip = document.createElement('button');
+      chip.type = 'button';
+      chip.className = 'dfchip';
+      chip.setAttribute('aria-label', 'Remover filtro ' + f.k + ': ' + f.sel.value);
+      chip.innerHTML = '<span class="k">' + f.k + ':</span><span class="v"></span><span class="x" aria-hidden="true">×</span>';
+      chip.querySelector('.v').textContent = f.sel.value;
+      chip.addEventListener('click', function () { f.sel.value = ''; renderQs(); });
+      fchips.appendChild(chip);
+    });
+    if (ativos.length > 1) {
+      var limpar = document.createElement('button');
+      limpar.type = 'button';
+      limpar.className = 'limpar';
+      limpar.textContent = 'Limpar todos';
+      limpar.addEventListener('click', function () {
+        FILTROS.forEach(function (f) { f.sel.value = ''; });
+        renderQs();
+      });
+      fchips.appendChild(limpar);
+    }
+  }
 
   function renderQs() {
     var va = fA.value, vb = fB.value, vd = fD.value;
     var qs = QS.filter(function (q) {
       return (!va || q.assunto === va) && (!vb || q.banca === vb) && (!vd || q.dif === vd);
     });
+    renderChips();
     qNum.textContent = qs.length;
     qNum.nextElementSibling.textContent = qs.length === 1 ? 'questão encontrada' : 'questões encontradas';
     lista.innerHTML = '';
@@ -2237,7 +2517,7 @@ window.addEventListener('resize', function () {
       }).join('');
       card.innerHTML =
         '<div class="dq-top">' +
-          '<div class="dq-meta"><b>Fluência Contábil · Inédita</b><span class="cod">' + q.cod + '</span>' +
+          '<div class="dq-meta"><b>Estilo ' + q.banca + ' · Inédita Fluência</b><span class="cod">' + q.cod + '</span>' +
             '<span class="dbadge gold">Inédita</span>' +
             (q.tipo === 'CE' ? '<span class="dbadge gray">Certo/Errado</span>' : '') +
             '<span class="dbadge gray">Demo</span></div>' +
@@ -2277,75 +2557,268 @@ window.addEventListener('resize', function () {
   [fA, fB, fD].forEach(function (s) { s.addEventListener('change', renderQs); });
   renderQs();
 
-  /* --- Simulador: hub ⇄ jogo de classificação --- */
+  /* --- Simulador: hub ⇄ Classificação Contábil ⇄ lançamento nível 1 --- */
   var simHub = document.getElementById('demoSimHub'),
-      simJogo = document.getElementById('demoSimJogo');
-  var CONTAS = [
-    { c: 'Caixa', g: 'Ativo' },
-    { c: 'Fornecedores', g: 'Passivo' },
-    { c: 'Capital Social', g: 'PL' },
-    { c: 'Vendas de Mercadorias', g: 'Receita' },
-    { c: 'Juros incorridos sobre empréstimos', g: 'Despesa' },
-    { c: 'Estoques', g: 'Ativo' }
+      simClassif = document.getElementById('demoSimClassif'),
+      simLanc = document.getElementById('demoSimLanc');
+
+  function simMostrar(qual) {
+    clPara();
+    simHub.hidden = qual !== 'hub';
+    simClassif.hidden = qual !== 'classif';
+    simLanc.hidden = qual !== 'lanc';
+    if (qual === 'classif') clIniciar();
+  }
+  document.getElementById('demoSimTreinar').addEventListener('click', function () { simMostrar('classif'); });
+  document.getElementById('demoSimJogar').addEventListener('click', function () { simMostrar('lanc'); });
+  document.getElementById('demoSimNivel1').addEventListener('click', function () { simMostrar('lanc'); });
+  document.querySelectorAll('[data-simvolta]').forEach(function (b) {
+    b.addEventListener('click', function () { simMostrar('hub'); });
+  });
+
+  /* ---- Classificação Contábil (mecânica real: 15s, streak, combo, dica −50%) ---- */
+  var CL_CATS = [
+    { id: 'AC',   l: 'Ativo circulante',          g: 'Patrimonial',  cor: '#059669' },
+    { id: 'ANC',  l: 'Ativo não circulante',      g: 'Patrimonial',  cor: '#059669' },
+    { id: 'PC',   l: 'Passivo circulante',        g: 'Patrimonial',  cor: '#dc2626' },
+    { id: 'PNC',  l: 'Passivo não circulante',    g: 'Patrimonial',  cor: '#dc2626' },
+    { id: 'PL',   l: 'Patrimônio líquido',        g: 'Patrimonial',  cor: '#d97706' },
+    { id: 'REC',  l: 'Receita',                   g: 'Resultado',    cor: '#2563eb' },
+    { id: 'DED',  l: 'Dedução da receita',        g: 'Resultado',    cor: '#0ea5e9' },
+    { id: 'DESP', l: 'Despesa',                   g: 'Resultado',    cor: '#9333ea' },
+    { id: 'CMV',  l: 'CMV / resultado',           g: 'Resultado',    cor: '#9333ea' },
+    { id: 'CUST', l: 'Custo operacional',         g: 'Resultado',    cor: '#9333ea' },
+    { id: 'RA',   l: 'Retificadora do ativo',     g: 'Retificadora', cor: '#059669' },
+    { id: 'RP',   l: 'Retificadora do passivo',   g: 'Retificadora', cor: '#dc2626' },
+    { id: 'RPL',  l: 'Retificadora do PL',        g: 'Retificadora', cor: '#d97706' },
+    { id: 'RT',   l: 'Resultado transitório',     g: 'Encerramento', cor: '#475569' }
   ];
-  var GRUPO_LABEL = { Ativo: 'Ativo', Passivo: 'Passivo', PL: 'Patrimônio Líquido', Receita: 'Receita', Despesa: 'Despesa' };
-  var simIdx = 0, simPts = 0, simTravado = false;
-  var elConta = document.getElementById('demoSimConta'),
-      elOps = document.getElementById('demoSimOps'),
-      elMsg = document.getElementById('demoSimMsg'),
-      elScore = document.getElementById('demoSimScore');
+  var CL_CONTAS = [
+    { c: 'Caixa',                                  cat: 'AC' },
+    { c: 'Fornecedores',                           cat: 'PC' },
+    { c: 'Depreciação Acumulada',                  cat: 'RA' },
+    { c: 'Capital Social',                         cat: 'PL' },
+    { c: 'Vendas de Mercadorias',                  cat: 'REC' },
+    { c: 'Juros incorridos sobre empréstimos',     cat: 'DESP' },
+    { c: 'Empréstimos a Pagar (longo prazo)',      cat: 'PNC' },
+    { c: 'Estoques',                               cat: 'AC' }
+  ];
+  var CL_SEG = 15, CL_TRACK = 8;
+  var clIdx = 0, clStreak = 0, clXpDia = 0, clTempo = CL_SEG, clTimerId = null, clTravado = false, clDicaUsada = false;
+  var clConta = document.getElementById('dclConta'),
+      clStatus = document.getElementById('dclStatus'),
+      clTimerPill = document.getElementById('dclTimer'),
+      clTimerBar = document.getElementById('dclTimerBar'),
+      clSeqEl = document.getElementById('dclSeq'),
+      clComboEl = document.getElementById('dclCombo'),
+      clXpEl = document.getElementById('dclXp'),
+      clTrackEl = document.getElementById('dclTrack'),
+      clGrid = document.getElementById('dclGrid'),
+      clFeedback = document.getElementById('dclFeedback'),
+      clDicaBtn = document.getElementById('dclDica');
 
-  function simAbrir() {
-    simHub.hidden = true;
-    simJogo.hidden = false;
-    simIdx = 0; simPts = 0; simTravado = false;
-    elOps.style.display = '';
-    simRender();
+  function clComboTier() { return clStreak >= 20 ? 4 : clStreak >= 10 ? 3 : clStreak >= 5 ? 2 : 1; }
+  function clPara() { if (clTimerId) { clearInterval(clTimerId); clTimerId = null; } }
+  function clPills() {
+    clSeqEl.textContent = 'Sequência ' + clStreak;
+    clComboEl.textContent = 'Combo x' + clComboTier();
+    clXpEl.textContent = clXpDia + '/120 XP hoje';
+    clTimerPill.textContent = clTempo + 's';
+    clTimerPill.className = 'dcl-pill timer' + (clTempo <= 3 ? ' danger' : clTempo <= 7 ? ' warn' : '');
+    clTimerBar.style.width = Math.max(0, (clTempo / CL_SEG) * 100) + '%';
+    clTimerBar.className = clTempo <= 3 ? 'danger' : clTempo <= 7 ? 'warn' : '';
+    clTrackEl.innerHTML = '';
+    for (var i = 0; i < CL_TRACK; i++) {
+      clTrackEl.innerHTML += '<i' + (i < Math.min(CL_TRACK, clStreak) ? ' class="on"' : '') + '></i>';
+    }
   }
-  function simFechar() {
-    simJogo.hidden = true;
-    simHub.hidden = false;
+  function clMontaGrid() {
+    clGrid.innerHTML = '';
+    CL_CATS.forEach(function (cat) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.setAttribute('data-cat', cat.id);
+      b.style.borderLeftColor = cat.cor;
+      b.innerHTML = '<span class="l">' + cat.l + '</span><span class="g">' + cat.g + '</span>';
+      b.addEventListener('click', function () { clResponde(cat.id, b); });
+      clGrid.appendChild(b);
+    });
   }
-  document.getElementById('demoSimTreinar').addEventListener('click', simAbrir);
-  document.getElementById('demoSimJogar').addEventListener('click', simAbrir);
-  document.getElementById('demoSimVoltar').addEventListener('click', simFechar);
-
-  function simRender() {
-    if (simIdx >= CONTAS.length) {
-      elConta.textContent = '🏁 Fim da rodada!';
-      elOps.style.display = 'none';
-      elMsg.className = 'dsim-msg ok';
-      elMsg.textContent = 'Você acertou ' + simPts / 10 + ' de ' + CONTAS.length + ' · +' + simPts + ' XP';
-      elScore.innerHTML = '';
+  function clIniciar() {
+    clIdx = 0; clStreak = 0; clXpDia = 0;
+    clProxima();
+  }
+  function clProxima() {
+    clPara();
+    if (clIdx >= CL_CONTAS.length) {
+      clConta.textContent = '🏁 Fim do treino!';
+      clStatus.textContent = 'Na plataforma real, o treino continua — com 88 contas e cap diário de 120 XP.';
+      clTimerBar.style.width = '0%';
+      clFeedback.className = 'dcl-feedback ok';
+      clFeedback.innerHTML = '<b>Treino concluído · +' + clXpDia + ' XP</b><p>Sequência final: ' + clStreak + '. Quer tentar de novo?</p>';
       var again = document.createElement('button');
       again.type = 'button'; again.className = 'dbtn-primary'; again.textContent = 'Jogar de novo';
       again.style.marginTop = '8px';
-      again.addEventListener('click', function () {
-        simIdx = 0; simPts = 0; elOps.style.display = ''; simRender();
-      });
-      elScore.appendChild(again);
+      again.addEventListener('click', clIniciar);
+      clFeedback.appendChild(again);
       return;
     }
-    elConta.textContent = CONTAS[simIdx].c;
-    elMsg.className = 'dsim-msg';
-    elMsg.textContent = '';
-    elScore.textContent = 'Conta ' + (simIdx + 1) + ' de ' + CONTAS.length + ' · ' + simPts + ' XP';
+    clTravado = false; clDicaUsada = false; clTempo = CL_SEG;
+    clConta.textContent = CL_CONTAS[clIdx].c;
+    clStatus.textContent = 'Rodada em andamento';
+    clFeedback.className = 'dcl-feedback';
+    clFeedback.innerHTML = '';
+    clDicaBtn.disabled = false;
+    clDicaBtn.textContent = 'Usar dica';
+    clMontaGrid();
+    clPills();
+    clTimerId = setInterval(function () {
+      clTempo--;
+      clPills();
+      if (clTempo <= 0) clTimeout();
+    }, 1000);
   }
-  elOps.addEventListener('click', function (e) {
-    var b = e.target.closest('button[data-g]');
-    if (!b || simTravado || simIdx >= CONTAS.length) return;
-    simTravado = true;
-    var certo = b.getAttribute('data-g') === CONTAS[simIdx].g;
+  function clAcertouXp() {
+    var base = clStreak >= 20 ? 7 : clStreak >= 10 ? 5 : clStreak >= 5 ? 4 : 3;
+    return clDicaUsada ? Math.max(1, Math.floor(base / 2)) : base;
+  }
+  function clExplica(conta, catId) {
+    var cat = CL_CATS.filter(function (c) { return c.id === catId; })[0];
+    return '“' + conta + '” entra como ' + cat.l + '. O treino aqui é reconhecer a natureza antes de montar o lançamento.';
+  }
+  function clResponde(catId, btn) {
+    if (clTravado) return;
+    clTravado = true;
+    clPara();
+    var atual = CL_CONTAS[clIdx];
+    var certo = catId === atual.cat;
     if (certo) {
-      simPts += 10;
-      elMsg.className = 'dsim-msg ok';
-      elMsg.textContent = '✓ Isso! +10 XP';
+      clStreak++;
+      var xp = clAcertouXp();
+      clXpDia += xp;
+      btn.classList.add('certo');
+      clStatus.textContent = 'Sequência preservada';
+      clFeedback.className = 'dcl-feedback ok';
+      clFeedback.innerHTML = '<b>Acertou! +' + xp + ' XP</b><p>' + clExplica(atual.c, atual.cat) + '</p>';
     } else {
-      elMsg.className = 'dsim-msg erro';
-      elMsg.textContent = '✗ Era ' + GRUPO_LABEL[CONTAS[simIdx].g] + '.';
+      clStreak = 0;
+      btn.classList.add('errado');
+      var certoBtn = clGrid.querySelector('button[data-cat="' + atual.cat + '"]');
+      if (certoBtn) certoBtn.classList.add('certo');
+      clStatus.textContent = 'Sequência zerada';
+      clFeedback.className = 'dcl-feedback erro';
+      clFeedback.innerHTML = '<b>Errou. Sequência zerada.</b><p>' + clExplica(atual.c, atual.cat) + '</p>';
     }
-    setTimeout(function () { simIdx++; simTravado = false; simRender(); }, certo ? 700 : 1300);
+    clPills();
+    clIdx++;
+    setTimeout(clProxima, certo ? 900 : 1600);
+  }
+  function clTimeout() {
+    if (clTravado) return;
+    clTravado = true;
+    clPara();
+    var atual = CL_CONTAS[clIdx];
+    clStreak = 0;
+    var certoBtn = clGrid.querySelector('button[data-cat="' + atual.cat + '"]');
+    if (certoBtn) certoBtn.classList.add('certo');
+    clStatus.textContent = 'Tempo esgotado';
+    clFeedback.className = 'dcl-feedback erro';
+    clFeedback.innerHTML = '<b>Tempo esgotado. Sequência zerada.</b><p>' + clExplica(atual.c, atual.cat) + '</p>';
+    clPills();
+    clIdx++;
+    setTimeout(clProxima, 1600);
+  }
+  clDicaBtn.addEventListener('click', function () {
+    if (clTravado || clDicaUsada) return;
+    clDicaUsada = true;
+    clDicaBtn.disabled = true;
+    clDicaBtn.textContent = 'Dica usada';
+    // elimina 5 alternativas erradas (mecânica real)
+    var erradas = [].slice.call(clGrid.querySelectorAll('button')).filter(function (b) {
+      return b.getAttribute('data-cat') !== CL_CONTAS[clIdx].cat;
+    });
+    erradas.sort(function () { return Math.random() - 0.5; });
+    erradas.slice(0, 5).forEach(function (b) { b.classList.add('apagada'); });
   });
+
+  /* ---- Lançamento nível 1 (entry real 4.1 — gabarito D Caixa 5.000 / C Receita 5.000) ---- */
+  var LJ_VALOR = 5000;
+  var ljDicaUsada = false;
+  var ljRes = document.getElementById('dljRes');
+
+  function ljParse(v) {
+    v = (v || '').replace(/[^\d,\.]/g, '').replace(/\./g, '').replace(',', '.');
+    var n = parseFloat(v);
+    return isNaN(n) ? 0 : n;
+  }
+  function ljFmt(n) {
+    return n.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+  function ljLinhas() {
+    return [1, 2].map(function (i) {
+      return {
+        dc: document.getElementById('dljDc' + i).value,
+        conta: document.getElementById('dljConta' + i).value.trim(),
+        valor: ljParse(document.getElementById('dljValor' + i).value)
+      };
+    });
+  }
+  function ljSomas() {
+    var ls = ljLinhas();
+    var d = 0, c = 0;
+    ls.forEach(function (l) { if (l.dc === 'D') d += l.valor; else c += l.valor; });
+    document.getElementById('dljSomaD').textContent = 'Soma D = R$ ' + ljFmt(d);
+    document.getElementById('dljSomaC').textContent = 'Soma C = R$ ' + ljFmt(c);
+    var st = document.getElementById('dljStatus');
+    if (d === 0 && c === 0) { st.textContent = 'Preencha as linhas'; st.className = 'st'; }
+    else if (Math.abs(d - c) < 0.01) { st.textContent = '✓ D = C, batido'; st.className = 'st ok'; }
+    else { st.textContent = 'Faltam R$ ' + ljFmt(Math.abs(d - c)) + (d > c ? ' no crédito' : ' no débito'); st.className = 'st falta'; }
+  }
+  [1, 2].forEach(function (i) {
+    document.getElementById('dljValor' + i).addEventListener('input', ljSomas);
+    var sel = document.getElementById('dljDc' + i);
+    sel.addEventListener('change', function () {
+      sel.className = 'dc ' + (sel.value === 'D' ? 'd' : 'c');
+      ljSomas();
+    });
+  });
+  document.getElementById('dljDica').addEventListener('click', function () {
+    ljDicaUsada = true;
+    this.disabled = true;
+    this.textContent = '✓ Dica usada';
+    document.getElementById('dljDicaBox').classList.add('on');
+  });
+  document.getElementById('dljVerificar').addEventListener('click', function () {
+    var ls = ljLinhas();
+    var d = ls.filter(function (l) { return l.dc === 'D'; }),
+        c = ls.filter(function (l) { return l.dc === 'C'; });
+    var somaD = d.reduce(function (s, l) { return s + l.valor; }, 0),
+        somaC = c.reduce(function (s, l) { return s + l.valor; }, 0);
+    var gabarito =
+      '<div class="dlj-gab"><div class="ov">✅ GABARITO CORRETO</div><table>' +
+      '<tr><td class="dc-d">D</td><td>Caixa e Equivalentes</td><td class="val">5.000,00</td></tr>' +
+      '<tr><td class="dc-c">C</td><td>Receita de Vendas</td><td class="val">5.000,00</td></tr>' +
+      '</table></div>';
+    var diag = null;
+    if (d.length !== 1 || c.length !== 1) diag = 'O lançamento precisa de 1 linha de débito e 1 de crédito.';
+    else if (Math.abs(somaD - somaC) >= 0.01) diag = 'Débito e crédito precisam bater: partida dobrada.';
+    else if (Math.abs(somaD - LJ_VALOR) >= 0.01) diag = 'Confira o valor no enunciado: a venda foi de R$ 5.000.';
+    else if (!/caixa/i.test(d[0].conta)) diag = 'O que ENTRA com a venda à vista? Dinheiro — o débito vai no Caixa.';
+    else if (!/receita/i.test(c[0].conta)) diag = 'De onde veio o dinheiro? Da venda — o crédito reconhece a Receita.';
+    if (diag) {
+      ljRes.className = 'dlj-res erro';
+      ljRes.innerHTML = '<div class="tit">❌ Não foi dessa vez</div><p class="diag"></p>' + gabarito +
+        '<p style="font-size:10.5px;color:#5E5E5E;font-style:italic;margin-top:6px;">Compare com sua resposta e tente de novo pra fixar.</p>';
+      ljRes.querySelector('.diag').textContent = diag;
+    } else {
+      var xp = ljDicaUsada ? 15 : 30;
+      ljRes.className = 'dlj-res ok';
+      ljRes.innerHTML = '<div class="tit">✅ ACERTOU!</div><div class="xp">+' + xp + ' XP</div>' +
+        '<div class="dlj-macete"><div class="ov">📌 MACETE DE PROVA</div>' +
+        '<p>Venda à vista — entra Caixa, sai Receita. Aqui reconhecemos a receita pelo valor recebido; os tributos sobre a venda viram lançamentos compostos, mais adiante no treino.</p></div>';
+    }
+  });
+  ljSomas();
 
   /* --- Mapa de Incidência: heatmap clicável + detalhe com barras por ano --- */
   var heat = document.getElementById('demoHeat'),
