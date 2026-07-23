@@ -914,6 +914,64 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .demo .dpe-kick { font-size: 8.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: #7A5A07; }
   .demo .dpe-caption { font-size: 10px; color: #A8A598; margin-top: 8px; text-align: center; line-height: 1.5; }
 
+  /* ---- Questões: layout facetado (réplica do painel de filtros real) ---- */
+  .demo .dqv[hidden] { display: none; }
+  .demo .dq-layout { display: grid; grid-template-columns: 192px minmax(0, 1fr); gap: 12px; align-items: start; }
+  .demo .dq-main { min-width: 0; }
+  .demo .dfacetas { background: #fff; border: 1px solid #E8E6DF; border-radius: 12px; overflow: hidden; }
+  .demo .dfac-head { display: flex; align-items: center; gap: 6px; padding: 10px 12px; border-bottom: 1px solid #F5F4F0; }
+  .demo .dfac-head .t { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: #1B2A4A; }
+  .demo .dfac-total { font-size: 9.5px; font-weight: 800; background: #C8A84B; color: #0F1B33; border-radius: 999px; padding: 2px 8px; }
+  .demo .dfac-limpar { margin-left: auto; font-size: 9.5px; font-weight: 700; color: #A88A32; background: none; border: none; cursor: pointer; font-family: inherit; text-decoration: underline; }
+  .demo .dfac-sec { border-bottom: 1px solid #F5F4F0; }
+  .demo .dfac-sec:last-child { border-bottom: none; }
+  .demo .dfac-sec-h { display: flex; align-items: center; gap: 6px; width: 100%; background: none; border: none; cursor: pointer; font-family: inherit; padding: 9px 12px; text-align: left; }
+  .demo .dfac-sec-h .n { font-size: 11px; font-weight: 700; color: #1B2A4A; }
+  .demo .dfac-sec-h .c { font-size: 9px; font-weight: 800; background: rgba(200,168,75,0.16); color: #7A6320; border-radius: 999px; padding: 1px 7px; }
+  .demo .dfac-sec-h .ch { margin-left: auto; color: #A8A598; font-size: 12px; font-weight: 700; transition: transform 0.2s ease; }
+  .demo .dfac-sec.open .dfac-sec-h .ch { transform: rotate(90deg); }
+  .demo .dfac-body { display: none; padding: 2px 10px 10px; }
+  .demo .dfac-sec.open .dfac-body { display: block; }
+  .demo .dfac-pill {
+    display: flex; align-items: center; gap: 6px; width: 100%; text-align: left;
+    background: #fff; border: 1px solid #D4D1C7; border-radius: 999px;
+    padding: 6px 11px; margin-top: 6px; cursor: pointer;
+    font-family: inherit; font-size: 10.5px; font-weight: 600; color: #2A2A2A;
+    transition: all 0.15s ease;
+  }
+  .demo .dfac-pill:hover { border-color: #A8A598; }
+  .demo .dfac-pill.on { background: #1B2A4A; border-color: #1B2A4A; color: #fff; }
+  .demo .dfac-pill.on::before { content: '✓'; color: #C8A84B; font-weight: 800; }
+  .demo .dfac-pill .qt { margin-left: auto; font-size: 9px; font-weight: 800; color: #7A6320; background: rgba(200,168,75,0.16); border-radius: 999px; padding: 1px 6px; }
+  .demo .dfac-pill.on .qt { background: rgba(255,255,255,0.15); color: #E0C778; }
+  .demo .dfac-tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 6px; }
+  .demo .dfac-tile {
+    border: 1px solid #D4D1C7; border-radius: 8px; background: #fff;
+    padding: 7px 5px; cursor: pointer;
+    font-family: inherit; font-size: 9px; font-weight: 700; color: #5E5E5E; text-align: center;
+    transition: all 0.15s ease; line-height: 1.3;
+  }
+  .demo .dfac-tile:hover { border-color: #A8A598; }
+  .demo .dfac-tile.on { border-color: #C8A84B; background: #FBF6E9; box-shadow: 0 0 0 1px #C8A84B; }
+  .demo .dfac-tile .ic { display: block; font-size: 13px; margin-bottom: 2px; }
+
+  /* ---- Meus cadernos / Meu desempenho ---- */
+  .demo .dcad { display: flex; align-items: center; gap: 12px; }
+  .demo .dcad-info { flex: 1; min-width: 0; }
+  .demo .dcad-info .dprog { margin-top: 7px; }
+  .demo .ddes-row { margin-top: 11px; }
+  .demo .ddes-top { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; font-size: 11.5px; color: #2A2A2A; font-weight: 600; margin-bottom: 2px; }
+  .demo .ddes-top b { font-size: 12px; font-weight: 800; color: #1B2A4A; }
+
+  /* ---- CTA pós-demo ---- */
+  .demo-cta { text-align: center; margin-top: 34px; }
+  .demo-cta .frase {
+    font-size: 19px; font-weight: 700; color: var(--branco);
+    max-width: 640px; margin: 0 auto 20px; line-height: 1.5;
+  }
+  .demo-cta .frase span { color: var(--dourado); }
+  .demo-cta-note { margin-top: 14px; font-size: 13px; color: rgba(255,255,255,0.62); }
+
   /* ---- Toast (itens fora da demo) ---- */
   .demo-toast {
     position: absolute; left: 50%; bottom: 18px; transform: translateX(-50%) translateY(8px);
@@ -960,6 +1018,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .demo .dvideo { width: 100%; height: 92px; }
     .demo .dq-foot { flex-wrap: wrap; }
     .demo .dtabs { overflow-x: auto; scrollbar-width: none; }
+    .demo .dq-layout { grid-template-columns: 1fr; }
     .demo .dpe-grade { display: flex; overflow-x: auto; -webkit-overflow-scrolling: touch; }
     .demo .dpe-dia { flex: 0 0 96px; }
     .demo .dcl-grid { grid-template-columns: repeat(2, 1fr); }
@@ -1586,51 +1645,106 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               </div>
             </div>
 
-            <!-- TELA: QUESTÕES (réplica do banco: tabs, presets, filtros, cards) -->
+            <!-- TELA: QUESTÕES (réplica do banco: tabs funcionais, facetas multi-select, cards) -->
             <div class="demo-screen" id="scr-questoes">
               <h3 class="dh1">Questões</h3>
               <p class="dsub">Monte cadernos filtrando por assunto, banca, ano e mais. Resolva e acompanhe seu desempenho.</p>
-              <div class="dtabs">
-                <span class="dtab on">Explorar</span>
-                <span class="dtab">Meus cadernos</span>
-                <span class="dtab">Meu desempenho</span>
+              <div class="dtabs" id="dqTabs">
+                <button type="button" class="dtab on" data-qv="explorar">Explorar</button>
+                <button type="button" class="dtab" data-qv="cadernos">Meus cadernos</button>
+                <button type="button" class="dtab" data-qv="desempenho">Meu desempenho</button>
               </div>
-              <div class="dover">Começar rápido</div>
-              <div class="dpresets">
-                <span class="dpreset">↻ Revisar meus erros</span>
-                <span class="dpreset">○ Não respondidas</span>
-                <span class="dpreset">📅 Últimos 3 anos</span>
-                <span class="dpreset">🏛 Maiores Bancas</span>
+
+              <!-- Sub-view: Explorar (facetas + lista) -->
+              <div class="dqv" id="dqv-explorar">
+                <div class="dover">Começar rápido</div>
+                <div class="dpresets" id="dqPresets">
+                  <button type="button" class="dpreset" data-preset="errei">↻ Revisar meus erros</button>
+                  <button type="button" class="dpreset" data-preset="nao">○ Não respondidas</button>
+                  <button type="button" class="dpreset" data-preset="bancas">🏛 Maiores Bancas</button>
+                </div>
+                <div class="dq-layout">
+                  <aside class="dfacetas" aria-label="Filtros de questões (demonstração)">
+                    <div class="dfac-head"><span class="t">Filtros</span><span class="dfac-total" id="dqTotal">6</span><button type="button" class="dfac-limpar" id="dqLimpar">limpar</button></div>
+                    <div class="dfac-sec open">
+                      <button type="button" class="dfac-sec-h"><span class="n">Assunto</span><span class="c" data-fc="assunto">0</span><span class="ch">›</span></button>
+                      <div class="dfac-body" id="dqFacAssunto"></div>
+                    </div>
+                    <div class="dfac-sec open">
+                      <button type="button" class="dfac-sec-h"><span class="n">Estilo de banca</span><span class="c" data-fc="banca">0</span><span class="ch">›</span></button>
+                      <div class="dfac-body" id="dqFacBanca"></div>
+                    </div>
+                    <div class="dfac-sec">
+                      <button type="button" class="dfac-sec-h"><span class="n">Dificuldade</span><span class="c" data-fc="dif">0</span><span class="ch">›</span></button>
+                      <div class="dfac-body" id="dqFacDif"></div>
+                    </div>
+                    <div class="dfac-sec">
+                      <button type="button" class="dfac-sec-h"><span class="n">Meu histórico</span><span class="c" data-fc="hist">0</span><span class="ch">›</span></button>
+                      <div class="dfac-body">
+                        <div class="dfac-tiles" id="dqFacHist">
+                          <button type="button" class="dfac-tile" data-hist="nao"><span class="ic" aria-hidden="true">○</span>Não respondidas</button>
+                          <button type="button" class="dfac-tile" data-hist="errei" style="color:#D93E3E;"><span class="ic" aria-hidden="true">✗</span>Eu errei</button>
+                          <button type="button" class="dfac-tile" data-hist="acertei" style="color:#2E7D32;"><span class="ic" aria-hidden="true">✓</span>Eu acertei</button>
+                        </div>
+                        <p class="dcap" style="margin-top:7px;">Responda questões aqui na demo — esses filtros usam o seu histórico de verdade.</p>
+                      </div>
+                    </div>
+                  </aside>
+                  <div class="dq-main">
+                    <div class="dfchips" id="demoFChips" aria-live="polite"></div>
+                    <div class="dtoolbar"><b id="demoQNum">6</b><span>questões encontradas</span></div>
+                    <div id="demoQLista"></div>
+                    <p class="dnote">Questões de demonstração, criadas pra esta prévia. Na plataforma real, o banco tem questões de bancas reais (CEBRASPE, FGV, FCC, VUNESP) — todas com comentário do professor.</p>
+                  </div>
+                </div>
               </div>
-              <div class="dfiltros">
-                <div class="dsel-wrap"><span class="dover" style="margin:0;">Assunto</span>
-                  <select id="demoFAssunto" aria-label="Filtrar por assunto">
-                    <option value="">Todos</option>
-                    <option value="Balanço Patrimonial">Balanço Patrimonial</option>
-                    <option value="DRE">DRE</option>
-                    <option value="Partidas Dobradas">Partidas Dobradas</option>
-                  </select>
+
+              <!-- Sub-view: Meus cadernos -->
+              <div class="dqv" id="dqv-cadernos" hidden>
+                <div class="dcard dcad" style="margin-bottom:10px;">
+                  <div class="dcad-info">
+                    <div class="dh4">Meus erros de BP</div>
+                    <div class="dcap">12 questões · 8 resolvidas · 62% de acerto</div>
+                    <div class="dprog" style="max-width:220px;"><i style="width:67%"></i></div>
+                  </div>
+                  <button type="button" class="dbtn-azul" data-qvgo="explorar">Continuar</button>
                 </div>
-                <div class="dsel-wrap"><span class="dover" style="margin:0;">Estilo de banca</span>
-                  <select id="demoFBanca" aria-label="Filtrar por estilo de banca">
-                    <option value="">Todos</option>
-                    <option value="FGV">FGV</option>
-                    <option value="CEBRASPE">CEBRASPE</option>
-                    <option value="FCC">FCC</option>
-                  </select>
+                <div class="dcard dcad" style="margin-bottom:10px;">
+                  <div class="dcad-info">
+                    <div class="dh4">CPC 27 — estilo FGV</div>
+                    <div class="dcap">23 questões · concluído · 78% de acerto</div>
+                    <div class="dprog" style="max-width:220px;"><i style="width:100%"></i></div>
+                  </div>
+                  <button type="button" class="dbtn-sec" data-qvgo="explorar">Refazer</button>
                 </div>
-                <div class="dsel-wrap"><span class="dover" style="margin:0;">Dificuldade</span>
-                  <select id="demoFDif" aria-label="Filtrar por dificuldade">
-                    <option value="">Todas</option>
-                    <option value="Fácil">Fácil</option>
-                    <option value="Média">Média</option>
-                  </select>
+                <div class="dcard dcad">
+                  <div class="dcad-info">
+                    <div class="dh4">Véspera SEFAZ — incidência alta</div>
+                    <div class="dcap">30 questões · 15 resolvidas · 80% de acerto</div>
+                    <div class="dprog" style="max-width:220px;"><i style="width:50%"></i></div>
+                  </div>
+                  <button type="button" class="dbtn-azul" data-qvgo="explorar">Continuar</button>
                 </div>
+                <p class="dnote">Cadernos de exemplo. Na plataforma real, qualquer combinação de filtros vira um caderno com um clique — você resolve no seu ritmo e refaz só os erros.</p>
               </div>
-              <div class="dfchips" id="demoFChips" aria-live="polite"></div>
-              <div class="dtoolbar"><b id="demoQNum">6</b><span>questões encontradas</span></div>
-              <div id="demoQLista"></div>
-              <p class="dnote">Questões de demonstração, criadas pra esta prévia. Na plataforma real, o banco tem questões de bancas reais (CEBRASPE, FGV, FCC, VUNESP) — todas com comentário do professor.</p>
+
+              <!-- Sub-view: Meu desempenho -->
+              <div class="dqv" id="dqv-desempenho" hidden>
+                <div class="dgrid-3" style="margin-bottom:12px;">
+                  <div class="dcard ded-met"><b>74%</b><span>de acerto geral</span></div>
+                  <div class="dcard ded-met"><b>218</b><span>questões respondidas</span></div>
+                  <div class="dcard ded-met"><b>4</b><span>cadernos ativos</span></div>
+                </div>
+                <div class="dcard">
+                  <div class="dover">Acerto por assunto</div>
+                  <div class="ddes-row"><div class="ddes-top"><span>Partidas Dobradas</span><b>91%</b></div><div class="dprog"><i style="width:91%"></i></div></div>
+                  <div class="ddes-row"><div class="ddes-top"><span>Balanço Patrimonial</span><b>78%</b></div><div class="dprog"><i style="width:78%"></i></div></div>
+                  <div class="ddes-row"><div class="ddes-top"><span>CPC 27 — Ativo Imobilizado</span><b>70%</b></div><div class="dprog"><i style="width:70%"></i></div></div>
+                  <div class="ddes-row"><div class="ddes-top"><span>DRE</span><b>64%</b></div><div class="dprog"><i style="width:64%"></i></div></div>
+                  <p class="dcap" style="margin-top:10px;">Onde você está mais fraco é por onde o estudo recomeça — o Plano de Estudos e os cadernos usam esses números.</p>
+                </div>
+                <p class="dnote">Números ilustrativos.</p>
+              </div>
             </div>
 
             <!-- TELA: SIMULADOR (réplica do hub real + jogo de classificação) -->
@@ -1895,6 +2009,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
     </div>
     <p class="demo-note">Réplica fiel da plataforma, com dados ilustrativos, direto no seu navegador. A plataforma real tem tudo isso — com o curso completo e questões de bancas reais dentro.</p>
+    <div class="demo-cta reveal">
+      <p class="frase">Gostou do que testou? É <span>exatamente assim</span> que você vai estudar — só que com o curso completo e questões de bancas reais dentro.</p>
+      <a href="#oferta" class="btn cta-compra">Quero ser Aluno Fundador</a>
+      <p class="demo-cta-note">7 dias de garantia incondicional · Pix, boleto ou cartão em até 12×</p>
+    </div>
 
     <div class="plat-grid">
       <div class="plat-card reveal">
@@ -2430,7 +2549,7 @@ window.addEventListener('resize', function () {
     head.addEventListener('click', function () { mod.classList.toggle('open'); });
   });
 
-  /* --- Questões: dataset de demonstração + filtros com chips + resolução --- */
+  /* --- Questões: tabs funcionais + facetas multi-select + histórico da sessão --- */
   var QS = [
     { cod: 'FC-D001', assunto: 'Balanço Patrimonial', banca: 'FGV', dif: 'Fácil', tipo: 'ME',
       enun: 'No Balanço Patrimonial de uma companhia, o saldo da conta Fornecedores, com vencimento em 60 dias, deve ser classificado em:',
@@ -2458,59 +2577,154 @@ window.addEventListener('resize', function () {
       coment: 'Capital Social é conta patrimonial — vive no PL, no Balanço. A DRE só recebe contas de resultado: receitas, custos e despesas.' }
   ];
   var LETRAS = ['A', 'B', 'C', 'D', 'E'];
-  var fA = document.getElementById('demoFAssunto'),
-      fB = document.getElementById('demoFBanca'),
-      fD = document.getElementById('demoFDif'),
-      lista = document.getElementById('demoQLista'),
+  var HIST_LABEL = { nao: 'Não respondidas', errei: 'Eu errei', acertei: 'Eu acertei' };
+
+  // Estado dos filtros multifacetados + histórico da sessão (respostas reais na demo)
+  var qFiltro = { assunto: [], banca: [], dif: [], hist: null };
+  var qResp = {}; // cod -> 'acertei' | 'errei'
+
+  var lista = document.getElementById('demoQLista'),
       qNum = document.getElementById('demoQNum'),
-      fchips = document.getElementById('demoFChips');
-  var FILTROS = [
-    { sel: fA, k: 'Assunto' },
-    { sel: fB, k: 'Estilo' },
-    { sel: fD, k: 'Dificuldade' }
+      fchips = document.getElementById('demoFChips'),
+      qTotal = document.getElementById('dqTotal');
+
+  var FACETAS = [
+    { k: 'assunto', el: document.getElementById('dqFacAssunto'), ops: ['Balanço Patrimonial', 'DRE', 'Partidas Dobradas'], chip: 'Assunto' },
+    { k: 'banca', el: document.getElementById('dqFacBanca'), ops: ['FGV', 'CEBRASPE', 'FCC'], chip: 'Estilo' },
+    { k: 'dif', el: document.getElementById('dqFacDif'), ops: ['Fácil', 'Média'], chip: 'Dificuldade' }
   ];
 
+  function qToggle(k, valor) {
+    var arr = qFiltro[k];
+    var i = arr.indexOf(valor);
+    if (i >= 0) arr.splice(i, 1); else arr.push(valor);
+    renderQs();
+  }
+  function qConta(k, valor) {
+    return QS.filter(function (q) { return q[k === 'dif' ? 'dif' : k] === valor; }).length;
+  }
+  function renderFacetas() {
+    FACETAS.forEach(function (f) {
+      f.el.innerHTML = '';
+      f.ops.forEach(function (op) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'dfac-pill' + (qFiltro[f.k].indexOf(op) >= 0 ? ' on' : '');
+        b.innerHTML = '<span></span><span class="qt">' + qConta(f.k, op) + '</span>';
+        b.firstChild.textContent = op;
+        b.addEventListener('click', function () { qToggle(f.k, op); });
+        f.el.appendChild(b);
+      });
+      var cont = document.querySelector('[data-fc="' + f.k + '"]');
+      if (cont) cont.textContent = qFiltro[f.k].length;
+    });
+    document.querySelectorAll('#dqFacHist .dfac-tile').forEach(function (t) {
+      t.classList.toggle('on', qFiltro.hist === t.getAttribute('data-hist'));
+    });
+    var contH = document.querySelector('[data-fc="hist"]');
+    if (contH) contH.textContent = qFiltro.hist ? 1 : 0;
+  }
   function renderChips() {
     fchips.innerHTML = '';
-    var ativos = FILTROS.filter(function (f) { return f.sel.value; });
-    fchips.classList.toggle('on', ativos.length > 0);
-    ativos.forEach(function (f) {
+    var chips = [];
+    FACETAS.forEach(function (f) {
+      qFiltro[f.k].forEach(function (v) { chips.push({ k: f.chip, v: v, rm: function () { qToggle(f.k, v); } }); });
+    });
+    if (qFiltro.hist) chips.push({ k: 'Histórico', v: HIST_LABEL[qFiltro.hist], rm: function () { qFiltro.hist = null; renderQs(); } });
+    fchips.classList.toggle('on', chips.length > 0);
+    chips.forEach(function (c) {
       var chip = document.createElement('button');
       chip.type = 'button';
       chip.className = 'dfchip';
-      chip.setAttribute('aria-label', 'Remover filtro ' + f.k + ': ' + f.sel.value);
-      chip.innerHTML = '<span class="k">' + f.k + ':</span><span class="v"></span><span class="x" aria-hidden="true">×</span>';
-      chip.querySelector('.v').textContent = f.sel.value;
-      chip.addEventListener('click', function () { f.sel.value = ''; renderQs(); });
+      chip.setAttribute('aria-label', 'Remover filtro ' + c.k + ': ' + c.v);
+      chip.innerHTML = '<span class="k">' + c.k + ':</span><span class="v"></span><span class="x" aria-hidden="true">×</span>';
+      chip.querySelector('.v').textContent = c.v;
+      chip.addEventListener('click', c.rm);
       fchips.appendChild(chip);
     });
-    if (ativos.length > 1) {
+    if (chips.length > 1) {
       var limpar = document.createElement('button');
       limpar.type = 'button';
       limpar.className = 'limpar';
       limpar.textContent = 'Limpar todos';
-      limpar.addEventListener('click', function () {
-        FILTROS.forEach(function (f) { f.sel.value = ''; });
-        renderQs();
-      });
+      limpar.addEventListener('click', qLimparTudo);
       fchips.appendChild(limpar);
     }
   }
+  function qLimparTudo() {
+    qFiltro = { assunto: [], banca: [], dif: [], hist: null };
+    renderQs();
+  }
+  document.getElementById('dqLimpar').addEventListener('click', qLimparTudo);
+
+  // accordion das seções de faceta
+  document.querySelectorAll('.dfac-sec-h').forEach(function (h) {
+    h.addEventListener('click', function () { h.parentElement.classList.toggle('open'); });
+  });
+
+  // tiles de histórico (usa as respostas reais da sessão)
+  document.getElementById('dqFacHist').addEventListener('click', function (e) {
+    var tile = e.target.closest('button[data-hist]');
+    if (!tile) return;
+    var h = tile.getAttribute('data-hist');
+    qFiltro.hist = qFiltro.hist === h ? null : h;
+    renderQs();
+  });
+
+  // presets
+  document.getElementById('dqPresets').addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-preset]');
+    if (!b) return;
+    var p = b.getAttribute('data-preset');
+    if (p === 'errei') { qFiltro.hist = qFiltro.hist === 'errei' ? null : 'errei'; }
+    else if (p === 'nao') { qFiltro.hist = qFiltro.hist === 'nao' ? null : 'nao'; }
+    else if (p === 'bancas') { qFiltro.banca = qFiltro.banca.length === 3 ? [] : ['FGV', 'CEBRASPE', 'FCC']; }
+    renderQs();
+  });
+
+  // tabs Explorar / Meus cadernos / Meu desempenho
+  function qVista(v) {
+    document.querySelectorAll('#dqTabs .dtab').forEach(function (t) {
+      t.classList.toggle('on', t.getAttribute('data-qv') === v);
+    });
+    ['explorar', 'cadernos', 'desempenho'].forEach(function (x) {
+      document.getElementById('dqv-' + x).hidden = x !== v;
+    });
+  }
+  document.getElementById('dqTabs').addEventListener('click', function (e) {
+    var t = e.target.closest('button[data-qv]');
+    if (t) qVista(t.getAttribute('data-qv'));
+  });
+  document.querySelectorAll('[data-qvgo]').forEach(function (el) {
+    el.addEventListener('click', function () { qVista(el.getAttribute('data-qvgo')); });
+  });
 
   function renderQs() {
-    var va = fA.value, vb = fB.value, vd = fD.value;
-    var qs = QS.filter(function (q) {
-      return (!va || q.assunto === va) && (!vb || q.banca === vb) && (!vd || q.dif === vd);
-    });
+    renderFacetas();
     renderChips();
+    var qs = QS.filter(function (q) {
+      if (qFiltro.assunto.length && qFiltro.assunto.indexOf(q.assunto) < 0) return false;
+      if (qFiltro.banca.length && qFiltro.banca.indexOf(q.banca) < 0) return false;
+      if (qFiltro.dif.length && qFiltro.dif.indexOf(q.dif) < 0) return false;
+      if (qFiltro.hist === 'nao' && qResp[q.cod]) return false;
+      if (qFiltro.hist === 'errei' && qResp[q.cod] !== 'errei') return false;
+      if (qFiltro.hist === 'acertei' && qResp[q.cod] !== 'acertei') return false;
+      return true;
+    });
     qNum.textContent = qs.length;
     qNum.nextElementSibling.textContent = qs.length === 1 ? 'questão encontrada' : 'questões encontradas';
+    qTotal.textContent = qs.length;
     lista.innerHTML = '';
+    if (!qs.length) {
+      lista.innerHTML = '<div class="dcard" style="text-align:center;"><p class="dcap">Nenhuma questão com esses filtros' + (qFiltro.hist ? ' — responda algumas na aba Explorar e volte 😉' : '') + '.</p></div>';
+      return;
+    }
     qs.forEach(function (q) {
       var card = document.createElement('div');
       card.className = 'dcard dq';
       var diffOn = q.dif === 'Fácil' ? 1 : 2;
       var diffBars = '<span class="ddiff" aria-hidden="true"><i class="on"></i><i' + (diffOn > 1 ? ' class="on"' : '') + '></i><i></i></span>';
+      var respondida = qResp[q.cod] ? (qResp[q.cod] === 'acertei' ? '<span class="dbadge green">✓ Você acertou</span>' : '<span class="dbadge red" style="background:#FCEAEA;color:#D93E3E;">✗ Você errou</span>') : '';
       var alts = q.alts.map(function (a, i) {
         var letra = q.tipo === 'CE' ? (i === 0 ? 'C' : 'E') : LETRAS[i];
         return '<button type="button" class="dalt" data-i="' + i + '"><span class="dl">' + letra + '</span><span>' + a + '</span></button>';
@@ -2520,7 +2734,7 @@ window.addEventListener('resize', function () {
           '<div class="dq-meta"><b>Estilo ' + q.banca + ' · Inédita Fluência</b><span class="cod">' + q.cod + '</span>' +
             '<span class="dbadge gold">Inédita</span>' +
             (q.tipo === 'CE' ? '<span class="dbadge gray">Certo/Errado</span>' : '') +
-            '<span class="dbadge gray">Demo</span></div>' +
+            '<span class="dbadge gray">Demo</span>' + respondida + '</div>' +
           '<div class="dq-trilha">Contabilidade Geral › ' + q.assunto + '</div>' +
           '<p class="dq-enun">' + q.enun + '</p>' +
           '<div class="dq-foot">' + diffBars + '<span class="ddiff-label">' + q.dif + '</span>' +
@@ -2544,17 +2758,19 @@ window.addEventListener('resize', function () {
           if (i === q.gab) {
             btn.classList.add('certa');
             vered.textContent = '✓ Correto — Resolução da Fluência';
+            qResp[q.cod] = 'acertei';
           } else {
             btn.classList.add('errada');
             card.querySelectorAll('.dalt')[q.gab].classList.add('certa');
             vered.textContent = '✗ Incorreto — comentário';
+            qResp[q.cod] = 'errei';
           }
+          renderFacetas(); // atualiza contadores de histórico sem re-render da lista
         });
       });
       lista.appendChild(card);
     });
   }
-  [fA, fB, fD].forEach(function (s) { s.addEventListener('change', renderQs); });
   renderQs();
 
   /* --- Simulador: hub ⇄ Classificação Contábil ⇄ lançamento nível 1 --- */
