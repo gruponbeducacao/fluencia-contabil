@@ -28,7 +28,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
 
 <style>
   :root {
@@ -339,14 +339,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .plataforma .section-label { color: var(--dourado); }
   .plataforma .section-title { color: var(--branco); }
   .plataforma .section-text { color: rgba(255,255,255,0.78); }
-  /* ===== DEMO INTERATIVA DA PLATAFORMA (dados ilustrativos) ===== */
+  /* ===== DEMO INTERATIVA DA PLATAFORMA (réplica fiel · dados ilustrativos) =====
+     Tokens copiados de prototype-vite/styles/tokens.css da plataforma real. */
   .demo {
-    margin: 46px auto 0; max-width: 940px;
-    background: #0F182B;
+    margin: 46px auto 0; max-width: 980px;
+    background: #0B1220;
     border: 1px solid rgba(255,255,255,0.14);
     border-radius: 14px; overflow: hidden;
     box-shadow: 0 24px 60px rgba(0,0,0,0.35);
     text-align: left;
+    font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
   }
   .demo-top {
     display: flex; align-items: center; gap: 7px;
@@ -363,183 +365,454 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .demo-tag {
     background: rgba(200,168,75,0.18); color: var(--dourado);
     border: 1px solid rgba(200,168,75,0.4);
-    font-size: 9.5px; font-weight: 800; letter-spacing: 1.2px;
+    font-size: 9.5px; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase;
     padding: 4px 10px; border-radius: 12px; white-space: nowrap; flex-shrink: 0;
   }
-  .demo-body { display: flex; background: #F4F6FA; }
-  .demo-nav {
-    flex-shrink: 0; width: 230px;
-    background: #131F38; padding: 14px 10px;
-    display: flex; flex-direction: column; gap: 4px;
+  .demo-body { display: flex; background: #F5F4F0; position: relative; }
+  .demo svg { flex-shrink: 0; }
+
+  /* ---- Sidebar (réplica: bg azul-profundo, seções, item ativo com barra dourada) ---- */
+  .demo-side {
+    flex-shrink: 0; width: 216px;
+    background: #1B2A4A;
+    display: flex; flex-direction: column;
   }
-  .demo-nav button {
-    display: flex; align-items: center; gap: 8px;
+  .demo-brand {
+    display: flex; align-items: center; gap: 10px;
+    padding: 14px 14px 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .demo-brand img { width: 32px; height: 32px; border-radius: 6px; }
+  .demo-brand-name { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #fff; line-height: 1.3; }
+  .demo-brand-tag { font-size: 7px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #C8A84B; line-height: 1.35; margin-top: 2px; }
+  .demo-side-scroll { flex: 1; padding: 4px 10px 10px; overflow-y: auto; }
+  .demo-side-label {
+    font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.16em;
+    color: rgba(255,255,255,0.55); padding: 14px 10px 6px;
+  }
+  .demo-side button {
+    display: flex; align-items: center; gap: 10px;
     width: 100%; text-align: left;
     background: none; border: none; cursor: pointer;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 12.5px; font-weight: 600;
+    font-family: inherit;
+    font-size: 12.5px; font-weight: 500;
     color: rgba(255,255,255,0.72);
-    padding: 10px 12px; border-radius: 8px;
-    transition: background 0.2s ease, color 0.2s ease;
+    padding: 8px 10px; border-radius: 8px;
+    position: relative;
+    transition: background 0.18s ease, color 0.18s ease;
     white-space: nowrap;
   }
-  .demo-nav button:hover { background: rgba(255,255,255,0.06); color: #fff; }
-  .demo-nav button.active { background: rgba(200,168,75,0.16); color: var(--dourado); font-weight: 700; }
-  .demo-nav button em {
-    font-style: normal; font-size: 8.5px; font-weight: 800; letter-spacing: 0.5px;
-    background: rgba(200,168,75,0.2); color: var(--dourado);
-    padding: 2px 6px; border-radius: 8px; text-transform: uppercase;
+  .demo-side button:hover { background: rgba(255,255,255,0.06); color: #fff; }
+  .demo-side button.active {
+    background: linear-gradient(90deg, rgba(200,168,75,0.18), rgba(200,168,75,0.04));
+    color: #fff;
   }
-  .demo-screens { flex: 1; min-width: 0; max-height: 560px; overflow-y: auto; padding: 22px; }
+  .demo-side button.active::before {
+    content: ''; position: absolute; left: -10px; top: 6px; bottom: 6px;
+    width: 3px; border-radius: 2px; background: #C8A84B;
+  }
+  .demo-side button svg { width: 15px; height: 15px; opacity: 0.9; }
+  .demo-side button em {
+    font-style: normal; font-size: 8px; font-weight: 700; letter-spacing: 0.08em;
+    background: #C8A84B; color: #1B2A4A;
+    padding: 2px 5px; border-radius: 4px; text-transform: uppercase;
+  }
+  .demo-side-foot {
+    padding: 10px 20px 12px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .demo-side-foot .sair { display: flex; align-items: center; gap: 8px; font-size: 11px; color: rgba(255,255,255,0.55); }
+  .demo-side-foot .sair svg { width: 13px; height: 13px; }
+  .demo-side-ver { display: block; font-size: 8.5px; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.38); margin-top: 8px; }
+  .demo-backdrop { display: none; }
+
+  /* ---- Main: topbar + conteúdo ---- */
+  .demo-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+  .demo-topbar {
+    height: 52px; flex-shrink: 0;
+    background: #fff; border-bottom: 1px solid #E8E6DF;
+    display: flex; align-items: center; justify-content: flex-end;
+    gap: 10px; padding: 0 18px;
+  }
+  .demo-burger {
+    display: none; margin-right: auto;
+    background: none; border: none; cursor: pointer; padding: 6px;
+    color: #1B2A4A;
+  }
+  .demo-burger svg { width: 20px; height: 20px; }
+  .demo-bell { color: #5E5E5E; display: flex; }
+  .demo-bell svg { width: 16px; height: 16px; }
+  .demo-pill-xp {
+    background: #1B2A4A; color: #fff;
+    font-size: 10.5px; font-weight: 600;
+    padding: 4px 10px; border-radius: 14px; white-space: nowrap;
+  }
+  .demo-pill-streak {
+    background: rgba(200,168,75,0.12); color: #7A6320;
+    font-size: 10.5px; font-weight: 600;
+    padding: 4px 10px; border-radius: 14px; white-space: nowrap;
+  }
+  .demo-avatar {
+    width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0;
+    background: #C8A84B; color: #1B2A4A;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700;
+  }
+  .demo-user { line-height: 1.25; }
+  .demo-user b { display: block; font-size: 11px; font-weight: 600; color: #1B2A4A; }
+  .demo-user i { font-style: normal; font-size: 9.5px; color: #717171; }
+  .demo-content { flex: 1; min-width: 0; max-height: 560px; overflow-y: auto; padding: 20px 22px 24px; }
   .demo-screen { display: none; }
   .demo-screen.active { display: block; animation: fadeUp 0.35s ease-out; }
-  .demo-h { font-size: 17px; font-weight: 800; color: var(--azul-profundo); margin-bottom: 4px; }
-  .demo-sub { font-size: 12.5px; color: var(--cinza-medio); margin-bottom: 16px; }
-  .demo-card {
-    background: var(--branco); border: 1px solid var(--cinza-borda);
-    border-radius: 10px; padding: 16px; margin-bottom: 12px;
+
+  /* ---- Componentes base (réplica dos tokens fc-*) ---- */
+  .demo .dh1 { font-size: 20px; font-weight: 700; letter-spacing: -0.02em; color: #1B2A4A; margin-bottom: 4px; }
+  .demo .dh3 { font-size: 14.5px; font-weight: 600; color: #1B2A4A; }
+  .demo .dh4 { font-size: 13px; font-weight: 600; color: #1B2A4A; }
+  .demo .dsub { font-size: 12px; color: #5E5E5E; margin-bottom: 16px; line-height: 1.5; }
+  .demo .dsub strong { color: #3F3F3F; }
+  .demo .dsmall { font-size: 11.5px; color: #5E5E5E; }
+  .demo .dcap { font-size: 10.5px; color: #717171; line-height: 1.5; }
+  .demo .dover { font-size: 9.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: #717171; margin-bottom: 6px; }
+  .demo .dover.gold { color: #7A6320; }
+  .demo .dcard {
+    background: #fff; border: 1px solid #E8E6DF; border-radius: 12px;
+    padding: 16px; box-shadow: 0 1px 2px rgba(27,42,74,0.05);
   }
-  .demo-card h4 { font-size: 13.5px; font-weight: 800; color: var(--azul-profundo); margin-bottom: 6px; }
-  .demo-card p { font-size: 12.5px; color: var(--cinza-medio); line-height: 1.55; }
-  .demo-btn {
-    display: inline-block; background: var(--azul-profundo); color: #fff; border: none; cursor: pointer;
-    font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 700;
-    padding: 9px 16px; border-radius: 7px; margin-top: 10px;
-    transition: background 0.2s ease;
+  .demo .dbtn-primary, .demo .dbtn-azul, .demo .dbtn-sec {
+    font-family: inherit; font-size: 11.5px; font-weight: 600;
+    padding: 8px 14px; border-radius: 8px; cursor: pointer;
+    transition: all 0.18s ease; border: none;
+    display: inline-flex; align-items: center; gap: 6px;
   }
-  .demo-btn:hover { background: var(--azul-inter); }
-  /* Início */
-  .demo-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 12px; }
-  .demo-stat {
-    background: var(--branco); border: 1px solid var(--cinza-borda);
-    border-radius: 10px; padding: 13px 8px; text-align: center;
+  .demo .dbtn-primary { background: #C8A84B; color: #1B2A4A; box-shadow: 0 6px 20px rgba(200,168,75,0.24); }
+  .demo .dbtn-primary:hover { background: #E0C778; transform: translateY(-1px); }
+  .demo .dbtn-azul { background: #1B2A4A; color: #fff; }
+  .demo .dbtn-azul:hover { background: #142038; }
+  .demo .dbtn-sec { background: #fff; color: #1B2A4A; border: 1px solid #D4D1C7; }
+  .demo .dbtn-sec:hover { border-color: #A8A598; }
+  .demo .dbtn-block { width: 100%; justify-content: center; }
+  .demo .dbadge {
+    display: inline-block; font-size: 9px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.06em; padding: 3px 8px; border-radius: 999px; white-space: nowrap;
   }
-  .demo-stat .dn { font-size: 19px; font-weight: 800; color: var(--azul-profundo); line-height: 1.2; }
-  .demo-stat .dl { font-size: 10px; color: var(--cinza-medio); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 3px; }
-  .demo-prog { height: 8px; background: #E8EDF5; border-radius: 4px; overflow: hidden; margin-top: 10px; }
-  .demo-prog i { display: block; height: 100%; background: linear-gradient(90deg, var(--dourado), var(--dourado-escuro)); border-radius: 4px; }
-  /* Aulas */
-  .demo-aula {
-    display: flex; align-items: center; gap: 10px; padding: 9px 0;
-    border-bottom: 1px dashed var(--cinza-borda);
-    font-size: 12.5px; color: var(--quase-preto);
-  }
-  .demo-aula:last-child { border-bottom: none; }
-  .demo-aula .st {
-    flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 11px; font-weight: 800;
-  }
-  .demo-aula .st.ok { background: #E4F3EA; color: var(--verde-ok); }
-  .demo-aula .st.now { background: rgba(200,168,75,0.25); color: var(--dourado-texto); }
-  .demo-aula .st.todo { background: #EDF0F5; color: #9AA1AB; }
-  .demo-tabs { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
-  .demo-tab { font-size: 11px; font-weight: 700; color: var(--cinza-medio); background: #EDF0F5; padding: 5px 11px; border-radius: 14px; }
-  .demo-tab.on { background: var(--azul-profundo); color: #fff; }
-  /* Questões */
-  .demo-filtros { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
-  .demo-filtros select {
-    font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 600; color: var(--azul-profundo);
-    background: var(--branco); border: 1px solid var(--cinza-borda); border-radius: 7px;
+  .demo .dbadge.gold { background: rgba(200,168,75,0.14); color: #7A6320; }
+  .demo .dbadge.blue { background: rgba(46,74,122,0.1); color: #2E4A7A; }
+  .demo .dbadge.green { background: #E8F3E9; color: #2E7D32; }
+  .demo .dbadge.gray { background: #F5F4F0; color: #5E5E5E; }
+  .demo .dprog { height: 6px; background: #E8E6DF; border-radius: 999px; overflow: hidden; margin-top: 8px; }
+  .demo .dprog i { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, #C8A84B, #E0C778); }
+  .demo .dsel-wrap { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .demo select {
+    font-family: inherit; font-size: 11.5px; font-weight: 500; color: #2A2A2A;
+    background: #fff; border: 1px solid #D4D1C7; border-radius: 8px;
     padding: 8px 10px; cursor: pointer; max-width: 100%;
   }
-  .demo-count { font-size: 11.5px; color: var(--cinza-medio); margin-bottom: 10px; }
-  .demo-q { background: var(--branco); border: 1px solid var(--cinza-borda); border-radius: 10px; margin-bottom: 10px; overflow: hidden; }
-  .demo-q-head {
-    width: 100%; text-align: left; background: none; border: none; cursor: pointer;
-    font-family: 'Montserrat', sans-serif;
-    padding: 12px 14px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  .demo select:focus { outline: none; border-color: #2E4A7A; box-shadow: 0 0 0 3px rgba(46,74,122,0.12); }
+  .demo .dinput {
+    font-family: inherit; font-size: 11.5px; color: #2A2A2A; width: 100%; max-width: 340px;
+    background: #fff; border: 1px solid #D4D1C7; border-radius: 8px; padding: 8px 12px;
   }
-  .demo-q-cod { font-size: 10.5px; font-weight: 800; color: var(--dourado-texto); }
-  .demo-q-meta { font-size: 10.5px; color: var(--cinza-medio); }
-  .demo-q-tag {
-    font-size: 9px; font-weight: 800; background: #EDF0F5; color: var(--cinza-medio);
-    padding: 2px 8px; border-radius: 10px; text-transform: uppercase; letter-spacing: 0.5px;
+  .demo .dnote { font-size: 10px; color: #A8A598; margin-top: 10px; }
+
+  /* ---- Início ---- */
+  .demo .dgrid-21 { display: grid; grid-template-columns: 2fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .demo .dgrid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .demo .dcard-continue { padding: 0; display: flex; overflow: hidden; }
+  .demo .dvideo {
+    flex-shrink: 0; width: 168px; align-self: stretch;
+    background: linear-gradient(135deg, #0F1B33, #1B2A4A 55%, #2E4A7A);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
   }
-  .demo-q-body { display: none; padding: 0 14px 14px; }
-  .demo-q.open .demo-q-body { display: block; }
-  .demo-q-enun { font-size: 12.5px; color: var(--quase-preto); line-height: 1.55; margin-bottom: 10px; }
-  .demo-alt {
-    display: flex; gap: 8px; align-items: flex-start; width: 100%; text-align: left;
-    background: #F7F8FB; border: 1px solid var(--cinza-borda); border-radius: 8px;
-    padding: 9px 11px; margin-bottom: 6px; cursor: pointer;
-    font-family: 'Montserrat', sans-serif; font-size: 12px; color: var(--quase-preto);
-    line-height: 1.45; transition: all 0.15s ease;
+  .demo .dvideo-meta { font-size: 9.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.6); }
+  .demo .dplay {
+    width: 44px; height: 44px; border-radius: 50%; background: #C8A84B;
+    display: flex; align-items: center; justify-content: center; color: #1B2A4A;
   }
-  .demo-alt:hover { border-color: var(--azul-medio); }
-  .demo-alt .l { font-weight: 800; color: var(--azul-profundo); flex-shrink: 0; }
-  .demo-q.done .demo-alt { cursor: default; opacity: 0.7; }
-  .demo-q.done .demo-alt:hover { border-color: var(--cinza-borda); }
-  .demo-alt.certa { background: #E4F3EA; border-color: var(--verde-ok); opacity: 1 !important; }
-  .demo-alt.errada { background: #FBE9E7; border-color: var(--vermelho); opacity: 1 !important; }
-  .demo-coment {
-    display: none; background: var(--cream); border: 1px solid rgba(200,168,75,0.45);
-    border-radius: 8px; padding: 11px 13px;
-    font-size: 12px; color: #5A4A1F; line-height: 1.55; margin-top: 8px;
+  .demo .dplay svg { width: 16px; height: 16px; margin-left: 2px; }
+  .demo .dcontinue-info { padding: 16px; }
+  .demo .dbtns { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+  .demo .dnum40 { font-size: 34px; font-weight: 700; color: #1B2A4A; line-height: 1.1; }
+  .demo .dnum32 { font-size: 26px; font-weight: 700; color: #1B2A4A; line-height: 1.2; }
+  .demo .ddivider { border: none; border-top: 1px solid #E8E6DF; margin: 12px 0; }
+  .demo .dtrofeu { font-size: 18px; font-weight: 700; color: #1B2A4A; margin-top: 2px; }
+  .demo .darea {
+    width: 34px; height: 34px; border-radius: 9px; margin-bottom: 8px;
+    background: linear-gradient(135deg, #1B2A4A, #2E4A7A);
+    display: flex; align-items: center; justify-content: center; color: #C8A84B;
   }
-  .demo-q.done .demo-coment { display: block; }
-  /* Simulador */
-  .demo-sim { text-align: center; padding: 6px 0 2px; }
-  .demo-sim-conta {
-    font-size: 19px; font-weight: 800; color: var(--azul-profundo);
-    background: var(--branco); border: 2px solid var(--dourado); border-radius: 12px;
-    display: inline-block; padding: 15px 26px; margin: 8px 0 16px; line-height: 1.35;
+  .demo .darea svg { width: 16px; height: 16px; }
+
+  /* ---- Aulas ---- */
+  .demo .dmod { padding: 0; margin-bottom: 10px; overflow: hidden; }
+  .demo .dmod-head {
+    width: 100%; display: flex; align-items: center; gap: 12px;
+    background: none; border: none; cursor: pointer; font-family: inherit;
+    padding: 13px 16px; text-align: left;
   }
-  .demo-sim-ops { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
-  .demo-sim-ops button {
-    background: var(--branco); border: 1px solid var(--cinza-borda); border-radius: 8px;
-    font-family: 'Montserrat', sans-serif; font-size: 12.5px; font-weight: 700; color: var(--azul-profundo);
-    padding: 10px 16px; cursor: pointer; transition: all 0.15s ease;
+  .demo .dmod-num {
+    flex-shrink: 0; width: 34px; height: 34px; border-radius: 9px;
+    background: linear-gradient(135deg, #1B2A4A, #2E4A7A);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; color: #C8A84B;
   }
-  .demo-sim-ops button:hover { border-color: var(--azul-medio); transform: translateY(-1px); }
-  .demo-sim-msg { min-height: 22px; font-size: 13px; font-weight: 800; margin-top: 12px; }
-  .demo-sim-msg.ok { color: var(--verde-ok); }
-  .demo-sim-msg.erro { color: var(--vermelho); }
-  .demo-sim-score { font-size: 11.5px; color: var(--cinza-medio); margin-top: 8px; }
-  /* Mapa de Incidência */
-  .demo-legenda { display: flex; align-items: center; gap: 6px; font-size: 10.5px; color: var(--cinza-medio); margin-bottom: 10px; flex-wrap: wrap; }
-  .demo-legenda i { width: 14px; height: 14px; border-radius: 3px; display: inline-block; border: 1px solid var(--cinza-borda); }
-  .demo-heat { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 8px; margin-bottom: 12px; }
-  .demo-heat button {
-    border: 1px solid var(--cinza-borda); border-radius: 8px; padding: 11px 6px; cursor: pointer;
-    font-family: 'Montserrat', sans-serif; font-size: 10.5px; font-weight: 700; line-height: 1.3;
+  .demo .dmod-num.lock { background: #E8E6DF; color: #A8A598; }
+  .demo .dmod-info { flex: 1; min-width: 0; }
+  .demo .dmod-prog { flex-shrink: 0; width: 84px; }
+  .demo .dmod-prog .dprog { height: 4px; margin-top: 0; }
+  .demo .dmod-chev { flex-shrink: 0; color: #A8A598; transition: transform 0.2s ease; }
+  .demo .dmod.open .dmod-chev { transform: rotate(180deg); }
+  .demo .dmod-body { display: none; border-top: 1px solid #F5F4F0; }
+  .demo .dmod.open .dmod-body { display: block; }
+  .demo .daula {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 16px; border-bottom: 1px solid #F5F4F0;
+    font-size: 12px; color: #2A2A2A;
+  }
+  .demo .daula:last-child { border-bottom: none; }
+  .demo .daula:hover { background: #FAFAF8; }
+  .demo .daula-check {
+    flex-shrink: 0; width: 20px; height: 20px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .demo .daula-check.ok { background: #C8A84B; color: #1B2A4A; }
+  .demo .daula-check.ok svg { width: 11px; height: 11px; }
+  .demo .daula-check.todo { border: 2px solid #D4D1C7; }
+  .demo .daula-num { flex-shrink: 0; min-width: 48px; font-size: 11px; font-weight: 600; color: #717171; }
+  .demo .daula-tit { flex: 1; min-width: 0; font-weight: 500; }
+  .demo .daula-tit .dcap { margin-top: 1px; }
+  .demo .daula-chev { color: #A8A598; }
+  .demo .dlock-note { font-size: 10.5px; font-weight: 600; color: #7A5A07; }
+
+  /* ---- Questões ---- */
+  .demo .dtabs { display: flex; gap: 18px; border-bottom: 1px solid #E8E6DF; margin-bottom: 14px; }
+  .demo .dtab {
+    font-size: 12px; font-weight: 600; color: #5E5E5E;
+    padding: 0 2px 9px; position: relative; white-space: nowrap;
+  }
+  .demo .dtab.on { color: #1B2A4A; }
+  .demo .dtab.on::after {
+    content: ''; position: absolute; left: 0; right: 0; bottom: -1px;
+    height: 2px; background: #C8A84B;
+  }
+  .demo .dpresets { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+  .demo .dpreset {
+    font-size: 10.5px; font-weight: 600; color: #7A6320;
+    background: #fff; border: 1.5px solid rgba(200,168,75,0.55); border-radius: 999px;
+    padding: 6px 12px; white-space: nowrap;
+  }
+  .demo .dfiltros { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+  .demo .dtoolbar { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .demo .dtoolbar b { font-size: 20px; font-weight: 800; color: #1B2A4A; }
+  .demo .dtoolbar span { font-size: 11.5px; color: #5E5E5E; }
+  .demo .dq { padding: 0; margin-bottom: 10px; overflow: hidden; }
+  .demo .dq-top { padding: 13px 14px 12px; }
+  .demo .dq-meta { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; margin-bottom: 5px; }
+  .demo .dq-meta b { font-size: 10.5px; font-weight: 700; color: #1B2A4A; }
+  .demo .dq-meta .cod { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 9.5px; font-weight: 600; color: #5E5E5E; background: #F5F4F0; padding: 2px 6px; border-radius: 4px; }
+  .demo .dq-trilha { font-size: 10px; color: #717171; margin-bottom: 7px; }
+  .demo .dq-enun { font-size: 12px; color: #2A2A2A; line-height: 1.55; }
+  .demo .dq-foot { display: flex; align-items: center; gap: 8px; margin-top: 11px; }
+  .demo .ddiff { display: flex; align-items: flex-end; gap: 2px; height: 12px; }
+  .demo .ddiff i { width: 3px; border-radius: 1px; background: #E8E6DF; }
+  .demo .ddiff i:nth-child(1) { height: 6px; }
+  .demo .ddiff i:nth-child(2) { height: 9px; }
+  .demo .ddiff i:nth-child(3) { height: 12px; }
+  .demo .ddiff i.on { background: #A88A32; }
+  .demo .ddiff-label { font-size: 10px; color: #717171; margin-right: auto; }
+  .demo .dq-resolver { font-size: 11px; font-weight: 600; }
+  .demo .dq-body { display: none; padding: 2px 14px 14px; }
+  .demo .dq.open .dq-body { display: block; }
+  .demo .dalt {
+    display: flex; align-items: flex-start; gap: 10px; width: 100%; text-align: left;
+    background: #fff; border: 1px solid #E8E6DF; border-radius: 8px;
+    padding: 8px 10px; margin-bottom: 6px; cursor: pointer;
+    font-family: inherit; font-size: 11.5px; color: #2A2A2A; line-height: 1.5;
+    transition: all 0.15s ease;
+  }
+  .demo .dalt:hover { border-color: #C8A84B; }
+  .demo .dalt .dl {
+    flex-shrink: 0; width: 24px; height: 24px; border-radius: 6px;
+    background: #E8E6DF; color: #3F3F3F;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10.5px; font-weight: 700;
+  }
+  .demo .dq.done .dalt { cursor: default; }
+  .demo .dq.done .dalt:hover { border-color: #E8E6DF; }
+  .demo .dalt.certa { background: #ECFDF5; border: 2px solid #10B981; }
+  .demo .dalt.certa .dl { background: #10B981; color: #fff; }
+  .demo .dalt.errada { background: #FEF2F2; border: 2px solid #EF4444; }
+  .demo .dalt.errada .dl { background: #EF4444; color: #fff; }
+  .demo .dresolucao {
+    display: none; background: #FBF6E9; border-radius: 8px;
+    padding: 12px 14px; margin-top: 8px;
+  }
+  .demo .dq.done .dresolucao { display: block; }
+  .demo .dresolucao .dover { margin-bottom: 4px; }
+  .demo .dresolucao .gab { font-size: 11.5px; font-weight: 700; color: #1B2A4A; margin-bottom: 4px; }
+  .demo .dresolucao p { font-size: 11.5px; color: #2A2A2A; line-height: 1.6; }
+
+  /* ---- Simulador ---- */
+  .demo .dsim-xp {
+    background: linear-gradient(135deg, #1B2A4A 0%, #2A3F6F 100%);
+    color: #fff; border-radius: 12px; padding: 16px; margin-bottom: 12px;
+  }
+  .demo .dsim-xp-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .demo .dsim-nivel { font-size: 17px; font-weight: 700; }
+  .demo .dsim-chip { background: rgba(200,168,75,0.2); color: #C8A84B; font-size: 10.5px; font-weight: 600; padding: 4px 10px; border-radius: 12px; }
+  .demo .dsim-xp-sub { font-size: 11px; color: rgba(255,255,255,0.7); margin-top: 4px; }
+  .demo .dsim-track { height: 7px; background: rgba(255,255,255,0.15); border-radius: 999px; overflow: hidden; margin-top: 10px; }
+  .demo .dsim-track i { display: block; height: 100%; background: #C8A84B; border-radius: 999px; }
+  .demo .dsim-row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .demo .dsim-ic {
+    flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px;
+    background: rgba(27,42,74,0.06);
+    display: flex; align-items: center; justify-content: center; gap: 3px;
+  }
+  .demo .dsim-ic i { width: 5px; height: 22px; border-radius: 2px; display: inline-block; }
+  .demo .dsim-ic i:nth-child(1) { background: #059669; }
+  .demo .dsim-ic i:nth-child(2) { background: #dc2626; }
+  .demo .dsim-ic i:nth-child(3) { background: #d97706; }
+  .demo .dsim-grow { flex: 1; min-width: 0; }
+  .demo .dsim-aleatorio {
+    background: linear-gradient(135deg, #C8A84B 0%, #A68A3E 100%);
+    color: #1B2A4A; border-radius: 12px; padding: 16px; margin-bottom: 16px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .demo .dsim-aleatorio .dado { font-size: 30px; flex-shrink: 0; }
+  .demo .dsim-aleatorio .dh3 { color: #1B2A4A; }
+  .demo .dsim-aleatorio .dcap { color: rgba(27,42,74,0.75); }
+  .demo .dsim-niveis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }
+  .demo .dnivel { padding: 13px; }
+  .demo .dnivel .emo { font-size: 22px; display: block; margin-bottom: 5px; }
+  .demo .dnivel b { font-size: 12px; font-weight: 700; color: #1B2A4A; display: block; }
+  .demo .dnivel .stars { font-size: 10.5px; letter-spacing: 2px; color: #C8A84B; display: block; margin: 2px 0 5px; }
+  .demo .dnivel p { font-size: 10px; color: #717171; line-height: 1.45; margin-bottom: 6px; }
+  .demo .dnivel .dmeta { font-size: 10.5px; color: #3F3F3F; }
+  .demo .dnivel .dmeta b { display: inline; font-size: 10.5px; }
+  .demo .dnivel-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; }
+  .demo .dnivel-chip { font-size: 9.5px; font-weight: 700; background: #F5F4F0; color: #5E5E5E; padding: 3px 8px; border-radius: 10px; }
+  .demo .dnivel-go { font-size: 10px; color: #717171; }
+  .demo .dvoltar {
+    background: none; border: none; cursor: pointer; font-family: inherit;
+    font-size: 11.5px; font-weight: 600; color: #5E5E5E; padding: 0 0 12px;
+  }
+  .demo .dvoltar:hover { color: #1B2A4A; }
+  .demo .dsim-jogo { text-align: center; padding: 20px 16px; }
+  .demo .dsim-pergunta { font-size: 9.5px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #717171; }
+  .demo .dsim-conta {
+    font-size: 17px; font-weight: 700; color: #1B2A4A; line-height: 1.35;
+    background: #FAFAF8; border: 2px solid #C8A84B; border-radius: 12px;
+    display: inline-block; padding: 13px 22px; margin: 10px 0 14px;
+  }
+  .demo .dsim-ops { display: flex; gap: 7px; flex-wrap: wrap; justify-content: center; }
+  .demo .dsim-ops button {
+    background: #fff; border: 1px solid #D4D1C7; border-radius: 8px;
+    font-family: inherit; font-size: 11.5px; font-weight: 600; color: #1B2A4A;
+    padding: 9px 14px; cursor: pointer; transition: all 0.15s ease;
+  }
+  .demo .dsim-ops button:hover { border-color: #2E4A7A; transform: translateY(-1px); }
+  .demo .dsim-msg { min-height: 20px; font-size: 12px; font-weight: 700; margin-top: 12px; }
+  .demo .dsim-msg.ok { color: #2E7D32; }
+  .demo .dsim-msg.erro { color: #D93E3E; }
+  .demo .dsim-score { font-size: 10.5px; color: #717171; margin-top: 6px; }
+
+  /* ---- Mapa de Incidência ---- */
+  .demo .dmi-controles { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+  .demo .dmi-legenda { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; font-size: 9.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #717171; margin-bottom: 10px; }
+  .demo .dmi-legenda i { width: 22px; height: 14px; display: inline-block; }
+  .demo .dmi-legenda .tracejado { width: 14px; height: 14px; border: 1px dashed #D4D1C7; background: #FBF6E9; border-radius: 3px; margin-left: 8px; }
+  .demo .dmi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); gap: 7px; margin-bottom: 12px; }
+  .demo .dmi-grid button {
+    height: 44px; border-radius: 8px; cursor: pointer; border: none;
+    font-family: inherit; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 1px;
     transition: transform 0.15s ease;
   }
-  .demo-heat button:hover { transform: translateY(-1px); }
-  .demo-heat button.sel { outline: 2px solid var(--dourado); outline-offset: 1px; }
-  /* Meu Edital */
-  .demo-ed-item { padding: 11px 0; border-bottom: 1px dashed var(--cinza-borda); }
-  .demo-ed-item:last-child { border-bottom: none; }
-  .demo-ed-top { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 12.5px; font-weight: 700; color: var(--quase-preto); }
-  .demo-badge {
-    font-size: 9px; font-weight: 800; padding: 2px 8px; border-radius: 10px;
-    text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap;
+  .demo .dmi-grid button:hover { transform: translateY(-1px); }
+  .demo .dmi-grid button.sel { outline: 2.5px solid #C8A84B; outline-offset: 2px; }
+  .demo .dmi-grid .p { font-size: 11.5px; font-weight: 800; }
+  .demo .dmi-grid .n { font-size: 9px; font-weight: 600; opacity: 0.85; }
+  .demo .dmi-det .dbars { display: flex; align-items: flex-end; gap: 8px; height: 52px; margin: 10px 0 4px; }
+  .demo .dmi-det .dbar { flex: 1; max-width: 40px; display: flex; flex-direction: column; align-items: center; gap: 3px; align-self: stretch; justify-content: flex-end; }
+  .demo .dmi-det .dbar i { width: 100%; background: #C8A84B; border-radius: 3px 3px 0 0; display: block; }
+  .demo .dmi-det .dbar span { font-size: 8.5px; color: #717171; }
+  .demo .dmi-det .dbtns-col { display: flex; flex-direction: column; gap: 7px; margin-top: 12px; }
+
+  /* ---- Meu Edital ---- */
+  .demo .ded-hero .dbadges { display: flex; gap: 6px; flex-wrap: wrap; margin: 7px 0; }
+  .demo .ded-metricas { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 12px 0; }
+  .demo .ded-met { text-align: center; padding: 10px 6px; }
+  .demo .ded-met b { display: block; font-size: 16px; font-weight: 800; color: #1B2A4A; }
+  .demo .ded-met span { font-size: 8.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: #5E5E5E; line-height: 1.3; display: block; margin-top: 2px; }
+  .demo .ded-filtros { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+  .demo .ded-filtros .f { font-size: 10.5px; font-weight: 600; padding: 6px 12px; border-radius: 8px; border: 1px solid #D4D1C7; background: #fff; color: #1B2A4A; }
+  .demo .ded-filtros .f.on { background: #C8A84B; color: #1B2A4A; border-color: #C8A84B; font-weight: 700; }
+  .demo .ded-disc { padding: 0; overflow: hidden; }
+  .demo .ded-disc-head { display: flex; align-items: center; gap: 8px; padding: 11px 14px; border-bottom: 1px solid #F5F4F0; }
+  .demo .ded-disc-head b { font-size: 12px; font-weight: 800; color: #1B2A4A; }
+  .demo .ded-item { padding: 10px 14px; border-bottom: 1px solid #F5F4F0; }
+  .demo .ded-item:last-child { border-bottom: none; }
+  .demo .ded-item-top { display: flex; align-items: baseline; gap: 8px; }
+  .demo .ded-path { flex-shrink: 0; min-width: 20px; font-size: 11px; font-weight: 700; color: #5E5E5E; }
+  .demo .ded-rotulo { font-size: 12px; font-weight: 500; color: #2A2A2A; }
+  .demo .ded-chips { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 6px; }
+  .demo .ded-chip-aula { font-size: 9px; font-weight: 800; background: #F5F4F0; border: 1px solid #E8E6DF; color: #3F3F3F; padding: 2px 7px; border-radius: 6px; }
+  .demo .dheat-pill { font-size: 9px; font-weight: 800; padding: 3px 8px; border-radius: 999px; white-space: nowrap; }
+  .demo .destudo {
+    font-size: 9.5px; font-weight: 700; padding: 2px 8px; border-radius: 999px;
+    border: 1.5px solid; background: #fff; white-space: nowrap;
   }
-  .demo-badge.ok { background: #E4F3EA; color: var(--verde-ok); }
-  .demo-badge.i3 { background: #1B2A4A; color: #fff; }
-  .demo-badge.i2 { background: #DCE6F5; color: #2A4A8B; }
-  .demo-badge.i1 { background: #EDF0F5; color: var(--cinza-medio); }
-  .demo-chips { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
-  .demo-chip { font-size: 10.5px; font-weight: 700; color: var(--azul-profundo); background: #EDF0F5; border-radius: 10px; padding: 3px 9px; }
-  .demo-chip.done { background: #E4F3EA; color: var(--verde-ok); }
+  .demo .destudo.ok { color: #2E7D32; border-color: #2E7D32; }
+  .demo .destudo.and { color: #A88A32; border-color: #A88A32; }
+  .demo .destudo.todo { color: #5E5E5E; border-color: #A8A598; }
+
+  /* ---- Toast (itens fora da demo) ---- */
+  .demo-toast {
+    position: absolute; left: 50%; bottom: 18px; transform: translateX(-50%) translateY(8px);
+    background: #1B2A4A; color: #fff;
+    font-family: 'Manrope', sans-serif; font-size: 11.5px; font-weight: 600;
+    padding: 9px 16px; border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    opacity: 0; pointer-events: none; transition: all 0.25s ease;
+    white-space: nowrap; max-width: 92%; overflow: hidden; text-overflow: ellipsis;
+    z-index: 30;
+  }
+  .demo-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
   .demo-note {
     text-align: center; font-size: 12.5px; color: rgba(255,255,255,0.55);
     margin: 14px auto 0; max-width: 700px;
   }
+
+  /* ---- Responsivo da demo ---- */
+  @media (max-width: 860px) {
+    .demo .dgrid-21, .demo .dgrid-3, .demo .dsim-niveis { grid-template-columns: 1fr; }
+    .demo .dmi-controles { grid-template-columns: 1fr; }
+    .demo .ded-metricas { grid-template-columns: repeat(2, 1fr); }
+  }
   @media (max-width: 760px) {
     .demo { border-radius: 12px; }
-    .demo-body { flex-direction: column; }
-    .demo-nav {
-      width: 100%; flex-direction: row; overflow-x: auto; padding: 10px; gap: 6px;
-      -webkit-overflow-scrolling: touch; scrollbar-width: none;
+    .demo-side {
+      position: absolute; top: 0; bottom: 0; left: 0; z-index: 20;
+      width: min(240px, 82%);
+      transform: translateX(-102%); transition: transform 0.25s ease;
+      box-shadow: 8px 0 30px rgba(0,0,0,0.3);
     }
-    .demo-nav::-webkit-scrollbar { display: none; }
-    .demo-nav button { width: auto; flex-shrink: 0; font-size: 12px; padding: 9px 12px; }
-    .demo-screens { max-height: 480px; padding: 16px; }
-    .demo-stats { grid-template-columns: repeat(3, 1fr); gap: 7px; }
-    .demo-stat .dn { font-size: 16px; }
-    .demo-filtros select { flex: 1 1 45%; }
-    .demo-sim-ops button { flex: 1 1 30%; }
+    .demo-side.open { transform: translateX(0); }
+    .demo-backdrop {
+      display: block; position: absolute; inset: 0; z-index: 15;
+      background: rgba(15,27,51,0.55);
+      opacity: 0; pointer-events: none; transition: opacity 0.25s ease;
+    }
+    .demo-backdrop.show { opacity: 1; pointer-events: auto; }
+    .demo-burger { display: flex; }
+    .demo-user { display: none; }
+    .demo-topbar { padding: 0 12px; height: 48px; }
+    .demo-content { max-height: 500px; padding: 14px 14px 18px; }
+    .demo .dcard-continue { flex-direction: column; }
+    .demo .dvideo { width: 100%; height: 92px; }
+    .demo .dq-foot { flex-wrap: wrap; }
+    .demo .dtabs { overflow-x: auto; scrollbar-width: none; }
   }
   .plat-grid {
     display: grid; grid-template-columns: repeat(4, 1fr);
@@ -1013,163 +1286,370 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="demo-tag">Demo interativa</span>
       </div>
       <div class="demo-body">
-        <nav class="demo-nav" id="demoNav" aria-label="Navegação da demonstração da plataforma">
-          <button type="button" class="active" data-screen="inicio">🏠 Início</button>
-          <button type="button" data-screen="aulas">🎬 Aulas</button>
-          <button type="button" data-screen="questoes">📝 Questões</button>
-          <button type="button" data-screen="simulador">🎮 Simulador</button>
-          <button type="button" data-screen="mapa">🗺️ Mapa de Incidência <em>Beta</em></button>
-          <button type="button" data-screen="edital">📋 Meu Edital <em>Beta</em></button>
+        <div class="demo-backdrop" id="demoBackdrop"></div>
+
+        <!-- Sidebar: réplica do shell real da plataforma -->
+        <nav class="demo-side" id="demoSide" aria-label="Navegação da demonstração da plataforma">
+          <div class="demo-brand">
+            <picture>
+              <source srcset="assets/FC_Simbolo_BrancoDourado_FUNDO_AZUL.webp" type="image/webp">
+              <img src="assets/FC_Simbolo_BrancoDourado_FUNDO_AZUL.png" alt="" width="480" height="480">
+            </picture>
+            <div>
+              <div class="demo-brand-name">Fluência Contábil</div>
+              <div class="demo-brand-tag">Contabilidade para quem quer ser fluente</div>
+            </div>
+          </div>
+          <div class="demo-side-scroll">
+            <div class="demo-side-label">Estudo</div>
+            <button type="button" class="active" data-screen="inicio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Início</button>
+            <button type="button" data-fake="Plano de Estudos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Plano de Estudos <em>Beta</em></button>
+            <button type="button" data-screen="aulas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>Aulas</button>
+            <button type="button" data-screen="questoes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Questões</button>
+            <button type="button" data-screen="mapa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>Mapa de Incidência <em>Beta</em></button>
+            <button type="button" data-screen="edital"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>Meu Edital <em>Beta</em></button>
+            <button type="button" data-screen="simulador"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>Simulador</button>
+            <button type="button" data-fake="Minhas Notas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Minhas Notas</button>
+            <div class="demo-side-label">Comunidade</div>
+            <button type="button" data-fake="Dúvidas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Dúvidas</button>
+            <button type="button" data-fake="Ranking"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 4H4v2a3 3 0 0 0 3 3"/><path d="M17 4h3v2a3 3 0 0 1-3 3"/></svg>Ranking</button>
+            <div class="demo-side-label">Conta</div>
+            <button type="button" data-fake="Meus Cursos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>Meus Cursos</button>
+            <button type="button" data-fake="Certificado"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>Certificado</button>
+            <button type="button" data-fake="Perfil"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Perfil</button>
+            <div class="demo-side-label">Atendimento</div>
+            <button type="button" data-fake="Fale Conosco"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,6 12,13 2,6"/></svg>Fale Conosco</button>
+          </div>
+          <div class="demo-side-foot">
+            <span class="sair"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sair</span>
+            <span class="demo-side-ver">Plataforma · Demo</span>
+          </div>
         </nav>
-        <div class="demo-screens">
 
-          <!-- TELA: INÍCIO -->
-          <div class="demo-screen active" id="scr-inicio">
-            <div class="demo-h">Boas-vindas, Aluno(a) Fundador(a) 👋</div>
-            <div class="demo-sub">Seu painel de estudos (exemplo ilustrativo)</div>
-            <div class="demo-stats">
-              <div class="demo-stat"><div class="dn">🔥 12</div><div class="dl">dias seguidos</div></div>
-              <div class="demo-stat"><div class="dn">⭐ 2.430</div><div class="dl">XP · nível 3</div></div>
-              <div class="demo-stat"><div class="dn">58%</div><div class="dl">do curso</div></div>
-            </div>
-            <div class="demo-card">
-              <h4>▶ Continuar de onde parou</h4>
-              <p>Aula 09 — Patrimônio Líquido · Módulo 2</p>
-              <div class="demo-prog"><i style="width:58%"></i></div>
-              <button type="button" class="demo-btn" data-goto="aulas">Continuar aula</button>
-            </div>
-            <div class="demo-card">
-              <h4>🎯 Foco no seu concurso</h4>
-              <p>Concurso-alvo: Auditor Fiscal — SEFAZ (exemplo). Priorize CPC 26 e DFC: alta incidência no estilo da sua banca.</p>
-              <button type="button" class="demo-btn" data-goto="mapa">Ver Mapa de Incidência</button>
-            </div>
+        <div class="demo-main">
+          <!-- Topbar: réplica (sino, pill XP, pill streak, avatar) -->
+          <div class="demo-topbar">
+            <button type="button" class="demo-burger" id="demoBurger" aria-label="Abrir menu da demonstração"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+            <span class="demo-bell" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></span>
+            <span class="demo-pill-xp">🌿 Praticante · 2.430 XP</span>
+            <span class="demo-pill-streak">🔥 12 dias</span>
+            <span class="demo-avatar">F</span>
+            <span class="demo-user"><b>Aluno(a) Fundador(a)</b><i>Plano Anual</i></span>
           </div>
 
-          <!-- TELA: AULAS -->
-          <div class="demo-screen" id="scr-aulas">
-            <div class="demo-h">Módulo 2 — Demonstrações Contábeis</div>
-            <div class="demo-sub">4 de 10 aulas concluídas neste módulo</div>
-            <div class="demo-card">
-              <div class="demo-aula"><span class="st ok">✓</span> Aula 05 — Balanço Patrimonial (estrutura geral)</div>
-              <div class="demo-aula"><span class="st ok">✓</span> Aula 06 — Ativo Circulante</div>
-              <div class="demo-aula"><span class="st ok">✓</span> Aula 07 — Ativo Não Circulante</div>
-              <div class="demo-aula"><span class="st ok">✓</span> Aula 08 — Passivo</div>
-              <div class="demo-aula"><span class="st now">▶</span> <strong>Aula 09 — Patrimônio Líquido</strong></div>
-              <div class="demo-aula"><span class="st todo">10</span> Aula 10 — DRE (estrutura)</div>
-            </div>
-            <div class="demo-card">
-              <h4>Aula 09 — Patrimônio Líquido</h4>
-              <div class="demo-tabs">
-                <span class="demo-tab on">Material</span>
-                <span class="demo-tab">Questões</span>
-                <span class="demo-tab">Dúvidas</span>
-                <span class="demo-tab">Notas</span>
-              </div>
-              <p style="margin-top:10px;">🎬 Videoaula · 📄 PDF de apoio baixável · Cada aula reúne o vídeo, o material, as questões do tema, a comunidade de dúvidas e as suas anotações.</p>
-              <button type="button" class="demo-btn" data-goto="questoes">Resolver questões desta aula</button>
-            </div>
-          </div>
+          <div class="demo-content" id="demoContent">
 
-          <!-- TELA: QUESTÕES -->
-          <div class="demo-screen" id="scr-questoes">
-            <div class="demo-h">Banco de Questões</div>
-            <div class="demo-sub">Use os filtros de verdade — e resolva as questões de demonstração.</div>
-            <div class="demo-filtros">
-              <select id="demoFAssunto" aria-label="Filtrar por assunto">
-                <option value="">Assunto: todos</option>
-                <option value="Balanço Patrimonial">Balanço Patrimonial</option>
-                <option value="DRE">DRE</option>
-                <option value="Partidas Dobradas">Partidas Dobradas</option>
-              </select>
-              <select id="demoFBanca" aria-label="Filtrar por estilo de banca">
-                <option value="">Estilo de banca: todos</option>
-                <option value="FGV">FGV</option>
-                <option value="CEBRASPE">CEBRASPE</option>
-                <option value="FCC">FCC</option>
-              </select>
-              <select id="demoFDif" aria-label="Filtrar por dificuldade">
-                <option value="">Dificuldade: todas</option>
-                <option value="Fácil">Fácil</option>
-                <option value="Média">Média</option>
-              </select>
+            <!-- TELA: INÍCIO (réplica do dashboard) -->
+            <div class="demo-screen active" id="scr-inicio">
+              <h3 class="dh1" id="demoSauda">Boa noite, Fundador(a). Bora estudar?</h3>
+              <p class="dsub">Você está focando em <strong>Auditor Fiscal — SEFAZ (exemplo)</strong>. Mais 15 aulas até o certificado.</p>
+              <div class="dgrid-21">
+                <div class="dcard dcard-continue">
+                  <div class="dvideo">
+                    <span class="dvideo-meta">Aula 09</span>
+                    <span class="dplay"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></span>
+                  </div>
+                  <div class="dcontinue-info">
+                    <div class="dover gold">Continue de onde parou</div>
+                    <div class="dh3">Patrimônio Líquido</div>
+                    <div class="dsmall">Módulo 2 · 52 min</div>
+                    <div class="dbtns">
+                      <button type="button" class="dbtn-primary" data-goto="aulas">▶ Continuar assistindo</button>
+                      <button type="button" class="dbtn-sec" data-goto="aulas">Ver todas as aulas</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="dcard">
+                  <div class="dover gold">Disciplina</div>
+                  <div class="dnum40">12</div>
+                  <div class="dsmall">dias seguidos</div>
+                  <p class="dcap" style="margin-top:6px;">Ritmo de concurseiro aprovado. Continue.</p>
+                  <hr class="ddivider">
+                  <div class="dcap">Aulas concluídas</div>
+                  <div class="dtrofeu">🏆 21</div>
+                </div>
+              </div>
+              <div class="dgrid-3">
+                <div class="dcard">
+                  <div class="dover">Seu acesso</div>
+                  <span class="dbadge gold">Premium</span>
+                  <div class="dh4" style="margin-top:7px;">Plano Anual</div>
+                  <div class="dcap">347 dias restantes</div>
+                  <div class="dprog"><i style="width:95%"></i></div>
+                </div>
+                <div class="dcard">
+                  <div class="dover">Sua área</div>
+                  <div class="darea"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
+                  <div class="dh4">Fiscal</div>
+                  <div class="dcap" style="margin-top:4px;">✨ Priorize CPC 26 e DFC — alta incidência na sua área</div>
+                </div>
+                <div class="dcard">
+                  <div class="dover">Progresso do curso</div>
+                  <div class="dnum32">58%</div>
+                  <div class="dprog"><i style="width:58%"></i></div>
+                  <div class="dcap" style="margin-top:7px;">21 de 36 aulas · certificado liberado aos 100%</div>
+                </div>
+              </div>
             </div>
-            <div class="demo-count" id="demoQCount"></div>
-            <div id="demoQLista"></div>
-            <p style="font-size:11px;color:var(--cinza-medio);margin-top:4px;">Questões de demonstração, criadas pra esta prévia. Na plataforma real, o banco tem questões de bancas reais (CEBRASPE, FGV, FCC, VUNESP) — todas com comentário do professor.</p>
-          </div>
 
-          <!-- TELA: SIMULADOR -->
-          <div class="demo-screen" id="scr-simulador">
-            <div class="demo-h">Simulador de Lançamentos — Modo Classificação</div>
-            <div class="demo-sub">Classifique cada conta no grupo certo. Na plataforma real: 88 contas, 43 lançamentos, 5 níveis e XP.</div>
-            <div class="demo-card demo-sim">
-              <div style="font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--cinza-medio);">Em que grupo entra a conta:</div>
-              <div class="demo-sim-conta" id="demoSimConta">—</div>
-              <div class="demo-sim-ops" id="demoSimOps">
-                <button type="button" data-g="Ativo">Ativo</button>
-                <button type="button" data-g="Passivo">Passivo</button>
-                <button type="button" data-g="PL">Patrimônio Líquido</button>
-                <button type="button" data-g="Receita">Receita</button>
-                <button type="button" data-g="Despesa">Despesa</button>
+            <!-- TELA: AULAS (réplica da lista com accordion por módulo) -->
+            <div class="demo-screen" id="scr-aulas">
+              <h3 class="dh1">Todas as aulas</h3>
+              <p class="dsub">36 aulas em 4 módulos. 21 concluídas. Marque como concluída ao terminar cada uma.</p>
+              <input type="text" class="dinput" placeholder="Buscar aula por título…" aria-label="Buscar aula (demonstração)" style="margin-bottom:12px;">
+              <div class="dcard dmod" id="dmod1">
+                <button type="button" class="dmod-head">
+                  <span class="dmod-num">1</span>
+                  <span class="dmod-info"><span class="dh4">Fundamentos da Contabilidade</span><br><span class="dcap">5 aulas · 5 concluídas</span></span>
+                  <span class="dmod-prog"><span class="dprog"><i style="width:100%"></i></span></span>
+                  <span class="dmod-chev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+                </button>
+                <div class="dmod-body">
+                  <div class="daula"><span class="daula-check ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="daula-num">Aula 00</span><span class="daula-tit">Introdução à Contabilidade</span></div>
+                  <div class="daula"><span class="daula-check ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="daula-num">Aula 01</span><span class="daula-tit">Método das Partidas Dobradas</span></div>
+                  <div class="daula"><span class="daula-check ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="daula-num">Aula 02</span><span class="daula-tit">CPC 00 — Estrutura Conceitual</span></div>
+                </div>
               </div>
-              <div class="demo-sim-msg" id="demoSimMsg" aria-live="polite"></div>
-              <div class="demo-sim-score" id="demoSimScore"></div>
+              <div class="dcard dmod open" id="dmod2">
+                <button type="button" class="dmod-head">
+                  <span class="dmod-num">2</span>
+                  <span class="dmod-info"><span class="dh4">Demonstrações Contábeis</span><br><span class="dcap">10 aulas · 4 concluídas</span></span>
+                  <span class="dmod-prog"><span class="dprog"><i style="width:40%"></i></span></span>
+                  <span class="dmod-chev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+                </button>
+                <div class="dmod-body">
+                  <div class="daula"><span class="daula-check ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="daula-num">Aula 05</span><span class="daula-tit">Balanço Patrimonial (estrutura geral)<br><span class="dcap">48 min</span></span><span class="daula-chev">›</span></div>
+                  <div class="daula"><span class="daula-check ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="daula-num">Aula 06</span><span class="daula-tit">Ativo Circulante<br><span class="dcap">44 min</span></span><span class="daula-chev">›</span></div>
+                  <div class="daula"><span class="daula-check ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="daula-num">Aula 07</span><span class="daula-tit">Ativo Não Circulante<br><span class="dcap">51 min</span></span><span class="daula-chev">›</span></div>
+                  <div class="daula"><span class="daula-check ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="daula-num">Aula 08</span><span class="daula-tit">Passivo<br><span class="dcap">46 min</span></span><span class="daula-chev">›</span></div>
+                  <div class="daula" style="background:#FBF6E9;"><span class="daula-check todo"></span><span class="daula-num">Aula 09</span><span class="daula-tit"><b>Patrimônio Líquido</b><br><span class="dcap">52 min · continue daqui</span></span><span class="daula-chev">›</span></div>
+                  <div class="daula"><span class="daula-check todo"></span><span class="daula-num">Aula 10</span><span class="daula-tit">DRE (estrutura)<br><span class="dcap">49 min</span></span><span class="daula-chev">›</span></div>
+                </div>
+              </div>
+              <div class="dcard dmod">
+                <button type="button" class="dmod-head" style="cursor:default;">
+                  <span class="dmod-num lock"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+                  <span class="dmod-info"><span class="dh4" style="color:#717171;">CPCs Operacionais</span><br><span class="dlock-note">Libera em 12 dias</span></span>
+                </button>
+              </div>
             </div>
-          </div>
 
-          <!-- TELA: MAPA DE INCIDÊNCIA -->
-          <div class="demo-screen" id="scr-mapa">
-            <div class="demo-h">Mapa de Incidência <span class="demo-q-tag" style="vertical-align:2px;">Beta</span></div>
-            <div class="demo-sub">CPC 27 — Ativo Imobilizado · estilo FGV (números ilustrativos). Clique num item pra ver o detalhe.</div>
-            <div class="demo-legenda">Incidência: <i style="background:#F4F6FA;"></i> baixa <i style="background:#B9CBE8;"></i> média <i style="background:#5C7BB8;"></i> alta <i style="background:#1B2A4A;"></i> muito alta</div>
-            <div class="demo-heat" id="demoHeat">
-              <button type="button" data-item="Reconhecimento" data-n="12" data-aula="Aula 18" style="background:#B9CBE8;color:#1B2A4A;">Reconhecimento</button>
-              <button type="button" data-item="Mensuração inicial (custo)" data-n="18" data-aula="Aula 18" style="background:#5C7BB8;color:#fff;">Mensuração inicial</button>
-              <button type="button" data-item="Custos subsequentes" data-n="9" data-aula="Aula 18" style="background:#B9CBE8;color:#1B2A4A;">Custos subsequentes</button>
-              <button type="button" data-item="Depreciação" data-n="31" data-aula="Aula 18" style="background:#1B2A4A;color:#fff;">Depreciação</button>
-              <button type="button" data-item="Vida útil e valor residual" data-n="15" data-aula="Aula 18" style="background:#5C7BB8;color:#fff;">Vida útil e residual</button>
-              <button type="button" data-item="Baixa do imobilizado" data-n="7" data-aula="Aula 18" style="background:#B9CBE8;color:#1B2A4A;">Baixa</button>
-              <button type="button" data-item="Divulgação" data-n="3" data-aula="Aula 18" style="background:#F4F6FA;color:#5A5F66;">Divulgação</button>
+            <!-- TELA: QUESTÕES (réplica do banco: tabs, presets, filtros, cards) -->
+            <div class="demo-screen" id="scr-questoes">
+              <h3 class="dh1">Questões</h3>
+              <p class="dsub">Monte cadernos filtrando por assunto, banca, ano e mais. Resolva e acompanhe seu desempenho.</p>
+              <div class="dtabs">
+                <span class="dtab on">Explorar</span>
+                <span class="dtab">Meus cadernos</span>
+                <span class="dtab">Meu desempenho</span>
+              </div>
+              <div class="dover">Começar rápido</div>
+              <div class="dpresets">
+                <span class="dpreset">↻ Revisar meus erros</span>
+                <span class="dpreset">○ Não respondidas</span>
+                <span class="dpreset">📅 Últimos 3 anos</span>
+                <span class="dpreset">🏛 Maiores Bancas</span>
+              </div>
+              <div class="dfiltros">
+                <div class="dsel-wrap"><span class="dover" style="margin:0;">Assunto</span>
+                  <select id="demoFAssunto" aria-label="Filtrar por assunto">
+                    <option value="">Todos</option>
+                    <option value="Balanço Patrimonial">Balanço Patrimonial</option>
+                    <option value="DRE">DRE</option>
+                    <option value="Partidas Dobradas">Partidas Dobradas</option>
+                  </select>
+                </div>
+                <div class="dsel-wrap"><span class="dover" style="margin:0;">Estilo de banca</span>
+                  <select id="demoFBanca" aria-label="Filtrar por estilo de banca">
+                    <option value="">Todos</option>
+                    <option value="FGV">FGV</option>
+                    <option value="CEBRASPE">CEBRASPE</option>
+                    <option value="FCC">FCC</option>
+                  </select>
+                </div>
+                <div class="dsel-wrap"><span class="dover" style="margin:0;">Dificuldade</span>
+                  <select id="demoFDif" aria-label="Filtrar por dificuldade">
+                    <option value="">Todas</option>
+                    <option value="Fácil">Fácil</option>
+                    <option value="Média">Média</option>
+                  </select>
+                </div>
+              </div>
+              <div class="dtoolbar"><b id="demoQNum">6</b><span>questões encontradas</span></div>
+              <div id="demoQLista"></div>
+              <p class="dnote">Questões de demonstração, criadas pra esta prévia. Na plataforma real, o banco tem questões de bancas reais (CEBRASPE, FGV, FCC, VUNESP) — todas com comentário do professor.</p>
             </div>
-            <div class="demo-card" id="demoMapaDet">
-              <h4>Toque num item do mapa 👆</h4>
-              <p>Você vê quantas questões daquele exato item já caíram no estilo da sua banca — e vai direto resolver ou revisar a aula.</p>
-            </div>
-          </div>
 
-          <!-- TELA: MEU EDITAL -->
-          <div class="demo-screen" id="scr-edital">
-            <div class="demo-h">Meu Edital <span class="demo-q-tag" style="vertical-align:2px;">Beta</span></div>
-            <div class="demo-sub">Exemplo: Auditor Fiscal — SEFAZ · Contabilidade Geral (dados ilustrativos)</div>
-            <div class="demo-card">
-              <h4>Cobertura do edital pelo curso</h4>
-              <div class="demo-prog"><i style="width:100%"></i></div>
-              <p style="margin-top:6px;">100% dos itens deste programa são cobertos por aulas do curso.</p>
+            <!-- TELA: SIMULADOR (réplica do hub real + jogo de classificação) -->
+            <div class="demo-screen" id="scr-simulador">
+              <div id="demoSimHub">
+                <h3 class="dh1">🧪 Simulador de Lançamentos</h3>
+                <p class="dsub">Pratique partida dobrada com lançamentos canônicos. Cada acerto vale XP — vire <strong>Grande Sábio</strong> (12.000 XP).</p>
+                <div class="dsim-xp">
+                  <div class="dsim-xp-row">
+                    <span class="dsim-nivel">🌿 Nível 3 · Praticante</span>
+                    <span class="dsim-chip">🔥 12 dias</span>
+                  </div>
+                  <div class="dsim-xp-sub">2.430 XP · faltam 570 pra 🌳 Conhecedor</div>
+                  <div class="dsim-track"><i style="width:81%"></i></div>
+                </div>
+                <div class="dcard dsim-row">
+                  <span class="dsim-ic" aria-hidden="true"><i></i><i></i><i></i></span>
+                  <div class="dsim-grow">
+                    <div class="dh3">Classificação Contábil</div>
+                    <div class="dcap">Reconheça a natureza da conta antes de montar lançamentos.</div>
+                  </div>
+                  <button type="button" class="dbtn-sec" id="demoSimTreinar">Treinar</button>
+                </div>
+                <div class="dsim-aleatorio">
+                  <span class="dado" aria-hidden="true">🎲</span>
+                  <div class="dsim-grow">
+                    <div class="dh3">Modo Aleatório</div>
+                    <div class="dcap">Sorteia qualquer enunciado do banco. Treinamento livre.</div>
+                  </div>
+                  <button type="button" class="dbtn-azul" id="demoSimJogar">⏵ Jogar agora</button>
+                </div>
+                <div class="dover" style="font-size:11px;color:#1B2A4A;">Por nível de dificuldade</div>
+                <div class="dsim-niveis">
+                  <div class="dcard dnivel">
+                    <span class="emo" aria-hidden="true">🌱</span>
+                    <b>Nível 1 · Iniciante</b>
+                    <span class="stars" aria-hidden="true">★☆☆☆☆</span>
+                    <p>Lançamentos de 2-3 linhas. Conceitos básicos.</p>
+                    <span class="dmeta"><b>36 lançamentos</b> · 30 XP cada</span>
+                    <div class="dnivel-foot"><span class="dnivel-chip">✓ 12/36</span><span class="dnivel-go">Praticar →</span></div>
+                  </div>
+                  <div class="dcard dnivel">
+                    <span class="emo" aria-hidden="true">🌿</span>
+                    <b>Nível 2 · Fácil</b>
+                    <span class="stars" aria-hidden="true">★★☆☆☆</span>
+                    <p>Apropriações temporais simples.</p>
+                    <span class="dmeta"><b>3 lançamentos</b> · 40 XP cada</span>
+                    <div class="dnivel-foot"><span class="dnivel-chip">1/3</span><span class="dnivel-go">Praticar →</span></div>
+                  </div>
+                  <div class="dcard dnivel">
+                    <span class="emo" aria-hidden="true">🌳</span>
+                    <b>Nível 3 · Médio</b>
+                    <span class="stars" aria-hidden="true">★★★☆☆</span>
+                    <p>Múltiplas contas envolvidas.</p>
+                    <span class="dmeta"><b>5 lançamentos</b> · 60 XP cada</span>
+                    <div class="dnivel-foot"><span class="dnivel-chip">0/5</span><span class="dnivel-go">Praticar →</span></div>
+                  </div>
+                </div>
+              </div>
+              <div id="demoSimJogo" hidden>
+                <button type="button" class="dvoltar" id="demoSimVoltar">← Voltar pro Simulador</button>
+                <div class="dcard dsim-jogo">
+                  <div class="dsim-pergunta">Em que grupo entra a conta:</div>
+                  <div class="dsim-conta" id="demoSimConta">—</div>
+                  <div class="dsim-ops" id="demoSimOps">
+                    <button type="button" data-g="Ativo">Ativo</button>
+                    <button type="button" data-g="Passivo">Passivo</button>
+                    <button type="button" data-g="PL">Patrimônio Líquido</button>
+                    <button type="button" data-g="Receita">Receita</button>
+                    <button type="button" data-g="Despesa">Despesa</button>
+                  </div>
+                  <div class="dsim-msg" id="demoSimMsg" aria-live="polite"></div>
+                  <div class="dsim-score" id="demoSimScore"></div>
+                </div>
+              </div>
             </div>
-            <div class="demo-card">
-              <div class="demo-ed-item">
-                <div class="demo-ed-top">1. Estrutura conceitual (CPC 00) <span class="demo-badge ok">Coberto</span> <span class="demo-badge i2">Incidência média</span></div>
-                <div class="demo-chips"><span class="demo-chip done">✓ Aula 02 — concluída</span></div>
-              </div>
-              <div class="demo-ed-item">
-                <div class="demo-ed-top">2. Apresentação das demonstrações (CPC 26) <span class="demo-badge ok">Coberto</span> <span class="demo-badge i3">Incidência muito alta</span></div>
-                <div class="demo-chips"><span class="demo-chip done">✓ Aula 03 — concluída</span><span class="demo-chip done">✓ Aula 04 — concluída</span></div>
-              </div>
-              <div class="demo-ed-item">
-                <div class="demo-ed-top">3. Estoques (CPC 16) <span class="demo-badge ok">Coberto</span> <span class="demo-badge i2">Incidência média</span></div>
-                <div class="demo-chips"><span class="demo-chip">Aula 17</span></div>
-              </div>
-              <div class="demo-ed-item">
-                <div class="demo-ed-top">4. Ativo imobilizado (CPC 27) <span class="demo-badge ok">Coberto</span> <span class="demo-badge i3">Incidência muito alta</span></div>
-                <div class="demo-chips"><span class="demo-chip">Aula 18</span></div>
-              </div>
-            </div>
-          </div>
 
+            <!-- TELA: MAPA DE INCIDÊNCIA (réplica: controles, legenda, grade de artigos, detalhe) -->
+            <div class="demo-screen" id="scr-mapa">
+              <h3 class="dh1">Mapa de Incidência <span class="dbadge gold" style="vertical-align:3px;">Beta</span></h3>
+              <p class="dsub">Estude direto pela norma. Cada quadrado é um artigo; quanto mais azul, mais aquela banca cobra. Clique num artigo pra ver o detalhe e montar um caderno só dele.</p>
+              <div class="dcard" style="margin-bottom:12px;">
+                <div class="dmi-controles">
+                  <div class="dsel-wrap"><span class="dover" style="margin:0;">Norma</span>
+                    <select aria-label="Norma (demonstração)"><option>CPC 27 · Ativo Imobilizado</option></select>
+                  </div>
+                  <div class="dsel-wrap"><span class="dover" style="margin:0;">Banca</span>
+                    <select aria-label="Banca (demonstração)"><option>FGV (estilo)</option></select>
+                  </div>
+                  <div class="dsel-wrap"><span class="dover" style="margin:0;">Incidência</span>
+                    <select aria-label="Incidência (demonstração)"><option>Todas as incidências</option></select>
+                  </div>
+                </div>
+                <div class="dmi-legenda">Cai pouco
+                  <i style="background:#DCE3EE;border-radius:3px 0 0 3px;"></i><i style="background:#A9B8D2;"></i><i style="background:#5A6E97;"></i><i style="background:#1B2A4A;border-radius:0 3px 3px 0;"></i>
+                  Cai muito <span class="tracejado" aria-hidden="true"></span> sem registro
+                </div>
+                <div class="dmi-grid" id="demoHeat">
+                  <button type="button" data-item="Reconhecimento" data-n="12" data-aula="Aula 18" style="background:#A9B8D2;color:#14213B;"><span class="p">7</span><span class="n">12q</span></button>
+                  <button type="button" data-item="Custos subsequentes" data-n="9" data-aula="Aula 18" style="background:#DCE3EE;color:#1B2A4A;"><span class="p">12</span><span class="n">9q</span></button>
+                  <button type="button" data-item="Mensuração inicial (custo)" data-n="18" data-aula="Aula 18" style="background:#5A6E97;color:#fff;"><span class="p">15</span><span class="n">18q</span></button>
+                  <button type="button" data-item="Depreciação" data-n="31" data-aula="Aula 18" style="background:#1B2A4A;color:#fff;"><span class="p">43</span><span class="n">31q</span></button>
+                  <button type="button" data-item="Vida útil e valor residual" data-n="15" data-aula="Aula 18" style="background:#5A6E97;color:#fff;"><span class="p">51</span><span class="n">15q</span></button>
+                  <button type="button" data-item="Baixa do imobilizado" data-n="7" data-aula="Aula 18" style="background:#DCE3EE;color:#1B2A4A;"><span class="p">67</span><span class="n">7q</span></button>
+                  <button type="button" data-item="Divulgação" data-n="3" data-aula="Aula 18" style="background:#FBF6E9;color:#8A8370;border:1px dashed #D4D1C7;"><span class="p">73</span><span class="n">3q</span></button>
+                </div>
+              </div>
+              <div class="dcard dmi-det" id="demoMapaDet">
+                <div class="dover">Detalhe do artigo</div>
+                <div class="dh4">Selecione um artigo 👆</div>
+                <p class="dcap" style="margin-top:4px;">Veja quantas questões caíram naquele exato item, a distribuição por ano — e vá direto resolver ou revisar a aula.</p>
+              </div>
+              <p class="dnote">Contagens ilustrativas. Na plataforma real, o Mapa é construído com questões reais de prova classificadas item a item da norma.</p>
+            </div>
+
+            <!-- TELA: MEU EDITAL (réplica: hero do concurso, métricas, filtros, itens) -->
+            <div class="demo-screen" id="scr-edital">
+              <h3 class="dh1">Meu Edital <span class="dbadge gold" style="vertical-align:3px;">Beta</span></h3>
+              <p class="dsub">Veja, item por item do seu edital, o que já está coberto por aulas e questões — e o quanto você já estudou de cada ponto.</p>
+              <div class="dcard ded-hero" style="margin-bottom:12px;">
+                <div class="dh3">Secretaria da Fazenda — SEFAZ (exemplo)</div>
+                <div class="dbadges">
+                  <span class="dbadge blue">Banca: FGV (estilo)</span>
+                  <span class="dbadge gray">Nível Superior</span>
+                  <span class="dbadge gold">Auditor Fiscal</span>
+                </div>
+                <div class="dcap">Edital de exemplo · dados ilustrativos</div>
+                <div class="dbtns">
+                  <button type="button" class="dbtn-primary">📄 Baixar edital (PDF)</button>
+                  <button type="button" class="dbtn-sec">Fonte oficial ↗</button>
+                </div>
+              </div>
+              <div class="ded-metricas">
+                <div class="dcard ded-met"><b>100%</b><span>do edital coberto</span></div>
+                <div class="dcard ded-met"><b>312</b><span>questões ligadas</span></div>
+                <div class="dcard ded-met"><b>9</b><span>aulas vinculadas</span></div>
+                <div class="dcard ded-met"><b>4</b><span>itens que você fechou</span></div>
+              </div>
+              <div class="ded-filtros">
+                <span class="f on">Todos</span>
+                <span class="f">Estudadas (2)</span>
+                <span class="f">Não estudadas (2)</span>
+                <span class="f">Cobertos</span>
+              </div>
+              <div class="dcard ded-disc">
+                <div class="ded-disc-head"><b>Contabilidade Geral</b> <span class="dbadge green">Coberto</span></div>
+                <div class="ded-item">
+                  <div class="ded-item-top"><span class="ded-path">1.</span><span class="ded-rotulo">Estrutura conceitual da contabilidade (CPC 00)</span></div>
+                  <div class="ded-chips"><span class="ded-chip-aula">AULA 02</span><span class="dheat-pill" style="background:#A9B8D2;color:#14213B;">Cai médio na FGV · 14q</span><span class="dbadge green">Coberto</span><span class="destudo ok">✓ Estudado</span></div>
+                </div>
+                <div class="ded-item">
+                  <div class="ded-item-top"><span class="ded-path">2.</span><span class="ded-rotulo">Apresentação das demonstrações contábeis (CPC 26)</span></div>
+                  <div class="ded-chips"><span class="ded-chip-aula">AULA 03</span><span class="ded-chip-aula">AULA 04</span><span class="dheat-pill" style="background:#1B2A4A;color:#fff;">Cai muitíssimo na FGV · 42q</span><span class="dbadge green">Coberto</span><span class="destudo ok">✓ Estudado</span></div>
+                </div>
+                <div class="ded-item">
+                  <div class="ded-item-top"><span class="ded-path">3.</span><span class="ded-rotulo">Estoques: mensuração e critérios de baixa (CPC 16)</span></div>
+                  <div class="ded-chips"><span class="ded-chip-aula">AULA 17</span><span class="dheat-pill" style="background:#A9B8D2;color:#14213B;">Cai médio na FGV · 19q</span><span class="dbadge green">Coberto</span><span class="destudo and">◐ Em andamento</span></div>
+                </div>
+                <div class="ded-item">
+                  <div class="ded-item-top"><span class="ded-path">4.</span><span class="ded-rotulo">Ativo imobilizado: reconhecimento, depreciação e baixa (CPC 27)</span></div>
+                  <div class="ded-chips"><span class="ded-chip-aula">AULA 18</span><span class="dheat-pill" style="background:#5A6E97;color:#fff;">Cai muito na FGV · 23q</span><span class="dbadge green">Coberto</span><span class="destudo todo">○ A estudar</span></div>
+                </div>
+              </div>
+              <p class="dnote">Concurso e números de exemplo. Na plataforma real, você escolhe seu concurso num catálogo com busca — e pode solicitar editais que ainda não estão lá.</p>
+            </div>
+
+          </div>
         </div>
+        <div class="demo-toast" id="demoToast" role="status"></div>
       </div>
     </div>
-    <p class="demo-note">Demonstração com dados ilustrativos, direto no seu navegador. A plataforma real tem tudo isso — com o curso completo e questões de bancas reais dentro.</p>
+    <p class="demo-note">Réplica fiel da plataforma, com dados ilustrativos, direto no seu navegador. A plataforma real tem tudo isso — com o curso completo e questões de bancas reais dentro.</p>
 
     <div class="plat-grid">
       <div class="plat-card reveal">
@@ -1638,28 +2118,70 @@ window.addEventListener('resize', function () {
   });
 });
 
-/* ===== DEMO INTERATIVA DA PLATAFORMA (dados ilustrativos) ===== */
+/* ===== DEMO INTERATIVA DA PLATAFORMA (réplica fiel · dados ilustrativos) ===== */
 (function () {
-  var nav = document.getElementById('demoNav');
-  if (!nav) return;
+  var side = document.getElementById('demoSide');
+  if (!side) return;
 
-  /* --- navegação entre telas --- */
+  /* --- saudação dinâmica (mesma lógica do dashboard real) --- */
+  (function () {
+    var h = new Date().getHours();
+    var sauda = h < 12 ? 'Bom dia' : (h < 18 ? 'Boa tarde' : 'Boa noite');
+    var el = document.getElementById('demoSauda');
+    if (el) el.textContent = sauda + ', Fundador(a). Bora estudar?';
+  })();
+
+  /* --- navegação entre telas + drawer mobile + toast --- */
+  var backdrop = document.getElementById('demoBackdrop');
+  var burger = document.getElementById('demoBurger');
+  var toastEl = document.getElementById('demoToast');
+  var toastTimer = null;
+
+  function fecharDrawer() {
+    side.classList.remove('open');
+    backdrop.classList.remove('show');
+  }
   function demoGo(screen) {
-    nav.querySelectorAll('button').forEach(function (b) {
+    side.querySelectorAll('button[data-screen]').forEach(function (b) {
       b.classList.toggle('active', b.getAttribute('data-screen') === screen);
     });
+    side.querySelectorAll('button[data-fake]').forEach(function (b) { b.classList.remove('active'); });
     document.querySelectorAll('.demo-screen').forEach(function (s) {
       s.classList.toggle('active', s.id === 'scr-' + screen);
     });
-    var scr = document.querySelector('.demo-screens');
+    var scr = document.getElementById('demoContent');
     if (scr) scr.scrollTop = 0;
+    fecharDrawer();
   }
-  nav.addEventListener('click', function (e) {
-    var b = e.target.closest('button[data-screen]');
-    if (b) demoGo(b.getAttribute('data-screen'));
+  function toast(msg) {
+    toastEl.textContent = msg;
+    toastEl.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { toastEl.classList.remove('show'); }, 2600);
+  }
+  side.addEventListener('click', function (e) {
+    var b = e.target.closest('button');
+    if (!b) return;
+    if (b.hasAttribute('data-screen')) { demoGo(b.getAttribute('data-screen')); return; }
+    if (b.hasAttribute('data-fake')) {
+      toast('“' + b.getAttribute('data-fake') + '” está na plataforma real — a demo mostra 6 telas 😉');
+      fecharDrawer();
+    }
   });
   document.querySelectorAll('[data-goto]').forEach(function (el) {
     el.addEventListener('click', function () { demoGo(el.getAttribute('data-goto')); });
+  });
+  if (burger) burger.addEventListener('click', function () {
+    side.classList.add('open');
+    backdrop.classList.add('show');
+  });
+  if (backdrop) backdrop.addEventListener('click', fecharDrawer);
+
+  /* --- Aulas: accordion de módulos (módulo 3 bloqueado não abre) --- */
+  document.querySelectorAll('.dmod').forEach(function (mod) {
+    var head = mod.querySelector('.dmod-head');
+    if (!head || !mod.querySelector('.dmod-body')) return;
+    head.addEventListener('click', function () { mod.classList.toggle('open'); });
   });
 
   /* --- Questões: dataset de demonstração + filtros + resolução --- */
@@ -1694,45 +2216,58 @@ window.addEventListener('resize', function () {
       fB = document.getElementById('demoFBanca'),
       fD = document.getElementById('demoFDif'),
       lista = document.getElementById('demoQLista'),
-      count = document.getElementById('demoQCount');
+      qNum = document.getElementById('demoQNum');
 
   function renderQs() {
     var va = fA.value, vb = fB.value, vd = fD.value;
     var qs = QS.filter(function (q) {
       return (!va || q.assunto === va) && (!vb || q.banca === vb) && (!vd || q.dif === vd);
     });
-    count.textContent = qs.length + (qs.length === 1 ? ' questão encontrada' : ' questões encontradas');
+    qNum.textContent = qs.length;
+    qNum.nextElementSibling.textContent = qs.length === 1 ? 'questão encontrada' : 'questões encontradas';
     lista.innerHTML = '';
     qs.forEach(function (q) {
       var card = document.createElement('div');
-      card.className = 'demo-q';
+      card.className = 'dcard dq';
+      var diffOn = q.dif === 'Fácil' ? 1 : 2;
+      var diffBars = '<span class="ddiff" aria-hidden="true"><i class="on"></i><i' + (diffOn > 1 ? ' class="on"' : '') + '></i><i></i></span>';
       var alts = q.alts.map(function (a, i) {
-        var rotulo = q.tipo === 'CE' ? a : '<span class="l">' + LETRAS[i] + ')</span> ' + a;
-        return '<button type="button" class="demo-alt" data-i="' + i + '">' + rotulo + '</button>';
+        var letra = q.tipo === 'CE' ? (i === 0 ? 'C' : 'E') : LETRAS[i];
+        return '<button type="button" class="dalt" data-i="' + i + '"><span class="dl">' + letra + '</span><span>' + a + '</span></button>';
       }).join('');
       card.innerHTML =
-        '<button type="button" class="demo-q-head">' +
-          '<span class="demo-q-cod">' + q.cod + '</span>' +
-          '<span class="demo-q-meta">' + q.assunto + ' · estilo ' + q.banca + ' · ' + q.dif + '</span>' +
-          '<span class="demo-q-tag">Demo</span>' +
-        '</button>' +
-        '<div class="demo-q-body">' +
-          '<p class="demo-q-enun">' + q.enun + '</p>' + alts +
-          '<div class="demo-coment">💡 <strong>Comentário do professor:</strong> ' + q.coment + '</div>' +
+        '<div class="dq-top">' +
+          '<div class="dq-meta"><b>Fluência Contábil · Inédita</b><span class="cod">' + q.cod + '</span>' +
+            '<span class="dbadge gold">Inédita</span>' +
+            (q.tipo === 'CE' ? '<span class="dbadge gray">Certo/Errado</span>' : '') +
+            '<span class="dbadge gray">Demo</span></div>' +
+          '<div class="dq-trilha">Contabilidade Geral › ' + q.assunto + '</div>' +
+          '<p class="dq-enun">' + q.enun + '</p>' +
+          '<div class="dq-foot">' + diffBars + '<span class="ddiff-label">' + q.dif + '</span>' +
+            '<button type="button" class="dbtn-azul dq-resolver">Resolver questão</button></div>' +
+        '</div>' +
+        '<div class="dq-body">' + alts +
+          '<div class="dresolucao"><div class="dover gold" data-role="veredito"></div>' +
+            '<div class="gab">Gabarito: ' + (q.tipo === 'CE' ? (q.gab === 0 ? 'Certo' : 'Errado') : 'alternativa ' + LETRAS[q.gab]) + '</div>' +
+            '<p>' + q.coment + '</p></div>' +
         '</div>';
-      card.querySelector('.demo-q-head').addEventListener('click', function () {
+      card.querySelector('.dq-resolver').addEventListener('click', function () {
         card.classList.toggle('open');
+        this.textContent = card.classList.contains('open') ? 'Recolher' : 'Resolver questão';
       });
-      card.querySelectorAll('.demo-alt').forEach(function (btn) {
+      card.querySelectorAll('.dalt').forEach(function (btn) {
         btn.addEventListener('click', function () {
           if (card.classList.contains('done')) return;
           card.classList.add('done');
           var i = parseInt(btn.getAttribute('data-i'), 10);
+          var vered = card.querySelector('[data-role="veredito"]');
           if (i === q.gab) {
             btn.classList.add('certa');
+            vered.textContent = '✓ Correto — Resolução da Fluência';
           } else {
             btn.classList.add('errada');
-            card.querySelectorAll('.demo-alt')[q.gab].classList.add('certa');
+            card.querySelectorAll('.dalt')[q.gab].classList.add('certa');
+            vered.textContent = '✗ Incorreto — comentário';
           }
         });
       });
@@ -1742,7 +2277,9 @@ window.addEventListener('resize', function () {
   [fA, fB, fD].forEach(function (s) { s.addEventListener('change', renderQs); });
   renderQs();
 
-  /* --- Simulador: modo classificação --- */
+  /* --- Simulador: hub ⇄ jogo de classificação --- */
+  var simHub = document.getElementById('demoSimHub'),
+      simJogo = document.getElementById('demoSimJogo');
   var CONTAS = [
     { c: 'Caixa', g: 'Ativo' },
     { c: 'Fornecedores', g: 'Passivo' },
@@ -1758,15 +2295,31 @@ window.addEventListener('resize', function () {
       elMsg = document.getElementById('demoSimMsg'),
       elScore = document.getElementById('demoSimScore');
 
+  function simAbrir() {
+    simHub.hidden = true;
+    simJogo.hidden = false;
+    simIdx = 0; simPts = 0; simTravado = false;
+    elOps.style.display = '';
+    simRender();
+  }
+  function simFechar() {
+    simJogo.hidden = true;
+    simHub.hidden = false;
+  }
+  document.getElementById('demoSimTreinar').addEventListener('click', simAbrir);
+  document.getElementById('demoSimJogar').addEventListener('click', simAbrir);
+  document.getElementById('demoSimVoltar').addEventListener('click', simFechar);
+
   function simRender() {
     if (simIdx >= CONTAS.length) {
       elConta.textContent = '🏁 Fim da rodada!';
       elOps.style.display = 'none';
-      elMsg.className = 'demo-sim-msg ok';
+      elMsg.className = 'dsim-msg ok';
       elMsg.textContent = 'Você acertou ' + simPts / 10 + ' de ' + CONTAS.length + ' · +' + simPts + ' XP';
       elScore.innerHTML = '';
       var again = document.createElement('button');
-      again.type = 'button'; again.className = 'demo-btn'; again.textContent = 'Jogar de novo';
+      again.type = 'button'; again.className = 'dbtn-primary'; again.textContent = 'Jogar de novo';
+      again.style.marginTop = '8px';
       again.addEventListener('click', function () {
         simIdx = 0; simPts = 0; elOps.style.display = ''; simRender();
       });
@@ -1774,7 +2327,7 @@ window.addEventListener('resize', function () {
       return;
     }
     elConta.textContent = CONTAS[simIdx].c;
-    elMsg.className = 'demo-sim-msg';
+    elMsg.className = 'dsim-msg';
     elMsg.textContent = '';
     elScore.textContent = 'Conta ' + (simIdx + 1) + ' de ' + CONTAS.length + ' · ' + simPts + ' XP';
   }
@@ -1785,17 +2338,16 @@ window.addEventListener('resize', function () {
     var certo = b.getAttribute('data-g') === CONTAS[simIdx].g;
     if (certo) {
       simPts += 10;
-      elMsg.className = 'demo-sim-msg ok';
+      elMsg.className = 'dsim-msg ok';
       elMsg.textContent = '✓ Isso! +10 XP';
     } else {
-      elMsg.className = 'demo-sim-msg erro';
+      elMsg.className = 'dsim-msg erro';
       elMsg.textContent = '✗ Era ' + GRUPO_LABEL[CONTAS[simIdx].g] + '.';
     }
     setTimeout(function () { simIdx++; simTravado = false; simRender(); }, certo ? 700 : 1300);
   });
-  simRender();
 
-  /* --- Mapa de Incidência: heatmap clicável --- */
+  /* --- Mapa de Incidência: heatmap clicável + detalhe com barras por ano --- */
   var heat = document.getElementById('demoHeat'),
       det = document.getElementById('demoMapaDet');
   heat.addEventListener('click', function (e) {
@@ -1803,11 +2355,25 @@ window.addEventListener('resize', function () {
     if (!b) return;
     heat.querySelectorAll('button').forEach(function (x) { x.classList.remove('sel'); });
     b.classList.add('sel');
+    var n = parseInt(b.getAttribute('data-n'), 10);
+    var path = b.querySelector('.p').textContent;
+    // distribuição ilustrativa por ano, proporcional ao total do item
+    var frac = [0.13, 0.2, 0.29, 0.38], anos = ["'22", "'23", "'24", "'25"];
+    var barras = frac.map(function (f, i) {
+      var v = Math.max(1, Math.round(n * f));
+      var hpx = Math.max(6, Math.round(44 * (v / Math.max(1, Math.round(n * frac[3])))));
+      return '<div class="dbar"><i style="height:' + hpx + 'px"></i><span>' + v + ' · ' + anos[i] + '</span></div>';
+    }).join('');
     det.innerHTML =
-      '<h4>' + b.getAttribute('data-item') + '</h4>' +
-      '<p><strong>' + b.getAttribute('data-n') + ' questões</strong> deste exato item no estilo FGV (número ilustrativo). Na plataforma, daqui você vai direto pro que importa:</p>' +
-      '<button type="button" class="demo-btn" data-goto="questoes">Resolver questões do item</button> ' +
-      '<button type="button" class="demo-btn" data-goto="aulas" style="background:var(--dourado-escuro);">Ver ' + b.getAttribute('data-aula') + '</button>';
+      '<div class="dover">Artigo ' + path + ' · CPC 27</div>' +
+      '<div class="dh4">' + b.getAttribute('data-item') + '</div>' +
+      '<p class="dcap" style="margin-top:3px;"><b style="color:#1B2A4A;">' + n + ' questões</b> mapeadas nesse exato item, no estilo FGV (ilustrativo).</p>' +
+      '<div class="dover" style="margin-top:10px;">Por ano</div>' +
+      '<div class="dbars">' + barras + '</div>' +
+      '<div class="dbtns-col">' +
+        '<button type="button" class="dbtn-azul dbtn-block" data-goto="questoes">✓ Resolver questões desse artigo</button>' +
+        '<button type="button" class="dbtn-sec dbtn-block" data-goto="aulas">▶ Ver aula relacionada (' + b.getAttribute('data-aula') + ')</button>' +
+      '</div>';
     det.querySelectorAll('[data-goto]').forEach(function (el) {
       el.addEventListener('click', function () { demoGo(el.getAttribute('data-goto')); });
     });
