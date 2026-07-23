@@ -339,14 +339,207 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .plataforma .section-label { color: var(--dourado); }
   .plataforma .section-title { color: var(--branco); }
   .plataforma .section-text { color: rgba(255,255,255,0.78); }
-  .plat-print { margin: 46px auto 10px; max-width: 860px; }
-  .plat-print img {
-    width: 100%; border-radius: 12px;
+  /* ===== DEMO INTERATIVA DA PLATAFORMA (dados ilustrativos) ===== */
+  .demo {
+    margin: 46px auto 0; max-width: 940px;
+    background: #0F182B;
     border: 1px solid rgba(255,255,255,0.14);
+    border-radius: 14px; overflow: hidden;
     box-shadow: 0 24px 60px rgba(0,0,0,0.35);
+    text-align: left;
   }
-  .plat-print figcaption {
-    text-align: center; font-size: 12.5px; color: rgba(255,255,255,0.55); margin-top: 12px;
+  .demo-top {
+    display: flex; align-items: center; gap: 7px;
+    background: #0B1220; padding: 10px 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .demo-dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.18); flex-shrink: 0; }
+  .demo-url {
+    flex: 1; min-width: 0; margin-left: 6px;
+    background: rgba(255,255,255,0.06); border-radius: 6px;
+    font-size: 11.5px; color: rgba(255,255,255,0.55);
+    padding: 5px 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .demo-tag {
+    background: rgba(200,168,75,0.18); color: var(--dourado);
+    border: 1px solid rgba(200,168,75,0.4);
+    font-size: 9.5px; font-weight: 800; letter-spacing: 1.2px;
+    padding: 4px 10px; border-radius: 12px; white-space: nowrap; flex-shrink: 0;
+  }
+  .demo-body { display: flex; background: #F4F6FA; }
+  .demo-nav {
+    flex-shrink: 0; width: 230px;
+    background: #131F38; padding: 14px 10px;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .demo-nav button {
+    display: flex; align-items: center; gap: 8px;
+    width: 100%; text-align: left;
+    background: none; border: none; cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12.5px; font-weight: 600;
+    color: rgba(255,255,255,0.72);
+    padding: 10px 12px; border-radius: 8px;
+    transition: background 0.2s ease, color 0.2s ease;
+    white-space: nowrap;
+  }
+  .demo-nav button:hover { background: rgba(255,255,255,0.06); color: #fff; }
+  .demo-nav button.active { background: rgba(200,168,75,0.16); color: var(--dourado); font-weight: 700; }
+  .demo-nav button em {
+    font-style: normal; font-size: 8.5px; font-weight: 800; letter-spacing: 0.5px;
+    background: rgba(200,168,75,0.2); color: var(--dourado);
+    padding: 2px 6px; border-radius: 8px; text-transform: uppercase;
+  }
+  .demo-screens { flex: 1; min-width: 0; max-height: 560px; overflow-y: auto; padding: 22px; }
+  .demo-screen { display: none; }
+  .demo-screen.active { display: block; animation: fadeUp 0.35s ease-out; }
+  .demo-h { font-size: 17px; font-weight: 800; color: var(--azul-profundo); margin-bottom: 4px; }
+  .demo-sub { font-size: 12.5px; color: var(--cinza-medio); margin-bottom: 16px; }
+  .demo-card {
+    background: var(--branco); border: 1px solid var(--cinza-borda);
+    border-radius: 10px; padding: 16px; margin-bottom: 12px;
+  }
+  .demo-card h4 { font-size: 13.5px; font-weight: 800; color: var(--azul-profundo); margin-bottom: 6px; }
+  .demo-card p { font-size: 12.5px; color: var(--cinza-medio); line-height: 1.55; }
+  .demo-btn {
+    display: inline-block; background: var(--azul-profundo); color: #fff; border: none; cursor: pointer;
+    font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 700;
+    padding: 9px 16px; border-radius: 7px; margin-top: 10px;
+    transition: background 0.2s ease;
+  }
+  .demo-btn:hover { background: var(--azul-inter); }
+  /* Início */
+  .demo-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 12px; }
+  .demo-stat {
+    background: var(--branco); border: 1px solid var(--cinza-borda);
+    border-radius: 10px; padding: 13px 8px; text-align: center;
+  }
+  .demo-stat .dn { font-size: 19px; font-weight: 800; color: var(--azul-profundo); line-height: 1.2; }
+  .demo-stat .dl { font-size: 10px; color: var(--cinza-medio); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 3px; }
+  .demo-prog { height: 8px; background: #E8EDF5; border-radius: 4px; overflow: hidden; margin-top: 10px; }
+  .demo-prog i { display: block; height: 100%; background: linear-gradient(90deg, var(--dourado), var(--dourado-escuro)); border-radius: 4px; }
+  /* Aulas */
+  .demo-aula {
+    display: flex; align-items: center; gap: 10px; padding: 9px 0;
+    border-bottom: 1px dashed var(--cinza-borda);
+    font-size: 12.5px; color: var(--quase-preto);
+  }
+  .demo-aula:last-child { border-bottom: none; }
+  .demo-aula .st {
+    flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 800;
+  }
+  .demo-aula .st.ok { background: #E4F3EA; color: var(--verde-ok); }
+  .demo-aula .st.now { background: rgba(200,168,75,0.25); color: var(--dourado-texto); }
+  .demo-aula .st.todo { background: #EDF0F5; color: #9AA1AB; }
+  .demo-tabs { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+  .demo-tab { font-size: 11px; font-weight: 700; color: var(--cinza-medio); background: #EDF0F5; padding: 5px 11px; border-radius: 14px; }
+  .demo-tab.on { background: var(--azul-profundo); color: #fff; }
+  /* Questões */
+  .demo-filtros { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+  .demo-filtros select {
+    font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 600; color: var(--azul-profundo);
+    background: var(--branco); border: 1px solid var(--cinza-borda); border-radius: 7px;
+    padding: 8px 10px; cursor: pointer; max-width: 100%;
+  }
+  .demo-count { font-size: 11.5px; color: var(--cinza-medio); margin-bottom: 10px; }
+  .demo-q { background: var(--branco); border: 1px solid var(--cinza-borda); border-radius: 10px; margin-bottom: 10px; overflow: hidden; }
+  .demo-q-head {
+    width: 100%; text-align: left; background: none; border: none; cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    padding: 12px 14px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  }
+  .demo-q-cod { font-size: 10.5px; font-weight: 800; color: var(--dourado-texto); }
+  .demo-q-meta { font-size: 10.5px; color: var(--cinza-medio); }
+  .demo-q-tag {
+    font-size: 9px; font-weight: 800; background: #EDF0F5; color: var(--cinza-medio);
+    padding: 2px 8px; border-radius: 10px; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .demo-q-body { display: none; padding: 0 14px 14px; }
+  .demo-q.open .demo-q-body { display: block; }
+  .demo-q-enun { font-size: 12.5px; color: var(--quase-preto); line-height: 1.55; margin-bottom: 10px; }
+  .demo-alt {
+    display: flex; gap: 8px; align-items: flex-start; width: 100%; text-align: left;
+    background: #F7F8FB; border: 1px solid var(--cinza-borda); border-radius: 8px;
+    padding: 9px 11px; margin-bottom: 6px; cursor: pointer;
+    font-family: 'Montserrat', sans-serif; font-size: 12px; color: var(--quase-preto);
+    line-height: 1.45; transition: all 0.15s ease;
+  }
+  .demo-alt:hover { border-color: var(--azul-medio); }
+  .demo-alt .l { font-weight: 800; color: var(--azul-profundo); flex-shrink: 0; }
+  .demo-q.done .demo-alt { cursor: default; opacity: 0.7; }
+  .demo-q.done .demo-alt:hover { border-color: var(--cinza-borda); }
+  .demo-alt.certa { background: #E4F3EA; border-color: var(--verde-ok); opacity: 1 !important; }
+  .demo-alt.errada { background: #FBE9E7; border-color: var(--vermelho); opacity: 1 !important; }
+  .demo-coment {
+    display: none; background: var(--cream); border: 1px solid rgba(200,168,75,0.45);
+    border-radius: 8px; padding: 11px 13px;
+    font-size: 12px; color: #5A4A1F; line-height: 1.55; margin-top: 8px;
+  }
+  .demo-q.done .demo-coment { display: block; }
+  /* Simulador */
+  .demo-sim { text-align: center; padding: 6px 0 2px; }
+  .demo-sim-conta {
+    font-size: 19px; font-weight: 800; color: var(--azul-profundo);
+    background: var(--branco); border: 2px solid var(--dourado); border-radius: 12px;
+    display: inline-block; padding: 15px 26px; margin: 8px 0 16px; line-height: 1.35;
+  }
+  .demo-sim-ops { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+  .demo-sim-ops button {
+    background: var(--branco); border: 1px solid var(--cinza-borda); border-radius: 8px;
+    font-family: 'Montserrat', sans-serif; font-size: 12.5px; font-weight: 700; color: var(--azul-profundo);
+    padding: 10px 16px; cursor: pointer; transition: all 0.15s ease;
+  }
+  .demo-sim-ops button:hover { border-color: var(--azul-medio); transform: translateY(-1px); }
+  .demo-sim-msg { min-height: 22px; font-size: 13px; font-weight: 800; margin-top: 12px; }
+  .demo-sim-msg.ok { color: var(--verde-ok); }
+  .demo-sim-msg.erro { color: var(--vermelho); }
+  .demo-sim-score { font-size: 11.5px; color: var(--cinza-medio); margin-top: 8px; }
+  /* Mapa de Incidência */
+  .demo-legenda { display: flex; align-items: center; gap: 6px; font-size: 10.5px; color: var(--cinza-medio); margin-bottom: 10px; flex-wrap: wrap; }
+  .demo-legenda i { width: 14px; height: 14px; border-radius: 3px; display: inline-block; border: 1px solid var(--cinza-borda); }
+  .demo-heat { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 8px; margin-bottom: 12px; }
+  .demo-heat button {
+    border: 1px solid var(--cinza-borda); border-radius: 8px; padding: 11px 6px; cursor: pointer;
+    font-family: 'Montserrat', sans-serif; font-size: 10.5px; font-weight: 700; line-height: 1.3;
+    transition: transform 0.15s ease;
+  }
+  .demo-heat button:hover { transform: translateY(-1px); }
+  .demo-heat button.sel { outline: 2px solid var(--dourado); outline-offset: 1px; }
+  /* Meu Edital */
+  .demo-ed-item { padding: 11px 0; border-bottom: 1px dashed var(--cinza-borda); }
+  .demo-ed-item:last-child { border-bottom: none; }
+  .demo-ed-top { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 12.5px; font-weight: 700; color: var(--quase-preto); }
+  .demo-badge {
+    font-size: 9px; font-weight: 800; padding: 2px 8px; border-radius: 10px;
+    text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap;
+  }
+  .demo-badge.ok { background: #E4F3EA; color: var(--verde-ok); }
+  .demo-badge.i3 { background: #1B2A4A; color: #fff; }
+  .demo-badge.i2 { background: #DCE6F5; color: #2A4A8B; }
+  .demo-badge.i1 { background: #EDF0F5; color: var(--cinza-medio); }
+  .demo-chips { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+  .demo-chip { font-size: 10.5px; font-weight: 700; color: var(--azul-profundo); background: #EDF0F5; border-radius: 10px; padding: 3px 9px; }
+  .demo-chip.done { background: #E4F3EA; color: var(--verde-ok); }
+  .demo-note {
+    text-align: center; font-size: 12.5px; color: rgba(255,255,255,0.55);
+    margin: 14px auto 0; max-width: 700px;
+  }
+  @media (max-width: 760px) {
+    .demo { border-radius: 12px; }
+    .demo-body { flex-direction: column; }
+    .demo-nav {
+      width: 100%; flex-direction: row; overflow-x: auto; padding: 10px; gap: 6px;
+      -webkit-overflow-scrolling: touch; scrollbar-width: none;
+    }
+    .demo-nav::-webkit-scrollbar { display: none; }
+    .demo-nav button { width: auto; flex-shrink: 0; font-size: 12px; padding: 9px 12px; }
+    .demo-screens { max-height: 480px; padding: 16px; }
+    .demo-stats { grid-template-columns: repeat(3, 1fr); gap: 7px; }
+    .demo-stat .dn { font-size: 16px; }
+    .demo-filtros select { flex: 1 1 45%; }
+    .demo-sim-ops button { flex: 1 1 30%; }
   }
   .plat-grid {
     display: grid; grid-template-columns: repeat(4, 1fr);
@@ -810,13 +1003,173 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="reveal center">
       <div class="section-label">A plataforma</div>
       <h2 class="section-title" style="max-width:760px;margin-left:auto;margin-right:auto;">Muito além de videoaula: uma plataforma construída pra você <span style="color:var(--dourado);">praticar até ficar fluente.</span></h2>
-      <p class="section-text" style="margin-left:auto;margin-right:auto;">A Fluência Contábil tem plataforma própria, feita sob medida pro método — não é um repositório de vídeos.</p>
+      <p class="section-text" style="margin-left:auto;margin-right:auto;">A Fluência Contábil tem plataforma própria, feita sob medida pro método — não é um repositório de vídeos. <strong style="color:var(--dourado);">Experimente agora:</strong> a demonstração abaixo é navegável — clique nas telas, use os filtros, resolva questões e jogue o Simulador.</p>
     </div>
 
-    <figure class="plat-print reveal">
-      <img src="assets/plataforma-simulador.png" alt="Tela real da plataforma Fluência Contábil mostrando o Simulador de Lançamentos" width="1135" height="709" loading="lazy">
-      <figcaption>Tela real da plataforma — Simulador de Lançamentos</figcaption>
-    </figure>
+    <div class="demo reveal" id="demoPlataforma">
+      <div class="demo-top">
+        <span class="demo-dot" aria-hidden="true"></span><span class="demo-dot" aria-hidden="true"></span><span class="demo-dot" aria-hidden="true"></span>
+        <span class="demo-url">portal.fluenciacontabil.com.br</span>
+        <span class="demo-tag">Demo interativa</span>
+      </div>
+      <div class="demo-body">
+        <nav class="demo-nav" id="demoNav" aria-label="Navegação da demonstração da plataforma">
+          <button type="button" class="active" data-screen="inicio">🏠 Início</button>
+          <button type="button" data-screen="aulas">🎬 Aulas</button>
+          <button type="button" data-screen="questoes">📝 Questões</button>
+          <button type="button" data-screen="simulador">🎮 Simulador</button>
+          <button type="button" data-screen="mapa">🗺️ Mapa de Incidência <em>Beta</em></button>
+          <button type="button" data-screen="edital">📋 Meu Edital <em>Beta</em></button>
+        </nav>
+        <div class="demo-screens">
+
+          <!-- TELA: INÍCIO -->
+          <div class="demo-screen active" id="scr-inicio">
+            <div class="demo-h">Boas-vindas, Aluno(a) Fundador(a) 👋</div>
+            <div class="demo-sub">Seu painel de estudos (exemplo ilustrativo)</div>
+            <div class="demo-stats">
+              <div class="demo-stat"><div class="dn">🔥 12</div><div class="dl">dias seguidos</div></div>
+              <div class="demo-stat"><div class="dn">⭐ 2.430</div><div class="dl">XP · nível 3</div></div>
+              <div class="demo-stat"><div class="dn">58%</div><div class="dl">do curso</div></div>
+            </div>
+            <div class="demo-card">
+              <h4>▶ Continuar de onde parou</h4>
+              <p>Aula 09 — Patrimônio Líquido · Módulo 2</p>
+              <div class="demo-prog"><i style="width:58%"></i></div>
+              <button type="button" class="demo-btn" data-goto="aulas">Continuar aula</button>
+            </div>
+            <div class="demo-card">
+              <h4>🎯 Foco no seu concurso</h4>
+              <p>Concurso-alvo: Auditor Fiscal — SEFAZ (exemplo). Priorize CPC 26 e DFC: alta incidência no estilo da sua banca.</p>
+              <button type="button" class="demo-btn" data-goto="mapa">Ver Mapa de Incidência</button>
+            </div>
+          </div>
+
+          <!-- TELA: AULAS -->
+          <div class="demo-screen" id="scr-aulas">
+            <div class="demo-h">Módulo 2 — Demonstrações Contábeis</div>
+            <div class="demo-sub">4 de 10 aulas concluídas neste módulo</div>
+            <div class="demo-card">
+              <div class="demo-aula"><span class="st ok">✓</span> Aula 05 — Balanço Patrimonial (estrutura geral)</div>
+              <div class="demo-aula"><span class="st ok">✓</span> Aula 06 — Ativo Circulante</div>
+              <div class="demo-aula"><span class="st ok">✓</span> Aula 07 — Ativo Não Circulante</div>
+              <div class="demo-aula"><span class="st ok">✓</span> Aula 08 — Passivo</div>
+              <div class="demo-aula"><span class="st now">▶</span> <strong>Aula 09 — Patrimônio Líquido</strong></div>
+              <div class="demo-aula"><span class="st todo">10</span> Aula 10 — DRE (estrutura)</div>
+            </div>
+            <div class="demo-card">
+              <h4>Aula 09 — Patrimônio Líquido</h4>
+              <div class="demo-tabs">
+                <span class="demo-tab on">Material</span>
+                <span class="demo-tab">Questões</span>
+                <span class="demo-tab">Dúvidas</span>
+                <span class="demo-tab">Notas</span>
+              </div>
+              <p style="margin-top:10px;">🎬 Videoaula · 📄 PDF de apoio baixável · Cada aula reúne o vídeo, o material, as questões do tema, a comunidade de dúvidas e as suas anotações.</p>
+              <button type="button" class="demo-btn" data-goto="questoes">Resolver questões desta aula</button>
+            </div>
+          </div>
+
+          <!-- TELA: QUESTÕES -->
+          <div class="demo-screen" id="scr-questoes">
+            <div class="demo-h">Banco de Questões</div>
+            <div class="demo-sub">Use os filtros de verdade — e resolva as questões de demonstração.</div>
+            <div class="demo-filtros">
+              <select id="demoFAssunto" aria-label="Filtrar por assunto">
+                <option value="">Assunto: todos</option>
+                <option value="Balanço Patrimonial">Balanço Patrimonial</option>
+                <option value="DRE">DRE</option>
+                <option value="Partidas Dobradas">Partidas Dobradas</option>
+              </select>
+              <select id="demoFBanca" aria-label="Filtrar por estilo de banca">
+                <option value="">Estilo de banca: todos</option>
+                <option value="FGV">FGV</option>
+                <option value="CEBRASPE">CEBRASPE</option>
+                <option value="FCC">FCC</option>
+              </select>
+              <select id="demoFDif" aria-label="Filtrar por dificuldade">
+                <option value="">Dificuldade: todas</option>
+                <option value="Fácil">Fácil</option>
+                <option value="Média">Média</option>
+              </select>
+            </div>
+            <div class="demo-count" id="demoQCount"></div>
+            <div id="demoQLista"></div>
+            <p style="font-size:11px;color:var(--cinza-medio);margin-top:4px;">Questões de demonstração, criadas pra esta prévia. Na plataforma real, o banco tem questões de bancas reais (CEBRASPE, FGV, FCC, VUNESP) — todas com comentário do professor.</p>
+          </div>
+
+          <!-- TELA: SIMULADOR -->
+          <div class="demo-screen" id="scr-simulador">
+            <div class="demo-h">Simulador de Lançamentos — Modo Classificação</div>
+            <div class="demo-sub">Classifique cada conta no grupo certo. Na plataforma real: 88 contas, 43 lançamentos, 5 níveis e XP.</div>
+            <div class="demo-card demo-sim">
+              <div style="font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--cinza-medio);">Em que grupo entra a conta:</div>
+              <div class="demo-sim-conta" id="demoSimConta">—</div>
+              <div class="demo-sim-ops" id="demoSimOps">
+                <button type="button" data-g="Ativo">Ativo</button>
+                <button type="button" data-g="Passivo">Passivo</button>
+                <button type="button" data-g="PL">Patrimônio Líquido</button>
+                <button type="button" data-g="Receita">Receita</button>
+                <button type="button" data-g="Despesa">Despesa</button>
+              </div>
+              <div class="demo-sim-msg" id="demoSimMsg" aria-live="polite"></div>
+              <div class="demo-sim-score" id="demoSimScore"></div>
+            </div>
+          </div>
+
+          <!-- TELA: MAPA DE INCIDÊNCIA -->
+          <div class="demo-screen" id="scr-mapa">
+            <div class="demo-h">Mapa de Incidência <span class="demo-q-tag" style="vertical-align:2px;">Beta</span></div>
+            <div class="demo-sub">CPC 27 — Ativo Imobilizado · estilo FGV (números ilustrativos). Clique num item pra ver o detalhe.</div>
+            <div class="demo-legenda">Incidência: <i style="background:#F4F6FA;"></i> baixa <i style="background:#B9CBE8;"></i> média <i style="background:#5C7BB8;"></i> alta <i style="background:#1B2A4A;"></i> muito alta</div>
+            <div class="demo-heat" id="demoHeat">
+              <button type="button" data-item="Reconhecimento" data-n="12" data-aula="Aula 18" style="background:#B9CBE8;color:#1B2A4A;">Reconhecimento</button>
+              <button type="button" data-item="Mensuração inicial (custo)" data-n="18" data-aula="Aula 18" style="background:#5C7BB8;color:#fff;">Mensuração inicial</button>
+              <button type="button" data-item="Custos subsequentes" data-n="9" data-aula="Aula 18" style="background:#B9CBE8;color:#1B2A4A;">Custos subsequentes</button>
+              <button type="button" data-item="Depreciação" data-n="31" data-aula="Aula 18" style="background:#1B2A4A;color:#fff;">Depreciação</button>
+              <button type="button" data-item="Vida útil e valor residual" data-n="15" data-aula="Aula 18" style="background:#5C7BB8;color:#fff;">Vida útil e residual</button>
+              <button type="button" data-item="Baixa do imobilizado" data-n="7" data-aula="Aula 18" style="background:#B9CBE8;color:#1B2A4A;">Baixa</button>
+              <button type="button" data-item="Divulgação" data-n="3" data-aula="Aula 18" style="background:#F4F6FA;color:#5A5F66;">Divulgação</button>
+            </div>
+            <div class="demo-card" id="demoMapaDet">
+              <h4>Toque num item do mapa 👆</h4>
+              <p>Você vê quantas questões daquele exato item já caíram no estilo da sua banca — e vai direto resolver ou revisar a aula.</p>
+            </div>
+          </div>
+
+          <!-- TELA: MEU EDITAL -->
+          <div class="demo-screen" id="scr-edital">
+            <div class="demo-h">Meu Edital <span class="demo-q-tag" style="vertical-align:2px;">Beta</span></div>
+            <div class="demo-sub">Exemplo: Auditor Fiscal — SEFAZ · Contabilidade Geral (dados ilustrativos)</div>
+            <div class="demo-card">
+              <h4>Cobertura do edital pelo curso</h4>
+              <div class="demo-prog"><i style="width:100%"></i></div>
+              <p style="margin-top:6px;">100% dos itens deste programa são cobertos por aulas do curso.</p>
+            </div>
+            <div class="demo-card">
+              <div class="demo-ed-item">
+                <div class="demo-ed-top">1. Estrutura conceitual (CPC 00) <span class="demo-badge ok">Coberto</span> <span class="demo-badge i2">Incidência média</span></div>
+                <div class="demo-chips"><span class="demo-chip done">✓ Aula 02 — concluída</span></div>
+              </div>
+              <div class="demo-ed-item">
+                <div class="demo-ed-top">2. Apresentação das demonstrações (CPC 26) <span class="demo-badge ok">Coberto</span> <span class="demo-badge i3">Incidência muito alta</span></div>
+                <div class="demo-chips"><span class="demo-chip done">✓ Aula 03 — concluída</span><span class="demo-chip done">✓ Aula 04 — concluída</span></div>
+              </div>
+              <div class="demo-ed-item">
+                <div class="demo-ed-top">3. Estoques (CPC 16) <span class="demo-badge ok">Coberto</span> <span class="demo-badge i2">Incidência média</span></div>
+                <div class="demo-chips"><span class="demo-chip">Aula 17</span></div>
+              </div>
+              <div class="demo-ed-item">
+                <div class="demo-ed-top">4. Ativo imobilizado (CPC 27) <span class="demo-badge ok">Coberto</span> <span class="demo-badge i3">Incidência muito alta</span></div>
+                <div class="demo-chips"><span class="demo-chip">Aula 18</span></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <p class="demo-note">Demonstração com dados ilustrativos, direto no seu navegador. A plataforma real tem tudo isso — com o curso completo e questões de bancas reais dentro.</p>
 
     <div class="plat-grid">
       <div class="plat-card reveal">
@@ -1284,6 +1637,182 @@ window.addEventListener('resize', function () {
     open.style.maxHeight = open.scrollHeight + 'px';
   });
 });
+
+/* ===== DEMO INTERATIVA DA PLATAFORMA (dados ilustrativos) ===== */
+(function () {
+  var nav = document.getElementById('demoNav');
+  if (!nav) return;
+
+  /* --- navegação entre telas --- */
+  function demoGo(screen) {
+    nav.querySelectorAll('button').forEach(function (b) {
+      b.classList.toggle('active', b.getAttribute('data-screen') === screen);
+    });
+    document.querySelectorAll('.demo-screen').forEach(function (s) {
+      s.classList.toggle('active', s.id === 'scr-' + screen);
+    });
+    var scr = document.querySelector('.demo-screens');
+    if (scr) scr.scrollTop = 0;
+  }
+  nav.addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-screen]');
+    if (b) demoGo(b.getAttribute('data-screen'));
+  });
+  document.querySelectorAll('[data-goto]').forEach(function (el) {
+    el.addEventListener('click', function () { demoGo(el.getAttribute('data-goto')); });
+  });
+
+  /* --- Questões: dataset de demonstração + filtros + resolução --- */
+  var QS = [
+    { cod: 'FC-D001', assunto: 'Balanço Patrimonial', banca: 'FGV', dif: 'Fácil', tipo: 'ME',
+      enun: 'No Balanço Patrimonial de uma companhia, o saldo da conta Fornecedores, com vencimento em 60 dias, deve ser classificado em:',
+      alts: ['Ativo Circulante', 'Passivo Circulante', 'Patrimônio Líquido', 'Ativo Não Circulante', 'Resultado do exercício'], gab: 1,
+      coment: 'Fornecedores é obrigação exigível de curto prazo: Passivo Circulante (CPC 26). A pegadinha clássica é te empurrar pro Ativo — lembre: é dívida da empresa, não direito dela.' },
+    { cod: 'FC-D002', assunto: 'Balanço Patrimonial', banca: 'CEBRASPE', dif: 'Média', tipo: 'CE',
+      enun: 'Julgue o item: a aquisição de mercadorias para revenda, paga à vista, reduz o total do ativo da companhia.',
+      alts: ['Certo', 'Errado'], gab: 1,
+      coment: 'É uma permuta entre contas do próprio ativo: Estoques aumenta e Caixa diminui no mesmo valor — o total do ativo fica inalterado.' },
+    { cod: 'FC-D003', assunto: 'Partidas Dobradas', banca: 'FCC', dif: 'Fácil', tipo: 'ME',
+      enun: 'De acordo com o método das partidas dobradas, a cada débito registrado corresponde:',
+      alts: ['um crédito de igual valor', 'um crédito de valor superior', 'uma variação do capital social', 'um lançamento no caixa', 'uma despesa reconhecida'], gab: 0,
+      coment: 'É a "gramática" da contabilidade: débitos e créditos sempre se equilibram. Não existe lançamento de um lado só.' },
+    { cod: 'FC-D004', assunto: 'DRE', banca: 'FGV', dif: 'Média', tipo: 'ME',
+      enun: 'Uma companhia vendeu mercadorias a prazo em dezembro/X1, para recebimento em março/X2. Pelo regime de competência, a receita deve ser reconhecida:',
+      alts: ['em março/X2, no recebimento', 'em dezembro/X1, no momento da venda', 'metade em cada exercício', 'somente após o recebimento integral', 'quando o cliente for cobrado'], gab: 1,
+      coment: 'Competência: a receita pertence ao período em que foi ganha (a venda), independentemente do recebimento. Caixa é outra história — e é exatamente aí que a banca te testa.' },
+    { cod: 'FC-D005', assunto: 'Balanço Patrimonial', banca: 'CEBRASPE', dif: 'Fácil', tipo: 'CE',
+      enun: 'Julgue o item: o pagamento antecipado de aluguel gera, no momento do pagamento, o reconhecimento de uma despesa.',
+      alts: ['Certo', 'Errado'], gab: 1,
+      coment: 'No pagamento nasce um ativo (aluguel antecipado — direito de uso futuro). A despesa só aparece com o passar do tempo, pela competência.' },
+    { cod: 'FC-D006', assunto: 'DRE', banca: 'FCC', dif: 'Média', tipo: 'ME',
+      enun: 'Assinale a conta que NÃO transita pela Demonstração do Resultado do Exercício:',
+      alts: ['Receita de vendas', 'Custo da mercadoria vendida', 'Capital Social', 'Despesa de salários', 'Despesa financeira'], gab: 2,
+      coment: 'Capital Social é conta patrimonial — vive no PL, no Balanço. A DRE só recebe contas de resultado: receitas, custos e despesas.' }
+  ];
+  var LETRAS = ['A', 'B', 'C', 'D', 'E'];
+  var fA = document.getElementById('demoFAssunto'),
+      fB = document.getElementById('demoFBanca'),
+      fD = document.getElementById('demoFDif'),
+      lista = document.getElementById('demoQLista'),
+      count = document.getElementById('demoQCount');
+
+  function renderQs() {
+    var va = fA.value, vb = fB.value, vd = fD.value;
+    var qs = QS.filter(function (q) {
+      return (!va || q.assunto === va) && (!vb || q.banca === vb) && (!vd || q.dif === vd);
+    });
+    count.textContent = qs.length + (qs.length === 1 ? ' questão encontrada' : ' questões encontradas');
+    lista.innerHTML = '';
+    qs.forEach(function (q) {
+      var card = document.createElement('div');
+      card.className = 'demo-q';
+      var alts = q.alts.map(function (a, i) {
+        var rotulo = q.tipo === 'CE' ? a : '<span class="l">' + LETRAS[i] + ')</span> ' + a;
+        return '<button type="button" class="demo-alt" data-i="' + i + '">' + rotulo + '</button>';
+      }).join('');
+      card.innerHTML =
+        '<button type="button" class="demo-q-head">' +
+          '<span class="demo-q-cod">' + q.cod + '</span>' +
+          '<span class="demo-q-meta">' + q.assunto + ' · estilo ' + q.banca + ' · ' + q.dif + '</span>' +
+          '<span class="demo-q-tag">Demo</span>' +
+        '</button>' +
+        '<div class="demo-q-body">' +
+          '<p class="demo-q-enun">' + q.enun + '</p>' + alts +
+          '<div class="demo-coment">💡 <strong>Comentário do professor:</strong> ' + q.coment + '</div>' +
+        '</div>';
+      card.querySelector('.demo-q-head').addEventListener('click', function () {
+        card.classList.toggle('open');
+      });
+      card.querySelectorAll('.demo-alt').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          if (card.classList.contains('done')) return;
+          card.classList.add('done');
+          var i = parseInt(btn.getAttribute('data-i'), 10);
+          if (i === q.gab) {
+            btn.classList.add('certa');
+          } else {
+            btn.classList.add('errada');
+            card.querySelectorAll('.demo-alt')[q.gab].classList.add('certa');
+          }
+        });
+      });
+      lista.appendChild(card);
+    });
+  }
+  [fA, fB, fD].forEach(function (s) { s.addEventListener('change', renderQs); });
+  renderQs();
+
+  /* --- Simulador: modo classificação --- */
+  var CONTAS = [
+    { c: 'Caixa', g: 'Ativo' },
+    { c: 'Fornecedores', g: 'Passivo' },
+    { c: 'Capital Social', g: 'PL' },
+    { c: 'Vendas de Mercadorias', g: 'Receita' },
+    { c: 'Juros incorridos sobre empréstimos', g: 'Despesa' },
+    { c: 'Estoques', g: 'Ativo' }
+  ];
+  var GRUPO_LABEL = { Ativo: 'Ativo', Passivo: 'Passivo', PL: 'Patrimônio Líquido', Receita: 'Receita', Despesa: 'Despesa' };
+  var simIdx = 0, simPts = 0, simTravado = false;
+  var elConta = document.getElementById('demoSimConta'),
+      elOps = document.getElementById('demoSimOps'),
+      elMsg = document.getElementById('demoSimMsg'),
+      elScore = document.getElementById('demoSimScore');
+
+  function simRender() {
+    if (simIdx >= CONTAS.length) {
+      elConta.textContent = '🏁 Fim da rodada!';
+      elOps.style.display = 'none';
+      elMsg.className = 'demo-sim-msg ok';
+      elMsg.textContent = 'Você acertou ' + simPts / 10 + ' de ' + CONTAS.length + ' · +' + simPts + ' XP';
+      elScore.innerHTML = '';
+      var again = document.createElement('button');
+      again.type = 'button'; again.className = 'demo-btn'; again.textContent = 'Jogar de novo';
+      again.addEventListener('click', function () {
+        simIdx = 0; simPts = 0; elOps.style.display = ''; simRender();
+      });
+      elScore.appendChild(again);
+      return;
+    }
+    elConta.textContent = CONTAS[simIdx].c;
+    elMsg.className = 'demo-sim-msg';
+    elMsg.textContent = '';
+    elScore.textContent = 'Conta ' + (simIdx + 1) + ' de ' + CONTAS.length + ' · ' + simPts + ' XP';
+  }
+  elOps.addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-g]');
+    if (!b || simTravado || simIdx >= CONTAS.length) return;
+    simTravado = true;
+    var certo = b.getAttribute('data-g') === CONTAS[simIdx].g;
+    if (certo) {
+      simPts += 10;
+      elMsg.className = 'demo-sim-msg ok';
+      elMsg.textContent = '✓ Isso! +10 XP';
+    } else {
+      elMsg.className = 'demo-sim-msg erro';
+      elMsg.textContent = '✗ Era ' + GRUPO_LABEL[CONTAS[simIdx].g] + '.';
+    }
+    setTimeout(function () { simIdx++; simTravado = false; simRender(); }, certo ? 700 : 1300);
+  });
+  simRender();
+
+  /* --- Mapa de Incidência: heatmap clicável --- */
+  var heat = document.getElementById('demoHeat'),
+      det = document.getElementById('demoMapaDet');
+  heat.addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-item]');
+    if (!b) return;
+    heat.querySelectorAll('button').forEach(function (x) { x.classList.remove('sel'); });
+    b.classList.add('sel');
+    det.innerHTML =
+      '<h4>' + b.getAttribute('data-item') + '</h4>' +
+      '<p><strong>' + b.getAttribute('data-n') + ' questões</strong> deste exato item no estilo FGV (número ilustrativo). Na plataforma, daqui você vai direto pro que importa:</p>' +
+      '<button type="button" class="demo-btn" data-goto="questoes">Resolver questões do item</button> ' +
+      '<button type="button" class="demo-btn" data-goto="aulas" style="background:var(--dourado-escuro);">Ver ' + b.getAttribute('data-aula') + '</button>';
+    det.querySelectorAll('[data-goto]').forEach(function (el) {
+      el.addEventListener('click', function () { demoGo(el.getAttribute('data-goto')); });
+    });
+  });
+})();
 
 /* ===== SCROLL REVEAL ===== */
 var revealObserver = new IntersectionObserver(function (entries) {
