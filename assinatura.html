@@ -243,6 +243,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     text-decoration: none; white-space: nowrap; transition: background 0.2s ease;
   }
   .btn-sm:hover { background: var(--vermelho-hover); }
+  .sticky-cta { display: flex; align-items: center; gap: 14px; }
+  .sticky-oferta { display: flex; flex-direction: column; line-height: 1.15; text-align: right; }
+  .sticky-oferta b { font-size: 13px; font-weight: 800; color: #fff; white-space: nowrap; }
+  .sticky-oferta b .ate { color: var(--dourado); }
+  .sticky-oferta i { font-size: 10.5px; font-style: normal; color: rgba(255,255,255,0.6); white-space: nowrap; }
+  .btn-sm .cta-short { display: none; }
+  body.encerrada .sticky-oferta { display: none; }
 
   /* ===== SEÇÕES BASE ===== */
   .section { padding: 80px 0; position: relative; }
@@ -1319,9 +1326,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .garantia-grid { flex-direction: column; text-align: center; }
   }
   @media (max-width: 600px) {
-    .sticky-header { padding: 10px 14px; }
-    .sticky-brand { font-size: 11px; letter-spacing: 1px; }
+    .sticky-header { padding: 9px 12px; gap: 10px; }
+    .sticky-brand { display: none; }
+    .sticky-cta { gap: 10px; flex: 1; justify-content: space-between; }
+    .sticky-oferta { text-align: left; }
+    .sticky-oferta b { font-size: 12.5px; }
+    .sticky-oferta i { display: none; }
     .btn-sm { font-size: 11px; padding: 10px 14px; }
+    .btn-sm .cta-full { display: none; }
+    .btn-sm .cta-short { display: inline; }
+    body.encerrada .btn-sm .cta-full { display: inline; }
     .hero h1 { font-size: 33px; }
     .hero-sub { font-size: 16.5px; }
     .hero-sub.menor { font-size: 14.5px; }
@@ -1349,7 +1363,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- ===== HEADER STICKY (CTA travado, aparece ao rolar) ===== -->
 <header class="sticky-header" id="stickyHeader">
   <span class="sticky-brand">Fluência <span>Contábil</span></span>
-  <a href="#oferta" class="btn-sm cta-compra">Quero ser Aluno Fundador</a>
+  <div class="sticky-cta">
+    <span class="sticky-oferta">
+      <b>Anual · 12× R$ 84,27 <span class="ate">· até 16/08</span></b>
+      <i>ou R$ 814,80 à vista · 7 dias de garantia</i>
+    </span>
+    <a href="https://pay.kiwify.com.br/Ze6v1aC" class="btn-sm cta-compra"><span class="cta-full">Quero ser Aluno Fundador</span><span class="cta-short">Assinar agora</span></a>
+  </div>
 </header>
 
 <main>
@@ -1395,63 +1415,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <img src="assets/hero-institucional.jpg" alt="Livro da Fluência Contábil sobre mesa de escritório, com plano de contas, balancete e calculadora" width="1400" height="932" fetchpriority="high">
       </picture>
     </div>
-  </div>
-</section>
-
-<!-- ===== DOR ===== -->
-<section class="section dor">
-  <div class="container">
-    <div class="reveal center">
-      <div class="section-label">Se você estuda pra concurso, você conhece isso</div>
-      <h2 class="section-title">Contabilidade é onde a aprovação <span class="ouro">escapa.</span></h2>
-    </div>
-    <div class="cards-3">
-      <div class="card reveal">
-        <div class="card-icon" aria-hidden="true">📚</div>
-        <h3>Você estudou a teoria</h3>
-        <p>Leu o CPC, fez o resumo, marcou o mapa mental. Na hora da questão, a banca muda uma palavra — e a teoria decorada não responde.</p>
-      </div>
-      <div class="card reveal">
-        <div class="card-icon" aria-hidden="true">⚖️</div>
-        <h3>É a disciplina de maior peso</h3>
-        <p>Nos concursos de Fiscal e de Contador, contabilidade é a matéria que mais pontua — e a que mais reprova quem depende de decoreba.</p>
-      </div>
-      <div class="card reveal">
-        <div class="card-icon" aria-hidden="true">🔁</div>
-        <h3>O ciclo se repete</h3>
-        <p>Estuda, esquece, revisa, esquece de novo. Sem uma lógica interna que sustente o conteúdo, cada revisão é começar do zero.</p>
-      </div>
-    </div>
-    <p class="dor-quote reveal">"Sei a teoria, mas não consigo aplicar — <span>perco pontos onde mais cai.</span>"</p>
-  </div>
-</section>
-
-<!-- ===== TESE / MÉTODO ===== -->
-<section class="section tese">
-  <div class="container">
-    <div class="reveal center">
-      <div class="section-label">O método</div>
-      <h2 class="section-title">Contabilidade é um <span class="ouro">idioma.</span> E idioma se aprende pela lógica.</h2>
-      <p class="section-text">Ninguém fica fluente em um idioma decorando frases prontas. Fica fluente quem entende a estrutura — e passa a construir qualquer frase sozinho. Com contabilidade é igual.</p>
-    </div>
-    <div class="tese-grid">
-      <div class="tese-card reveal">
-        <span class="passo">Os códigos</span>
-        <h3>Débito e crédito</h3>
-        <p>O alfabeto da contabilidade. Quando você entende o que cada lançamento significa, nada mais é regra solta.</p>
-      </div>
-      <div class="tese-card reveal">
-        <span class="passo">A gramática</span>
-        <h3>Partidas dobradas</h3>
-        <p>A estrutura que conecta tudo. É ela que faz você deduzir a resposta em vez de tentar lembrar dela.</p>
-      </div>
-      <div class="tese-card reveal">
-        <span class="passo">Os textos</span>
-        <h3>Demonstrações contábeis</h3>
-        <p>BP, DRE, DFC, DVA, DMPL — os textos que a banca cobra. Quem lê com fluência interpreta qualquer questão, inclusive as inéditas.</p>
-      </div>
-    </div>
-    <p class="tese-conclusao reveal"><strong>Fluência contábil</strong> é desenvolver essa lógica interna pra interpretar questões complexas sem decoreba. Não é o curso que cobre o edital mais rápido — é o curso que faz você <strong>entender</strong> contabilidade.</p>
   </div>
 </section>
 
@@ -2078,6 +2041,63 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
     </div>
     <p class="plat-nota">Recursos marcados como Beta estão em evolução contínua com o feedback dos alunos.</p>
+  </div>
+</section>
+
+<!-- ===== DOR ===== -->
+<section class="section dor">
+  <div class="container">
+    <div class="reveal center">
+      <div class="section-label">Se você estuda pra concurso, você conhece isso</div>
+      <h2 class="section-title">Contabilidade é onde a aprovação <span class="ouro">escapa.</span></h2>
+    </div>
+    <div class="cards-3">
+      <div class="card reveal">
+        <div class="card-icon" aria-hidden="true">📚</div>
+        <h3>Você estudou a teoria</h3>
+        <p>Leu o CPC, fez o resumo, marcou o mapa mental. Na hora da questão, a banca muda uma palavra — e a teoria decorada não responde.</p>
+      </div>
+      <div class="card reveal">
+        <div class="card-icon" aria-hidden="true">⚖️</div>
+        <h3>É a disciplina de maior peso</h3>
+        <p>Nos concursos de Fiscal e de Contador, contabilidade é a matéria que mais pontua — e a que mais reprova quem depende de decoreba.</p>
+      </div>
+      <div class="card reveal">
+        <div class="card-icon" aria-hidden="true">🔁</div>
+        <h3>O ciclo se repete</h3>
+        <p>Estuda, esquece, revisa, esquece de novo. Sem uma lógica interna que sustente o conteúdo, cada revisão é começar do zero.</p>
+      </div>
+    </div>
+    <p class="dor-quote reveal">"Sei a teoria, mas não consigo aplicar — <span>perco pontos onde mais cai.</span>"</p>
+  </div>
+</section>
+
+<!-- ===== TESE / MÉTODO ===== -->
+<section class="section tese">
+  <div class="container">
+    <div class="reveal center">
+      <div class="section-label">O método</div>
+      <h2 class="section-title">Contabilidade é um <span class="ouro">idioma.</span> E idioma se aprende pela lógica.</h2>
+      <p class="section-text">Ninguém fica fluente em um idioma decorando frases prontas. Fica fluente quem entende a estrutura — e passa a construir qualquer frase sozinho. Com contabilidade é igual.</p>
+    </div>
+    <div class="tese-grid">
+      <div class="tese-card reveal">
+        <span class="passo">Os códigos</span>
+        <h3>Débito e crédito</h3>
+        <p>O alfabeto da contabilidade. Quando você entende o que cada lançamento significa, nada mais é regra solta.</p>
+      </div>
+      <div class="tese-card reveal">
+        <span class="passo">A gramática</span>
+        <h3>Partidas dobradas</h3>
+        <p>A estrutura que conecta tudo. É ela que faz você deduzir a resposta em vez de tentar lembrar dela.</p>
+      </div>
+      <div class="tese-card reveal">
+        <span class="passo">Os textos</span>
+        <h3>Demonstrações contábeis</h3>
+        <p>BP, DRE, DFC, DVA, DMPL — os textos que a banca cobra. Quem lê com fluência interpreta qualquer questão, inclusive as inéditas.</p>
+      </div>
+    </div>
+    <p class="tese-conclusao reveal"><strong>Fluência contábil</strong> é desenvolver essa lógica interna pra interpretar questões complexas sem decoreba. Não é o curso que cobre o edital mais rápido — é o curso que faz você <strong>entender</strong> contabilidade.</p>
   </div>
 </section>
 
