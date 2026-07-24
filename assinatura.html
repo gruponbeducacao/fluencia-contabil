@@ -178,6 +178,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .hero-oferta-list li::before { content: '✓'; position: absolute; left: 2px; color: var(--verde-ok); font-weight: 800; }
   .hero-oferta-list strong { color: var(--azul-profundo); font-weight: 700; }
   .hero-oferta-list li .fund { color: var(--dourado-texto); font-weight: 700; }
+  .hero-oferta-count { border-top: 1px solid var(--cinza-borda); margin-top: 18px; padding-top: 16px; }
+  .hero-oferta-count .countdown-label { color: var(--dourado-texto); margin-bottom: 12px; }
+  .hero-oferta-count .countdown { justify-content: space-between; gap: 8px; }
+  .hero-oferta-count .cd-unit { flex: 1; min-width: 0; background: var(--cream); border: 1px solid var(--cinza-borda); padding: 10px 4px 8px; }
+  .hero-oferta-count .cd-num { color: var(--azul-profundo); font-size: 29px; }
+  .hero-oferta-count .cd-txt { color: var(--cinza-medio); }
+  .hero-oferta > .btn { width: 100%; text-align: center; margin-top: 16px; padding: 17px 26px; }
+  .hero-oferta-pgto { margin-top: 12px; text-align: center; font-size: 12.5px; color: var(--cinza-medio); }
+  .hero-oferta .countdown-closed { display: block; text-align: center; background: #FCEAEA; border: 1px solid rgba(192,57,43,0.3); color: var(--vermelho); }
+  body.encerrada .hero-oferta-tag,
+  body.encerrada .hero-oferta-preco,
+  body.encerrada .hero-oferta-list,
+  body.encerrada .hero-oferta-pgto { display: none; }
+  body.encerrada .hero-oferta-count { border-top: none; margin-top: 0; padding-top: 0; }
 
   /* ===== COUNTDOWN ===== */
   .countdown-wrap { margin-bottom: 34px; animation: fadeUp 0.7s ease-out 0.45s both; }
@@ -1441,21 +1455,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <li><span class="fund">Bônus Aluno Fundador</span> — selo + 4 aulas ao vivo com o Prof. Vinícius</li>
           <li>12 meses de acesso · <strong>7 dias de garantia incondicional</strong></li>
         </ul>
-      </div>
-
-      <div class="countdown-wrap">
-        <div class="countdown-label">A janela Aluno Fundador encerra em</div>
-        <div class="countdown" id="countdown">
-          <div class="cd-unit"><span class="cd-num" id="cd-d">--</span><span class="cd-txt">Dias</span></div>
-          <div class="cd-unit"><span class="cd-num" id="cd-h">--</span><span class="cd-txt">Horas</span></div>
-          <div class="cd-unit"><span class="cd-num" id="cd-m">--</span><span class="cd-txt">Min</span></div>
-          <div class="cd-unit"><span class="cd-num" id="cd-s">--</span><span class="cd-txt">Seg</span></div>
+        <div class="hero-oferta-count">
+          <div class="countdown-label">A janela encerra em</div>
+          <div class="countdown" id="countdown">
+            <div class="cd-unit"><span class="cd-num" id="cd-d">--</span><span class="cd-txt">Dias</span></div>
+            <div class="cd-unit"><span class="cd-num" id="cd-h">--</span><span class="cd-txt">Horas</span></div>
+            <div class="cd-unit"><span class="cd-num" id="cd-m">--</span><span class="cd-txt">Min</span></div>
+            <div class="cd-unit"><span class="cd-num" id="cd-s">--</span><span class="cd-txt">Seg</span></div>
+          </div>
         </div>
-      </div>
-
-      <div class="hero-cta">
         <a href="https://pay.kiwify.com.br/Ze6v1aC" class="btn cta-compra">Quero ser Aluno Fundador</a>
-        <p class="hero-note">Pagamento seguro via Kiwify · Pix, boleto ou cartão em até 12×</p>
+        <p class="hero-oferta-pgto">Pagamento seguro via Kiwify · Pix, boleto ou cartão em até 12×</p>
       </div>
     </div>
 
