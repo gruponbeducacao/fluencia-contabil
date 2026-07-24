@@ -151,6 +151,33 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   }
   .hero-datas strong { color: var(--dourado); font-weight: 800; }
 
+  /* ===== OFERTA NO HERO ===== */
+  .hero-oferta {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(200,168,75,0.4);
+    border-radius: 14px;
+    padding: 20px 22px;
+    margin-bottom: 26px;
+    max-width: 560px;
+    animation: fadeUp 0.7s ease-out 0.3s both;
+  }
+  .hero-oferta-tag {
+    display: inline-block; font-size: 11px; font-weight: 800;
+    letter-spacing: 1px; text-transform: uppercase; color: var(--dourado);
+    background: rgba(200,168,75,0.12); border: 1px solid rgba(200,168,75,0.3);
+    padding: 5px 12px; border-radius: 20px; margin-bottom: 14px;
+  }
+  .hero-oferta-preco { display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px 14px; margin-bottom: 16px; }
+  .hero-oferta-preco .parc { font-size: 17px; font-weight: 600; color: rgba(255,255,255,0.85); }
+  .hero-oferta-preco .parc b { font-size: 33px; font-weight: 800; color: #fff; }
+  .hero-oferta-preco .avista { font-size: 13.5px; color: rgba(255,255,255,0.7); }
+  .hero-oferta-preco .avista strong { color: #fff; font-weight: 700; }
+  .hero-oferta-list { list-style: none; display: grid; gap: 9px; }
+  .hero-oferta-list li { position: relative; padding-left: 25px; font-size: 14px; color: rgba(255,255,255,0.82); line-height: 1.45; }
+  .hero-oferta-list li::before { content: '✓'; position: absolute; left: 2px; color: var(--dourado); font-weight: 800; }
+  .hero-oferta-list strong { color: #fff; font-weight: 700; }
+  .hero-oferta-list li .fund { color: var(--dourado); font-weight: 700; }
+
   /* ===== COUNTDOWN ===== */
   .countdown-wrap { margin-bottom: 34px; animation: fadeUp 0.7s ease-out 0.45s both; }
   .countdown-label {
@@ -1340,6 +1367,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .hero-sub { font-size: 16.5px; }
     .hero-sub.menor { font-size: 14.5px; }
     .hero-datas { font-size: 13.5px; padding: 12px 16px; }
+    .hero-oferta { padding: 16px 16px; }
+    .hero-oferta-preco .parc b { font-size: 28px; }
+    .hero-oferta-list li { font-size: 13.5px; }
     .section { padding: 60px 0; }
     .section-title { font-size: 25px; }
     .countdown { gap: 7px; flex-wrap: wrap; }
@@ -1387,11 +1417,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       <h1>Transforme contabilidade na sua <span class="destaque">maior vantagem</span> para conquistar múltiplas aprovações.<span class="sub-risco" aria-hidden="true"></span></h1>
 
-      <p class="hero-sub">A Fluência Contábil ensina contabilidade <strong>como um idioma, pela lógica</strong> — pra você parar de perder pontos <span class="ouro-claro">onde mais cai</span> e interpretar qualquer questão sem decoreba.</p>
-
-      <p class="hero-sub menor">Assinatura anual da edição 2026: <strong>4 módulos, 36 aulas + 3 bônus</strong>, questões comentadas de banca real e a plataforma completa por <strong>12 meses</strong>.</p>
-
-      <p class="hero-datas">Janela <strong>Aluno Fundador</strong>: até domingo, <strong>16/08, 23h59</strong> — depois o plano anual sai do ar e o bônus não volta.</p>
+      <div class="hero-oferta">
+        <span class="hero-oferta-tag">🏛️ Janela Aluno Fundador · até 16/08</span>
+        <div class="hero-oferta-preco">
+          <span class="parc">Anual · 12× de <b>R$ 84,27</b></span>
+          <span class="avista">ou <strong>R$ 814,80</strong> à vista · ≈ R$ 2,23/dia</span>
+        </div>
+        <ul class="hero-oferta-list">
+          <li>Curso completo — 4 módulos, 36 aulas + 3 bônus (400h+)</li>
+          <li>Plataforma completa — questões comentadas, Simulador, cadernos e mais</li>
+          <li><span class="fund">Bônus Aluno Fundador</span> — selo + 4 aulas ao vivo com o Prof. Vinícius</li>
+          <li>12 meses de acesso · <strong>7 dias de garantia incondicional</strong></li>
+        </ul>
+      </div>
 
       <div class="countdown-wrap">
         <div class="countdown-label">A janela Aluno Fundador encerra em</div>
@@ -1404,8 +1442,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
 
       <div class="hero-cta">
-        <a href="#oferta" class="btn cta-compra">Quero ser Aluno Fundador</a>
-        <p class="hero-note">7 dias de garantia incondicional · Pix, boleto ou cartão em até 12×</p>
+        <a href="https://pay.kiwify.com.br/Ze6v1aC" class="btn cta-compra">Quero ser Aluno Fundador</a>
+        <p class="hero-note">Pagamento seguro via Kiwify · Pix, boleto ou cartão em até 12×</p>
       </div>
     </div>
 
