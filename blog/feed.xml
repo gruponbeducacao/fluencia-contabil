@@ -6,9 +6,17 @@
     <atom:link href="https://fluenciacontabil.com.br/blog/feed.xml" rel="self" type="application/rss+xml"/>
     <description>Artigos sobre contabilidade para concursos fiscais, de controle e tribunais de contas.</description>
     <language>pt-br</language>
-    <lastBuildDate>Wed, 01 Jul 2026 21:45:24 GMT</lastBuildDate>
-    <pubDate>Thu, 04 Jun 2026 03:00:00 GMT</pubDate>
+    <lastBuildDate>Sun, 26 Jul 2026 00:24:40 GMT</lastBuildDate>
+    <pubDate>Sat, 25 Jul 2026 03:00:00 GMT</pubDate>
     <ttl>60</ttl>
+    <item>
+      <title>ISS Manaus 2026: guia completo do edital e o mapa da Contabilidade</title>
+      <link>https://fluenciacontabil.com.br/blog/iss-manaus-2026-contabilidade</link>
+      <guid isPermaLink="true">https://fluenciacontabil.com.br/blog/iss-manaus-2026-contabilidade</guid>
+      <description>Guia do edital ISS Manaus 2026 (FCC): as 3 fases, o peso de cada disciplina, as regras que eliminam e o programa de Contabilidade lido linha a linha.</description>
+      <pubDate>Sat, 25 Jul 2026 03:00:00 GMT</pubDate>
+      <author>contato@fluenciacontabil.com.br (Equipe Fluência Contábil)</author>
+    </item>
     <item>
       <title>Como calcular a DVA a partir da DRE (passo a passo)</title>
       <link>https://fluenciacontabil.com.br/blog/como-calcular-dva</link>
