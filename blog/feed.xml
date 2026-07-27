@@ -6,7 +6,7 @@
     <atom:link href="https://fluenciacontabil.com.br/blog/feed.xml" rel="self" type="application/rss+xml"/>
     <description>Artigos sobre contabilidade para concursos fiscais, de controle e tribunais de contas.</description>
     <language>pt-br</language>
-    <lastBuildDate>Sun, 26 Jul 2026 00:24:40 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 27 Jul 2026 01:04:02 GMT</lastBuildDate>
     <pubDate>Sat, 25 Jul 2026 03:00:00 GMT</pubDate>
     <ttl>60</ttl>
     <item>
@@ -15,7 +15,8 @@
       <guid isPermaLink="true">https://fluenciacontabil.com.br/blog/iss-manaus-2026-contabilidade</guid>
       <description>Guia do edital ISS Manaus 2026 (FCC): as 3 fases, o peso de cada disciplina, as regras que eliminam e o programa de Contabilidade lido linha a linha.</description>
       <pubDate>Sat, 25 Jul 2026 03:00:00 GMT</pubDate>
-      <author>contato@fluenciacontabil.com.br (Equipe Fluência Contábil)</author>
+      <category>Concursos</category>
+      <author>contato@fluenciacontabil.com.br (Vinícius Ferraz Neves)</author>
     </item>
     <item>
       <title>Como calcular a DVA a partir da DRE (passo a passo)</title>
@@ -23,7 +24,17 @@
       <guid isPermaLink="true">https://fluenciacontabil.com.br/blog/como-calcular-dva</guid>
       <description>Aprenda a calcular a DVA a partir da DRE: receita bruta, depreciação, tributos recuperáveis e a amarração que faz a prova real da questão.</description>
       <pubDate>Thu, 04 Jun 2026 03:00:00 GMT</pubDate>
-      <author>contato@fluenciacontabil.com.br (Equipe Fluência Contábil)</author>
+      <category>Demonstrações</category>
+      <author>contato@fluenciacontabil.com.br (Vinícius Ferraz Neves)</author>
+    </item>
+    <item>
+      <title>SEFAZ-GO 2026 (Auditor-Fiscal): como a Contabilidade foi cobrada pela FCC</title>
+      <link>https://fluenciacontabil.com.br/blog/sefaz-go-afre-contabilidade</link>
+      <guid isPermaLink="true">https://fluenciacontabil.com.br/blog/sefaz-go-afre-contabilidade</guid>
+      <description>Análise completa das 22 questões de Contabilidade da prova FCC SEFAZ-GO 2026 (Auditor-Fiscal). Geral, Avançada, padrões da FCC, pegadinhas e o que estudar pro próximo edital.</description>
+      <pubDate>Mon, 25 May 2026 03:00:00 GMT</pubDate>
+      <category>Concursos</category>
+      <author>contato@fluenciacontabil.com.br (Vinícius Ferraz Neves)</author>
     </item>
     <item>
       <title>As 5 categorias da DRE no CPC 51 — guia com paralelo na DFC</title>
@@ -31,7 +42,8 @@
       <guid isPermaLink="true">https://fluenciacontabil.com.br/blog/cpc-51-categorias-dre-paralelo-dfc</guid>
       <description>Como classificar receita e despesa nas 5 categorias da nova DRE — e por que dominar a DFC do CPC 03 já te dá 70% do CPC 51 antes de 2027.</description>
       <pubDate>Mon, 27 Apr 2026 03:00:00 GMT</pubDate>
-      <author>contato@fluenciacontabil.com.br (Equipe Fluência Contábil)</author>
+      <category>CPC</category>
+      <author>contato@fluenciacontabil.com.br (Vinícius Ferraz Neves)</author>
     </item>
     <item>
       <title>CPC 51 nas bancas: 6 pegadinhas que vão dominar 2027</title>
@@ -39,7 +51,8 @@
       <guid isPermaLink="true">https://fluenciacontabil.com.br/blog/cpc-51-pegadinhas-concurso</guid>
       <description>As 6 pegadinhas do CPC 51 que vão derrubar concurseiro em 2027 e 2028 — itens da norma e cenários previstos para Cebraspe, FGV e FCC.</description>
       <pubDate>Sat, 25 Apr 2026 03:00:00 GMT</pubDate>
-      <author>contato@fluenciacontabil.com.br (Equipe Fluência Contábil)</author>
+      <category>CPC</category>
+      <author>contato@fluenciacontabil.com.br (Vinícius Ferraz Neves)</author>
     </item>
     <item>
       <title>SEFAZ-SP AFRE 2025 (Gestão Tributária): como a Contabilidade foi cobrada</title>
@@ -121,13 +134,6 @@
       <pubDate>Mon, 23 Feb 2026 00:00:00 GMT</pubDate>
       <category>Fundamentos</category>
       <author>contato@fluenciacontabil.com.br (Vinícius Ferraz)</author>
-    </item>
-    <item>
-      <title>SEFAZ-GO 2026 (Auditor-Fiscal): como a Contabilidade foi cobrada pela FCC</title>
-      <link>https://fluenciacontabil.com.br/blog/sefaz-go-afre-contabilidade</link>
-      <guid isPermaLink="true">https://fluenciacontabil.com.br/blog/sefaz-go-afre-contabilidade</guid>
-      <description>22 questões em dois cadernos, com peso dobrado na Contabilidade Avançada. Veja o que a FCC exigiu — e o que você precisa dominar.</description>
-      <author>contato@fluenciacontabil.com.br (Equipe Fluência Contábil)</author>
     </item>
   </channel>
 </rss>

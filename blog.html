@@ -565,9 +565,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 </div><!-- /posts-grid -->
 
-<div class="load-more-wrap">
-  <button class="btn-load" id="loadMore">Carregar mais artigos</button>
-</div>
+<!-- "Carregar mais artigos" saiu: o botão nunca teve handler (nenhum JS escutava
+     #loadMore), e os 13 cards já são exibidos de uma vez. O CSS .load-more-wrap
+     /.btn-load segue no <style> pra quando houver paginação de verdade. -->
 
 </div><!-- /main column -->
 
@@ -584,19 +584,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <h3>Temas em Destaque</h3>
     <ul class="side-cats">
       <li>Fundamentos <span class="count">1</span></li>
-      <li>CPC <span class="count">2</span></li>
-      <li>Demonstrações <span class="count">2</span></li>
+      <li>CPC <span class="count">4</span></li>
+      <li>Demonstrações <span class="count">3</span></li>
       <li>Bancas <span class="count">3</span></li>
-      <li>Concursos <span class="count">1</span></li>
+      <li>Concursos <span class="count">3</span></li>
     </ul>
   </div>
 
   <div class="side-card">
     <h3>Artigos Populares</h3>
     <ul class="side-popular">
-      <li><a href="#">O que é a Contabilidade?</a><div class="pop-date">23 fev 2026</div></li>
-      <li><a href="#">CPC 26: O que as bancas cobram</a><div class="pop-date">2 mar 2026</div></li>
-      <li><a href="#">As 5 pegadinhas do CEBRASPE</a><div class="pop-date">16 mar 2026</div></li>
+      <li><a href="blog/o-que-e-contabilidade.html">O que é a Contabilidade?</a><div class="pop-date">23 fev 2026</div></li>
+      <li><a href="blog/cpc-26-o-que-as-bancas-cobram.html">CPC 26: O que as bancas cobram</a><div class="pop-date">2 mar 2026</div></li>
+      <li><a href="blog/pegadinhas-contabilidade-cebraspe.html">As 5 pegadinhas do CEBRASPE</a><div class="pop-date">16 mar 2026</div></li>
     </ul>
   </div>
 

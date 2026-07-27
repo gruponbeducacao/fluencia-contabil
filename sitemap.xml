@@ -8,7 +8,7 @@
   <url><loc>https://fluenciacontabil.com.br/desafios.html</loc><lastmod>2026-04-09</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://fluenciacontabil.com.br/depoimentos.html</loc><lastmod>2026-04-09</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://fluenciacontabil.com.br/contato.html</loc><lastmod>2026-04-09</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://fluenciacontabil.com.br/blog.html</loc><lastmod>2026-04-09</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://fluenciacontabil.com.br/blog.html</loc><lastmod>2026-07-26</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://fluenciacontabil.com.br/blog/o-que-e-contabilidade.html</loc><lastmod>2026-02-23</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://fluenciacontabil.com.br/blog/cpc-26-o-que-as-bancas-cobram.html</loc><lastmod>2026-03-02</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://fluenciacontabil.com.br/blog/balanco-patrimonial-estrutura.html</loc><lastmod>2026-03-09</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
@@ -18,4 +18,11 @@
   <url><loc>https://fluenciacontabil.com.br/blog/dre-como-montar-e-interpretar.html</loc><lastmod>2026-04-06</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://fluenciacontabil.com.br/blog/contabilidade-fcc-como-se-preparar.html</loc><lastmod>2026-04-08</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://fluenciacontabil.com.br/blog/sefaz-sp-afre-contabilidade.html</loc><lastmod>2026-04-09</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://fluenciacontabil.com.br/blog/cpc-51-pegadinhas-concurso.html</loc><lastmod>2026-04-25</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://fluenciacontabil.com.br/blog/cpc-51-categorias-dre-paralelo-dfc.html</loc><lastmod>2026-04-27</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://fluenciacontabil.com.br/blog/sefaz-go-afre-contabilidade.html</loc><lastmod>2026-05-25</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://fluenciacontabil.com.br/blog/como-calcular-dva.html</loc><lastmod>2026-06-04</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <!-- Post de edital: janela de busca curta (inscrições até 27/08, prova 01/11) e
+       sujeito a retificação — daí weekly e prioridade acima dos evergreen. -->
+  <url><loc>https://fluenciacontabil.com.br/blog/iss-manaus-2026-contabilidade.html</loc><lastmod>2026-07-25</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
 </urlset>
