@@ -39,7 +39,14 @@ FEED_AUTHOR_NAME  = "Equipe Fluência Contábil"
 
 # ========== Helpers ==========
 def extract_jsonld(html: str) -> dict | None:
-    """Extrai o primeiro bloco JSON-LD do HTML (BlogPosting)."""
+    """
+    Extrai o nó Article/BlogPosting do JSON-LD do post.
+
+    Os posts usam `@graph` (Article + BreadcrumbList + às vezes FAQPage), e até
+    aqui a função devolvia o envelope — que não tem `datePublished`. Ninguém
+    notou porque a data vinha do fallback Open Graph; o post do SEFAZ-GO, que
+    não tinha as meta tags `article:*`, entrou no feed sem `pubDate`.
+    """
     match = re.search(
         r'<script\s+type=["\']application/ld\+json["\']\s*>(.*?)</script>',
         html, re.DOTALL | re.IGNORECASE
@@ -49,15 +56,20 @@ def extract_jsonld(html: str) -> dict | None:
     raw = match.group(1).strip()
     try:
         data = json.loads(raw)
-        if isinstance(data, list):
-            # Às vezes vem como array de múltiplos schemas
-            for item in data:
-                if isinstance(item, dict) and item.get("@type") in ("BlogPosting", "Article"):
-                    return item
-            return data[0] if data else None
-        return data
     except json.JSONDecodeError:
         return None
+
+    def primeiro_artigo(nodes):
+        for item in nodes:
+            if isinstance(item, dict) and item.get("@type") in ("BlogPosting", "Article"):
+                return item
+        return None
+
+    if isinstance(data, list):
+        return primeiro_artigo(data) or (data[0] if data else None)
+    if isinstance(data, dict) and isinstance(data.get("@graph"), list):
+        return primeiro_artigo(data["@graph"]) or data
+    return data
 
 
 def parse_date(s: str | None) -> datetime | None:
@@ -152,8 +164,10 @@ def load_posts() -> list[dict]:
         if not description:
             description = extract_meta(html, "name", "description") or ""
 
-        # Data
-        date_str = jsonld.get("datePublished") or extract_meta(html, "property", "article:published_time")
+        # Data: a meta OG vem com fuso ("2026-06-04T00:00:00-03:00") e o
+        # datePublished do JSON-LD é só a data, que parse_date assume em UTC —
+        # daí a meta ter precedência, senão todo pubDate do feed andava 3h.
+        date_str = extract_meta(html, "property", "article:published_time") or jsonld.get("datePublished")
         pub_date = parse_date(date_str)
 
         # Categoria / seção
