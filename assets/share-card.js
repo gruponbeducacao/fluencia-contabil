@@ -39,7 +39,7 @@
       faixa: 181, rodape: 104,
       padTopo: 46, padLados: 54, padBase: 40,
       tituloMin: 34, tituloMax: 60, tituloLinhas: 3,
-      secoesMin: 3, secoesMax: 7, gapExtraMax: 20
+      secoesMin: 3, secoesMax: 8, gapBase: 18, gapExtraMax: 22
     },
     story: {
       w: 1080, h: 1920,
@@ -48,7 +48,7 @@
       faixa: 181, rodape: 104,
       padTopo: 46, padLados: 54, padBase: 40,
       tituloMin: 38, tituloMax: 68, tituloLinhas: 4,
-      secoesMin: 4, secoesMax: 9, gapExtraMax: 26
+      secoesMin: 4, secoesMax: 9, gapBase: 18, gapExtraMax: 30
     }
   };
 
@@ -64,9 +64,9 @@
     divisorGapTopo: 30, divisorGapBase: 26,
     rotuloPx: 13, rotuloAlt: 16, rotuloGap: 18,
 
-    secaoPadV: 18, secaoPadH: 26, secaoGapInterno: 18,
-    secaoNumPx: 20, secaoTxtPx: 26, secaoEntrelinha: 1.32,
-    gapBase: 12,
+    // lista simples: marcador redondo dourado + texto, sem caixa
+    secaoGapInterno: 18, marcadorTam: 9, marcadorTopo: 13,
+    secaoTxtPx: 26, secaoEntrelinha: 1.32,
 
     maisGap: 14, maisPx: 18, maisAlt: 22,
 
@@ -277,20 +277,16 @@
          Preferimos MAIS seções a título maior: o card existe pra dizer o que tem
          dentro do artigo. Para cada quantidade de seções (da maior pra menor),
          busca o maior título que ainda caiba; a primeira combinação vence. */
+      var largTextoSecao = larg - M.marcadorTam - M.secaoGapInterno;
+      var alturaLinhaSecao = M.secaoTxtPx * M.secaoEntrelinha;
+
       function alturaBlocos(n) {
         var total = 0;
         ctx.font = fonte(600, M.secaoTxtPx);
-        var largTexto = larg - M.secaoPadH * 2 - M.secaoGapInterno - larguraNumero();
         for (var i = 0; i < n; i++) {
-          var linhas = quebrar(ctx, secoes[i], largTexto, 0, M.secaoTxtPx).length;
-          total += M.secaoPadV * 2 + linhas * M.secaoTxtPx * M.secaoEntrelinha;
+          total += quebrar(ctx, secoes[i], largTextoSecao, 0, M.secaoTxtPx).length * alturaLinhaSecao;
         }
         return total;
-      }
-
-      function larguraNumero() {
-        ctx.font = fonte(800, M.secaoNumPx);
-        return ctx.measureText('00').width;
       }
 
       function alturaTitulo(px) {
@@ -317,7 +313,7 @@
         var min = f.tituloMin, max = f.tituloMax, melhor = 0;
         while (min <= max) {
           var meio = Math.floor((min + max) / 2);
-          var total = fixo + alturaTitulo(meio) + blocos + (n - 1) * M.gapBase + alturaMais;
+          var total = fixo + alturaTitulo(meio) + blocos + (n - 1) * f.gapBase + alturaMais;
           if (linhasTitulo(meio) <= f.tituloLinhas && total <= alturaCorpo) { melhor = meio; min = meio + 1; }
           else { max = meio - 1; }
         }
@@ -333,8 +329,8 @@
 
       // Sobra vertical vira respiro entre os blocos, não vão morto acima do rodapé.
       var usado = fixo + alturaTitulo(escolhido.px) + escolhido.blocos
-                + (escolhido.n - 1) * M.gapBase + escolhido.alturaMais;
-      var gap = M.gapBase;
+                + (escolhido.n - 1) * f.gapBase + escolhido.alturaMais;
+      var gap = f.gapBase;
       if (escolhido.n > 1) {
         var sobra = alturaCorpo - usado;
         if (sobra > 0) gap += Math.min(f.gapExtraMax, Math.floor(sobra / (escolhido.n - 1)));
@@ -378,34 +374,26 @@
       escrever(ctx, 'O QUE VOCÊ VAI ENCONTRAR', esq, y + M.rotuloAlt / 2, M.trackRotulo, M.rotuloPx);
       y += M.rotuloAlt + M.rotuloGap;
 
-      /* --- blocos das seções --- */
-      var largNum = larguraNumero();
-      var largTexto = larg - M.secaoPadH * 2 - M.secaoGapInterno - largNum;
-      var alturaLinhaSecao = M.secaoTxtPx * M.secaoEntrelinha;
+      /* --- lista das seções: marcador dourado + texto, sem caixa --- */
+      var xTexto = esq + M.marcadorTam + M.secaoGapInterno;
+      var raio = M.marcadorTam / 2;
 
       for (var i = 0; i < escolhido.n; i++) {
         ctx.font = fonte(600, M.secaoTxtPx);
-        var linhas = quebrar(ctx, secoes[i], largTexto, 0, M.secaoTxtPx);
-        var alturaBloco = M.secaoPadV * 2 + linhas.length * alturaLinhaSecao;
+        var linhas = quebrar(ctx, secoes[i], largTextoSecao, 0, M.secaoTxtPx);
 
-        ctx.fillStyle = COR.cream;
-        ctx.fillRect(esq, y, larg, alturaBloco);
-
-        // número dourado, alinhado pela primeira linha do texto
-        ctx.font = fonte(800, M.secaoNumPx);
+        // marcador centralizado na primeira linha do texto
         ctx.fillStyle = COR.ouro;
-        var rotulo = (i + 1) < 10 ? '0' + (i + 1) : String(i + 1);
-        ctx.fillText(rotulo, esq + M.secaoPadH, y + M.secaoPadV + alturaLinhaSecao / 2);
+        ctx.beginPath();
+        ctx.arc(esq + raio, y + M.marcadorTopo + raio, raio, 0, Math.PI * 2);
+        ctx.fill();
 
-        ctx.font = fonte(600, M.secaoTxtPx);
         ctx.fillStyle = COR.navy;
-        var xTexto = esq + M.secaoPadH + largNum + M.secaoGapInterno;
         for (var L = 0; L < linhas.length; L++) {
-          ctx.fillText(linhas[L], xTexto,
-                       y + M.secaoPadV + alturaLinhaSecao * L + alturaLinhaSecao / 2);
+          ctx.fillText(linhas[L], xTexto, y + alturaLinhaSecao * L + alturaLinhaSecao / 2);
         }
 
-        y += alturaBloco + (i < escolhido.n - 1 ? gap : 0);
+        y += linhas.length * alturaLinhaSecao + (i < escolhido.n - 1 ? gap : 0);
       }
 
       /* --- "+ N outras seções" --- */
