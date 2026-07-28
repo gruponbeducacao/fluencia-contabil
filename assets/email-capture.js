@@ -617,6 +617,16 @@
      produzir a IMAGEM e entregá-la: pela bandeja nativa no celular, ou por
      download no desktop. Daí este botão ser um gerador de arte, não um link. */
 
+  /**
+   * Carimbo de versão dos assets. Os arquivos são servidos com
+   * `Cache-Control: max-age=14400` (4h) e o `no-cache` do navegador NÃO fura o
+   * cache de borda — sem carimbo na URL, uma correção de JS/CSS pode levar
+   * horas pra aparecer. Suba este valor JUNTO com o `?v=` das páginas
+   * (veja render-artes/share-cards/versionar-assets.mjs) sempre que alterar
+   * o share-card.js.
+   */
+  var VERSAO_ASSETS = '20260728';
+
   var promessaGerador = null;
 
   function carregarGeradorDeCard() {
@@ -626,7 +636,7 @@
       var atual = document.querySelector('script[src*="email-capture.js"]');
       var base = (atual && atual.src) ? atual.src.replace(/[^/]*$/, '') : 'assets/';
       var s = document.createElement('script');
-      s.src = base + 'share-card.js';
+      s.src = base + 'share-card.js?v=' + VERSAO_ASSETS;
       s.onload = function () {
         if (window.FCShareCard) resolve(window.FCShareCard);
         else reject(new Error('share-card.js carregou sem expor a API'));
@@ -647,7 +657,27 @@
     'fundamentos': ['#contabilidadebasica']
   };
 
-  function legendaInstagram(dados, url) {
+  /** Limite de caracteres da legenda do story (o feed não tem limite prático). */
+  var LIMITE_LEGENDA_STORY = 120;
+
+  function cortar(texto, limite) {
+    texto = String(texto).trim();
+    if (texto.length <= limite) return texto;
+    var corte = texto.slice(0, limite - 1);
+    var ultimo = corte.lastIndexOf(' ');
+    return (ultimo > limite * 0.6 ? corte.slice(0, ultimo) : corte)
+      .replace(/[,;:.\s—–-]+$/, '') + '…';
+  }
+
+  function legendaInstagram(dados, url, formato) {
+    // No story o texto entra como adesivo, e cabe pouco: prioriza o título e
+    // só acrescenta o link se o conjunto ainda couber no limite.
+    if (formato === 'story') {
+      var titulo = cortar(dados.titulo, LIMITE_LEGENDA_STORY);
+      var comLink = titulo + ' ' + url;
+      return comLink.length <= LIMITE_LEGENDA_STORY ? comLink : titulo;
+    }
+
     var base = ['#contabilidade', '#concursopublico', '#contabilidadeparaconcursos', '#fluenciacontabil'];
     var extras = HASHTAGS_POR_CATEGORIA[String(dados.categoria).toLowerCase()] || [];
     var tags = [], i;
@@ -737,7 +767,7 @@
     function gerarArte(formato) {
       var dados = dadosDoArtigo();
       var nome = slugDoArtigo() + '-instagram-' + formato + '.jpg';
-      var legenda = legendaInstagram(dados, url);
+      var legenda = legendaInstagram(dados, url, formato);
 
       travarChips(true);
       avisar('Gerando a arte…');
