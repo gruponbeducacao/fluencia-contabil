@@ -382,6 +382,13 @@
   gap: 10px 14px;
   margin-top: 16px;
 }
+/* O `[hidden]` do navegador é `display:none` na folha do agente do usuário —
+   especificidade zero. Qualquer regra de classe com `display` (as duas acima)
+   o sobrepõe, e o elemento fica visível mesmo com o atributo setado.
+   Sem estas duas linhas o painel de formatos nascia aberto e o botão do
+   Instagram parecia não fazer nada. */
+.fc-ec-ig-formatos[hidden],
+.fc-ec-share-status[hidden] { display: none !important; }
 .fc-ec-ig-rotulo {
   font-size: 10px;
   font-weight: 700;
