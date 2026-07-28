@@ -5,83 +5,99 @@
    pra não pesar o caminho crítico dos posts.
 
    O DESENHO É UMA RÉPLICA de render-artes/share-cards/card-template.html, que é
-   a fonte de verdade em HTML/CSS. Os números abaixo (padding, corpos, cores,
-   entrelinhas) são os mesmos de lá. Mudou lá, muda aqui.
+   a fonte de verdade em HTML/CSS. As medidas abaixo NÃO são chutadas: saem de
+   `node _geometria.mjs` naquela pasta, que lê o que o CSS produziu de fato.
+   Mexeu no template? Rode o _geometria.mjs, atualize as constantes daqui e rode
+   `node test-canvas.mjs` — ele compara os dois.
 
-   Por que Canvas e não o HTML renderizado no servidor: o site é estático, sem
-   build, e assim o card funciona em todo post — inclusive nos futuros — sem
-   nenhum passo extra no pipeline e sem binário novo no repositório.
+   Linguagem visual: o template de e-mail da Fluência — cream, cartão branco,
+   faixa navy com o wordmark no topo e no pé, blocos de conteúdo em cream.
+   O card lista AS SEÇÕES DO ARTIGO: diz o que tem dentro, não só que existe.
 
-   API:  await window.FCShareCard.render('feed'|'story', dados) -> Blob (JPEG)
+   API:  window.FCShareCard.render('feed'|'story', dados) -> Promise<{blob,...}>
    ============================================================================= */
 (function () {
   'use strict';
 
   /* ---------------------------------------------------------------- tokens */
   var COR = {
-    navy:      '#1B2A4A',
-    navy2:     '#21345C',
-    ouro:      '#C8A84B',
-    ouro2:     '#D4B860',
-    branco:    '#FFFFFF',
-    lead:      'rgba(251,246,233,0.88)',
-    handle:    'rgba(251,246,233,0.65)',
-    leitura:   'rgba(251,246,233,0.55)',
-    fioRodape: 'rgba(200,168,75,0.30)'
+    navy:    '#1B2A4A',
+    ouro:    '#C8A84B',
+    cream:   '#FBF6E9',
+    linha:   '#E8E2D0',
+    apagado: '#8B97B3',
+    branco:  '#FFFFFF',
+    taglineTxt: 'rgba(255,255,255,0.62)',
+    handleTxt:  'rgba(255,255,255,0.55)'
   };
 
+  /* Medidas do CSS, extraídas por _geometria.mjs. */
   var FORMATOS = {
     feed: {
       w: 1080, h: 1350,
-      padX: 92, padTopo: 92, padBase: 92,
-      tituloMin: 52, tituloMax: 112, tituloLinhas: 5, leadMax: 190,
-      cta: false
+      margemX: 28, margemTopo: 28, margemBase: 28,
+      faixa: 181, rodape: 104,
+      padTopo: 46, padLados: 54, padBase: 40,
+      tituloMin: 34, tituloMax: 60, tituloLinhas: 3,
+      secoesMin: 3, secoesMax: 7, gapExtraMax: 20
     },
     story: {
       w: 1080, h: 1920,
-      // A UI do Instagram cobre o topo e o rodapé; o conteúdo fica confinado.
-      padX: 92, padTopo: 210, padBase: 260,
-      tituloMin: 56, tituloMax: 124, tituloLinhas: 6, leadMax: 210,
-      cta: true
+      // a UI do Instagram cobre topo e rodapé; o cartão fica confinado
+      margemX: 28, margemTopo: 150, margemBase: 190,
+      faixa: 181, rodape: 104,
+      padTopo: 46, padLados: 54, padBase: 40,
+      tituloMin: 38, tituloMax: 68, tituloLinhas: 4,
+      secoesMin: 4, secoesMax: 9, gapExtraMax: 26
     }
+  };
+
+  /* Medidas internas, iguais nos dois formatos (o CSS não as diferencia). */
+  var M = {
+    faixaPadTopo: 44, wmPx: 42, taglineGap: 14, taglinePx: 14, taglineAlt: 17,
+    fioGap: 22, fioLarg: 64, fioAlt: 3,
+
+    sobrancelhaAlt: 19, categoriaPx: 15, leituraPx: 14, sobrancelhaGap: 20,
+
+    tituloEntrelinha: 1.16, tituloTracking: -0.015,
+
+    divisorGapTopo: 30, divisorGapBase: 26,
+    rotuloPx: 13, rotuloAlt: 16, rotuloGap: 18,
+
+    secaoPadV: 18, secaoPadH: 26, secaoGapInterno: 18,
+    secaoNumPx: 20, secaoTxtPx: 26, secaoEntrelinha: 1.32,
+    gapBase: 12,
+
+    maisGap: 14, maisPx: 18, maisAlt: 22,
+
+    rodapePad: 26, dominioPx: 21, dominioAlt: 26, handleGap: 8, handlePx: 16, handleAlt: 20,
+
+    trackCategoria: 0.24, trackLeitura: 0.1, trackRotulo: 0.2,
+    trackWm: 0.06, trackTagline: 0.2, trackDominio: 0.04, trackHandle: 0.06
   };
 
   var FONTE = 'Montserrat FC';           // nome próprio: não conflita com a fonte da página
   var CAMINHO_FONTE = 'fonts/montserrat-latin.woff2';
-  var CAMINHO_SIMBOLO = 'share-card-simbolo.png';
-
-  var ENTRELINHA_TITULO = 1.04;
-  var ENTRELINHA_LEAD = 1.5;
-  var TRACKING_TITULO = -0.02;           // em "em", igual ao letter-spacing do CSS
-  var TRACKING_EYEBROW = 0.3;
-  var TRACKING_WORDMARK = 0.22;
-  var TRACKING_CTA = 0.16;
 
   /* ------------------------------------------------------------ utilitários */
 
   /** Base de /assets/, deduzida do próprio <script> — funciona em /blog/x.html. */
   var BASE_ASSETS = (function () {
-    var s = document.currentScript ||
-            document.querySelector('script[src*="share-card.js"]');
+    var s = document.currentScript || document.querySelector('script[src*="share-card.js"]');
     if (s && s.src) return s.src.replace(/[^/]*$/, '');
     return new URL('assets/', location.origin + '/').href;
   })();
 
   var suportaEspacamento = (function () {
-    try {
-      var c = document.createElement('canvas').getContext('2d');
-      return 'letterSpacing' in c;
-    } catch (e) { return false; }
+    try { return 'letterSpacing' in document.createElement('canvas').getContext('2d'); }
+    catch (e) { return false; }
   })();
 
   function fonte(peso, px) {
     return peso + ' ' + px + 'px "' + FONTE + '", Montserrat, sans-serif';
   }
 
-  /**
-   * Largura do texto considerando o espaçamento entre letras.
-   * `tracking` em "em" (o mesmo valor que iria no letter-spacing do CSS).
-   */
+  /** Largura do texto com espaçamento entre letras (`tracking` em "em"). */
   function medir(ctx, texto, tracking, px) {
     if (!tracking) return ctx.measureText(texto).width;
     if (suportaEspacamento) {
@@ -94,7 +110,7 @@
     return ctx.measureText(texto).width + tracking * px * texto.length;
   }
 
-  /** Desenha texto com espaçamento entre letras, com recuo manual se preciso. */
+  /** Escreve com espaçamento entre letras; desenha caractere a caractere se preciso. */
   function escrever(ctx, texto, x, y, tracking, px) {
     if (!tracking) { ctx.fillText(texto, x, y); return; }
     if (suportaEspacamento) {
@@ -127,17 +143,12 @@
     return partes.length ? partes : [palavra];
   }
 
-  /**
-   * Quebra em linhas. Além do espaço, permite quebrar DEPOIS do hífen — é o que
-   * o CSS faz, e sem isso "SEFAZ-GO 2026 (Auditor-Fiscal)" não quebra igual.
-   */
+  /** Quebra em linhas, permitindo quebrar no espaço E depois do hífen (como o CSS). */
   function quebrar(ctx, texto, larguraMax, tracking, px) {
     var pedacos = [];
-    texto.split(/\s+/).forEach(function (palavra, i, arr) {
-      var partes = fatiarNoHifen(palavra);
-      partes.forEach(function (p, j) {
-        // só o último pedaço da palavra leva o espaço que a segue
-        pedacos.push({ txt: p, espacoDepois: j === partes.length - 1 && i < arr.length - 1 });
+    String(texto).split(/\s+/).forEach(function (palavra, i, arr) {
+      fatiarNoHifen(palavra).forEach(function (p, j, todas) {
+        pedacos.push({ txt: p, espacoDepois: j === todas.length - 1 && i < arr.length - 1 });
       });
     });
 
@@ -153,70 +164,7 @@
       if (pedacos[i].espacoDepois) atual += ' ';
     }
     if (atual.trim()) linhas.push(atual.replace(/\s+$/, ''));
-    return linhas;
-  }
-
-  function truncar(s, max) {
-    s = String(s || '').trim();
-    if (s.length <= max) return s;
-    var corte = s.slice(0, max), ultimo = corte.lastIndexOf(' ');
-    return (ultimo > max * 0.6 ? corte.slice(0, ultimo) : corte)
-      .replace(/[,;:.\s—–-]+$/, '') + '…';
-  }
-
-  /* --------------------------------------------------------------- gradiente */
-
-  /**
-   * linear-gradient(<ang>deg, ...) do CSS convertido pra Canvas.
-   * No CSS 0deg aponta pra cima e cresce no sentido horário; o eixo do
-   * gradiente é dimensionado pra cobrir a caixa inteira.
-   */
-  function gradienteLinear(ctx, ang, w, h, paradas) {
-    var rad = (ang * Math.PI) / 180;
-    var dx = Math.sin(rad), dy = -Math.cos(rad);
-    var comprimento = Math.abs(w * dx) + Math.abs(h * dy);
-    var cx = w / 2, cy = h / 2;
-    var g = ctx.createLinearGradient(
-      cx - (dx * comprimento) / 2, cy - (dy * comprimento) / 2,
-      cx + (dx * comprimento) / 2, cy + (dy * comprimento) / 2
-    );
-    paradas.forEach(function (p) { g.addColorStop(p[0], p[1]); });
-    return g;
-  }
-
-  /**
-   * radial-gradient(<rx>px <ry>px at <x>% <y>%, cor, transparent <fim>%).
-   * O Canvas só faz gradiente circular, então a elipse sai de uma escala no eixo Y.
-   */
-  function brilhoRadial(ctx, w, h, xPct, yPct, rx, ry, cor, fimPct) {
-    var cx = (xPct / 100) * w, cy = (yPct / 100) * h;
-    ctx.save();
-    ctx.translate(cx, cy);
-    ctx.scale(1, ry / rx);
-    var g = ctx.createRadialGradient(0, 0, 0, 0, 0, rx);
-    g.addColorStop(0, cor);
-    g.addColorStop(fimPct / 100, cor.replace(/[\d.]+\)$/, '0)'));
-    g.addColorStop(1, cor.replace(/[\d.]+\)$/, '0)'));
-    ctx.fillStyle = g;
-    // retângulo generoso: já estamos no espaço escalado
-    ctx.fillRect(-w * 2, (-h * 2 * rx) / ry, w * 4, (h * 4 * rx) / ry);
-    ctx.restore();
-  }
-
-  /** Textura de grão: ponto de 1px a cada 26px, como o background-image do CSS. */
-  function desenharGrao(ctx, w, h) {
-    var tile = document.createElement('canvas');
-    tile.width = tile.height = 26;
-    var t = tile.getContext('2d');
-    t.fillStyle = 'rgba(255,255,255,0.045)';
-    t.beginPath();
-    t.arc(13, 13, 1, 0, Math.PI * 2);
-    t.fill();
-    ctx.save();
-    ctx.globalAlpha = 0.40;
-    ctx.fillStyle = ctx.createPattern(tile, 'repeat');
-    ctx.fillRect(0, 0, w, h);
-    ctx.restore();
+    return linhas.length ? linhas : [''];
   }
 
   /* ------------------------------------------------------------- carregamento */
@@ -224,33 +172,24 @@
   var fontePronta = null;
   function carregarFonte() {
     if (fontePronta) return fontePronta;
-    fontePronta = (async function () {
-      if (!window.FontFace || !document.fonts) return false;
+    fontePronta = (function () {
+      if (!window.FontFace || !document.fonts) return Promise.resolve(false);
       var face = new FontFace(FONTE, 'url(' + BASE_ASSETS + CAMINHO_FONTE + ')',
                               { weight: '400 900', style: 'normal' });
-      await face.load();
-      document.fonts.add(face);
-      // garante que os pesos usados estão realmente prontos antes de medir
-      await Promise.all([
-        document.fonts.load('400 31px "' + FONTE + '"'),
-        document.fonts.load('700 22px "' + FONTE + '"'),
-        document.fonts.load('800 96px "' + FONTE + '"')
-      ]);
-      return document.fonts.check('800 96px "' + FONTE + '"');
-    })().catch(function () { return false; });
+      return face.load().then(function () {
+        document.fonts.add(face);
+        // garante que os pesos usados estão prontos ANTES de medir: sem isso o
+        // Canvas mede na fonte de fallback sem reclamar
+        return Promise.all([
+          document.fonts.load('400 18px "' + FONTE + '"'),
+          document.fonts.load('600 26px "' + FONTE + '"'),
+          document.fonts.load('800 60px "' + FONTE + '"')
+        ]);
+      }).then(function () {
+        return document.fonts.check('800 60px "' + FONTE + '"');
+      });
+    })()['catch'](function () { return false; });
     return fontePronta;
-  }
-
-  var simboloPronto = null;
-  function carregarSimbolo() {
-    if (simboloPronto) return simboloPronto;
-    simboloPronto = new Promise(function (resolve) {
-      var img = new Image();
-      img.onload = function () { resolve(img); };
-      img.onerror = function () { resolve(null); };   // o card sobrevive sem o símbolo
-      img.src = BASE_ASSETS + CAMINHO_SIMBOLO;
-    });
-    return simboloPronto;
   }
 
   /* ------------------------------------------------------------------ desenho */
@@ -258,192 +197,235 @@
   function render(nomeFormato, dados) {
     var f = FORMATOS[nomeFormato] || FORMATOS.feed;
 
-    return Promise.all([carregarFonte(), carregarSimbolo()]).then(function (r) {
-      var temFonte = r[0], simbolo = r[1];
-
+    return carregarFonte().then(function (temFonte) {
       var cv = document.createElement('canvas');
       cv.width = f.w; cv.height = f.h;
       var ctx = cv.getContext('2d');
-      ctx.textBaseline = 'alphabetic';
 
-      /* ---- fundo: linear por baixo, os dois brilhos por cima ---- */
-      ctx.fillStyle = gradienteLinear(ctx, 160, f.w, f.h, [
-        [0, COR.navy], [0.6, COR.navy2], [1, COR.navy]
-      ]);
+      /* ---- fundo cream e cartão branco ---- */
+      ctx.fillStyle = COR.cream;
       ctx.fillRect(0, 0, f.w, f.h);
-      brilhoRadial(ctx, f.w, f.h, -12, 112, 900, 820, 'rgba(46,74,122,0.42)', 60);
-      brilhoRadial(ctx, f.w, f.h, 86, -10, 1100, 720, 'rgba(200,168,75,0.18)', 58);
-      desenharGrao(ctx, f.w, f.h);
 
-      /* ---- fio dourado do topo ---- */
-      var fio = ctx.createLinearGradient(0, 0, f.w, 0);
-      fio.addColorStop(0, COR.ouro);
-      fio.addColorStop(1, COR.ouro2);
-      ctx.fillStyle = fio;
-      ctx.fillRect(0, 0, f.w, 7);
+      var cx = f.margemX, cy = f.margemTopo;
+      var cw = f.w - f.margemX * 2;
+      var ch = f.h - f.margemTopo - f.margemBase;
+      ctx.fillStyle = COR.branco;
+      ctx.fillRect(cx, cy, cw, ch);
 
-      var esq = f.padX, larguraUtil = f.w - f.padX * 2;
-      var topoConteudo = f.padTopo, baseConteudo = f.h - f.padBase;
+      /* ---- faixa navy do topo ---- */
+      ctx.fillStyle = COR.navy;
+      ctx.fillRect(cx, cy, cw, f.faixa);
 
-      /* ---- medidas do rodapé e da chamada, que são fixas ---- */
-      var alturaRodape = 1 + 30 + 28;                 // fio + padding + linha de texto
-      var alturaCta = f.cta ? (2 + 22 + 24 + 22 + 2) + 44 : 0;
+      var meioX = cx + cw / 2;
+      ctx.textBaseline = 'middle';
+      ctx.textAlign = 'left';
 
-      /* ---- topo: sobrancelha + símbolo ---- */
-      var alturaSimbolo = 66;
-      var alturaTopo = alturaSimbolo;
-
-      /* ---- ajuste do título: mesmas duas travas do template ---- */
-      var titulo = String(dados.titulo || '').trim();
-      var lead = truncar(dados.lead, f.leadMax);
-
-      var espacoMiolo = (baseConteudo - alturaRodape - alturaCta) - (topoConteudo + alturaTopo);
-
-      // O lead tem corpo fixo, então sua altura não depende do título: mede uma vez.
-      var alturaLead = 0;
-      if (lead) {
-        ctx.font = fonte(400, 31);
-        alturaLead = quebrar(ctx, lead, larguraUtil, 0, 31).length * 31 * ENTRELINHA_LEAD;
-      }
-
-      function medidaCom(px) {
-        ctx.font = fonte(800, px);
-        var linhas = quebrar(ctx, titulo, larguraUtil, TRACKING_TITULO, px);
-        var alturaTitulo = linhas.length * px * ENTRELINHA_TITULO;
-        return {
-          linhas: linhas,
-          alturaTitulo: alturaTitulo,
-          altura: alturaTitulo + 36 + 3 + 30 + alturaLead
-        };
-      }
-
-      var melhor = f.tituloMin, medida = medidaCom(f.tituloMin);
-      var min = f.tituloMin, max = f.tituloMax;
-      while (min <= max) {
-        var meio = Math.floor((min + max) / 2);
-        var m = medidaCom(meio);
-        if (m.linhas.length <= f.tituloLinhas && m.altura <= espacoMiolo) {
-          melhor = meio; medida = m; min = meio + 1;
-        } else {
-          max = meio - 1;
-        }
-      }
-      var tituloPx = melhor;
-      medida = medidaCom(tituloPx);
-
-      /* ---- sobrancelha ---- */
-      var y = topoConteudo + 21;                      // baseline da primeira linha
-      ctx.font = fonte(700, 21);
+      // wordmark: FLUÊNCIA branco + CONTÁBIL dourado, centralizados juntos
+      ctx.font = fonte(800, M.wmPx);
+      var p1 = 'FLUÊNCIA', p2 = 'CONTÁBIL';
+      var w1 = medir(ctx, p1, M.trackWm, M.wmPx);
+      var wEsp = ctx.measureText(' ').width;
+      var w2 = medir(ctx, p2, M.trackWm, M.wmPx);
+      var xWm = meioX - (w1 + wEsp + w2) / 2;
+      var yWm = cy + M.faixaPadTopo + M.wmPx / 2;
+      ctx.fillStyle = COR.branco;
+      escrever(ctx, p1, xWm, yWm, M.trackWm, M.wmPx);
       ctx.fillStyle = COR.ouro;
-      var categoria = String(dados.categoria || '').toUpperCase();
-      escrever(ctx, categoria, esq, y, TRACKING_EYEBROW, 21);
+      escrever(ctx, p2, xWm + w1 + wEsp, yWm, M.trackWm, M.wmPx);
+
+      // tagline
+      var tag = 'CONTABILIDADE PARA QUEM QUER SER FLUENTE';
+      ctx.font = fonte(600, M.taglinePx);
+      ctx.fillStyle = COR.taglineTxt;
+      var yTag = cy + M.faixaPadTopo + M.wmPx + M.taglineGap + M.taglineAlt / 2;
+      escrever(ctx, tag, meioX - medir(ctx, tag, M.trackTagline, M.taglinePx) / 2,
+               yTag, M.trackTagline, M.taglinePx);
+
+      // fio dourado
+      var yFio = cy + M.faixaPadTopo + M.wmPx + M.taglineGap + M.taglineAlt + M.fioGap;
+      ctx.fillStyle = COR.ouro;
+      ctx.fillRect(meioX - M.fioLarg / 2, yFio, M.fioLarg, M.fioAlt);
+
+      /* ---- faixa navy do pé ---- */
+      var yRodape = cy + ch - f.rodape;
+      ctx.fillStyle = COR.navy;
+      ctx.fillRect(cx, yRodape, cw, f.rodape);
+
+      var dominio = (dados.dominio || 'fluenciacontabil.com.br') + '/blog';
+      ctx.font = fonte(700, M.dominioPx);
+      ctx.fillStyle = COR.ouro;
+      escrever(ctx, dominio, meioX - medir(ctx, dominio, M.trackDominio, M.dominioPx) / 2,
+               yRodape + M.rodapePad + M.dominioAlt / 2, M.trackDominio, M.dominioPx);
+
+      var handle = '@prof.viniciusferraz';
+      ctx.font = fonte(500, M.handlePx);
+      ctx.fillStyle = COR.handleTxt;
+      escrever(ctx, handle, meioX - medir(ctx, handle, M.trackHandle, M.handlePx) / 2,
+               yRodape + M.rodapePad + M.dominioAlt + M.handleGap + M.handleAlt / 2,
+               M.trackHandle, M.handlePx);
+
+      /* ---- corpo ---- */
+      var esq = cx + f.padLados;
+      var larg = cw - f.padLados * 2;
+      var topoCorpo = cy + f.faixa + f.padTopo;
+      var alturaCorpo = ch - f.faixa - f.rodape - f.padTopo - f.padBase;
+
+      var titulo = String(dados.titulo || '').trim();
+      var secoes = (dados.secoes || []).filter(Boolean);
+
+      /* --- ajuste em duas dimensões ---
+         Preferimos MAIS seções a título maior: o card existe pra dizer o que tem
+         dentro do artigo. Para cada quantidade de seções (da maior pra menor),
+         busca o maior título que ainda caiba; a primeira combinação vence. */
+      function alturaBlocos(n) {
+        var total = 0;
+        ctx.font = fonte(600, M.secaoTxtPx);
+        var largTexto = larg - M.secaoPadH * 2 - M.secaoGapInterno - larguraNumero();
+        for (var i = 0; i < n; i++) {
+          var linhas = quebrar(ctx, secoes[i], largTexto, 0, M.secaoTxtPx).length;
+          total += M.secaoPadV * 2 + linhas * M.secaoTxtPx * M.secaoEntrelinha;
+        }
+        return total;
+      }
+
+      function larguraNumero() {
+        ctx.font = fonte(800, M.secaoNumPx);
+        return ctx.measureText('00').width;
+      }
+
+      function alturaTitulo(px) {
+        ctx.font = fonte(800, px);
+        return quebrar(ctx, titulo, larg, M.tituloTracking, px).length * px * M.tituloEntrelinha;
+      }
+
+      function linhasTitulo(px) {
+        ctx.font = fonte(800, px);
+        return quebrar(ctx, titulo, larg, M.tituloTracking, px).length;
+      }
+
+      var fixo = M.sobrancelhaAlt + M.sobrancelhaGap
+               + M.divisorGapTopo + 1 + M.divisorGapBase
+               + M.rotuloAlt + M.rotuloGap;
+
+      var disponiveis = Math.min(secoes.length, f.secoesMax);
+      var escolhido = null;
+
+      for (var n = disponiveis; n >= Math.min(f.secoesMin, disponiveis) && !escolhido; n--) {
+        var resto = secoes.length - n;
+        var alturaMais = resto > 0 ? M.maisGap + M.maisAlt : 0;
+        var blocos = alturaBlocos(n);
+        var min = f.tituloMin, max = f.tituloMax, melhor = 0;
+        while (min <= max) {
+          var meio = Math.floor((min + max) / 2);
+          var total = fixo + alturaTitulo(meio) + blocos + (n - 1) * M.gapBase + alturaMais;
+          if (linhasTitulo(meio) <= f.tituloLinhas && total <= alturaCorpo) { melhor = meio; min = meio + 1; }
+          else { max = meio - 1; }
+        }
+        if (melhor) escolhido = { n: n, px: melhor, blocos: blocos, alturaMais: alturaMais };
+      }
+
+      if (!escolhido) {
+        var nMin = Math.min(f.secoesMin, disponiveis);
+        var restoMin = secoes.length - nMin;
+        escolhido = { n: nMin, px: f.tituloMin, blocos: alturaBlocos(nMin),
+                      alturaMais: restoMin > 0 ? M.maisGap + M.maisAlt : 0, estourou: true };
+      }
+
+      // Sobra vertical vira respiro entre os blocos, não vão morto acima do rodapé.
+      var usado = fixo + alturaTitulo(escolhido.px) + escolhido.blocos
+                + (escolhido.n - 1) * M.gapBase + escolhido.alturaMais;
+      var gap = M.gapBase;
+      if (escolhido.n > 1) {
+        var sobra = alturaCorpo - usado;
+        if (sobra > 0) gap += Math.min(f.gapExtraMax, Math.floor(sobra / (escolhido.n - 1)));
+      }
+
+      /* --- sobrancelha --- */
+      var y = topoCorpo;
+      ctx.font = fonte(800, M.categoriaPx);
+      ctx.fillStyle = COR.ouro;
+      escrever(ctx, String(dados.categoria || '').toUpperCase(), esq, y + M.sobrancelhaAlt / 2,
+               M.trackCategoria, M.categoriaPx);
 
       if (dados.leitura) {
-        var xDepois = esq + medir(ctx, categoria, TRACKING_EYEBROW, 21);
-        ctx.globalAlpha = 0.5;
-        escrever(ctx, '·', xDepois + 12, y, 0, 21);
-        ctx.globalAlpha = 1;
-        ctx.fillStyle = COR.leitura;
-        escrever(ctx, String(dados.leitura).toUpperCase(), xDepois + 34, y, TRACKING_EYEBROW, 21);
+        ctx.font = fonte(600, M.leituraPx);
+        ctx.fillStyle = COR.apagado;
+        var txtLeitura = String(dados.leitura).toUpperCase();
+        escrever(ctx, txtLeitura,
+                 esq + larg - medir(ctx, txtLeitura, M.trackLeitura, M.leituraPx),
+                 y + M.sobrancelhaAlt / 2, M.trackLeitura, M.leituraPx);
       }
+      y += M.sobrancelhaAlt + M.sobrancelhaGap;
 
-      /* ---- símbolo, alinhado à direita ---- */
-      if (simbolo) {
-        var larguraSimbolo = simbolo.width * (alturaSimbolo / simbolo.height);
-        ctx.drawImage(simbolo, f.w - f.padX - larguraSimbolo, topoConteudo,
-                      larguraSimbolo, alturaSimbolo);
-      }
-
-      /* ---- miolo, opticamente centrado ---- */
-      var mioloTopo = topoConteudo + alturaTopo + (espacoMiolo - medida.altura) / 2;
-      var cursor = mioloTopo;
-
-      ctx.font = fonte(800, tituloPx);
-      ctx.fillStyle = COR.branco;
-      medida.linhas.forEach(function (linha) {
-        // baseline ≈ 0.80 da caixa da linha para Montserrat
-        escrever(ctx, linha, esq, cursor + tituloPx * 0.80, TRACKING_TITULO, tituloPx);
-        cursor += tituloPx * ENTRELINHA_TITULO;
+      /* --- título --- */
+      ctx.font = fonte(800, escolhido.px);
+      ctx.fillStyle = COR.navy;
+      var alturaLinha = escolhido.px * M.tituloEntrelinha;
+      quebrar(ctx, titulo, larg, M.tituloTracking, escolhido.px).forEach(function (linha) {
+        escrever(ctx, linha, esq, y + alturaLinha / 2, M.tituloTracking, escolhido.px);
+        y += alturaLinha;
       });
 
-      cursor += 36;
+      /* --- divisor --- */
+      y += M.divisorGapTopo;
+      ctx.fillStyle = COR.linha;
+      ctx.fillRect(esq, y, larg, 1);
+      y += 1 + M.divisorGapBase;
+
+      /* --- rótulo --- */
+      ctx.font = fonte(800, M.rotuloPx);
       ctx.fillStyle = COR.ouro;
-      ctx.fillRect(esq, cursor, 140, 3);
-      cursor += 3 + 30;
+      escrever(ctx, 'O QUE VOCÊ VAI ENCONTRAR', esq, y + M.rotuloAlt / 2, M.trackRotulo, M.rotuloPx);
+      y += M.rotuloAlt + M.rotuloGap;
 
-      if (lead) {
-        ctx.font = fonte(400, 31);
-        ctx.fillStyle = COR.lead;
-        quebrar(ctx, lead, larguraUtil, 0, 31).forEach(function (linha) {
-          ctx.fillText(linha, esq, cursor + 31 * 1.12);
-          cursor += 31 * ENTRELINHA_LEAD;
-        });
-      }
+      /* --- blocos das seções --- */
+      var largNum = larguraNumero();
+      var largTexto = larg - M.secaoPadH * 2 - M.secaoGapInterno - largNum;
+      var alturaLinhaSecao = M.secaoTxtPx * M.secaoEntrelinha;
 
-      /* ---- chamada do story, colada no rodapé ---- */
-      var baseRodape = baseConteudo - alturaRodape;
-      if (f.cta) {
-        var texto = ('Leia no blog · ' + (dados.dominio || 'fluenciacontabil.com.br')).toUpperCase();
-        ctx.font = fonte(700, 24);
-        var larguraTexto = medir(ctx, texto, TRACKING_CTA, 24);
-        var alturaPilula = 2 + 22 + 24 + 22 + 2;
-        var topoPilula = baseRodape - 44 - alturaPilula;
-        var larguraPilula = larguraTexto + 80;
-        var raio = alturaPilula / 2;
+      for (var i = 0; i < escolhido.n; i++) {
+        ctx.font = fonte(600, M.secaoTxtPx);
+        var linhas = quebrar(ctx, secoes[i], largTexto, 0, M.secaoTxtPx);
+        var alturaBloco = M.secaoPadV * 2 + linhas.length * alturaLinhaSecao;
 
-        ctx.strokeStyle = COR.ouro;
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        if (ctx.roundRect) {
-          ctx.roundRect(esq + 1, topoPilula + 1, larguraPilula, alturaPilula, raio);
-        } else {
-          caminhoPilula(ctx, esq + 1, topoPilula + 1, larguraPilula, alturaPilula, raio);
-        }
-        ctx.stroke();
+        ctx.fillStyle = COR.cream;
+        ctx.fillRect(esq, y, larg, alturaBloco);
 
+        // número dourado, alinhado pela primeira linha do texto
+        ctx.font = fonte(800, M.secaoNumPx);
         ctx.fillStyle = COR.ouro;
-        escrever(ctx, texto, esq + 41, topoPilula + alturaPilula / 2 + 8, TRACKING_CTA, 24);
+        var rotulo = (i + 1) < 10 ? '0' + (i + 1) : String(i + 1);
+        ctx.fillText(rotulo, esq + M.secaoPadH, y + M.secaoPadV + alturaLinhaSecao / 2);
+
+        ctx.font = fonte(600, M.secaoTxtPx);
+        ctx.fillStyle = COR.navy;
+        var xTexto = esq + M.secaoPadH + largNum + M.secaoGapInterno;
+        for (var L = 0; L < linhas.length; L++) {
+          ctx.fillText(linhas[L], xTexto,
+                       y + M.secaoPadV + alturaLinhaSecao * L + alturaLinhaSecao / 2);
+        }
+
+        y += alturaBloco + (i < escolhido.n - 1 ? gap : 0);
       }
 
-      /* ---- rodapé ---- */
-      ctx.fillStyle = COR.fioRodape;
-      ctx.fillRect(esq, baseRodape, larguraUtil, 1);
-
-      var yRodape = baseRodape + 30 + 20;
-      ctx.font = fonte(600, 23);
-      ctx.fillStyle = COR.handle;
-      ctx.fillText('@prof.viniciusferraz', esq, yRodape);
-
-      // wordmark montado como texto, conforme o manual da marca
-      ctx.font = fonte(700, 22);
-      var pFlu = 'FLUÊNCIA', pCon = 'CONTÁBIL', vao = 16;
-      var wFlu = medir(ctx, pFlu, TRACKING_WORDMARK, 22);
-      var wCon = medir(ctx, pCon, TRACKING_WORDMARK, 22);
-      var xWm = f.w - f.padX - (wFlu + vao + wCon);
-      ctx.fillStyle = COR.branco;
-      escrever(ctx, pFlu, xWm, yRodape, TRACKING_WORDMARK, 22);
-      ctx.fillStyle = COR.ouro;
-      escrever(ctx, pCon, xWm + wFlu + vao, yRodape, TRACKING_WORDMARK, 22);
+      /* --- "+ N outras seções" --- */
+      var restante = secoes.length - escolhido.n;
+      if (restante > 0) {
+        y += M.maisGap;
+        ctx.font = fonte(600, M.maisPx);
+        ctx.fillStyle = COR.apagado;
+        ctx.fillText('+ ' + restante + (restante === 1 ? ' outra seção no artigo' : ' outras seções no artigo'),
+                     esq, y + M.maisAlt / 2);
+      }
 
       return new Promise(function (resolve, reject) {
         cv.toBlob(function (blob) {
-          if (blob) resolve({ blob: blob, tituloPx: tituloPx, comFonte: temFonte });
+          if (blob) resolve({ blob: blob, tituloPx: escolhido.px, secoes: escolhido.n,
+                              comFonte: temFonte, estourou: !!escolhido.estourou });
           else reject(new Error('Não foi possível gerar a imagem.'));
         }, 'image/jpeg', 0.92);
       });
     });
-  }
-
-  function caminhoPilula(ctx, x, y, w, h, r) {
-    ctx.moveTo(x + r, y);
-    ctx.lineTo(x + w - r, y);
-    ctx.arcTo(x + w, y, x + w, y + r, r);
-    ctx.lineTo(x + w, y + h - r);
-    ctx.arcTo(x + w, y + h, x + w - r, y + h, r);
-    ctx.lineTo(x + r, y + h);
-    ctx.arcTo(x, y + h, x, y + h - r, r);
-    ctx.lineTo(x, y + r);
-    ctx.arcTo(x, y, x + r, y, r);
   }
 
   window.FCShareCard = { render: render, FORMATOS: FORMATOS };

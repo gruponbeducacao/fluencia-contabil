@@ -508,6 +508,24 @@
     return (partes[partes.length - 1] || 'artigo').replace(/\.html?$/i, '');
   }
 
+  /**
+   * Seções do artigo (os H2 do corpo) — é o conteúdo do card: o que tem dentro
+   * do texto, não só o título. Restringe ao <article>/<main> pra não pegar H2
+   * da newsletter, da sidebar e do rodapé. Todos os posts têm de 6 a 9.
+   */
+  function secoesDoArtigo() {
+    var raiz = document.querySelector('article, main, .article-content, .article-body') || document;
+    var lista = raiz.querySelectorAll('h2');
+    var out = [];
+    for (var i = 0; i < lista.length; i++) {
+      var t = lista[i].textContent.replace(/\s+/g, ' ').trim()
+        // alguns posts numeram os H2 ("1. O que é a DRE"); o card numera sozinho
+        .replace(/^\d+[.)]\s*/, '');
+      if (t.length > 2) out.push(t);
+    }
+    return out;
+  }
+
   /** Mesma cadeia de fallback do extrator do build (render-artes/share-cards). */
   function dadosDoArtigo() {
     var leitura = '';
@@ -517,9 +535,10 @@
 
     return {
       titulo: tituloDoArtigo(),
-      lead: metaConteudo('og:description') || textoDe('.hero-lead'),
+      lead: metaConteudo('og:description') || textoDe('.hero-lead'),  // usado só na legenda
       categoria: metaConteudo('article:section') || textoDe('.cat-pill') || 'Blog da Fluência',
       leitura: leitura,
+      secoes: secoesDoArtigo(),
       dominio: 'fluenciacontabil.com.br'
     };
   }
