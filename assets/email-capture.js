@@ -625,7 +625,7 @@
    * (veja render-artes/share-cards/versionar-assets.mjs) sempre que alterar
    * o share-card.js.
    */
-  var VERSAO_ASSETS = '20260728';
+  var VERSAO_ASSETS = '20260728b';
 
   var promessaGerador = null;
 
