@@ -365,6 +365,60 @@
 .fc-ec-share-btn.fc-ec-copy:hover { background: #1B2A4A; color: #fff; }
 .fc-ec-share-btn.fc-ec-copied { background: #C8A84B !important; border-color: #C8A84B !important; color: #1B2A4A !important; }
 
+/* --- Instagram: gera a arte do artigo em vez de abrir um link --- */
+.fc-ec-share-btn.fc-ec-ig {
+  background: #C13584; /* cor sólida de reserva, caso o gradiente não pinte */
+  background-image: linear-gradient(45deg, #F58529 0%, #DD2A7B 45%, #8134AF 75%, #515BD4 100%);
+  border-color: #A62E76;
+  color: #fff;
+}
+.fc-ec-share-btn.fc-ec-ig:hover { filter: brightness(1.08); background-image: linear-gradient(45deg, #F58529 0%, #DD2A7B 45%, #8134AF 75%, #515BD4 100%); }
+.fc-ec-share-btn.fc-ec-ig[aria-expanded="true"] { box-shadow: 0 0 0 3px rgba(200, 168, 75, 0.45); }
+
+.fc-ec-ig-formatos {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  margin-top: 16px;
+}
+.fc-ec-ig-rotulo {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #1B2A4A;
+  opacity: 0.55;
+}
+.fc-ec-ig-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.fc-ec-chip {
+  padding: 9px 15px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  line-height: 1;
+  color: #1B2A4A;
+  background: transparent;
+  border: 2px solid #1B2A4A;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.fc-ec-chip:hover:not(:disabled) { background: #1B2A4A; color: #fff; }
+.fc-ec-chip:disabled { opacity: 0.5; cursor: progress; }
+
+.fc-ec-share-status {
+  margin: 16px 0 0;
+  padding: 11px 14px;
+  background: rgba(255, 255, 255, 0.72);
+  border-radius: 2px;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: #1B2A4A;
+}
+.fc-ec-share-status.fc-ec-erro { color: #C0392B; background: rgba(192, 57, 43, 0.08); }
+
 /* ================= INLINE CTA (blog posts) ================= */
 /* Reset defensivo: o CTA é injetado dentro de .article-body/.article-content,
    cujos estilos podem sobrescrever strong/em/a. Forçamos cores próprias. */

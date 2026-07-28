@@ -484,15 +484,57 @@
     return /\/blog\/[^/]+(\.html?)?\/?$/i.test(window.location.pathname);
   }
 
+  /* --- leitura dos metadados do próprio post --- */
+
+  function metaConteudo(chave) {
+    var el = document.querySelector('meta[property="' + chave + '"]')
+          || document.querySelector('meta[name="' + chave + '"]');
+    return el ? (el.getAttribute('content') || '').trim() : '';
+  }
+
+  function textoDe(seletor) {
+    var el = document.querySelector(seletor);
+    return el ? el.textContent.replace(/\s+/g, ' ').trim() : '';
+  }
+
+  // O <title> carrega o sufixo do site; o og:title costuma ser a manchete limpa.
+  function tituloDoArtigo() {
+    var t = metaConteudo('og:title') || textoDe('h1') || document.title || 'Fluência Contábil';
+    return t.replace(/\s*[|–—-]\s*Fluência Contábil\s*$/i, '').trim();
+  }
+
+  function slugDoArtigo() {
+    var partes = window.location.pathname.split('/').filter(Boolean);
+    return (partes[partes.length - 1] || 'artigo').replace(/\.html?$/i, '');
+  }
+
+  /** Mesma cadeia de fallback do extrator do build (render-artes/share-cards). */
+  function dadosDoArtigo() {
+    var leitura = '';
+    var meta = textoDe('.hero-meta');
+    var m = meta.match(/(\d+\s*min(?:utos?)?\s+de\s+leitura)/i);
+    if (m) leitura = m[1];
+
+    return {
+      titulo: tituloDoArtigo(),
+      lead: metaConteudo('og:description') || textoDe('.hero-lead'),
+      categoria: metaConteudo('article:section') || textoDe('.cat-pill') || 'Blog da Fluência',
+      leitura: leitura,
+      dominio: 'fluenciacontabil.com.br'
+    };
+  }
+
   function buildShare() {
-    // Inserir antes do <section class="newsletter-section"> se existir,
-    // senão antes do <footer>
-    var anchor = document.querySelector('section.newsletter-section')
+    // Inserir antes da seção de newsletter, senão antes do <footer>.
+    // Os posts usam DUAS classes diferentes para a mesma seção: os mais antigos
+    // `newsletter-section`, os mais novos `newsletter`. Sem cobrir as duas, os
+    // posts novos caíam no <footer> e o bloco aparecia DEPOIS da newsletter.
+    var anchor = document.querySelector('section.newsletter-section, section.newsletter')
               || document.querySelector('footer');
     if (!anchor) return;
 
     var url = window.location.href.split('#')[0];
-    var title = document.title || 'Fluência Contábil';
+    var title = tituloDoArtigo();
     var encURL = encodeURIComponent(url);
     var encTitle = encodeURIComponent(title);
 
@@ -504,7 +546,8 @@
       wa: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.52 3.48A11.86 11.86 0 0 0 12.05 0C5.5 0 .2 5.3.2 11.85c0 2.09.55 4.13 1.6 5.93L0 24l6.38-1.66a11.82 11.82 0 0 0 5.66 1.44h.01c6.55 0 11.85-5.3 11.85-11.84 0-3.16-1.23-6.13-3.38-8.46zM12.05 21.8h-.01a9.91 9.91 0 0 1-5.05-1.38l-.36-.21-3.78.99 1.01-3.69-.24-.38a9.88 9.88 0 0 1-1.52-5.28c0-5.45 4.43-9.88 9.95-9.88 2.65 0 5.15 1.03 7.03 2.91a9.82 9.82 0 0 1 2.9 7 9.89 9.89 0 0 1-9.93 9.92zm5.45-7.41c-.3-.15-1.76-.87-2.04-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.95 1.17-.18.2-.35.22-.65.07a8.17 8.17 0 0 1-2.4-1.48 8.95 8.95 0 0 1-1.66-2.06c-.17-.3 0-.45.13-.6.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.05 1.02-1.05 2.5 0 1.47 1.08 2.9 1.23 3.1.15.2 2.1 3.2 5.08 4.48.71.31 1.26.5 1.7.64.71.23 1.36.2 1.87.12.57-.08 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.42-.07-.12-.27-.2-.57-.35z"/></svg>',
       x: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>',
       in: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.42v1.56h.04c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/></svg>',
-      copy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>'
+      copy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>',
+      ig: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm7.846-10.405a1.441 1.441 0 01-2.88 0 1.44 1.44 0 012.88 0z"/></svg>'
     };
 
     var html = ''
@@ -515,8 +558,17 @@
       +     '<a class="fc-ec-share-btn fc-ec-wa" href="' + wa + '" target="_blank" rel="noopener">' + icons.wa + '<span>WhatsApp</span></a>'
       +     '<a class="fc-ec-share-btn fc-ec-x" href="' + xt + '" target="_blank" rel="noopener">' + icons.x + '<span>X</span></a>'
       +     '<a class="fc-ec-share-btn fc-ec-in" href="' + ln + '" target="_blank" rel="noopener">' + icons.in + '<span>LinkedIn</span></a>'
+      +     '<button type="button" class="fc-ec-share-btn fc-ec-ig" aria-expanded="false" aria-controls="fc-ec-ig-formatos">' + icons.ig + '<span>Instagram</span></button>'
       +     '<button type="button" class="fc-ec-share-btn fc-ec-copy" data-url="' + url + '">' + icons.copy + '<span class="fc-ec-copy-feedback">Copiar link</span></button>'
       +   '</div>'
+      +   '<div class="fc-ec-ig-formatos" id="fc-ec-ig-formatos" hidden>'
+      +     '<span class="fc-ec-ig-rotulo">Escolha o formato da arte</span>'
+      +     '<div class="fc-ec-ig-chips">'
+      +       '<button type="button" class="fc-ec-chip" data-formato="feed">Feed 4:5</button>'
+      +       '<button type="button" class="fc-ec-chip" data-formato="story">Story 9:16</button>'
+      +     '</div>'
+      +   '</div>'
+      +   '<p class="fc-ec-share-status" role="status" aria-live="polite" hidden></p>'
       + '</aside>';
 
     var wrap = document.createElement('div');
@@ -527,34 +579,193 @@
     var copyBtn = el.querySelector('.fc-ec-copy');
     var feedback = copyBtn.querySelector('.fc-ec-copy-feedback');
     copyBtn.addEventListener('click', function () {
-      var u = copyBtn.getAttribute('data-url');
-      var done = function () {
+      copiarTexto(copyBtn.getAttribute('data-url')).then(function () {
         copyBtn.classList.add('fc-ec-copied');
         feedback.textContent = 'Copiado!';
         setTimeout(function () {
           copyBtn.classList.remove('fc-ec-copied');
           feedback.textContent = 'Copiar link';
         }, 2000);
-      };
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(u).then(done, fallbackCopy);
-      } else {
-        fallbackCopy();
-      }
-      function fallbackCopy() {
-        try {
-          var ta = document.createElement('textarea');
-          ta.value = u;
-          ta.style.position = 'fixed';
-          ta.style.opacity = '0';
-          document.body.appendChild(ta);
-          ta.select();
-          var ok = document.execCommand('copy');
-          document.body.removeChild(ta);
-          if (ok) done();
-        } catch (e) {}
-      }
+      });
     });
+
+    ligarInstagram(el, url);
+  }
+
+  /* ================= INSTAGRAM (gera a arte do artigo) =================
+     O Instagram não tem URL de compartilhamento como WhatsApp/X/LinkedIn — não
+     existe `instagram.com/share?url=`. O único caminho a partir do navegador é
+     produzir a IMAGEM e entregá-la: pela bandeja nativa no celular, ou por
+     download no desktop. Daí este botão ser um gerador de arte, não um link. */
+
+  var promessaGerador = null;
+
+  function carregarGeradorDeCard() {
+    if (window.FCShareCard) return Promise.resolve(window.FCShareCard);
+    if (promessaGerador) return promessaGerador;
+    promessaGerador = new Promise(function (resolve, reject) {
+      var atual = document.querySelector('script[src*="email-capture.js"]');
+      var base = (atual && atual.src) ? atual.src.replace(/[^/]*$/, '') : 'assets/';
+      var s = document.createElement('script');
+      s.src = base + 'share-card.js';
+      s.onload = function () {
+        if (window.FCShareCard) resolve(window.FCShareCard);
+        else reject(new Error('share-card.js carregou sem expor a API'));
+      };
+      s.onerror = function () { reject(new Error('falha ao carregar share-card.js')); };
+      document.head.appendChild(s);
+    });
+    // um erro não pode envenenar a promessa para sempre: permite nova tentativa
+    promessaGerador['catch'](function () { promessaGerador = null; });
+    return promessaGerador;
+  }
+
+  var HASHTAGS_POR_CATEGORIA = {
+    'cpc': ['#cpc', '#normascontabeis'],
+    'concursos': ['#concursofiscal', '#sefaz'],
+    'demonstrações': ['#demonstracoescontabeis', '#balancopatrimonial'],
+    'bancas': ['#cebraspe', '#fcc', '#fgv'],
+    'fundamentos': ['#contabilidadebasica']
+  };
+
+  function legendaInstagram(dados, url) {
+    var base = ['#contabilidade', '#concursopublico', '#contabilidadeparaconcursos', '#fluenciacontabil'];
+    var extras = HASHTAGS_POR_CATEGORIA[String(dados.categoria).toLowerCase()] || [];
+    var tags = [], i;
+    for (i = 0; i < base.length; i++) if (tags.indexOf(base[i]) < 0) tags.push(base[i]);
+    for (i = 0; i < extras.length; i++) if (tags.indexOf(extras[i]) < 0) tags.push(extras[i]);
+
+    return dados.titulo + '\n\n'
+         + (dados.lead ? dados.lead + '\n\n' : '')
+         + 'Artigo completo no blog — link na bio.\n' + url + '\n\n'
+         + tags.join(' ');
+  }
+
+  function copiarTexto(texto) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(texto)['catch'](function () { return copiaManual(texto); });
+    }
+    return copiaManual(texto);
+  }
+
+  function copiaManual(texto) {
+    return new Promise(function (resolve, reject) {
+      try {
+        var ta = document.createElement('textarea');
+        ta.value = texto;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = document.execCommand('copy');
+        document.body.removeChild(ta);
+        ok ? resolve() : reject(new Error('execCommand recusou'));
+      } catch (e) { reject(e); }
+    });
+  }
+
+  function baixarArquivo(blob, nome) {
+    var href = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = href;
+    a.download = nome;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(href); }, 10000);
+  }
+
+  function evento(nome, dados) {
+    try {
+      window.dataLayer = window.dataLayer || [];
+      dados = dados || {};
+      dados.event = nome;
+      window.dataLayer.push(dados);
+    } catch (e) {}
+  }
+
+  function ligarInstagram(el, url) {
+    var btn = el.querySelector('.fc-ec-ig');
+    var painel = el.querySelector('.fc-ec-ig-formatos');
+    var status = el.querySelector('.fc-ec-share-status');
+    var chips = el.querySelectorAll('.fc-ec-chip');
+    if (!btn || !painel) return;
+
+    function avisar(texto, erro) {
+      status.textContent = texto;
+      status.hidden = !texto;
+      if (erro) status.classList.add('fc-ec-erro');
+      else status.classList.remove('fc-ec-erro');
+    }
+
+    btn.addEventListener('click', function () {
+      var abrindo = painel.hidden;
+      painel.hidden = !abrindo;
+      btn.setAttribute('aria-expanded', abrindo ? 'true' : 'false');
+      if (!abrindo) avisar('');
+    });
+
+    for (var i = 0; i < chips.length; i++) {
+      chips[i].addEventListener('click', function () {
+        gerarArte(this.getAttribute('data-formato'));
+      });
+    }
+
+    function travarChips(travado) {
+      for (var j = 0; j < chips.length; j++) chips[j].disabled = travado;
+    }
+
+    function gerarArte(formato) {
+      var dados = dadosDoArtigo();
+      var nome = slugDoArtigo() + '-instagram-' + formato + '.jpg';
+      var legenda = legendaInstagram(dados, url);
+
+      travarChips(true);
+      avisar('Gerando a arte…');
+
+      carregarGeradorDeCard()
+        .then(function (api) { return api.render(formato, dados); })
+        .then(function (resultado) {
+          var blob = resultado.blob;
+          var arquivo = blob;
+          try { arquivo = new File([blob], nome, { type: 'image/jpeg' }); } catch (e) {}
+
+          var podeArquivo = !!(navigator.canShare && window.File && (arquivo instanceof File)
+                            && navigator.canShare({ files: [arquivo] }));
+          var ehToque = !!(window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
+
+          if (podeArquivo && ehToque && navigator.share) {
+            // Copia ANTES de abrir a bandeja: depois dela o navegador pode
+            // recusar acesso à área de transferência por falta de gesto do usuário.
+            return copiarTexto(legenda)['catch'](function () {})
+              .then(function () {
+                // Só `files`. Com `title`/`text` junto, o Safari do iOS compartilha
+                // o TEXTO em vez da imagem — e o Instagram não recebe a arte.
+                return navigator.share({ files: [arquivo] });
+              })
+              .then(function () {
+                evento('fc_share_instagram', { formato: formato, metodo: 'share', slug: slugDoArtigo() });
+                avisar('Pronto! A legenda já está copiada — é só colar na publicação.');
+              })['catch'](function (e) {
+                if (e && e.name === 'AbortError') { avisar(''); return; }
+                baixarArquivo(blob, nome);
+                evento('fc_share_instagram', { formato: formato, metodo: 'download', slug: slugDoArtigo() });
+                avisar('Imagem baixada e legenda copiada. Abra o Instagram e cole na publicação.');
+              });
+          }
+
+          baixarArquivo(blob, nome);
+          evento('fc_share_instagram', { formato: formato, metodo: 'download', slug: slugDoArtigo() });
+          return copiarTexto(legenda).then(function () {
+            avisar('Imagem baixada e legenda copiada. Abra o Instagram e cole na publicação.');
+          }, function () {
+            avisar('Imagem baixada. Não consegui copiar a legenda — o navegador bloqueou a área de transferência.');
+          });
+        })['catch'](function () {
+          avisar('Não consegui gerar a imagem agora. Tente novamente.', true);
+        })
+        .then(function () { travarChips(false); });
+    }
   }
 
   /* ================= INLINE CTA (blog posts) ================= */
