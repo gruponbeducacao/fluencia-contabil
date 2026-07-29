@@ -458,16 +458,49 @@ function ensureSheet(name, headers, notes) {
   return sheet;
 }
 
+/**
+ * Resumo do payload sem dado pessoal.
+ *
+ * A aba _errors é criada em silêncio, ninguém expurga e ela não está
+ * documentada como contendo PII. Guardar e-mail/nome/telefone ali cria uma
+ * segunda cópia do lead fora do fluxo controlado — a cópia que um pedido de
+ * exclusão vai esquecer, e o "fantasma" que faz quem pediu pra sair voltar a
+ * receber e-mail.
+ *
+ * O hash de 8 chars preserva o que o log precisa (correlacionar ocorrências
+ * do mesmo lead) sem guardar o endereço.
+ */
+function resumoSemPII_(e) {
+  var p = (e && e.parameter) ? e.parameter : {};
+  var email = String(p.email || '');
+  var hash = '';
+  if (email) {
+    hash = Utilities.computeDigest(
+        Utilities.DigestAlgorithm.SHA_256, email.toLowerCase(), Utilities.Charset.UTF_8)
+      .map(function (b) { return ('0' + ((b + 256) % 256).toString(16)).slice(-2); })
+      .join('').substring(0, 8);
+  }
+  return JSON.stringify({
+    origem: String(p.origem || ''),
+    pagina: String(p.pagina || ''),
+    sheet: String(p.sheet || ''),
+    temEmail: !!email,
+    emailHash: hash
+  });
+}
+
 function logError(err, e) {
   try {
     var ss = SpreadsheetApp.getActiveSpreadsheet();
     var log = ss.getSheetByName(SHEETS.ERRORS) || ss.insertSheet(SHEETS.ERRORS);
     if (log.getLastRow() === 0) {
-      log.appendRow(['Timestamp', 'Erro', 'Parâmetros']);
+      log.appendRow(['Timestamp', 'Erro', 'Contexto (sem dado pessoal)']);
       log.getRange(1, 1, 1, 3).setFontWeight('bold');
       log.setFrozenRows(1);
     }
-    log.appendRow([new Date(), String(err), JSON.stringify(e && e.parameter ? e.parameter : {})]);
+    // safeCell_ aqui também: a mensagem de erro pode carregar texto que veio
+    // do cliente, e esta aba é uma planilha como qualquer outra.
+    log.appendRow([new Date(), safeCell_(String(err)), safeCell_(resumoSemPII_(e))]);
   } catch (_) {}
 }
 
