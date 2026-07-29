@@ -121,10 +121,10 @@ function handleNewsletter(p) {
   var sheet = ensureSheet(SHEETS.NEWSLETTER, NEWSLETTER_HEADERS, NEWSLETTER_NOTES);
   sheet.appendRow([
     new Date(), p.email,
-    String(p.origem || ''), String(p.ref || ''),
-    String(p.pagina || ''), String(p.referrer || ''),
-    String(p.utm_source || ''), String(p.utm_medium || ''), String(p.utm_campaign || ''),
-    String(p.dispositivo || ''),
+    safeCell_(p.origem), safeCell_(p.ref),
+    safeCell_(p.pagina), safeCell_(p.referrer),
+    safeCell_(p.utm_source), safeCell_(p.utm_medium), safeCell_(p.utm_campaign),
+    safeCell_(p.dispositivo),
     '', ''  // ML Sync, ML Sync At
   ]);
   return jsonResponse({ ok: true, aba: SHEETS.NEWSLETTER });
@@ -133,12 +133,12 @@ function handleNewsletter(p) {
 function handleLista(p) {
   var sheet = ensureSheet(SHEETS.LISTA, LISTA_HEADERS, LISTA_NOTES);
   sheet.appendRow([
-    new Date(), String(p.nome || '').trim(), p.email,
+    new Date(), safeCell_(String(p.nome || '').trim()), p.email,
     normalizePhone(p.telefone_digits || p.telefone || p.whatsapp || ''),
-    String(p.origem || ''), String(p.ref || ''),
-    String(p.pagina || ''), String(p.referrer || ''),
-    String(p.utm_source || ''), String(p.utm_medium || ''), String(p.utm_campaign || ''),
-    String(p.dispositivo || ''),
+    safeCell_(p.origem), safeCell_(p.ref),
+    safeCell_(p.pagina), safeCell_(p.referrer),
+    safeCell_(p.utm_source), safeCell_(p.utm_medium), safeCell_(p.utm_campaign),
+    safeCell_(p.dispositivo),
     '', ''
   ]);
   return jsonResponse({ ok: true, aba: SHEETS.LISTA });
@@ -147,12 +147,12 @@ function handleLista(p) {
 function handleDicionario(p) {
   var sheet = ensureSheet(SHEETS.DICIONARIO, DICIONARIO_HEADERS, DICIONARIO_NOTES);
   sheet.appendRow([
-    new Date(), String(p.nome || '').trim(), p.email,
+    new Date(), safeCell_(String(p.nome || '').trim()), p.email,
     normalizePhone(p.telefone_digits || p.telefone || ''),
-    String(p.origem || ''),
-    String(p.pagina || ''), String(p.referrer || ''),
-    String(p.utm_source || ''), String(p.utm_medium || ''), String(p.utm_campaign || ''),
-    String(p.dispositivo || ''),
+    safeCell_(p.origem),
+    safeCell_(p.pagina), safeCell_(p.referrer),
+    safeCell_(p.utm_source), safeCell_(p.utm_medium), safeCell_(p.utm_campaign),
+    safeCell_(p.dispositivo),
     '', ''
   ]);
   return jsonResponse({ ok: true, aba: SHEETS.DICIONARIO });
@@ -162,12 +162,12 @@ function handleBolsao(p) {
   // Aba pós-MailerLite: sem colunas ML Sync (SES/Seq/CRM são adicionadas pelo setupBolsao do ses_mailer.gs)
   var sheet = ensureSheet(SHEETS.BOLSAO, BOLSAO_HEADERS, BOLSAO_NOTES);
   sheet.appendRow([
-    new Date(), String(p.nome || '').trim(), p.email,
+    new Date(), safeCell_(String(p.nome || '').trim()), p.email,
     normalizePhone(p.telefone_digits || p.telefone || p.whatsapp || ''),
-    String(p.origem || ''), String(p.ref || ''),
-    String(p.pagina || ''), String(p.referrer || ''),
-    String(p.utm_source || ''), String(p.utm_medium || ''), String(p.utm_campaign || ''),
-    String(p.dispositivo || '')
+    safeCell_(p.origem), safeCell_(p.ref),
+    safeCell_(p.pagina), safeCell_(p.referrer),
+    safeCell_(p.utm_source), safeCell_(p.utm_medium), safeCell_(p.utm_campaign),
+    safeCell_(p.dispositivo)
   ]);
   return jsonResponse({ ok: true, aba: SHEETS.BOLSAO });
 }
@@ -176,12 +176,12 @@ function handleLives(p) {
   var sheet = ensureSheet(SHEETS.LIVES, LIVES_HEADERS, LIVES_NOTES);
   var rowNum = sheet.getLastRow() + 1;
   sheet.appendRow([
-    new Date(), String(p.nome || '').trim(), p.email,
+    new Date(), safeCell_(String(p.nome || '').trim()), p.email,
     normalizePhone(p.telefone_digits || p.telefone || p.whatsapp || ''),
-    String(p.origem || ''), String(p.ref || ''),
-    String(p.pagina || ''), String(p.referrer || ''),
-    String(p.utm_source || ''), String(p.utm_medium || ''), String(p.utm_campaign || ''),
-    String(p.dispositivo || ''),
+    safeCell_(p.origem), safeCell_(p.ref),
+    safeCell_(p.pagina), safeCell_(p.referrer),
+    safeCell_(p.utm_source), safeCell_(p.utm_medium), safeCell_(p.utm_campaign),
+    safeCell_(p.dispositivo),
     '', '', '', ''
   ]);
   dispatchLiveLeadImmediately_(p, sheet, rowNum);
@@ -359,8 +359,27 @@ const LIVES_NOTES = [
 
 // ══════════════════════ HELPERS ══════════════════════
 
+/**
+ * Neutraliza gatilho de fórmula do Sheets preservando o texto legível.
+ *
+ * appendRow() usa a mesma semântica de setValues(): string começada por
+ * = + - @ vira FÓRMULA VIVA, que executa quando alguém abre a planilha —
+ * com a sessão de quem abriu. IMPORTXML/IMPORTDATA exfiltram a coluna de
+ * e-mails pra um servidor externo; REPT pesado inutiliza o arquivo.
+ * O prefixo ' faz a célula ser tratada como texto literal.
+ *
+ * Vale pros 4 sites: todos postam neste mesmo endpoint.
+ */
+function safeCell_(v) {
+  var s = String(v == null ? '' : v).slice(0, 300);
+  return /^[=+\-@\t\r]/.test(s) ? "'" + s : s;
+}
+
 function isValidEmail(email) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email));
+  var s = String(email);
+  if (s.length > 254) return false;           // RFC 5321
+  if (/^[=+\-@\t\r]/.test(s)) return false;   // gatilho de fórmula do Sheets
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
 }
 
 function normalizePhone(tel) {
