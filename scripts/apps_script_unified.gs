@@ -79,13 +79,19 @@ function doPost(e) {
     return routeByOrigin(p);
   } catch (err) {
     logError(err, e);
-    return jsonResponse({ ok: false, error: String(err) });
+    // Genérico de propósito: o browser legítimo usa mode:'no-cors' e nem lê
+    // esta resposta, mas quem faz POST com curl lia nomes de função, nomes de
+    // aba e exceções cruas do SpreadsheetApp. O detalhe fica no _errors.
+    return jsonResponse({ ok: false, error: 'erro ao processar' });
   }
 }
 
+// Resposta neutra: identificar o negócio e devolver o relógio do servidor era
+// reconhecimento de graça pra quem só achasse a URL (ela está em texto claro
+// no JS de todas as páginas). Nada no site consome este GET — verificado.
 function doGet(e) {
   return ContentService
-    .createTextOutput('Endpoint unificado · LEADS Fluência Contábil · ' + new Date().toISOString())
+    .createTextOutput('ok')
     .setMimeType(ContentService.MimeType.TEXT);
 }
 
