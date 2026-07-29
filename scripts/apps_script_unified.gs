@@ -12,8 +12,10 @@
  *
  * ─── PRÉ-REQUISITO ────────────────────────────────────────────────────
  * Script Properties → MAILERLITE_API_KEY = (API key)
- * Script Properties → MENSAGEIRO_WEBHOOK_URL = (URL do webhook do fluxo)
- * Script Properties → MENSAGEIRO_WEBHOOK_SECRET = (secret do header)
+ * Script Properties → MENSAGEIRO_WEBHOOK_URL = (webhook dos demais fluxos)
+ * Script Properties → MENSAGEIRO_WEBHOOK_SECRET = (secret dos demais fluxos)
+ * Script Properties → MENSAGEIRO_LIVES_WEBHOOK_URL = (webhook exclusivo das Lives)
+ * Script Properties → MENSAGEIRO_LIVES_WEBHOOK_SECRET = (secret exclusivo das Lives)
  *   (nunca hardcoded no código — este arquivo é público via GitHub Pages)
  *
  * ─── PÓS-DEPLOY (rodar 1× após cada deploy) ───────────────────────────
@@ -192,6 +194,16 @@ function handleLives(p) {
  * pelos workers assíncronos já existentes.
  */
 function dispatchLiveLeadImmediately_(p, sheet, rowNum) {
+  var lock = LockService.getScriptLock();
+  lock.waitLock(30000);
+  try {
+    dispatchLiveLeadImmediatelyUnlocked_(p, sheet, rowNum);
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function dispatchLiveLeadImmediatelyUnlocked_(p, sheet, rowNum) {
   var headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0].map(String);
   var cols = {};
   headers.forEach(function(name, i) { cols[name] = i + 1; });
@@ -204,7 +216,7 @@ function dispatchLiveLeadImmediately_(p, sheet, rowNum) {
   // Mensageiro/CRM — imediato via webhook. A aba Lives usa CRM Sync.
   var crmSyncCol = cols['CRM Sync'] || cols['Mensageiro Sync'];
   var crmSyncAtCol = cols['CRM Sync At'] || cols['Mensageiro Sync At'];
-  if (typeof pushToMensageiro === 'function' && crmSyncCol) {
+  if (typeof pushToMensageiroLives_ === 'function' && crmSyncCol) {
     var crmPayload = {
       evento: 'lives_lead', nome: nome, email: email, telefone: telefoneE164,
       customer: { name: nome, email: email, phone: telefoneE164 },
@@ -214,7 +226,7 @@ function dispatchLiveLeadImmediately_(p, sheet, rowNum) {
       timestamp: now.toISOString()
     };
     try {
-      pushToMensageiro(crmPayload);
+      pushToMensageiroLives_(crmPayload);
       sheet.getRange(rowNum, crmSyncCol).setValue('ok');
       if (crmSyncAtCol) sheet.getRange(rowNum, crmSyncAtCol).setValue(now);
     } catch (err) {
@@ -717,7 +729,7 @@ function syncPendingLivesToMensageiro() {
       };
 
       try {
-        pushToMensageiro(payload);
+        pushToMensageiroLives_(payload);
         sheet.getRange(rowNum, syncCol).setValue('ok');
         sheet.getRange(rowNum, syncAtCol).setValue(new Date());
       } catch (err) {
@@ -1144,4 +1156,64 @@ function setupDashboard() {
   Logger.log('   Locale: ' + locale + ' | Separador de argumentos: ' + SEP);
   Logger.log('   Cobre: Newsletter, Lista, Dicionário, Lives');
   Logger.log('   Antiga preservada como Dashboard_old_*');
+}
+
+/** Envia somente os leads da LP de Lives para o webhook específico das Lives. */
+function pushToMensageiroLives_(payload) {
+  var props = PropertiesService.getScriptProperties();
+  var url = props.getProperty('MENSAGEIRO_LIVES_WEBHOOK_URL');
+  var secret = props.getProperty('MENSAGEIRO_LIVES_WEBHOOK_SECRET');
+
+  if (!url || !secret) {
+    throw new Error('MENSAGEIRO_LIVES_WEBHOOK_URL / MENSAGEIRO_LIVES_WEBHOOK_SECRET não configuradas em Script Properties');
+  }
+
+  var response = UrlFetchApp.fetch(url, {
+    method: 'post',
+    contentType: 'application/json',
+    headers: { 'X-Mensageiro-Webhook-Secret': secret },
+    payload: JSON.stringify(payload),
+    muteHttpExceptions: true
+  });
+
+  var code = response.getResponseCode();
+  if (code < 200 || code >= 300) {
+    throw new Error('Mensageiro Lives HTTP ' + code + ': ' + response.getContentText().substring(0, 300));
+  }
+  var responseText = response.getContentText();
+  try { return JSON.parse(responseText); } catch (_) { return { raw: responseText }; }
+}
+
+/** Teste direto do webhook exclusivo das Lives. Dispara uma mensagem real. */
+function testMensageiroLivesWebhook() {
+  var props = PropertiesService.getScriptProperties();
+  var testPhone = props.getProperty('MENSAGEIRO_TEST_PHONE');
+  if (!testPhone) {
+    Logger.log('Defina MENSAGEIRO_TEST_PHONE antes de rodar este teste.');
+    return;
+  }
+
+  var now = Date.now();
+  var payload = {
+    evento: 'lives_lead_teste',
+    nome: 'Teste Lives Apps Script',
+    email: 'teste.lives.' + now + '@example.com',
+    telefone: formatPhoneE164BR(testPhone),
+    customer: {
+      name: 'Teste Lives Apps Script',
+      email: 'teste.lives.' + now + '@example.com',
+      phone: formatPhoneE164BR(testPhone)
+    },
+    origem: 'teste_apps_script_lives',
+    pagina: '/lives',
+    timestamp: new Date().toISOString()
+  };
+
+  try {
+    var result = pushToMensageiroLives_(payload);
+    Logger.log('Webhook Lives HTTP OK: ' + JSON.stringify(result).substring(0, 500));
+    Logger.log('Confira o WhatsApp de ' + testPhone + '.');
+  } catch (err) {
+    Logger.log('Erro no webhook Lives: ' + err);
+  }
 }
