@@ -204,6 +204,22 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .hero-degusta .hd-short { display: none; }
   .hero-degusta .hd-seta { flex: none; margin-left: auto; font-size: 15px; font-weight: 800; color: var(--dourado-texto); transition: transform 0.2s ease; }
   .hero-degusta-btn:hover .hd-seta { transform: translateY(2px); }
+  /* O mesmo bloco sobre o fundo escuro do hero — na variante B a hero e' leve e
+     nao tem o card branco, entao o texto azul-escuro ficaria ilegivel. Inerte na
+     LP A, que nao usa .hero-cta. */
+  .hero-cta .hero-degusta { border-top-color: rgba(255,255,255,0.14); }
+  .hero-cta .hero-degusta-btn { border-color: rgba(255,255,255,0.2); color: var(--branco); }
+  .hero-cta .hero-degusta-btn:hover { background: rgba(255,255,255,0.07); border-color: rgba(200,168,75,0.55); }
+  .hero-cta .hero-degusta-btn:focus-visible { outline-color: var(--dourado); }
+  .hero-cta .hero-degusta .hd-txt b { color: var(--branco); }
+  .hero-cta .hero-degusta .hd-txt i { color: rgba(255,255,255,0.62); }
+  .hero-cta .hero-degusta .hd-seta { color: var(--dourado); }
+  /* Depois de 16/08 a linha de datas vira texto vencido, e a nota fala em 12x
+     quando as modalidades que voltam sao de pagamento unico — mesmo motivo pelo
+     qual .hero-oferta-pgto some na LP A. O countdown ao lado ja e' trocado pelo
+     aviso de encerramento via JS. */
+  body.encerrada .hero-datas,
+  body.encerrada .hero-note { display: none; }
   .hero-oferta .countdown-closed { display: block; text-align: center; background: #FCEAEA; border: 1px solid rgba(192,57,43,0.3); color: var(--vermelho); }
   body.encerrada .hero-oferta-tag,
   body.encerrada .hero-oferta-preco,
