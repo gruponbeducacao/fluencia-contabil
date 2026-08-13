@@ -1351,6 +1351,54 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .faq-item.open .faq-q::after { content: '−'; }
   .faq-a { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
   .faq-a p { font-size: 15.5px; color: var(--cinza-medio); line-height: 1.7; padding: 0 44px 24px 0; }
+  /* Saida para quem ficou com duvida fora da lista. Verde do WhatsApp, nao o
+     vermelho do CTA: e acao de apoio, nao concorrente da compra. */
+  .faq-ajuda {
+    max-width: 800px; margin-top: 40px;
+    display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+    background: var(--cream); border-radius: 10px; padding: 22px 26px;
+  }
+  .faq-ajuda-txt { flex: 1 1 280px; min-width: 0; }
+  .faq-ajuda-txt b { display: block; font-size: 15.5px; font-weight: 800; color: var(--azul-profundo); margin-bottom: 3px; }
+  .faq-ajuda-txt i { font-style: normal; font-size: 13.5px; color: var(--cinza-medio); line-height: 1.5; }
+  .faq-ajuda-btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: #25D366; color: var(--branco); text-decoration: none;
+    font-size: 14px; font-weight: 800; padding: 13px 20px; border-radius: 8px;
+    transition: background 0.2s ease, transform 0.2s ease;
+  }
+  .faq-ajuda-btn:hover { background: #1EBE5B; transform: translateY(-1px); }
+  .faq-ajuda-btn:focus-visible { outline: 2px solid var(--azul-medio); outline-offset: 3px; }
+  .faq-ajuda-btn svg { width: 19px; height: 19px; flex: none; display: block; }
+
+  /* Atendimento flutuante. Esta LP nao carrega o email-capture.js — trazer o
+     asset so pelo botao arrastaria junto o exit-intent e a sticky bar de
+     newsletter para dentro de uma pagina de checkout. Aqui o widget e local.
+     O sticky-header vive no topo (z-index 100), entao nao ha colisao. */
+  .fc-wa-float {
+    position: fixed; right: 22px; bottom: 22px; z-index: 90;
+    display: inline-flex; align-items: center;
+    height: 56px; padding: 0 14px; border-radius: 28px;
+    background: #25D366; color: var(--branco); text-decoration: none;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.22);
+    opacity: 0; transform: translateY(12px); pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.2s ease;
+  }
+  .fc-wa-float.fc-wa-show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+  .fc-wa-float svg { width: 28px; height: 28px; flex: none; display: block; }
+  .fc-wa-float-label {
+    max-width: 0; overflow: hidden; white-space: nowrap; opacity: 0;
+    font-size: 14px; font-weight: 700;
+    transition: max-width 0.28s ease, opacity 0.2s ease, margin-left 0.28s ease;
+  }
+  @media (hover: hover) {
+    .fc-wa-float:hover { box-shadow: 0 8px 26px rgba(0,0,0,0.3); }
+    .fc-wa-float:hover .fc-wa-float-label { max-width: 180px; opacity: 1; margin-left: 10px; }
+  }
+  .fc-wa-float:focus-visible { outline: 3px solid var(--dourado); outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) {
+    .fc-wa-float, .fc-wa-float-label { transition: none; }
+  }
 
   /* ===== CTA FINAL ===== */
   .cta-final { background: var(--azul-noite); position: relative; overflow: hidden; }
@@ -1406,6 +1454,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .garantia-grid { flex-direction: column; text-align: center; }
   }
   @media (max-width: 600px) {
+    .fc-wa-float { right: 16px; bottom: 16px; height: 52px; padding: 0 12px; border-radius: 26px; }
+    .fc-wa-float svg { width: 26px; height: 26px; }
+    .fc-wa-float-label { display: none; }
+    .faq-ajuda { padding: 20px 18px; gap: 16px; }
+    .faq-ajuda-btn { width: 100%; justify-content: center; }
     .sticky-header { padding: 9px 12px; gap: 10px; }
     .sticky-brand { display: none; }
     .sticky-cta { gap: 10px; flex: 1; justify-content: space-between; }
@@ -2519,6 +2572,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="faq-a"><p>A partir de 17/08 o plano anual sai do ar e voltam as modalidades padrão — trimestral (R$ 397) e semestral (R$ 597), pagamento único. Sem o selo Fundador e sem as 4 aulas ao vivo: são produtos diferentes. A janela é a única forma de entrar como Aluno Fundador da edição 2026.</p></div>
       </div>
     </div>
+
+    <div class="faq-ajuda reveal">
+      <div class="faq-ajuda-txt">
+        <b>Sua dúvida não está aqui?</b>
+        <i>Fale direto com a equipe antes de decidir. Atendimento de segunda a sexta, das 9h às 18h.</i>
+      </div>
+      <a class="faq-ajuda-btn" href="https://wa.me/5521959042832?text=Oi!%20Tenho%20uma%20d%C3%BAvida%20sobre%20a%20assinatura%20anual." target="_blank" rel="noopener" data-fc-cta="whatsapp" data-fc-local="faq">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Falar no WhatsApp
+      </a>
+    </div>
   </div>
 </section>
 
@@ -2555,8 +2619,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="footer-logo">FLUÊNCIA <span>CONTÁBIL</span></div>
   <p>Contabilidade para quem quer ser fluente. &copy; 2026</p>
   <p class="handle">@prof.viniciusferraz · <a href="https://fluenciacontabil.com.br">fluenciacontabil.com.br</a></p>
-  <p style="margin-top:10px;">Suporte: <a href="mailto:contato@fluenciacontabil.com.br">contato@fluenciacontabil.com.br</a> · seg–sex, 9h às 18h</p>
+  <p style="margin-top:10px;">Suporte: <a href="https://wa.me/5521959042832?text=Oi!%20Tenho%20uma%20d%C3%BAvida%20sobre%20a%20assinatura%20anual." target="_blank" rel="noopener" data-fc-cta="whatsapp" data-fc-local="footer">WhatsApp (21) 95904-2832</a> · <a href="mailto:contato@fluenciacontabil.com.br">contato@fluenciacontabil.com.br</a> · seg–sex, 9h às 18h</p>
 </footer>
+
+<!-- ===== ATENDIMENTO FLUTUANTE (precisa vir antes do script que o liga) ===== -->
+<a class="fc-wa-float" id="fcWaFloat" href="https://wa.me/5521959042832?text=Oi!%20Tenho%20uma%20d%C3%BAvida%20sobre%20a%20assinatura%20anual." target="_blank" rel="noopener" aria-label="Falar com o atendimento no WhatsApp" data-fc-cta="whatsapp" data-fc-local="float-assinatura">
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  <span class="fc-wa-float-label">Fale com a gente</span>
+</a>
 
 <script>
 /* ===== ESTADO DA JANELA — encerra 16/08/2026 23h59 (Brasília, UTC-3) =====
@@ -3245,6 +3315,25 @@ document.querySelectorAll('.reveal').forEach(function (el) { revealObserver.obse
   }
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
+})();
+
+/* ===== ATENDIMENTO NO WHATSAPP — exibicao e tracking =====
+   Cobre os tres pontos da pagina de uma vez (bloco do FAQ, rodape e o
+   flutuante). Cada camada de tracking em seu proprio try/catch: fbq e gtag
+   so existem se estiverem configurados no container, e a falta de um nao
+   pode engolir os outros. */
+(function () {
+  var flut = document.getElementById('fcWaFloat');
+  if (flut) setTimeout(function () { flut.classList.add('fc-wa-show'); }, 900);
+
+  document.querySelectorAll('[data-fc-cta="whatsapp"]').forEach(function (a) {
+    a.addEventListener('click', function () {
+      var loc = a.getAttribute('data-fc-local') || '';
+      try { window.dataLayer = window.dataLayer || []; dataLayer.push({ event: 'whatsapp_cta_click', cta_location: loc }); } catch (e) {}
+      try { if (window.fbq) fbq('track', 'Contact', { content_name: 'Assinatura_WhatsApp_Atendimento', content_category: loc }); } catch (e) {}
+      try { if (window.gtag) gtag('event', 'whatsapp_click', { cta_location: loc }); } catch (e) {}
+    });
+  });
 })();
 </script>
 

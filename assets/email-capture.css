@@ -719,6 +719,76 @@
 .fc-ec-sticky .fc-ec-referral-link input { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.18); color: #fff; font-size: 11px; }
 .fc-ec-sticky .fc-ec-referral-share { display: none; }
 
+/* ================= WHATSAPP DE ATENDIMENTO (flutuante) =================
+   Fica abaixo da sticky bar (9500) e do modal (10000) na ordem de
+   empilhamento: quando qualquer um dos dois aparece, o atendimento não
+   disputa o espaço. O reposicionamento vertical é feito no JS, que mede a
+   altura real da barra em vez de assumir um valor fixo. */
+.fc-wa-float {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 9400;
+  display: inline-flex;
+  align-items: center;
+  height: 56px;
+  padding: 0 14px;
+  border-radius: 28px;
+  background: #25D366;
+  color: #fff;
+  text-decoration: none;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.22);
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease, bottom 0.3s ease, box-shadow 0.2s ease;
+}
+.fc-wa-float.fc-wa-show {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.fc-wa-float svg {
+  width: 28px;
+  height: 28px;
+  flex: 0 0 auto;
+  display: block;
+}
+.fc-wa-float-label {
+  max-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  opacity: 0;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  transition: max-width 0.28s ease, opacity 0.2s ease, margin-left 0.28s ease;
+}
+
+/* O rótulo só se abre onde existe cursor — no toque, a bolha basta. */
+@media (hover: hover) {
+  .fc-wa-float:hover {
+    box-shadow: 0 8px 26px rgba(0, 0, 0, 0.3);
+  }
+  .fc-wa-float:hover .fc-wa-float-label {
+    max-width: 180px;
+    opacity: 1;
+    margin-left: 10px;
+  }
+}
+
+.fc-wa-float:focus-visible {
+  outline: 3px solid #C8A84B;
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fc-wa-float,
+  .fc-wa-float-label {
+    transition: none;
+  }
+}
+
 /* ================= RESPONSIVE ================= */
 @media (max-width: 720px) {
   /* Bottom-sheet visual: modal no rodapé, largura total, cantos arredondados
@@ -777,4 +847,14 @@
   .fc-ec-sticky .fc-ec-referral { flex-wrap: wrap; gap: 10px; }
   .fc-ec-sticky .fc-ec-referral-text { flex: 1 1 calc(100% - 50px); }
   .fc-ec-sticky .fc-ec-referral-link { flex: 1 1 100%; order: 3; }
+
+  .fc-wa-float {
+    right: 16px;
+    bottom: 16px;
+    height: 52px;
+    padding: 0 12px;
+    border-radius: 26px;
+  }
+  .fc-wa-float svg { width: 26px; height: 26px; }
+  .fc-wa-float-label { display: none; }
 }
