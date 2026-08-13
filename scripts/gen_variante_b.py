@@ -1,26 +1,36 @@
 """
 Gera assinaturas.html (variante B do teste A/B) a partir de assinatura.html.
 
-A variante B e' a MESMA pagina sem o preco na hero e no header — o preco
-continua aparecendo na secao #oferta e no FAQ, depois do argumento de venda.
-Como as duas paginas tem ~3.250 linhas quase identicas, manter a copia a mao
-erraria em silencio: bastaria uma correcao de copy entrar so na LP A pra
-contaminar o resultado do teste, ou o preco reaparecer na hero da B e matar o
-teste sem ninguem perceber. Por isso a B e' DERIVADA, nunca editada a mao.
+Diferenca entre as duas paginas:
 
-Edite sempre assinatura.html e regenere.
+  LP A (assinatura.html)  — hero com o card de oferta: preco em destaque,
+                            beneficios, countdown e CTA indo direto pra Kiwify.
+  LP B (assinaturas.html) — hero LEVE, recriada a partir da versao original de
+                            23/07 (commit 419a4e6): subtitulo, o que esta
+                            incluso, data da janela, countdown solto sobre o
+                            fundo escuro, CTA e nota de garantia. Sem preco
+                            nenhum acima da dobra, e o CTA do header e o do hero
+                            apontam pra ancora #oferta em vez do checkout —
+                            ninguem chega na Kiwify sem ter visto o valor.
+
+O preco continua aparecendo na secao #oferta e no FAQ, depois do argumento.
+
+O arquivo e' DERIVADO, nunca editado a mao. Edite assinatura.html e regenere:
 
     python scripts/gen_variante_b.py            # (re)gera assinaturas.html
-    python scripts/gen_variante_b.py --check    # nao escreve; falha se estiver desatualizado
+    python scripts/gen_variante_b.py --check    # nao escreve; falha se desatualizado
 
 Rode o --check antes de todo push: e' ele que transforma "editei a A e esqueci
 de regenerar a B" de bug silencioso em falha explicita.
 
-Todas as transformacoes sao ancoradas em ESTRUTURA (indentacao + tag), nunca em
-conteudo: se o preco mudar de 84,27 pra outro valor, o script continua
-funcionando. E toda transformacao exige um numero exato de ocorrencias — se a
-pagina mudar de um jeito que o script nao entenda, ele ABORTA em vez de gerar
-uma variante errada em silencio.
+Toda transformacao e' ancorada em ESTRUTURA (indentacao + tag), nunca em
+conteudo — se o preco ou a copy mudarem, o script continua funcionando. E toda
+transformacao exige um numero exato de ocorrencias: se a pagina mudar de um jeito
+que o script nao entenda, ele ABORTA em vez de gerar uma variante errada calado.
+
+As classes da hero leve (.hero-sub, .hero-datas, .countdown-wrap, .hero-cta,
+.hero-note) continuam definidas no <style> da LP A mesmo sem uso — foi o que
+permitiu recriar a hero original sem escrever CSS novo.
 """
 import difflib
 import re
@@ -35,24 +45,9 @@ ROOT = Path(__file__).resolve().parent.parent
 SRC = ROOT / 'assinatura.html'
 DST = ROOT / 'assinaturas.html'
 
-NL = '\r\n'
-BANNER = (
-    '<!-- ============================================================ -->' + NL +
-    '<!-- ARQUIVO GERADO - NAO EDITE A MAO.                            -->' + NL +
-    '<!-- Fonte: assinatura.html | Gerador: scripts/gen_variante_b.py  -->' + NL +
-    '<!-- Variante B do teste A/B: sem preco na hero e no header.      -->' + NL +
-    '<!-- ============================================================ -->' + NL
-)
-BANNER_LINES = BANNER.count(NL)
-LINHAS_REMOVIDAS = 9  # 4 (.sticky-oferta) + 4 (.hero-oferta-preco) + 1 (.hero-oferta-pgto)
-
-# Blocos removidos. Lazy + tag de fechamento na indentacao exata; a assercao de
-# "exatamente 1 match" cobre o risco de casar demais.
-RE_STICKY = re.compile(r'^ {4}<span class="sticky-oferta">\r\n(?:.*\r\n)*? {4}</span>\r\n', re.M)
-RE_PRECO = re.compile(r'^ {8}<div class="hero-oferta-preco">\r\n(?:.*\r\n)*? {8}</div>\r\n', re.M)
-RE_PGTO = re.compile(r'^ {8}<p class="hero-oferta-pgto">.*?</p>\r\n', re.M)
-
+LINHAS_BANNER = 5
 ANCORA_OFERTA = '<section class="section oferta" id="oferta">'
+CHECKOUT = 'https://pay.kiwify.com.br/'
 
 
 def die(msg):
@@ -61,9 +56,11 @@ def die(msg):
 
 
 def read(path):
-    # newline='' desliga a traducao universal de fim de linha. O arquivo e' CRLF;
-    # sem isso o script gravaria LF e o git marcaria as 3.250 linhas como
-    # alteradas, tornando o diff A x B ilegivel.
+    # newline='' desliga a traducao universal de fim de linha, pra preservar
+    # exatamente o que esta no disco. O checkout no Windows e' CRLF, mas em
+    # Linux/CI e' LF — por isso o fim de linha e' DETECTADO, nunca assumido:
+    # gravar o fim de linha errado faria o git marcar as ~3.300 linhas como
+    # alteradas e tornaria o diff A x B ilegivel.
     with open(path, encoding='utf-8', newline='') as f:
         return f.read()
 
@@ -73,6 +70,10 @@ def write(path, texto):
         f.write(texto)
 
 
+def detecta_nl(texto):
+    return '\r\n' if '\r\n' in texto[:4096] else '\n'
+
+
 def swap(html, old, new, rotulo, vezes=1):
     achou = html.count(old)
     if achou != vezes:
@@ -80,29 +81,96 @@ def swap(html, old, new, rotulo, vezes=1):
     return html.replace(old, new, vezes)
 
 
-def cut(html, padrao, rotulo):
+def acha_um(html, padrao, rotulo):
     achados = list(padrao.finditer(html))
     if len(achados) != 1:
         die('%s: esperava 1 bloco, achei %d' % (rotulo, len(achados)))
-    m = achados[0]
-    return html[:m.start()] + html[m.end():], m.group(0)
+    return achados[0]
+
+
+def banner(nl):
+    return nl.join([
+        '<!-- ============================================================ -->',
+        '<!-- ARQUIVO GERADO - NAO EDITE A MAO.                            -->',
+        '<!-- Fonte: assinatura.html | Gerador: scripts/gen_variante_b.py  -->',
+        '<!-- Variante B do teste A/B: hero leve, sem preco acima da dobra.-->',
+        '<!-- ============================================================ -->',
+    ]) + nl
+
+
+def hero_leve(nl, bloco_download):
+    """Hero da variante B — recriada da versao original de 23/07 (419a4e6).
+
+    O texto e' verbatim daquele commit. O unico acrescimo e' o bloco de
+    download, que nasceu depois, aqui reaproveitado dentro do .hero-cta.
+    """
+    linhas = [
+        '      <div class="hero-badge">\U0001F3DB️ Edição 2026 · Janela de lançamento até 16/08</div>',
+        '',
+        '      <h1>Transforme contabilidade na sua <span class="destaque">maior vantagem</span> para conquistar múltiplas aprovações.<span class="sub-risco" aria-hidden="true"></span></h1>',
+        '',
+        '      <p class="hero-sub">A Fluência Contábil ensina contabilidade <strong>como um idioma, pela lógica</strong> — pra você parar de perder pontos <span class="ouro-claro">onde mais cai</span> e interpretar qualquer questão sem decoreba.</p>',
+        '',
+        '      <p class="hero-sub menor">Assinatura anual da edição 2026: <strong>4 módulos, 36 aulas + 3 bônus</strong>, questões comentadas de banca real e a plataforma completa por <strong>12 meses</strong>.</p>',
+        '',
+        '      <p class="hero-datas">Janela <strong>Aluno Fundador</strong>: até domingo, <strong>16/08, 23h59</strong> — depois o plano anual sai do ar e o bônus não volta.</p>',
+        '',
+        '      <div class="countdown-wrap">',
+        '        <div class="countdown-label">A janela Aluno Fundador encerra em</div>',
+        '        <div class="countdown" id="countdown">',
+        '          <div class="cd-unit"><span class="cd-num" id="cd-d">--</span><span class="cd-txt">Dias</span></div>',
+        '          <div class="cd-unit"><span class="cd-num" id="cd-h">--</span><span class="cd-txt">Horas</span></div>',
+        '          <div class="cd-unit"><span class="cd-num" id="cd-m">--</span><span class="cd-txt">Min</span></div>',
+        '          <div class="cd-unit"><span class="cd-num" id="cd-s">--</span><span class="cd-txt">Seg</span></div>',
+        '        </div>',
+        '      </div>',
+        '',
+        '      <div class="hero-cta">',
+        '        <a href="#oferta" class="btn cta-compra">Quero ser Aluno Fundador</a>',
+        '        <p class="hero-note">7 dias de garantia incondicional · Pix, boleto ou cartão em até 12×</p>',
+    ]
+    # O bloco de download vem da LP A, so' reindentado de 8 pra 8 espacos dentro
+    # do .hero-cta. Assim ele nunca diverge entre as duas paginas.
+    linhas += bloco_download
+    linhas += ['      </div>']
+    return nl.join(linhas) + nl
+
+
+# Blocos ancorados por indentacao + tag. Lazy, com a tag de fechamento na
+# indentacao exata; a assercao de "exatamente 1" cobre o risco de casar demais.
+def padroes(nl):
+    n = re.escape(nl)
+    return {
+        # Do <div class="hero-badge"> ate o fim do card .hero-oferta. O badge abre
+        # e fecha na mesma linha, dai o `.*` antes da quebra. O fechamento e' o
+        # </div> de 6 espacos imediatamente antes do </div> de 4 que encerra o
+        # .hero-texto — o lookahead garante que e' o ultimo, e nao um aninhado.
+        'hero_miolo': re.compile(
+            r'^ {6}<div class="hero-badge">.*' + n + r'(?:.*' + n + r')*?'
+            r' {6}</div>' + n + r'(?= {4}</div>)', re.M),
+        'bloco_download': re.compile(
+            r'^ {8}<div class="hero-degusta">' + n + r'(?:.*' + n + r')*? {8}</div>' + n, re.M),
+        'sticky_preco': re.compile(
+            r'^ {4}<span class="sticky-oferta">' + n + r'(?:.*' + n + r')*? {4}</span>' + n, re.M),
+    }
 
 
 def build(src):
-    """Aplica as 8 transformacoes. Devolve (html_da_variante, blocos_removidos)."""
+    """Aplica as transformacoes. Devolve (html_da_variante, precos_removidos)."""
+    nl = detecta_nl(src)
+    pat = padroes(nl)
     out = src
-    removidos = []
 
-    if not out.startswith('<!DOCTYPE html>' + NL):
+    if not out.startswith('<!DOCTYPE html>' + nl):
         die('banner: o arquivo nao comeca com <!DOCTYPE html> — abortando pra nao '
             'inserir comentario antes do doctype (dispara quirks mode)')
-    out = out.replace('<!DOCTYPE html>' + NL, '<!DOCTYPE html>' + NL + BANNER, 1)
+    out = out.replace('<!DOCTYPE html>' + nl, '<!DOCTYPE html>' + nl + banner(nl), 1)
 
     out = swap(out, '<meta name="robots" content="index, follow">',
                '<meta name="robots" content="noindex, nofollow">', 'robots')
 
-    # Canonical e og:url apontam pra propria variante (self-canonical).
-    # noindex + canonical apontando pra LP A seriam sinais contraditorios, com
+    # Canonical e og:url apontam pra propria variante (self-canonical). noindex
+    # somado a canonical apontando pra LP A seriam sinais contraditorios, com
     # risco de o noindex propagar pela canonical e tirar a LP A do indice.
     out = swap(out,
                '<link rel="canonical" href="https://fluenciacontabil.com.br/assinatura.html">',
@@ -113,22 +181,36 @@ def build(src):
                '<meta property="og:url" content="https://fluenciacontabil.com.br/assinaturas.html">',
                'og:url')
 
-    out = swap(out, 'src=lp-a', 'src=lp-b', 'src dos checkouts', vezes=4)
-    out = swap(out, 'utm_content=lp-a', 'utm_content=lp-b', 'utm_content dos checkouts', vezes=4)
+    # 1) Troca o miolo do hero pela versao leve, reaproveitando o bloco de download da LP A.
+    m_dl = acha_um(out, pat['bloco_download'], 'bloco de download na LP A')
+    download = [l for l in m_dl.group(0).split(nl) if l.strip()]
+    m_hero = acha_um(out, pat['hero_miolo'], 'miolo do hero')
+    miolo_antigo = m_hero.group(0)
+    out = out[:m_hero.start()] + hero_leve(nl, download) + out[m_hero.end():]
+
+    # 2) Header sticky: fora o bloco de preco.
+    m_sticky = acha_um(out, pat['sticky_preco'], 'preco do header')
+    sticky_antigo = m_sticky.group(0)
+    out = out[:m_sticky.start()] + out[m_sticky.end():]
+
+    # 3) O CTA do header deixa de ir pro checkout e vira ancora — na LP B ninguem
+    #    chega na Kiwify sem ter passado pela secao de preco. O da hero ja nasce
+    #    como #oferta no template acima.
+    m_cta = re.search(r'href="' + re.escape(CHECKOUT) + r'[^"]*" class="btn-sm cta-compra"', out)
+    if not m_cta:
+        die('CTA do header: nao achei o link de checkout com class="btn-sm cta-compra"')
+    out = out[:m_cta.start()] + 'href="#oferta" class="btn-sm cta-compra"' + out[m_cta.end():]
+
+    # 4) Sobram 2 checkouts (card de oferta e CTA final), ambos abaixo do preco.
+    out = swap(out, 'src=lp-a', 'src=lp-b', 'src dos checkouts', vezes=2)
+    out = swap(out, 'utm_content=lp-a', 'utm_content=lp-b', 'utm_content dos checkouts', vezes=2)
     out = swap(out, 'data-fc-lp="a"', 'data-fc-lp="b"', 'variante no botao de download')
 
-    for padrao, rotulo in ((RE_STICKY, 'preco do header'),
-                           (RE_PRECO, 'preco da hero'),
-                           (RE_PGTO, 'nota de pagamento da hero')):
-        out, bloco = cut(out, padrao, rotulo)
-        removidos.append(bloco)
-
-    return out, removidos
+    return out, [miolo_antigo, sticky_antigo]
 
 
 def bloco_style(html, rotulo):
-    ini = html.find('<style>')
-    fim = html.find('</style>')
+    ini, fim = html.find('<style>'), html.find('</style>')
     if ini < 0 or fim < 0:
         die('%s: nao achei o bloco <style>' % rotulo)
     return html[ini:fim]
@@ -136,16 +218,17 @@ def bloco_style(html, rotulo):
 
 def check(src, out, removidos):
     """Pos-condicoes. E' aqui que mora o valor do script."""
+    nl = detecta_nl(src)
     erros = []
 
-    # (a) O CSS das duas paginas tem que ser byte-identico. A variante nao poda
-    # os seletores que ficaram orfaos justamente pra que esta comparacao sirva
-    # de sentinela: qualquer divergencia de estilo entre A e B vira falha dura.
+    # (a) O CSS das duas paginas tem que ser byte-identico. A variante nao poda os
+    # seletores que ficaram orfaos justamente pra que esta comparacao sirva de
+    # sentinela: qualquer divergencia de estilo entre A e B vira falha dura.
     if bloco_style(src, 'fonte') != bloco_style(out, 'variante'):
         erros.append('o bloco <style> da variante divergiu do da fonte')
 
-    # (b) Nenhum preco acima da secao #oferta. Os valores saem dos PROPRIOS
-    # blocos removidos, entao continua valendo se o preco mudar.
+    # (b) Nenhum preco acima da secao #oferta. Os valores saem dos PROPRIOS blocos
+    # removidos, entao a checagem continua valendo se o preco mudar.
     precos = set(re.findall(r'R\$\s*([\d.]+,\d{2})', ''.join(removidos)))
     if not precos:
         erros.append('nao extrai nenhum preco dos blocos removidos (a checagem (b) ficaria vazia)')
@@ -156,25 +239,37 @@ def check(src, out, removidos):
         for p in sorted(precos):
             if p in acima:
                 erros.append('o preco %s ainda aparece antes da secao #oferta' % p)
+        # nenhum link de checkout acima do preco
+        if CHECKOUT in acima:
+            erros.append('ha link de checkout ANTES da secao #oferta — o CTA de cima '
+                         'deve ser ancora #oferta na variante B')
 
     # (c) Marcadores estruturais
-    for marcador in ('class="sticky-oferta"', 'class="hero-oferta-preco"', 'class="hero-oferta-pgto"'):
+    for marcador in ('class="sticky-oferta"', 'class="hero-oferta-preco"',
+                     'class="hero-oferta-pgto"', 'class="hero-oferta"'):
         if marcador in out:
-            erros.append('%s deveria ter sido removido' % marcador)
+            erros.append('%s deveria ter sumido do HTML da variante' % marcador)
     if 'lp-a' in out:
         erros.append('sobrou lp-a na variante')
-    for termo, vezes in (('src=lp-b', 4), ('utm_content=lp-b', 4)):
+    for termo, vezes in (('src=lp-b', 2), ('utm_content=lp-b', 2)):
         if out.count(termo) != vezes:
             erros.append('esperava %d ocorrencias de %s, achei %d' % (vezes, termo, out.count(termo)))
+    if out.count('href="#oferta"') != src.count('href="#oferta"') + 2:
+        erros.append('esperava 2 ancoras #oferta a mais que a fonte (header e hero)')
 
-    # (d) O que NAO pode ter sumido
-    for marcador in ('data-fc-cta="amostra-aula01"', 'data-fc-lp="b"', 'aula-01-partidas-dobradas.pdf',
-                     'class="hero-oferta-tag"', 'class="hero-oferta-list"', 'class="hero-oferta-count"',
-                     'id="countdown"'):
+    # (d) A hero leve montou, e o que nao podia sumir continua de pe
+    for marcador in ('class="hero-sub"', 'class="hero-sub menor"', 'class="hero-datas"',
+                     'class="countdown-wrap"', 'class="hero-cta"', 'class="hero-note"',
+                     'id="countdown"', 'class="hero-badge"',
+                     'data-fc-cta="amostra-aula01"', 'data-fc-lp="b"',
+                     'aula-01-partidas-dobradas.pdf'):
         if marcador not in out:
-            erros.append('%s sumiu da variante' % marcador)
+            erros.append('%s faltando na variante' % marcador)
     if out.count('cta-compra') != src.count('cta-compra'):
         erros.append('a variante perdeu ou ganhou CTAs')
+    if out.count('id="countdown"') != 1 or out.count('id="countdown2"') != 1:
+        erros.append('os dois countdowns precisam existir e ser unicos (o JS de '
+                     'encerramento busca por id)')
 
     # (e) SEO
     for esperado in ('<meta name="robots" content="noindex, nofollow">',
@@ -183,11 +278,9 @@ def check(src, out, removidos):
         if esperado not in out:
             erros.append('faltou no <head>: %s' % esperado)
 
-    # (f) Canario de contagem de linhas
-    esperado = len(src.split(NL)) - LINHAS_REMOVIDAS + BANNER_LINES
-    achado = len(out.split(NL))
-    if achado != esperado:
-        erros.append('contagem de linhas: esperava %d, achei %d' % (esperado, achado))
+    # (f) Fim de linha preservado
+    if detecta_nl(out) != nl or (nl == '\r\n' and out.count('\n') != out.count('\r\n')):
+        erros.append('o fim de linha da variante divergiu do da fonte')
 
     return erros
 
@@ -199,6 +292,7 @@ def main():
         die('nao achei a fonte: %s' % SRC)
 
     src = read(SRC)
+    nl = detecta_nl(src)
     out, removidos = build(src)
 
     erros = check(src, out, removidos)
@@ -211,12 +305,11 @@ def main():
         if not DST.exists():
             print('FALHOU: %s nao existe. Rode sem --check.' % DST.name, file=sys.stderr)
             sys.exit(1)
-        atual = read(DST)
-        if atual != out:
+        if read(DST) != out:
             print('FALHOU: %s esta desatualizado em relacao a %s.' % (DST.name, SRC.name), file=sys.stderr)
             print('Rode: python scripts/gen_variante_b.py', file=sys.stderr)
             diff = difflib.unified_diff(
-                atual.splitlines(), out.splitlines(),
+                read(DST).split(nl), out.split(nl),
                 fromfile=DST.name + ' (commitado)', tofile=DST.name + ' (esperado)',
                 lineterm='', n=1,
             )
@@ -228,12 +321,13 @@ def main():
 
     write(DST, out)
     print('OK: %s gerado a partir de %s.' % (DST.name, SRC.name))
-    print('  - preco removido do header sticky e da hero (%d linhas)' % LINHAS_REMOVIDAS)
-    print('  - robots noindex,nofollow + canonical e og:url apontando pra propria variante')
-    print('  - 4 checkouts com src=lp-b / utm_content=lp-b')
+    print('  - hero leve no lugar do card de oferta (versao de 23/07, sem preco)')
+    print('  - preco fora do header sticky')
+    print('  - CTA do header e do hero apontando pra #oferta, nao pro checkout')
+    print('  - 2 checkouts restantes (oferta e CTA final) com src=lp-b / utm_content=lp-b')
     print('  - botao de download preservado, com data-fc-lp="b"')
     print('  - <style> identico ao da fonte (checado)')
-    print('  - %d linhas' % len(out.split(NL)))
+    print('  - %d linhas, fim de linha %s' % (len(out.split(nl)), repr(nl)))
 
 
 if __name__ == '__main__':
