@@ -1,0 +1,110 @@
+# Uso unico: publica a oferta Trimestral + Semestral na virada de 17/08/2026.
+#
+# Por que existe: o GitHub Pages serve a branch main diretamente, entao
+# "publicar" e' fazer o merge. Ate' 16/08 23h59 o site precisa continuar
+# vendendo o anual da janela Fundador; a partir de 17/08 tem que estar nos
+# dois planos padrao. Este workflow faz essa troca sozinho, logo depois da
+# meia-noite, pra encurtar ao maximo a janela em que o site oferece uma
+# modalidade ja' encerrada.
+#
+# Depois que rodar: apagar este arquivo e a branch feat/oferta-tri-sem.
+
+name: Virada de oferta — Trimestral e Semestral
+
+on:
+  schedule:
+    # 03:05 UTC = 00:05 BRT (Brasil nao tem mais horario de verao).
+    # O cron do GitHub costuma atrasar de 5 a 15 min em horario de pico.
+    - cron: '5 3 17 8 *'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: virada-oferta
+  cancel-in-progress: false
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout da main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Guarda de uso unico (so' 2026)
+        id: guarda
+        run: |
+          set -euo pipefail
+          if [ "${{ github.event_name }}" = "schedule" ] && [ "$(date -u +%Y)" != "2026" ]; then
+            echo "::notice::Workflow de uso unico de 2026 — ano atual $(date -u +%Y). Nada a fazer."
+            echo "pular=1" >> "$GITHUB_OUTPUT"
+          else
+            echo "pular=0" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Merge da branch da oferta
+        if: steps.guarda.outputs.pular != '1'
+        run: |
+          set -euo pipefail
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin feat/oferta-tri-sem
+          # Falha ruidosa em caso de conflito: melhor nao publicar do que
+          # publicar meio errado.
+          git merge --no-ff origin/feat/oferta-tri-sem \
+            -m "feat: entra a oferta trimestral + semestral (virada de 17/08)"
+
+      - name: Conferir o resultado ANTES de publicar
+        if: steps.guarda.outputs.pular != '1'
+        run: |
+          set -euo pipefail
+          erro=0
+          checar() {  # checar <descricao> <texto que TEM que existir>
+            if ! grep -qF "$2" cursos.html; then
+              echo "::error::faltou em cursos.html: $1 ($2)"; erro=1
+            fi
+          }
+          checar "checkout do trimestral" "pay.kiwify.com.br/4Qx0g3O"
+          checar "checkout do semestral"  "pay.kiwify.com.br/DXvdSEu"
+          checar "preco do trimestral"    "R\$ 367"
+          checar "preco do semestral"     "R\$ 467"
+          checar "parcela do trimestral"  "R\$ 37,96"
+          checar "parcela do semestral"   "R\$ 48,30"
+
+          # A oferta anual nao pode sobreviver na pagina de venda.
+          if grep -qF "Ze6v1aC" cursos.html; then
+            echo "::error::cursos.html ainda aponta o checkout do anual (Ze6v1aC)"; erro=1
+          fi
+          if grep -qF "814,80" cursos.html; then
+            echo "::error::cursos.html ainda mostra o preco do anual (R\$ 814,80)"; erro=1
+          fi
+
+          if [ "$erro" != "0" ]; then
+            echo "::error::Virada ABORTADA — a main nao foi publicada. Conferir a branch feat/oferta-tri-sem."
+            exit 1
+          fi
+          echo "Conferencia ok — publicando."
+
+      - name: Publicar (push na main)
+        if: steps.guarda.outputs.pular != '1'
+        run: git push origin main
+
+      - name: Resumo
+        if: steps.guarda.outputs.pular != '1'
+        run: |
+          {
+            echo "## Virada de oferta publicada"
+            echo ""
+            echo "| Plano | A' vista | No cartao | Acesso | Checkout |"
+            echo "|---|---|---|---|---|"
+            echo "| Trimestral | R\$ 367 | 12x R\$ 37,96 | 3 meses | 4Qx0g3O |"
+            echo "| Semestral | R\$ 467 | 12x R\$ 48,30 | 6 meses | DXvdSEu |"
+            echo ""
+            echo "Conferir no ar: https://fluenciacontabil.com.br/cursos.html#assinar"
+            echo ""
+            echo "Pendente: apagar este workflow e a branch \`feat/oferta-tri-sem\`."
+          } >> "$GITHUB_STEP_SUMMARY"
