@@ -66,12 +66,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 .oferta-nota{font-size:12.5px;color:#888;margin-top:16px;line-height:1.7;}
 .oferta-card .btn-p{display:inline-block;}
 .oferta-garantia{display:flex;align-items:center;justify-content:center;gap:9px;width:fit-content;background:rgba(200,168,75,0.12);border-radius:3px;padding:10px 18px;margin:20px auto 0;font-size:13px;font-weight:700;color:var(--azul);}
-.oferta-duo{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:34px;align-items:start;}
-.oferta-duo .oferta-card{margin-top:0;position:relative;padding:34px 26px;}
+.oferta-duo{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:34px;align-items:stretch;}
+.oferta-duo .oferta-card{margin-top:0;position:relative;padding:34px 26px;display:flex;flex-direction:column;}
+.oferta-duo .oferta-equiv{min-height:2.9em;}
+.oferta-duo .oferta-card .btn-p{margin-top:auto;align-self:center;}
 .oferta-card--destaque{border-color:var(--dourado);box-shadow:0 14px 36px rgba(27,42,74,0.13);}
 .oferta-badge{position:absolute;top:-11px;left:50%;transform:translateX(-50%);white-space:nowrap;background:var(--dourado);color:var(--azul);font-size:9.5px;font-weight:800;letter-spacing:1.6px;text-transform:uppercase;padding:5px 14px;border-radius:3px;}
-.oferta-equiv{font-size:12.5px;color:#888;margin:10px 0 22px;line-height:1.5;}
+.oferta-equiv{font-size:12.5px;color:#888;margin:10px 0 0;line-height:1.5;}
 .oferta-equiv strong{color:var(--dourado-esc);font-weight:700;}
+.oferta-antes{color:#9CA3AF;font-weight:600;text-decoration:line-through;text-decoration-color:#C0392B;text-decoration-thickness:2px;margin-right:5px;}
+.oferta-duo .oferta-list{grid-template-columns:1fr;max-width:none;margin:22px 0 26px;gap:8px;}
 /* PRODUTOS FUTUROS */
 .futuros-intro{text-align:center;max-width:640px;margin-inline:auto;margin-bottom:48px;}
 .futuros-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
@@ -368,6 +372,13 @@ if(hamBtn&&mobMenu){
      Sao 12 parcelas para 3 e 6 meses de acesso — o pagamento continua depois
      que o acesso termina. Nao anuncie a parcela como "por mes de curso".
 
+     PRECOS RISCADOS (R$ 397 no tri, R$ 597 no sem): sao os valores que foram
+     ANUNCIADOS para a fase pos-janela (FAQ da LP, e-mail L6, doc mestre) e
+     que nunca chegaram a ser cobrados — nessa janela so' o anual esteve a'
+     venda. E' referencia de preco COMUNICADO, nao de preco praticado. Se a
+     distincao virar questionamento, o caminho e' remover o riscado, nao
+     ajustar o numero.
+
      O id "lista-espera" e' alias legado: e-mails, mensagens e QR codes ja'
      disparados apontam para cursos.html#lista-espera — nao remover.       -->
 <section id="assinar" style="padding:80px 5%;background:var(--cinza);">
@@ -381,8 +392,18 @@ if(hamBtn&&mobMenu){
       <div class="oferta-card">
         <div class="oferta-plano">Trimestral · Edição 2026</div>
         <div class="oferta-parcela"><span>12× de</span> R$ 37,96</div>
-        <p class="oferta-avista">ou <strong>R$ 367</strong> à vista</p>
-        <p class="oferta-equiv">3 meses de acesso · equivale a <strong>R$ 122,33</strong> por mês de curso</p>
+        <p class="oferta-avista">ou <s class="oferta-antes">R$ 397</s> <strong>R$ 367</strong> à vista</p>
+        <p class="oferta-equiv">3 meses de acesso · pagamento único</p>
+
+        <ul class="oferta-list">
+          <li>4 módulos · 35 aulas + 3 bônus</li>
+          <li>Questões comentadas de banca real</li>
+          <li>Material em PDF por aula</li>
+          <li>Gabaritos comentados</li>
+          <li>CEBRASPE, FGV, VUNESP e FCC</li>
+          <li>Certificado ao concluir</li>
+        </ul>
+
         <a href="https://pay.kiwify.com.br/4Qx0g3O?utm_source=site&amp;utm_medium=cursos&amp;utm_campaign=pos_janela_2026&amp;utm_content=trimestral" class="btn-p">Assinar o trimestral</a>
       </div>
 
@@ -390,20 +411,21 @@ if(hamBtn&&mobMenu){
         <span class="oferta-badge">Melhor custo-benefício</span>
         <div class="oferta-plano">Semestral · Edição 2026</div>
         <div class="oferta-parcela"><span>12× de</span> R$ 48,30</div>
-        <p class="oferta-avista">ou <strong>R$ 467</strong> à vista</p>
-        <p class="oferta-equiv">6 meses de acesso · equivale a <strong>R$ 77,83</strong> por mês de curso</p>
+        <p class="oferta-avista">ou <s class="oferta-antes">R$ 597</s> <strong>R$ 467</strong> à vista</p>
+        <p class="oferta-equiv">6 meses de acesso · sai <strong>36% mais barato por mês</strong> que o trimestral</p>
+
+        <ul class="oferta-list">
+          <li>4 módulos · 35 aulas + 3 bônus</li>
+          <li>Questões comentadas de banca real</li>
+          <li>Material em PDF por aula</li>
+          <li>Gabaritos comentados</li>
+          <li>CEBRASPE, FGV, VUNESP e FCC</li>
+          <li>Certificado ao concluir</li>
+        </ul>
+
         <a href="https://pay.kiwify.com.br/DXvdSEu?utm_source=site&amp;utm_medium=cursos&amp;utm_campaign=pos_janela_2026&amp;utm_content=semestral" class="btn-p btn-glow">Assinar o semestral</a>
       </div>
     </div>
-
-    <ul class="oferta-list">
-      <li>4 módulos · 35 aulas + 3 bônus</li>
-      <li>Questões comentadas de banca real</li>
-      <li>Material em PDF por aula</li>
-      <li>Gabaritos comentados</li>
-      <li>CEBRASPE, FGV, VUNESP e FCC</li>
-      <li>Certificado ao concluir</li>
-    </ul>
 
     <div class="oferta-garantia">🛡️ 7 dias de garantia incondicional</div>
     <p class="oferta-nota">Pagamento único, sem renovação automática · Pagamento seguro via Kiwify · Cartão em até 12×, Pix ou boleto.<br>No cartão as parcelas têm juros do gateway — por isso mostramos o valor à vista junto.<br>Se não for pra você, devolvemos 100% do valor — sem perguntas.</p>
