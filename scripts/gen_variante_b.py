@@ -201,8 +201,15 @@ def build(src):
         die('CTA do header: nao achei o link de checkout com class="btn-sm cta-compra"')
     out = out[:m_cta.start()] + 'href="#oferta" class="btn-sm cta-compra"' + out[m_cta.end():]
 
-    # 4) Sobram 2 checkouts (card de oferta e CTA final), ambos abaixo do preco.
-    out = swap(out, 'src=lp-a', 'src=lp-b', 'src dos checkouts', vezes=2)
+    # 4) Sobram 4 checkouts, todos abaixo do preco:
+    #      2 do plano anual (card de oferta da janela + CTA final), e
+    #      2 dos planos padrao pos-janela (trimestral 4Qx0g3O e semestral DXvdSEu),
+    #        que vivem no bloco .planos-pos e so' aparecem com body.encerrada.
+    #    Eram 2 ate' 16/08; viraram 4 quando a LP passou a mostrar os planos novos
+    #    no lugar do aviso de "janela encerrada".
+    #    O utm_content dos dois novos e' trimestral/semestral (nao lp-a), entao
+    #    a contagem dele continua 2.
+    out = swap(out, 'src=lp-a', 'src=lp-b', 'src dos checkouts', vezes=4)
     out = swap(out, 'utm_content=lp-a', 'utm_content=lp-b', 'utm_content dos checkouts', vezes=2)
     out = swap(out, 'data-fc-lp="a"', 'data-fc-lp="b"', 'variante no botao de download')
 
@@ -251,7 +258,9 @@ def check(src, out, removidos):
             erros.append('%s deveria ter sumido do HTML da variante' % marcador)
     if 'lp-a' in out:
         erros.append('sobrou lp-a na variante')
-    for termo, vezes in (('src=lp-b', 2), ('utm_content=lp-b', 2)):
+    # src=lp-b: 4 (2 do anual + 2 dos planos pos-janela). utm_content=lp-b: 2,
+    # porque os planos novos usam utm_content=trimestral/semestral.
+    for termo, vezes in (('src=lp-b', 4), ('utm_content=lp-b', 2)):
         if out.count(termo) != vezes:
             erros.append('esperava %d ocorrencias de %s, achei %d' % (vezes, termo, out.count(termo)))
     if out.count('href="#oferta"') != src.count('href="#oferta"') + 2:
@@ -324,7 +333,7 @@ def main():
     print('  - hero leve no lugar do card de oferta (versao de 23/07, sem preco)')
     print('  - preco fora do header sticky')
     print('  - CTA do header e do hero apontando pra #oferta, nao pro checkout')
-    print('  - 2 checkouts restantes (oferta e CTA final) com src=lp-b / utm_content=lp-b')
+    print('  - 4 checkouts restantes (anual: oferta e CTA final; pos-janela: tri e sem) com src=lp-b')
     print('  - botao de download preservado, com data-fc-lp="b"')
     print('  - <style> identico ao da fonte (checado)')
     print('  - %d linhas, fim de linha %s' % (len(out.split(nl)), repr(nl)))
