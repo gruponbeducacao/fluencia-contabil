@@ -243,7 +243,7 @@ EMAILS = [
 
 {BLOCO_PIONEIRO_FUNDADOR}
 
-          <p style="margin:0 0 18px 0;"><strong style="color:#1B2A4A;">E depois da janela?</strong> Dia 17/08 voltam as modalidades padrão da casa: Tri (R$ 397) e Sem (R$ 597), pagamento único. Sem selo Fundador, sem selo Pioneiro, sem as 4 aulas ao vivo em grupo. <em>São modalidades válidas e boas, mas são outra coisa.</em></p>
+          <p style="margin:0 0 18px 0;"><strong style="color:#1B2A4A;">E depois da janela?</strong> Dia 17/08 voltam as modalidades padrão da casa: Tri (R$ 367) e Sem (R$ 467), pagamento único. Sem selo Fundador, sem selo Pioneiro, sem as 4 aulas ao vivo em grupo. <em>São modalidades válidas e boas, mas são outra coisa.</em></p>
 
           <p style="margin:0 0 18px 0;">A janela do lançamento existe pra premiar quem decide cedo, na confiança de quem ainda nem viu o lançamento. <strong style="color:#1B2A4A;">É um deal recíproco</strong>: você se compromete cedo, a gente te entrega a versão inteira da edição.</p>
 
@@ -403,7 +403,7 @@ EMAILS = [
             </td></tr>
             <tr><td style="padding:16px 0; border-bottom:1px solid #E8E2D0;">
               <div style="font-family:'Montserrat',Arial,sans-serif; font-size:14px; font-weight:700; color:#1B2A4A; margin-bottom:6px;">→ E se eu não decidir hoje?</div>
-              <div style="font-family:'Source Serif 4',Georgia,serif; font-size:15px; color:#1A1A1A; line-height:1.65;">Tri (R$ 397) e Sem (R$ 597) voltam dia 17/08 como modalidades padrão. Sem selo Fundador, sem selo Pioneiro. <em>São produtos diferentes</em>.</div>
+              <div style="font-family:'Source Serif 4',Georgia,serif; font-size:15px; color:#1A1A1A; line-height:1.65;">Tri (R$ 367) e Sem (R$ 467) voltam dia 17/08 como modalidades padrão. Sem selo Fundador, sem selo Pioneiro. <em>São produtos diferentes</em>.</div>
             </td></tr>
           </table>
 

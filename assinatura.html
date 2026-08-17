@@ -1310,6 +1310,53 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   body.encerrada .oferta-card, body.encerrada .oferta-roi { display: none; }
   body.encerrada .oferta-encerrada { display: block; }
 
+  /* ===== PLANOS PADRAO — entram no lugar do card do anual quando a janela encerra.
+     Precos vigentes desde 17/08/2026: Trimestral R$ 427 / Semestral R$ 547.
+     A parcela embute juros do gateway (24,1%) e NUNCA vai sozinha: o valor a'
+     vista anda junto em todo ponto. Ver o comentario-guarda do cursos.html. ===== */
+  .planos-pos { display: none; margin: 40px auto 0; max-width: 880px; }
+  .planos-aviso {
+    text-align: center; font-size: 14px; color: var(--cinza-medio);
+    background: var(--cream-alt); border-radius: 12px; padding: 16px 22px; margin-bottom: 30px;
+  }
+  .planos-aviso strong { color: var(--azul-profundo); }
+  .planos-duo { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: stretch; }
+  .plano-card {
+    position: relative; background: var(--branco); border: 1.5px solid rgba(200,168,75,0.45);
+    border-radius: 16px; padding: 34px 28px 30px; display: flex; flex-direction: column;
+    text-align: center; box-shadow: 0 10px 30px rgba(27,42,74,0.07);
+  }
+  .plano-card--destaque { border-color: var(--dourado); box-shadow: 0 14px 36px rgba(27,42,74,0.13); }
+  .plano-badge {
+    position: absolute; top: -11px; left: 50%; transform: translateX(-50%); white-space: nowrap;
+    background: var(--dourado); color: var(--azul-profundo); font-size: 9.5px; font-weight: 800;
+    letter-spacing: 1.6px; text-transform: uppercase; padding: 5px 14px; border-radius: 4px;
+  }
+  .plano-nome {
+    font-size: 11px; font-weight: 800; letter-spacing: 2.5px; text-transform: uppercase;
+    color: var(--dourado-texto); margin-bottom: 14px;
+  }
+  .plano-parcela { font-size: 17px; font-weight: 700; color: var(--azul-profundo); line-height: 1.05; }
+  .plano-parcela .x { font-size: 38px; font-weight: 800; }
+  .plano-avista { font-size: 15px; color: var(--cinza-medio); margin-top: 8px; }
+  .plano-avista strong { color: var(--azul-profundo); font-weight: 700; }
+  .plano-antes {
+    color: #9CA3AF; font-weight: 600; text-decoration: line-through;
+    text-decoration-color: var(--vermelho); text-decoration-thickness: 2px; margin-right: 5px;
+  }
+  .plano-equiv { font-size: 12.5px; color: var(--cinza-medio); margin: 10px 0 0; line-height: 1.5; min-height: 2.9em; }
+  .plano-equiv strong { color: var(--dourado-texto); font-weight: 700; }
+  .plano-list { list-style: none; text-align: left; margin: 20px 0 24px; }
+  .plano-list li { font-size: 13.5px; color: var(--cinza-medio); display: flex; gap: 9px; line-height: 1.5; padding: 6px 0; }
+  .plano-list li::before { content: '✓'; color: var(--dourado-escuro); font-weight: 900; flex-shrink: 0; }
+  .plano-card .btn { margin-top: auto; width: 100%; }
+  .planos-nota { text-align: center; font-size: 13px; color: var(--cinza-medio); margin-top: 24px; line-height: 1.75; }
+  body.encerrada .planos-pos { display: block; }
+  .titulo-pos { display: none; }
+  body.encerrada .titulo-janela { display: none; }
+  body.encerrada .titulo-pos { display: block; }
+  @media (max-width: 700px) { .planos-duo { grid-template-columns: 1fr; } }
+
   /* ===== GARANTIA ===== */
   .garantia { background: var(--branco); }
   .garantia-grid { display: flex; gap: 44px; align-items: center; max-width: 860px; margin: 0 auto; }
@@ -2451,8 +2498,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="container">
     <div class="reveal center">
       <div class="section-label">A oferta</div>
-      <h2 class="section-title">Um plano. Uma janela. <span class="ouro">Uma decisão.</span></h2>
-      <p class="section-text" style="margin-left:auto;margin-right:auto;">Durante o lançamento, a Fluência Contábil é vendida em um único formato: a assinatura anual. É a decisão de janela — depois de 16/08, ela sai do ar.</p>
+      <div class="titulo-janela">
+        <h2 class="section-title">Um plano. Uma janela. <span class="ouro">Uma decisão.</span></h2>
+        <p class="section-text" style="margin-left:auto;margin-right:auto;">Durante o lançamento, a Fluência Contábil é vendida em um único formato: a assinatura anual. É a decisão de janela — depois de 16/08, ela sai do ar.</p>
+      </div>
+      <div class="titulo-pos">
+        <h2 class="section-title">Dois prazos. <span class="ouro">O mesmo curso inteiro.</span></h2>
+        <p class="section-text" style="margin-left:auto;margin-right:auto;">Sem módulo avulso, sem upsell no meio do caminho — você entra e tem tudo. A única diferença entre os dois planos é por quanto tempo a plataforma fica aberta pra você.</p>
+      </div>
     </div>
 
     <div class="oferta-card reveal">
@@ -2486,10 +2539,49 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <p><strong>Faz a conta:</strong> salário inicial de um fiscal estadual: <strong>R$ 20–30 mil/mês</strong>. Salário inicial no Senado (contador): <strong>R$ 30–40 mil/mês</strong>.<br><em>O curso paga uma vez. A aprovação paga a vida.</em></p>
     </div>
 
-    <div class="oferta-encerrada" id="ofertaEncerrada">
-      <h3>A janela Aluno Fundador encerrou.</h3>
-      <p>O plano anual da edição 2026 saiu do ar em 16/08, às 23h59, junto com o bônus Fundador. Conheça as modalidades atuais da Fluência Contábil na página de cursos.</p>
-      <a href="cursos.html" class="btn">Ver modalidades atuais</a>
+    <!-- Planos padrão — substituem o card do anual assim que a janela encerra (JS: body.encerrada).
+         Mesmos checkouts e preços do cursos.html; os dois arquivos andam juntos. -->
+    <div class="planos-pos" id="ofertaEncerrada">
+      <p class="planos-aviso">A janela <strong>Aluno Fundador</strong> encerrou em 16/08, às 23h59 — com ela saíram o plano anual, o selo e as 4 aulas ao vivo. O curso continua no ar nas duas modalidades padrão da casa:</p>
+
+      <div class="planos-duo">
+        <div class="plano-card">
+          <div class="plano-nome">Trimestral · Edição 2026</div>
+          <p class="plano-parcela">12× de <span class="x">R$ 44,16</span></p>
+          <p class="plano-avista">ou <s class="plano-antes">R$ 547</s> <strong>R$ 427</strong> à vista</p>
+          <p class="plano-equiv">3 meses de acesso · pagamento único</p>
+          <ul class="plano-list">
+            <li>Curso completo: 4 módulos, 35 aulas + 3 bônus</li>
+            <li>Questões comentadas de banca real</li>
+            <li><strong>Meu Edital</strong>: seu edital verticalizado aula a aula</li>
+            <li><strong>Mapa de Incidência</strong>: o que mais cai na sua banca</li>
+            <li><strong>Plano de Estudos</strong> com revisão espaçada</li>
+            <li>Simulador de Lançamentos e plataforma inteira</li>
+            <li>PDFs baixáveis + certificado</li>
+          </ul>
+          <a href="https://pay.kiwify.com.br/4Qx0g3O?src=lp-a&amp;utm_source=site&amp;utm_medium=lp&amp;utm_campaign=pos_janela_2026&amp;utm_content=trimestral" class="btn">Assinar o trimestral</a>
+        </div>
+
+        <div class="plano-card plano-card--destaque">
+          <span class="plano-badge">Melhor custo-benefício</span>
+          <div class="plano-nome">Semestral · Edição 2026</div>
+          <p class="plano-parcela">12× de <span class="x">R$ 56,57</span></p>
+          <p class="plano-avista">ou <s class="plano-antes">R$ 697</s> <strong>R$ 547</strong> à vista</p>
+          <p class="plano-equiv">6 meses de acesso · sai <strong>36% mais barato por mês</strong> que o trimestral</p>
+          <ul class="plano-list">
+            <li>Curso completo: 4 módulos, 35 aulas + 3 bônus</li>
+            <li>Questões comentadas de banca real</li>
+            <li><strong>Meu Edital</strong>: seu edital verticalizado aula a aula</li>
+            <li><strong>Mapa de Incidência</strong>: o que mais cai na sua banca</li>
+            <li><strong>Plano de Estudos</strong> com revisão espaçada</li>
+            <li>Simulador de Lançamentos e plataforma inteira</li>
+            <li>PDFs baixáveis + certificado</li>
+          </ul>
+          <a href="https://pay.kiwify.com.br/DXvdSEu?src=lp-a&amp;utm_source=site&amp;utm_medium=lp&amp;utm_campaign=pos_janela_2026&amp;utm_content=semestral" class="btn">Assinar o semestral</a>
+        </div>
+      </div>
+
+      <p class="planos-nota">Pagamento único, sem renovação automática · 7 dias de garantia incondicional · Cartão em até 12×, Pix ou boleto.<br>No cartão as parcelas têm juros do gateway — por isso mostramos o valor à vista junto.</p>
     </div>
   </div>
 </section>
@@ -2565,7 +2657,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
       <div class="faq-item">
         <button class="faq-q" type="button">Quais são as formas de pagamento?</button>
-        <div class="faq-a"><p>Cartão de crédito em até 12× de R$ 84,27, Pix ou boleto (R$ 814,80 à vista). O checkout é da Kiwify, uma das maiores plataformas de pagamento de cursos do Brasil.</p></div>
+        <div class="faq-a"><p id="faqPagamento">Cartão de crédito em até 12× de R$ 84,27, Pix ou boleto (R$ 814,80 à vista). O checkout é da Kiwify, uma das maiores plataformas de pagamento de cursos do Brasil.</p></div>
       </div>
       <div class="faq-item">
         <button class="faq-q" type="button">E se eu não gostar?</button>
@@ -2589,7 +2681,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
       <div class="faq-item">
         <button class="faq-q" type="button">E se eu não decidir dentro da janela?</button>
-        <div class="faq-a"><p>A partir de 17/08 o plano anual sai do ar e voltam as modalidades padrão — trimestral (R$ 397) e semestral (R$ 597), pagamento único. Sem o selo Fundador e sem as 4 aulas ao vivo: são produtos diferentes. A janela é a única forma de entrar como Aluno Fundador da edição 2026.</p></div>
+        <div class="faq-a"><p>A partir de 17/08 o plano anual sai do ar e voltam as modalidades padrão — trimestral (R$ 427) e semestral (R$ 547), pagamento único. Sem o selo Fundador e sem as 4 aulas ao vivo: são produtos diferentes. A janela é a única forma de entrar como Aluno Fundador da edição 2026.</p></div>
       </div>
     </div>
 
@@ -2665,10 +2757,20 @@ function aplicarEncerrada() {
     if (wrap) wrap.outerHTML = '<div class="countdown-closed">A janela Aluno Fundador foi encerrada em 16/08, às 23h59.</div>';
   });
   // CTAs de compra passam a apontar pras modalidades atuais
+  // CTAs de compra passam a levar pros planos padrao, que agora estao nesta
+  // propria pagina (secao #oferta) — nao mais pro cursos.html.
   document.querySelectorAll('.cta-compra').forEach(function (a) {
-    a.href = 'cursos.html';
-    a.textContent = 'Ver modalidades atuais';
+    a.href = '#oferta';
+    a.textContent = 'Ver os planos';
   });
+  // FAQ de pagamento: a resposta da janela cita o anual, que saiu do ar.
+  var faqPg = document.getElementById('faqPagamento');
+  if (faqPg) {
+    faqPg.innerHTML = 'Trimestral R$ 427 ou Semestral R$ 547 à vista, no Pix ou boleto. No cartão ' +
+      'dá pra parcelar em até 12× (R$ 44,16 e R$ 56,57) — as parcelas têm juros do gateway, por ' +
+      'isso o total parcelado fica acima do valor à vista. O checkout é da Kiwify, uma das ' +
+      'maiores plataformas de pagamento de cursos do Brasil.';
+  }
   if (typeof timer !== 'undefined') clearInterval(timer);
 }
 
