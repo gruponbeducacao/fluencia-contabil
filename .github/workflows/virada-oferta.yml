@@ -70,10 +70,13 @@ jobs:
           }
           checar "checkout do trimestral" "pay.kiwify.com.br/4Qx0g3O"
           checar "checkout do semestral"  "pay.kiwify.com.br/DXvdSEu"
-          checar "preco do trimestral"    "R\$ 367"
-          checar "preco do semestral"     "R\$ 467"
-          checar "parcela do trimestral"  "R\$ 37,96"
-          checar "parcela do semestral"   "R\$ 48,30"
+          # Os precos a' vista vao ancorados no <strong> do card: "R$ 547" sozinho
+          # casa TAMBEM com o riscado do trimestral, e a assercao do semestral
+          # passaria mesmo se o preco real dele quebrasse.
+          checar "preco do trimestral"    "<strong>R\$ 427</strong>"
+          checar "preco do semestral"     "<strong>R\$ 547</strong>"
+          checar "parcela do trimestral"  "R\$ 44,16"
+          checar "parcela do semestral"   "R\$ 56,57"
 
           # A oferta anual nao pode sobreviver na pagina de venda.
           if grep -qF "Ze6v1aC" cursos.html; then
@@ -82,6 +85,14 @@ jobs:
           if grep -qF "814,80" cursos.html; then
             echo "::error::cursos.html ainda mostra o preco do anual (R\$ 814,80)"; erro=1
           fi
+
+          # Nem a geracao anterior de tri/sem (367/467), que ficou viva em
+          # varios worktrees e poderia voltar por merge errado.
+          for velho in "R\$ 367" "R\$ 467" "R\$ 37,96" "R\$ 48,30"; do
+            if grep -qF "$velho" cursos.html; then
+              echo "::error::cursos.html ainda tem preco da geracao anterior ($velho)"; erro=1
+            fi
+          done
 
           if [ "$erro" != "0" ]; then
             echo "::error::Virada ABORTADA — a main nao foi publicada. Conferir a branch feat/oferta-tri-sem."
@@ -101,8 +112,8 @@ jobs:
             echo ""
             echo "| Plano | A' vista | No cartao | Acesso | Checkout |"
             echo "|---|---|---|---|---|"
-            echo "| Trimestral | R\$ 367 | 12x R\$ 37,96 | 3 meses | 4Qx0g3O |"
-            echo "| Semestral | R\$ 467 | 12x R\$ 48,30 | 6 meses | DXvdSEu |"
+            echo "| Trimestral | R\$ 427 | 12x R\$ 44,16 | 3 meses | 4Qx0g3O |"
+            echo "| Semestral | R\$ 547 | 12x R\$ 56,57 | 6 meses | DXvdSEu |"
             echo ""
             echo "Conferir no ar: https://fluenciacontabil.com.br/cursos.html#assinar"
             echo ""
