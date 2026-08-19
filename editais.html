@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-WB2NTFXL');</script>
+<!-- End Google Tag Manager -->
+<meta charset="UTF-8"><link rel="icon" type="image/png" href="assets/favicon.png"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Veja, edital por edital, quanto do conteúdo de Contabilidade de cada concurso o curso da Fluência Contábil cobre — disciplina por disciplina.">
+<link rel="canonical" href="https://fluenciacontabil.com.br/editais.html">
+<meta property="og:title" content="Editais mapeados: quanto de Contabilidade o curso cobre | Fluência Contábil">
+<meta property="og:description" content="Veja, edital por edital, quanto do conteúdo de Contabilidade de cada concurso o curso da Fluência Contábil cobre — disciplina por disciplina.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://fluenciacontabil.com.br/editais.html">
+<meta property="og:site_name" content="Fluência Contábil">
+<meta property="og:locale" content="pt_BR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Editais mapeados: quanto de Contabilidade o curso cobre | Fluência Contábil">
+<meta name="twitter:description" content="Veja, edital por edital, quanto do conteúdo de Contabilidade de cada concurso o curso da Fluência Contábil cobre — disciplina por disciplina.">
+<title>Editais mapeados: quanto de Contabilidade o curso cobre | Fluência Contábil</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+.ed-toolbar{margin-bottom:var(--space-8)}
+.ed-busca{position:relative;max-width:520px;margin-bottom:var(--space-5)}
+.ed-busca input{width:100%;padding:14px 18px;border:1px solid #DDD;border-radius:var(--radius-md);font-family:inherit;font-size:var(--fs-base);color:var(--texto)}
+.ed-busca input:focus{outline:none;border-color:var(--azul-med);box-shadow:0 0 0 3px rgba(42,63,111,.12)}
+.ed-filtro{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:10px}
+.ed-filtro-lbl{font-size:var(--fs-xs);font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--azul-med);min-width:64px}
+.ed-chip{font-family:inherit;font-size:var(--fs-sm);font-weight:600;padding:6px 14px;border:1px solid #DDD;background:#FFF;color:var(--texto);border-radius:var(--radius-lg);cursor:pointer;transition:all var(--t-fast)}
+.ed-chip:hover{border-color:var(--azul-med)}
+.ed-chip.on{background:var(--azul);border-color:var(--azul);color:#FFF}
+.ed-conta{display:flex;align-items:baseline;gap:8px;padding-bottom:14px;border-bottom:1px solid #E8E8E8;margin:var(--space-6) 0 var(--space-6)}
+.ed-conta b{font-size:22px;font-weight:800;color:var(--azul);font-variant-numeric:tabular-nums}
+.ed-conta span{font-size:var(--fs-base);font-weight:600;color:#555}
+.ed-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-6)}
+.ed-card{background:#FFF;border:1px solid #E8E8E8;border-radius:var(--radius-md);padding:var(--space-6);display:flex;flex-direction:column;transition:border-color var(--t-fast),box-shadow var(--t-fast)}
+.ed-card:hover{border-color:var(--dourado);box-shadow:0 6px 20px rgba(200,168,75,.14)}
+.ed-card.hidden{display:none}
+.ed-card-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:var(--space-3)}
+.ed-status{font-size:var(--fs-xs);font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:var(--radius-lg)}
+.ed-status-avista{background:rgba(200,168,75,.16);color:var(--dourado-esc)}
+.ed-status-passado{background:#F0F0F0;color:#777}
+.ed-data{font-size:var(--fs-xs);color:#666;font-weight:600}
+.ed-orgao{font-size:var(--fs-lg);font-weight:700;color:var(--azul);line-height:1.3;margin:0 0 4px}
+.ed-cargo{font-size:var(--fs-sm);color:#555;margin:0 0 var(--space-3);line-height:1.4}
+.ed-pills{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:var(--space-5)}
+.ed-pill{font-size:var(--fs-xs);font-weight:600;padding:3px 10px;background:var(--cream);color:var(--azul-med);border-radius:var(--radius-lg)}
+.ed-discs{list-style:none;padding:0;margin:0 0 8px;display:flex;flex-direction:column;gap:12px}
+.ed-disc{display:grid;grid-template-columns:1fr auto;gap:5px 10px}
+.ed-disc-nome{font-size:var(--fs-sm);font-weight:600;color:var(--texto)}
+.ed-disc-pct{font-size:17px;font-weight:800;color:var(--azul);font-variant-numeric:tabular-nums;line-height:1}
+.ed-disc-pct b{font-size:11px;font-weight:700;color:#777}
+.ed-bar{grid-column:1/-1;height:6px;background:#EEE;border-radius:3px;overflow:hidden}
+.ed-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--dourado),var(--dourado-esc))}
+.ed-legenda{font-size:var(--fs-xs);color:#777;margin:0 0 var(--space-4);line-height:1.35}
+.ed-links{margin-top:auto;display:flex;flex-wrap:wrap;gap:14px;padding-top:var(--space-4);border-top:1px solid #EEE}
+.ed-link{font-size:var(--fs-sm);font-weight:700;color:var(--azul-med);text-decoration:none}
+.ed-link:hover{text-decoration:underline}
+.ed-vazio{padding:var(--space-10) 0;text-align:center;color:#666}
+/* o estado vazio nasce com .hidden, mas a única regra de .hidden era
+   .ed-card.hidden — sem esta, a mensagem 'nenhum edital encontrado'
+   ficava visível ABAIXO dos cards o tempo todo */
+.ed-vazio.hidden{display:none}
+.ed-cta{margin-top:var(--space-10);padding:28px 32px;background:var(--cream);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.ed-cta h2{font-size:20px;font-weight:800;color:var(--azul);margin:0 0 6px;line-height:1.25}
+.ed-cta p{font-family:'Source Serif 4',Georgia,serif;font-size:15.5px;line-height:1.55;color:#444;margin:0;max-width:54ch}
+.ed-cta a{flex:0 0 auto;font-size:14px;font-weight:700;color:#FFF;background:var(--cta);padding:14px 28px;border-radius:var(--radius-md);text-decoration:none}
+.ed-cta a:hover{background:var(--cta-hover)}
+.ed-nota{margin-top:var(--space-8);padding-top:var(--space-6);border-top:1px solid #E8E8E8;font-size:var(--fs-sm);color:#666;line-height:1.6;max-width:var(--max-prose)}
+@media(max-width:1024px){.ed-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:768px){.ed-grid{grid-template-columns:1fr}.ed-filtro-lbl{min-width:100%}.ed-cta{flex-direction:column;align-items:flex-start}}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Editais mapeados: quanto de Contabilidade o curso cobre",
+  "description": "Veja, edital por edital, quanto do conteúdo de Contabilidade de cada concurso o curso da Fluência Contábil cobre — disciplina por disciplina.",
+  "url": "https://fluenciacontabil.com.br/editais.html",
+  "inLanguage": "pt-BR",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "Fluência Contábil",
+    "url": "https://fluenciacontabil.com.br"
+  },
+  "mainEntity": {
+    "@type": "ItemList",
+    "numberOfItems": 20,
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Secretaria da Fazenda do Estado do Ceará (SEFAZ-CE) — Auditor-Fiscal da Fazenda Estadual"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Tribunal de Contas do Estado do Maranhão (TCE/MA) — Auditor Estadual de Controle Externo – Especialidade: Controle Externo (Cargo 12)"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Tribunal de Contas do Estado do Maranhão (TCE/MA) — Analista Estadual de Apoio ao Controle Externo – Área: Apoio Técnico-Administrativo – Especialidade: Contabilidade (Cargo 2)"
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
+        "name": "Prefeitura de Manaus — Secretaria Municipal de Finanças, Planejamento e Tecnologia da Informação – SEMEF — Auditor-Fiscal de Tributos Municipais – AFTM – Nível I"
+      },
+      {
+        "@type": "ListItem",
+        "position": 5,
+        "name": "Prefeitura Municipal de Santos/SP — Secretaria Municipal de Finanças e Gestão (SEFIN) — Auditor Fiscal de Tributos Municipais"
+      },
+      {
+        "@type": "ListItem",
+        "position": 6,
+        "name": "Tribunal de Justiça do Estado do Paraná (TJPR) — Contador (Cód. 01)"
+      },
+      {
+        "@type": "ListItem",
+        "position": 7,
+        "name": "Conselho Federal de Contabilidade (CFC) — Bacharel em Ciências Contábeis (Exame de Suficiência — registro de Contador no CRC)"
+      },
+      {
+        "@type": "ListItem",
+        "position": 8,
+        "name": "Conselho Regional de Educação Física da 21ª Região – CREF-21/MA — Contador (Cód. 405)"
+      },
+      {
+        "@type": "ListItem",
+        "position": 9,
+        "name": "Ministério da Economia — Secretaria Especial da Receita Federal do Brasil — Analista-Tributário da Receita Federal do Brasil"
+      },
+      {
+        "@type": "ListItem",
+        "position": 10,
+        "name": "Ministério da Economia — Secretaria Especial da Receita Federal do Brasil — Auditor-Fiscal da Receita Federal do Brasil"
+      },
+      {
+        "@type": "ListItem",
+        "position": 11,
+        "name": "Tribunal de Justiça do Estado do Tocantins (TJTO) — Contador/Distribuidor – Especialidade: Ciências Contábeis ou Econômicas (Nível Superior)"
+      },
+      {
+        "@type": "ListItem",
+        "position": 12,
+        "name": "Tribunal de Contas do Estado do Rio de Janeiro (TCE/RJ) — Analista de Controle Externo – Área: Controle Externo – Especialidade: Ciências Contábeis (Cargo 1)"
+      },
+      {
+        "@type": "ListItem",
+        "position": 13,
+        "name": "Governo do Distrito Federal — Secretaria de Estado de Economia do Distrito Federal (SEEC/DF) — Auditor Fiscal da Receita do Distrito Federal"
+      },
+      {
+        "@type": "ListItem",
+        "position": 14,
+        "name": "Governo do Estado da Bahia — Secretaria da Administração do Estado da Bahia (SAEB) / Secretaria da Fazenda do Estado da Bahia (SEFAZ) — Auditor Fiscal — Administração Tributária (C03)"
+      },
+      {
+        "@type": "ListItem",
+        "position": 15,
+        "name": "Governo do Estado da Bahia — Secretaria da Administração do Estado da Bahia (SAEB) / Secretaria da Fazenda do Estado da Bahia (SEFAZ) — Auditor Fiscal — Administração, Finanças e Controle Interno (A01)"
+      },
+      {
+        "@type": "ListItem",
+        "position": 16,
+        "name": "Governo do Estado da Bahia — Secretaria da Administração do Estado da Bahia (SAEB) / Secretaria da Fazenda do Estado da Bahia (SEFAZ) — Auditor Fiscal — Tecnologia da Informação (B02)"
+      },
+      {
+        "@type": "ListItem",
+        "position": 17,
+        "name": "Estado do Rio Grande do Sul — Secretaria da Fazenda (SEFAZ/RS) — Auditor-Fiscal da Receita Estadual, Classe A"
+      },
+      {
+        "@type": "ListItem",
+        "position": 18,
+        "name": "Secretaria de Estado da Fazenda de Santa Catarina (SEF/SC) — Diretoria de Administração Tributária — Auditor-Fiscal da Receita Estadual, Nível I — Gestão Tributária (B02)"
+      },
+      {
+        "@type": "ListItem",
+        "position": 19,
+        "name": "Secretaria de Estado da Fazenda de Santa Catarina (SEF/SC) — Diretoria de Administração Tributária — Auditor-Fiscal da Receita Estadual, Nível I — Auditoria e Fiscalização (A01)"
+      },
+      {
+        "@type": "ListItem",
+        "position": 20,
+        "name": "Secretaria de Estado da Fazenda de Santa Catarina (SEF/SC) — Diretoria de Administração Tributária — Auditor-Fiscal da Receita Estadual, Nível I — Tecnologia da Informação (C03)"
+      }
+    ]
+  }
+}
+</script>
+<link rel="stylesheet" href="assets/email-capture.css?v=20260819">
+<script src="assets/email-capture.js?v=20260819" defer>
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WB2NTFXL"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager -->
+
+<div id="topbar">🏛️ Trimestral R$ 427 &nbsp;·&nbsp; Semestral R$ 547 &nbsp;·&nbsp; <a href="cursos.html#assinar">Assinar agora →</a></div>
+<nav id="mainNav">
+  <a href="index.html" class="nav-logo"><picture><source srcset="Logo_Completa_BrancoDourado_COM_TAGLINE_FUNDO_AZUL.webp" type="image/webp"><img src="Logo_Completa_BrancoDourado_COM_TAGLINE_FUNDO_AZUL.png" alt="Fluência Contábil"></picture></a>
+  <ul class="nav-links"><li><a href="institucional.html">Institucional</a></li><li><a href="professor.html">Conheça o Professor</a></li><li><a href="cursos.html">Meus Cursos</a></li>
+    <li><a href="editais.html" id="lnk-edi">Editais</a></li>
+    <li><a href="blog.html" id="lnk-blog">Blog</a></li><li><a href="depoimentos.html">Depoimentos</a></li><li><a href="contato.html">Contato</a></li><li><a href="https://portal.fluenciacontabil.com.br">Área do Aluno</a></li></ul>
+  <div class="nav-social">
+    <a href="https://www.instagram.com/prof.viniciusferraz" target="_blank" rel="noopener" title="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8 0 3.2 0 3.6-.1 4.8-.1 3.2-1.7 4.8-4.9 4.9-1.3.1-1.6.1-4.9.1-3.2 0-3.6 0-4.8-.1-3.3-.1-4.8-1.7-4.9-4.9C2.2 15.6 2.2 15.2 2.2 12c0-3.2 0-3.6.1-4.8C2.4 3.9 4 2.3 7.2 2.2c1.2-.1 1.6-.1 4.8-.1zM12 0C8.7 0 8.3 0 7.1.1 2.7.3.3 2.7.1 7.1.0 8.3 0 8.7 0 12c0 3.3 0 3.7.1 4.9.2 4.4 2.6 6.8 7 7C8.3 24 8.7 24 12 24c3.3 0 3.7 0 4.9-.1 4.4-.2 6.8-2.6 7-7 .1-1.2.1-1.6.1-4.9 0-3.3 0-3.7-.1-4.9C23.7 2.7 21.3.3 16.9.1 15.7 0 15.3 0 12 0zm0 5.8a6.2 6.2 0 1 0 0 12.4A6.2 6.2 0 0 0 12 5.8zm0 10.2a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.4-11.8a1.4 1.4 0 1 0 0 2.8 1.4 1.4 0 0 0 0-2.8z"/></svg></a>
+    <a href="https://www.youtube.com/@prof.viniciusferraz" target="_blank" rel="noopener" title="YouTube"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.3 31.3 0 0 0 0 12a31.3 31.3 0 0 0 .6 5.8 3 3 0 0 0 2 2.1c2 .6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.3 31.3 0 0 0 24 12a31.3 31.3 0 0 0-.5-5.8zM9.7 15.5V8.5l6.3 3.5-6.3 3.5z"/></svg></a>
+  </div>
+  <a href="cursos.html#assinar" class="nav-btn">Assinar</a>
+  <a href="cursos.html#assinar" class="nav-cta-mobile">Assinar</a>
+    <button class="hamburger" id="hamburgerBtn" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html">Início</a>
+  <a href="institucional.html">Institucional</a>
+  <a href="professor.html">Conheça o Professor</a>
+  <a href="cursos.html">Meus Cursos</a>
+  <a href="editais.html">Editais</a>
+  <a href="blog.html">Blog</a>
+  <a href="depoimentos.html">Depoimentos</a>
+  <a href="contato.html">Contato</a>
+  <div class="mob-social">
+    <a href="https://www.instagram.com/prof.viniciusferraz" target="_blank" rel="noopener">📷 Instagram</a>
+    <a href="https://www.youtube.com/@prof.viniciusferraz" target="_blank" rel="noopener">▶️ YouTube</a>
+  </div>
+  <a href="cursos.html#assinar" class="mob-btn">Assinar</a>
+  <a href="https://portal.fluenciacontabil.com.br" class="mob-btn-portal">Área do Aluno</a>
+</div>
+
+<section class="page-hero">
+  <div class="page-hero-inner inner">
+    <span class="lbl">Editais mapeados</span>
+    <div class="bar"></div>
+    <h1>Quanto da <em>Contabilidade</em> do seu concurso o curso cobre</h1>
+    <p class="body-t">Mapeamos o conteúdo programático de Contabilidade de cada edital e comparamos com o material do curso, disciplina por disciplina. Sem estimativa: o que está aqui é a conta dos tópicos.</p>
+  </div>
+</section>
+
+<section style="padding:var(--space-12) 0">
+  <div class="inner">
+    <div class="ed-toolbar">
+      <div class="ed-busca">
+        <input type="search" id="edBusca" placeholder="Busque por órgão, cargo ou banca — ex.: sefaz, iss, receita federal" aria-label="Buscar edital" autocomplete="off">
+      </div>
+      <div class="ed-filtro"><span class="ed-filtro-lbl">Área</span><button type="button" class="ed-chip" data-filtro="area" data-valor="GERAL">Concursos para contadores</button><button type="button" class="ed-chip" data-filtro="area" data-valor="SUFICIENCIA">Exame de Suficiência (CFC)</button><button type="button" class="ed-chip" data-filtro="area" data-valor="FISCAL">Fiscal</button><button type="button" class="ed-chip" data-filtro="area" data-valor="JUDICIARIO">Judiciário</button><button type="button" class="ed-chip" data-filtro="area" data-valor="TRIBUNAIS_DE_CONTAS">Tribunais de Contas</button></div>
+      <div class="ed-filtro"><span class="ed-filtro-lbl">Esfera</span><button type="button" class="ed-chip" data-filtro="esfera" data-valor="ESTADUAL">Estadual</button><button type="button" class="ed-chip" data-filtro="esfera" data-valor="FEDERAL">Federal</button><button type="button" class="ed-chip" data-filtro="esfera" data-valor="MUNICIPAL">Municipal</button></div>
+      <div class="ed-filtro"><span class="ed-filtro-lbl">Banca</span><button type="button" class="ed-chip" data-filtro="banca" data-valor="CEBRASPE (CESPE)">CEBRASPE (CESPE)</button><button type="button" class="ed-chip" data-filtro="banca" data-valor="FCC">FCC</button><button type="button" class="ed-chip" data-filtro="banca" data-valor="FGV">FGV</button><button type="button" class="ed-chip" data-filtro="banca" data-valor="FUNDATEC">FUNDATEC</button><button type="button" class="ed-chip" data-filtro="banca" data-valor="IBAM — Instituto Brasileiro de Administração Municipal">IBAM — Instituto Brasileiro de Administração Municipal</button><button type="button" class="ed-chip" data-filtro="banca" data-valor="QUADRIX">QUADRIX</button></div>
+      <div class="ed-filtro"><span class="ed-filtro-lbl">UF</span><button type="button" class="ed-chip" data-filtro="uf" data-valor="AM">AM</button><button type="button" class="ed-chip" data-filtro="uf" data-valor="BA">BA</button><button type="button" class="ed-chip" data-filtro="uf" data-valor="CE">CE</button><button type="button" class="ed-chip" data-filtro="uf" data-valor="DF">DF</button><button type="button" class="ed-chip" data-filtro="uf" data-valor="MA">MA</button><button type="button" class="ed-chip" data-filtro="uf" data-valor="PR">PR</button><button type="button" class="ed-chip" data-filtro="uf" data-valor="RJ">RJ</button><button type="button" class="ed-chip" data-filtro="uf" data-valor="RS">RS</button><button type="button" class="ed-chip" data-filtro="uf" data-valor="SC">SC</button><button type="button" class="ed-chip" data-filtro="uf" data-valor="SP">SP</button><button type="button" class="ed-chip" data-filtro="uf" data-valor="TO">TO</button></div>
+    </div>
+
+    <p class="ed-conta" id="edConta"><b>20</b> <span>editais mapeados</span></p>
+
+    <div class="ed-grid" id="edGrid">
+      <article class="ed-card card-bold" data-banca="FCC" data-esfera="ESTADUAL" data-uf="CE" data-area="FISCAL" data-busca="secretaria da fazenda do estado do ceará (sefaz-ce) auditor-fiscal da fazenda estadual fcc ce estadual">
+        <div class="ed-card-top">
+          <span class="ed-status ed-status-avista">Prova à vista</span>
+          
+        </div>
+        <h3 class="ed-orgao">Secretaria da Fazenda do Estado do Ceará (SEFAZ-CE)</h3>
+        <p class="ed-cargo">Auditor-Fiscal da Fazenda Estadual</p>
+        <div class="ed-pills"><span class="ed-pill">FCC</span><span class="ed-pill">Estadual · CE</span><span class="ed-pill">Fiscal</span></div>
+        <ul class="ed-discs">
+          <li class="ed-disc">
+            <span class="ed-disc-nome">Contabilidade Geral</span>
+            <span class="ed-disc-pct">100<b>%</b></span>
+            <span class="ed-bar"><i style="width:100%"></i></span>
+          </li>
+          <li class="ed-disc">
+            <span class="ed-disc-nome">Contabilidade Avançada</span>
+            <span class="ed-disc-pct">100<b>%</b></span>
+            <span class="ed-bar"><i style="width:100%"></i></span>
+          </li>
+        </ul>
+        <p class="ed-legenda">% dos tópicos de cada disciplina cobertos pelo curso</p>
+        
+      </article>
+      <article class="ed-card card-bold" data-banca="CEBRASPE (CESPE)" data-esfera="ESTADUAL" data-uf="MA" data-area="TRIBUNAIS_DE_CONTAS" data-busca="tribunal de contas do estado do maranhão (tce/ma) auditor estadual de controle externo – especialidade: controle externo (cargo 12) cebraspe (cespe) ma estadual">
+        <div class="ed-card-top">
+          <span class="ed-status ed-status-avista">Prova à vista</span>
+          <span class="ed-data">Prova: 29/11/2026</span>
+        </div>
+        <h3 class="ed-orgao">Tribunal de Contas do Estado do Maranhão (TCE/MA)</h3>
+        <p class="ed-cargo">Auditor Estadual de Controle Externo – Especialidade: Controle Externo (Cargo 12)</p>
+        <div class="ed-pills"><span class="ed-pill">CEBRASPE (CESPE)</span><span class="ed-pill">Estadual · MA</span><span class="ed-pill">Tribunais de Contas</span></div>
+        <ul class="ed-discs">
+          <li class="ed-disc">
+            <span class="ed-disc-nome">Contabilidade Geral</span>
+            <span class="ed-disc-pct">100<b>%</b></span>
+            <span class="ed-bar"><i style="width:100%"></i></span>
+          </li>
+        </ul>
+        <p class="ed-legenda">% dos tópicos de cada disciplina cobertos pelo curso</p>
+        <div class="ed-links"><a class="ed-link" href="http://www.cebraspe.org.br/concursos/tce_ma_26" target="_blank" rel="noopener">Edital oficial</a></div>
+      </article>
+      <article class="ed-card card-bold" data-banca="CEBRASPE (CESPE)" data-esfera="ESTADUAL" data-uf="MA" data-area="TRIBUNAIS_DE_CONTAS" data-busca="tribunal de contas do estado do maranhão (tce/ma) analista estadual de apoio ao controle externo – área: apoio técnico-administrativo – especialidade: contabilidade (cargo 2) cebraspe (cespe) ma estadual">
+        <div class="ed-card-top">
+          <span class="ed-status ed-status-avista">Prova à vista</span>
+          <span class="ed-data">Prova: 22/11/2026</span>
+        </div>
+        <h3 class="ed-orgao">Tribunal de Contas do Estado do Maranhão (TCE/MA)</h3>
+        <p class="ed-cargo">Analista Estadual de Apoio ao Controle Externo – Área: Apoio Técnico-Administrativo – Especialidade: Contabilidade (Cargo 2)</p>
+        <div class="ed-pills"><span class="ed-pill">CEBRASPE (CESPE)</span><span class="ed-pill">Estadual · MA</span><span class="ed-pill">Tribunais de Contas</span></div>
+        <ul class="ed-discs">
+          <li class="ed-disc">
+            <span class="ed-disc-nome">Contabilidade Geral</span>
+            <span class="ed-disc-pct">100<b>%</b></span>
+            <span class="ed-bar"><i style="width:100%"></i></span>
+          </li>
+        </ul>
+        <p class="ed-legenda">% dos tópicos de cada disciplina cobertos pelo curso</p>
+        <div class="ed-links"><a class="ed-link" href="http://www.cebraspe.org.br/concursos/tce_ma_26" target="_blank" rel="noopener">Edital oficial</a></div>
+      </article>
+      <article class="ed-card card-bold" data-banca="FCC" data-esfera="MUNICIPAL" data-uf="AM" data-area="FISCAL" data-busca="prefeitura de manaus — secretaria municipal de finanças, planejamento e tecnologia da informação – semef auditor-fiscal de tributos municipais – aftm – nível i fcc am municipal">
+        <div class="ed-card-top">
+          <span class="ed-status ed-status-avista">Prova à vista</span>
+          <span class="ed-data">Prova: 01/11/2026</span>
+        </div>
+        <h3 class="ed-orgao">Prefeitura de Manaus — Secretaria Municipal de Finanças, Planejamento e Tecnologia da Informação – SEMEF</h3>
+        <p class="ed-cargo">Auditor-Fiscal de Tributos Municipais – AFTM – Nível I</p>
+        <div class="ed-pills"><span class="ed-pill">FCC</span><span class="ed-pill">Municipal · AM</span><span class="ed-pill">Fiscal</span></div>
+        <ul class="ed-discs">
+          <li class="ed-disc">
+            <span class="ed-disc-nome">Contabilidade Geral</span>
+            <span class="ed-disc-pct">78<b>%</b></span>
+            <span class="ed-bar"><i style="width:78%"></i></span>
+          </li>
+        </ul>
+        <p class="ed-legenda">% dos tópicos de cada disciplina cobertos pelo curso</p>
+        <div class="ed-links"><a class="ed-link" href="blog/iss-manaus-2026-contabilidade.html">Análise completa deste edital</a><a class="ed-link" href="https://www.concursosfcc.com.br" target="_blank" rel="noopener">Edital oficial</a></div>
+      </article>
+      <article class="ed-card card-bold" data-banca="IBAM — Instituto Brasileiro de Administração Municipal" data-esfera="MUNICIPAL" data-uf="SP" data-area="FISCAL" data-busca="prefeitura municipal de santos/sp — secretaria municipal de finanças e gestão (sefin) auditor fiscal de tributos municipais ibam — instituto brasileiro de administração municipal sp municipal">
+        <div class="ed-card-top">
+          <span class="ed-status ed-status-avista">Prova à vista</span>
+          <span class="ed-data">Prova: 18/10/2026</span>
+        </div>
+        <h3 class="ed-orgao">Prefeitura Municipal de Santos/SP — Secretaria Municipal de Finanças e Gestão (SEFIN)</h3>
+        <p class="ed-cargo">Auditor Fiscal de Tributos Municipais</p>
+        <div class="ed-pills"><span class="ed-pill">IBAM — Instituto Brasileiro de Administração Municipal</span><span class="ed-pill">Municipal · SP</span><span class="ed-pill">Fiscal</span></div>
+        <ul class="ed-discs">
+          <li class="ed-disc">
+            <span class="ed-disc-nome">Contabilidade Geral e Societária</span>
+            <span class="ed-disc-pct">78<b>%</b></span>
+            <span class="ed-bar"><i style="width:78%"></i></span>
+          </li>
+        </ul>
+        <p class="ed-legenda">% dos tópicos de cada disciplina cobertos pelo curso</p>
+        <div class="ed-links"><a class="ed-link" href="blog/iss-santos-2026-contabilidade.html">Análise completa deste edital</a><a class="ed-link" href="https://www.ibamsp-concursos.org.br/informacoes/179/" target="_blank" rel="noopener">Edital oficial</a></div>
+      </article>
+      <article class="ed-card card-bold" data-banca="FUNDATEC" data-esfera="ESTADUAL" data-uf="PR" data-area="JUDICIARIO" data-busca="tribunal de justiça do estado do paraná (tjpr) contador (cód. 01) fundatec pr estadual">
+        <div class="ed-card-top">
+          <span class="ed-status ed-status-avista">Prova à vista</span>
+          <span class="ed-data">Prova: 18/10/2026</span>
+        </div>
+        <h3 class="ed-orgao">Tribunal de Justiça do Estado do Paraná (TJPR)</h3>
+        <p class="ed-cargo">Contador (Cód. 01)</p>
+        <div class="ed-pills"><span class="ed-pill">FUNDATEC</span><span class="ed-pill">Estadual · PR</span><span class="ed-pill">Judiciário</span></div>
+        <ul class="ed-discs">
+          <li class="ed-disc">
+            <span class="ed-disc-nome">Contabilidade Geral</span>
+            <span class="ed-disc-pct">68<b>%</b></span>
+            <span class="ed-bar"><i style="width:68%"></i></span>
+          </li>
+        </ul>
+        <p class="ed-legenda">% dos tópicos de cada disciplina cobertos pelo curso</p>
+        <div class="ed-links"><a class="ed-link" href="https://portal.tjpr.jus.br/pesquisa_athos/anexo/7205439" target="_blank" rel="noopener">Edital oficial</a></div>
+      </article>
+      <article class="ed-card card-bold" data-banca="FGV" data-esfera="FEDERAL" data-uf="" data-area="SUFICIENCIA" data-busca="conselho federal de contabilidade (cfc) bacharel em ciências contábeis (exame de suficiência — registro de contador no crc) fgv federal">
+        <div class="ed-card-top">
+          <span class="ed-status ed-status-avista">Prova à vista</span>
+          <span class="ed-data">Prova: 27/09/2026</span>
+        </div>
+        <h3 class="ed-orgao">Conselho Federal de Contabilidade (CFC)</h3>
+        <p class="ed-cargo">Bacharel em Ciências Contábeis (Exame de Suficiência — registro de Contador no CRC)</p>
+        <div class="ed-pills"><span class="ed-pill">FGV</span><span class="ed-pill">Federal</span><span class="ed-pill">Exame de Suficiência (CFC)</span></div>
+        <ul class="ed-discs">
+          <li class="ed-disc">
+            <span class="ed-disc-nome">Contabilidade Geral</span>
+            <span class="ed-disc-pct">100<b>%</b></span>
+            <span class="ed-bar"><i style="width:100%"></i></span>
+          </li>
+          <li class="ed-disc">
+            <span class="ed-disc-nome">Teoria da Contabilidade</span>
+            <span class="ed-disc-pct">100<b>%</b></span>
+            <span class="ed-bar"><i style="width:100%"></i></span>
+          </li>
+        </ul>
+        <p class="ed-legenda">% dos tópicos de cada disciplina cobertos pelo curso</p>
+        <div class="ed-links"><a class="ed-link" href="https://conhecimento.fgv.br/exames/cfc/2026.2" target="_blank" rel="noopener">Edital oficial</a></div>
+      </article>
+      <article class="ed-card card-bold" data-banca="QUADRIX" data-esfera="FEDERAL" data-uf="MA" data-area="GERAL" data-busca="conselho regional de educação física da 21ª região – cref-21/ma contador (cód. 405) quadrix ma federal">
+        <div class="ed-card-top">
+          <span class="ed-status ed-status-avista">Prova à vista</span>
+          <span class="ed-data">Prova: 13/09/2026</span>
+        </div>
+        <h3 class="ed-orgao">Conselho Regional de Educação Física da 21ª Região – CREF-21/MA</h3>
+        <p class="ed-cargo">Contador (Cód. 405)</p>
+        <div class="ed-pills"><span class="ed-pill">QUADRIX</span><span class="ed-pill">Federal · MA</span><span class="ed-pill">Concursos para contadores</span></div>
+        <ul class="ed-discs">
+          <li class="ed-disc">
+            <span class="ed-disc-nome">Contabilidade Geral</span>
+            <span class="ed-disc-pct">78<b>%</b></span>
+            <span class="ed-bar"><i style="width:78%"></i></span>
+          </li>
+        </ul>
+        <p class="ed-legenda">% dos tópicos de cada disciplina cobertos pelo curso</p>
+        <div class="ed-links"><a class="ed-link" href="https://quadrix.org.br/informacoes/3060/" target="_blank" rel="noopener">Edital oficial</a></div>
+      </article>
+      <article class="ed-card card-bold" data-banca="FGV" data-esfera="FEDERAL" data-uf="" data-area="FISCAL" data-busca="ministério da economia — secretaria especial da receita federal do brasil analista-tributário da receita federal do brasil fgv federal">
+        <div class="ed-card-top">
+          <span class="ed-status ed-status-passado">Referência de estudo</span>
+          <span class="ed-data">Prova: 19/03/2023</span>
+        </div>
+        <h3 class="ed-orgao">Ministério da Economia — Secretaria Especial da Receita Federal do Brasil</h3>
+        <p class="ed-cargo">Analista-Tributário da Receita Federal do Brasil</p>
+        <div class="ed-pills"><span class="ed-pill">FGV</span><span class="ed-pill">Federal</span><span class="ed-pill">Fiscal</span></div>
+        <ul class="ed-discs">
+          <li class="ed-disc">
+            <span class="ed-disc-nome">Contabilidade Geral</span>
+            <span class="ed-disc-pct">100<b>%</b></span>
+            <span class="ed-bar"><i style="width:100%"></i></span>
+          </li>
+        </ul>
+        <p class="ed-legenda">% dos tópicos de cada disciplina cobertos pelo curso</p>
+        <div class="ed-links"><a class="ed-link" href="https://conhecimento.fgv.br/concursos/rfb22" target="_blank" rel="noopener">Edital oficial</a></div>
+      </article>
+      <article class="ed-card card-bold" data-banca="FGV" data-esfera="FEDERAL" data-uf="" data-area="FISCAL" data-busca="ministério da economia — secretaria especial da receita federal do brasil auditor-fiscal da receita federal do brasil fgv federal">
+        <div class="ed-card-top">
+          <span class="ed-status ed-status-passado">Referência de estudo</span>
+          <span class="ed-data">Prova: 19/03/2023</span>
+        </div>
+        <h3 class="ed-orgao">Ministério da Economia — Secretaria Especial da Receita Federal do Brasil</h3>
+        <p class="ed-cargo">Auditor-Fiscal da Receita Federal do Brasil</p>
+        <div class="ed-pills"><span class="ed-pill">FGV</span><span class="ed-pill">Federal</span><span class="ed-pill">Fiscal</span></div>
+        <ul class="ed-discs">
+          <li class="ed-disc">
+            <span class="ed-disc-nome">Contabilidade Geral</span>
+            <span class="ed-disc-pct">100<b>%</b></span>
+            <span class="ed-bar"><i style="width:100%"></i></span>
+          </li>
+        </ul>
+        <p class="ed-legenda">% dos tópicos de cada disciplina cobertos pelo curso</p>
+        <div class="ed-links"><a class="ed-link" href="https://conhecimento.fgv.br/concursos/rfb22" target="_blank" rel="noopener">Edital oficial</a></div>
+      </article>
+      <article class="ed-card card-bold" data-banca="FGV" data-esfera="ESTADUAL" data-uf="TO" data-area="JUDICIARIO" data-busca="tribunal de justiça do estado do tocantins (tjto) contador/distribuidor – especialidade: ciências contábeis ou econômicas (nível superior) fgv to estadual">
+        <div class="ed-card-top">
+          <span class="ed-status ed-status-passado">Referência de estudo</span>
+          <span class="ed-data">Prova: 26/06/2022</span>
+        </div>
+        <h3 class="ed-orgao">Tribunal de Justiça do Estado do Tocantins (TJTO)</h3>
+        <p class="ed-cargo">Contador/Distribuidor – Especialidade: Ciências Contábeis ou Econômicas (Nível Superior)</p>
+        <div class="ed-pills"><span class="ed-pill">FGV</span><span class="ed-pill">Estadual · TO</span><span class="ed-pill">Judiciário</span></div>
+        <ul class="ed-discs">
+          <li class="ed-disc">
+            <span class="ed-disc-nome">Contabilidade Geral e Societária</span>
+            <span class="ed-disc-pct">86<b>%</b></span>
+            <span class="ed-bar"><i style="width:86%"></i></span>
+          </li>
+        </ul>
+        <p class="ed-legenda">% dos tópicos de cada disciplina cobertos pelo curso</p>
+        <div class="ed-links"><a class="ed-link" href="https://conhecimento.fgv.br/concursos/tjto22" target="_blank" rel="noopener">Edital oficial</a></div>
+      </article>
+      <article class="ed-card card-bold" data-banca="CEBRASPE (CESPE)" data-esfera="ESTADUAL" data-uf="RJ" data-area="TRIBUNAIS_DE_CONTAS" data-busca="tribunal de contas do estado do rio de janeiro (tce/rj) analista de controle externo – área: controle externo – especialidade: ciências contábeis (cargo 1) cebraspe (cespe) rj estadual">
+        <div class="ed-card-top">
+          <span class="ed-status ed-status-passado">Referência de estudo</span>
+          <span class="ed-data">Prova: 06/02/2021</span>
+        </div>
+        <h3 class="ed-orgao">Tribunal de Contas do Estado do Rio de Janeiro (TCE/RJ)</h3>
+        <p class="ed-cargo">Analista de Controle Externo – Área: Controle Externo – Especialidade: Ciências Contábeis (Cargo 1)</p>
+        <div class="ed-pills"><span class="ed-pill">CEBRASPE (CESPE)</span><span class="ed-pill">Estadual · RJ</span><span class="ed-pill">Tribunais de Contas</span></div>
+        <ul class="ed-discs">
+          <li class="ed-disc">
+            <span class="ed-disc-nome">Contabilidade Geral</span>
+            <span class="ed-disc-pct">96<b>%</b></span>
+            <span class="ed-bar"><i style="width:96%"></i></span>
+          </li>
+        </ul>
+        <p class="ed-legenda">% dos tópicos de cada disciplina cobertos pelo curso</p>
+        <div class="ed-links"><a class="ed-link" href="https://www.cebraspe.org.br/concursos/tce_rj_20" target="_blank" rel="noopener">Edital oficial</a></div>
+      </article>
+      <article class="ed-card card-bold" data-banca="CEBRASPE (CESPE)" data-esfera="ESTADUAL" data-uf="DF" data-area="FISCAL" data-busca="governo do distrito federal — secretaria de estado de economia do distrito federal (seec/df) auditor fiscal da receita do distrito federal cebraspe (cespe) df estadual">
+        <div class="ed-card-top">
+          <span class="ed-status ed-status-passado">Referência de estudo</span>
+          <span class="ed-data">Prova: 02/02/2020</span>
+        </div>
+        <h3 class="ed-orgao">Governo do Distrito Federal — Secretaria de Estado de Economia do Distrito Federal (SEEC/DF)</h3>
+        <p class="ed-cargo">Auditor Fiscal da Receita do Distrito Federal</p>
+        <div class="ed-pills"><span class="ed-pill">CEBRASPE (CESPE)</span><span class="ed-pill">Estadual · DF</span><span class="ed-pill">Fiscal</span></div>
+        <ul class="ed-discs">
+          <li class="ed-disc">
+            <span class="ed-disc-nome">Contabilidade Geral</span>
+            <span class="ed-disc-pct">94<b>%</b></span>
+            <span class="ed-bar"><i style="width:94%"></i></span>
+          </li>
+        </ul>
+        <p class="ed-legenda">% dos tópicos de cada disciplina cobertos pelo curso</p>
+        <div class="ed-links"><a class="ed-link" href="http://www.cebraspe.org.br/concursos/seec_auditor_19" target="_blank" rel="noopener">Edital oficial</a></div>
+      </article>
+      <article class="ed-card card-bold" data-banca="FCC" data-esfera="ESTADUAL" data-uf="BA" data-area="FISCAL" data-busca="governo do estado da bahia — secretaria da administração do estado da bahia (saeb) / secretaria da fazenda do estado da bahia (sefaz) auditor fiscal — administração tributária (c03) fcc ba estadual">
+        <div class="ed-card-top">
+          <span class="ed-status ed-status-passado">Referência de estudo</span>
+          <span class="ed-data">Prova: 26/05/2019</span>
+        </div>
+        <h3 class="ed-orgao">Governo do Estado da Bahia — Secretaria da Administração do Estado da Bahia (SAEB) / Secretaria da Fazenda do Estado da Bahia (SEFAZ)</h3>
+        <p class="ed-cargo">Auditor Fiscal — Administração Tributária (C03)</p>
+        <div class="ed-pills"><span class="ed-pill">FCC</span><span class="ed-pill">Estadual · BA</span><span class="ed-pill">Fiscal</span></div>
+        <ul class="ed-discs">
+          <li class="ed-disc">
+            <span class="ed-disc-nome">Contabilidade Geral</span>
+            <span class="ed-disc-pct">70<b>%</b></span>
+            <span class="ed-bar"><i style="width:70%"></i></span>
+          </li>
+        </ul>
+        <p class="ed-legenda">% dos tópicos de cada disciplina cobertos pelo curso</p>
+        <div class="ed-links"><a class="ed-link" href="https://www.concursosfcc.com.br" target="_blank" rel="noopener">Edital oficial</a></div>
+      </article>
+      <article class="ed-card card-bold" data-banca="FCC" data-esfera="ESTADUAL" data-uf="BA" data-area="FISCAL" data-busca="governo do estado da bahia — secretaria da administração do estado da bahia (saeb) / secretaria da fazenda do estado da bahia (sefaz) auditor fiscal — administração, finanças e controle interno (a01) fcc ba estadual">
+        <div class="ed-card-top">
+          <span class="ed-status ed-status-passado">Referência de estudo</span>
+          <span class="ed-data">Prova: 26/05/2019</span>
+        </div>
+        <h3 class="ed-orgao">Governo do Estado da Bahia — Secretaria da Administração do Estado da Bahia (SAEB) / Secretaria da Fazenda do Estado da Bahia (SEFAZ)</h3>
+        <p class="ed-cargo">Auditor Fiscal — Administração, Finanças e Controle Interno (A01)</p>
+        <div class="ed-pills"><span class="ed-pill">FCC</span><span class="ed-pill">Estadual · BA</span><span class="ed-pill">Fiscal</span></div>
+        <ul class="ed-discs">
+          <li class="ed-disc">
+            <span class="ed-disc-nome">Contabilidade Geral</span>
+            <span class="ed-disc-pct">70<b>%</b></span>
+            <span class="ed-bar"><i style="width:70%"></i></span>
+          </li>
+        </ul>
+        <p class="ed-legenda">% dos tópicos de cada disciplina cobertos pelo curso</p>
+        <div class="ed-links"><a class="ed-link" href="https://www.concursosfcc.com.br" target="_blank" rel="noopener">Edital oficial</a></div>
+      </article>
+      <article class="ed-card card-bold" data-banca="FCC" data-esfera="ESTADUAL" data-uf="BA" data-area="FISCAL" data-busca="governo do estado da bahia — secretaria da administração do estado da bahia (saeb) / secretaria da fazenda do estado da bahia (sefaz) auditor fiscal — tecnologia da informação (b02) fcc ba estadual">
+        <div class="ed-card-top">
+          <span class="ed-status ed-status-passado">Referência de estudo</span>
+          <span class="ed-data">Prova: 26/05/2019</span>
+        </div>
+        <h3 class="ed-orgao">Governo do Estado da Bahia — Secretaria da Administração do Estado da Bahia (SAEB) / Secretaria da Fazenda do Estado da Bahia (SEFAZ)</h3>
+        <p class="ed-cargo">Auditor Fiscal — Tecnologia da Informação (B02)</p>
+        <div class="ed-pills"><span class="ed-pill">FCC</span><span class="ed-pill">Estadual · BA</span><span class="ed-pill">Fiscal</span></div>
+        <ul class="ed-discs">
+          <li class="ed-disc">
+            <span class="ed-disc-nome">Contabilidade Geral</span>
+            <span class="ed-disc-pct">70<b>%</b></span>
+            <span class="ed-bar"><i style="width:70%"></i></span>
+          </li>
+        </ul>
+        <p class="ed-legenda">% dos tópicos de cada disciplina cobertos pelo curso</p>
+        <div class="ed-links"><a class="ed-link" href="https://www.concursosfcc.com.br" target="_blank" rel="noopener">Edital oficial</a></div>
+      </article>
+      <article class="ed-card card-bold" data-banca="CEBRASPE (CESPE)" data-esfera="ESTADUAL" data-uf="RS" data-area="FISCAL" data-busca="estado do rio grande do sul — secretaria da fazenda (sefaz/rs) auditor-fiscal da receita estadual, classe a cebraspe (cespe) rs estadual">
+        <div class="ed-card-top">
+          <span class="ed-status ed-status-passado">Referência de estudo</span>
+          <span class="ed-data">Prova: 02/02/2019</span>
+        </div>
+        <h3 class="ed-orgao">Estado do Rio Grande do Sul — Secretaria da Fazenda (SEFAZ/RS)</h3>
+        <p class="ed-cargo">Auditor-Fiscal da Receita Estadual, Classe A</p>
+        <div class="ed-pills"><span class="ed-pill">CEBRASPE (CESPE)</span><span class="ed-pill">Estadual · RS</span><span class="ed-pill">Fiscal</span></div>
+        <ul class="ed-discs">
+          <li class="ed-disc">
+            <span class="ed-disc-nome">Contabilidade Geral</span>
+            <span class="ed-disc-pct">100<b>%</b></span>
+            <span class="ed-bar"><i style="width:100%"></i></span>
+          </li>
+          <li class="ed-disc">
+            <span class="ed-disc-nome">Contabilidade Avançada</span>
+            <span class="ed-disc-pct">100<b>%</b></span>
+            <span class="ed-bar"><i style="width:100%"></i></span>
+          </li>
+        </ul>
+        <p class="ed-legenda">% dos tópicos de cada disciplina cobertos pelo curso</p>
+        <div class="ed-links"><a class="ed-link" href="https://www.cebraspe.org.br/concursos/sefaz_rs_18_auditor" target="_blank" rel="noopener">Edital oficial</a></div>
+      </article>
+      <article class="ed-card card-bold" data-banca="FCC" data-esfera="ESTADUAL" data-uf="SC" data-area="FISCAL" data-busca="secretaria de estado da fazenda de santa catarina (sef/sc) — diretoria de administração tributária auditor-fiscal da receita estadual, nível i — gestão tributária (b02) fcc sc estadual">
+        <div class="ed-card-top">
+          <span class="ed-status ed-status-passado">Referência de estudo</span>
+          <span class="ed-data">Prova: 18/11/2018</span>
+        </div>
+        <h3 class="ed-orgao">Secretaria de Estado da Fazenda de Santa Catarina (SEF/SC) — Diretoria de Administração Tributária</h3>
+        <p class="ed-cargo">Auditor-Fiscal da Receita Estadual, Nível I — Gestão Tributária (B02)</p>
+        <div class="ed-pills"><span class="ed-pill">FCC</span><span class="ed-pill">Estadual · SC</span><span class="ed-pill">Fiscal</span></div>
+        <ul class="ed-discs">
+          <li class="ed-disc">
+            <span class="ed-disc-nome">Contabilidade Geral</span>
+            <span class="ed-disc-pct">100<b>%</b></span>
+            <span class="ed-bar"><i style="width:100%"></i></span>
+          </li>
+        </ul>
+        <p class="ed-legenda">% dos tópicos de cada disciplina cobertos pelo curso</p>
+        <div class="ed-links"><a class="ed-link" href="https://www.concursosfcc.com.br/concursos/sefsc118/index.html" target="_blank" rel="noopener">Edital oficial</a></div>
+      </article>
+      <article class="ed-card card-bold" data-banca="FCC" data-esfera="ESTADUAL" data-uf="SC" data-area="FISCAL" data-busca="secretaria de estado da fazenda de santa catarina (sef/sc) — diretoria de administração tributária auditor-fiscal da receita estadual, nível i — auditoria e fiscalização (a01) fcc sc estadual">
+        <div class="ed-card-top">
+          <span class="ed-status ed-status-passado">Referência de estudo</span>
+          <span class="ed-data">Prova: 18/11/2018</span>
+        </div>
+        <h3 class="ed-orgao">Secretaria de Estado da Fazenda de Santa Catarina (SEF/SC) — Diretoria de Administração Tributária</h3>
+        <p class="ed-cargo">Auditor-Fiscal da Receita Estadual, Nível I — Auditoria e Fiscalização (A01)</p>
+        <div class="ed-pills"><span class="ed-pill">FCC</span><span class="ed-pill">Estadual · SC</span><span class="ed-pill">Fiscal</span></div>
+        <ul class="ed-discs">
+          <li class="ed-disc">
+            <span class="ed-disc-nome">Contabilidade Geral</span>
+            <span class="ed-disc-pct">100<b>%</b></span>
+            <span class="ed-bar"><i style="width:100%"></i></span>
+          </li>
+          <li class="ed-disc">
+            <span class="ed-disc-nome">Contabilidade Avançada</span>
+            <span class="ed-disc-pct">95<b>%</b></span>
+            <span class="ed-bar"><i style="width:95%"></i></span>
+          </li>
+        </ul>
+        <p class="ed-legenda">% dos tópicos de cada disciplina cobertos pelo curso</p>
+        <div class="ed-links"><a class="ed-link" href="https://www.concursosfcc.com.br/concursos/sefsc118/index.html" target="_blank" rel="noopener">Edital oficial</a></div>
+      </article>
+      <article class="ed-card card-bold" data-banca="FCC" data-esfera="ESTADUAL" data-uf="SC" data-area="FISCAL" data-busca="secretaria de estado da fazenda de santa catarina (sef/sc) — diretoria de administração tributária auditor-fiscal da receita estadual, nível i — tecnologia da informação (c03) fcc sc estadual">
+        <div class="ed-card-top">
+          <span class="ed-status ed-status-passado">Referência de estudo</span>
+          <span class="ed-data">Prova: 18/11/2018</span>
+        </div>
+        <h3 class="ed-orgao">Secretaria de Estado da Fazenda de Santa Catarina (SEF/SC) — Diretoria de Administração Tributária</h3>
+        <p class="ed-cargo">Auditor-Fiscal da Receita Estadual, Nível I — Tecnologia da Informação (C03)</p>
+        <div class="ed-pills"><span class="ed-pill">FCC</span><span class="ed-pill">Estadual · SC</span><span class="ed-pill">Fiscal</span></div>
+        <ul class="ed-discs">
+          <li class="ed-disc">
+            <span class="ed-disc-nome">Contabilidade Geral</span>
+            <span class="ed-disc-pct">100<b>%</b></span>
+            <span class="ed-bar"><i style="width:100%"></i></span>
+          </li>
+        </ul>
+        <p class="ed-legenda">% dos tópicos de cada disciplina cobertos pelo curso</p>
+        <div class="ed-links"><a class="ed-link" href="https://www.concursosfcc.com.br/concursos/sefsc118/index.html" target="_blank" rel="noopener">Edital oficial</a></div>
+      </article>
+    </div>
+
+    <p class="ed-vazio hidden" id="edVazio">Nenhum edital encontrado para essa combinação. Seu concurso ainda não está aqui? <a href="contato.html">Fale com a gente</a> que a gente mapeia.</p>
+
+    <div class="ed-cta">
+      <div>
+        <h2>Não achou o seu concurso?</h2>
+        <p>A gente mapeia o edital e publica aqui. É o mesmo mapeamento que os alunos usam para estudar por dentro da plataforma.</p>
+      </div>
+      <a href="contato.html">Pedir o meu edital</a>
+    </div>
+
+    <p class="ed-nota">Dados de 19/08/2026. A cobertura é sempre a de <strong>cada disciplina</strong> — nunca do edital inteiro, que traz também matérias fora da Contabilidade. Editais mudam: confira sempre o documento oficial da banca.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="ft-grid inner">
+    <div class="ft-brand"><div class="ft-logo"><picture><source srcset="Logo_Completa_BrancoDourado_COM_TAGLINE.webp" type="image/webp"><img src="Logo_Completa_BrancoDourado_COM_TAGLINE.png" alt="Fluência Contábil"></picture></div>
+    <p>Contabilidade para quem quer ser fluente. Formação completa para concursos nas áreas fiscal, controle e tribunais de contas e para o Exame de Suficiência Contábil</p>
+<!-- PARCEIROS -->
+<div class="fc-ptn" style="display:flex;flex-direction:column;gap:11px;margin-top:22px;align-items:flex-start;">
+  <span style="font-family:'Montserrat',Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#C8A84B;">Parceiros</span>
+  <div style="display:flex;flex-wrap:wrap;align-items:center;gap:11px;">
+    <a class="fc-ptn-chip" href="https://dia1tech.com/" target="_blank" rel="noopener" aria-label="Dia 1 Tech" style="display:inline-flex;align-items:center;justify-content:center;background:#fff;border-radius:9px;padding:9px 14px;line-height:0;transition:transform .2s ease,box-shadow .2s ease;"><picture><source srcset="assets/parceiro-dia1.webp" type="image/webp"><img src="assets/parceiro-dia1.png" alt="Dia 1" style="height:24px;width:auto;display:block;" loading="lazy" decoding="async"></picture></a>
+    <a class="fc-ptn-chip" href="https://dia1tech.com/mensageiro?i=pt-BR" target="_blank" rel="noopener" aria-label="Mensageiro" style="display:inline-flex;align-items:center;justify-content:center;background:#fff;border-radius:9px;padding:9px 14px;line-height:0;transition:transform .2s ease,box-shadow .2s ease;"><picture><source srcset="assets/parceiro-mensageiro.webp" type="image/webp"><img src="assets/parceiro-mensageiro.png" alt="Mensageiro" style="height:24px;width:auto;display:block;" loading="lazy" decoding="async"></picture></a>
+    <a class="fc-ptn-chip" href="https://instagram.com/termsecurity" target="_blank" rel="noopener" aria-label="Term Security" style="display:inline-flex;align-items:center;justify-content:center;background:#fff;border-radius:9px;padding:9px 14px;line-height:0;transition:transform .2s ease,box-shadow .2s ease;"><picture><source srcset="assets/parceiro-termsecurity.webp" type="image/webp"><img src="assets/parceiro-termsecurity.png" alt="Term Security" style="height:24px;width:auto;display:block;" loading="lazy" decoding="async"></picture></a>
+  </div>
+</div>
+<style>.fc-ptn-chip:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(0,0,0,.28);}@media(max-width:600px){.fc-ptn-chip{padding:8px 12px !important;}.fc-ptn-chip img{height:22px !important;}}</style></div>
+    <div class="ft-col"><h4>Navegação</h4><ul><li><a href="index.html">Home</a></li><li><a href="institucional.html">Institucional</a></li><li><a href="professor.html">Conheça o Professor</a></li><li><a href="cursos.html">Meus Cursos</a></li><li><a href="editais.html">Editais</a></li><li><a href="blog.html">Blog</a></li></ul></div>
+    <div class="ft-col"><h4>Comunidade</h4><ul><li><a href="depoimentos.html">Depoimentos</a></li><li><a href="contato.html">Contato</a></li><li><a href="https://www.youtube.com/@prof.viniciusferraz" target="_blank" rel="noopener">YouTube</a></li><li><a href="https://www.instagram.com/prof.viniciusferraz" target="_blank" rel="noopener">Instagram</a></li></ul></div>
+    <div class="ft-col"><h4>Legal</h4><ul>
+      <li><a href="https://portal.fluenciacontabil.com.br/termos">Termos de Uso</a></li><li><a href="https://portal.fluenciacontabil.com.br/privacidade">Política de Privacidade</a></li>
+    </ul></div>
+  </div>
+  <div class="ft-bottom inner">
+    <p>FLUÊNCIA CONTÁBIL · por Vinícius Ferraz · Contabilidade para quem quer ser fluente.</p>
+    <p>© 2026 fluenciacontabil.com.br — Todos os direitos reservados.</p>
+  </div>
+</footer>
+<script>
+var nav=document.getElementById('mainNav'),tb=document.getElementById('topbar');
+window.addEventListener('scroll',function(){
+  if(window.scrollY>60){nav.classList.add('scrolled');if(tb)tb.style.display='none';document.body.style.paddingTop='64px';}
+  else{nav.classList.remove('scrolled');if(tb)tb.style.display='';document.body.style.paddingTop='102px';}
+});
+var obs=new IntersectionObserver(function(e){e.forEach(function(el){if(el.isIntersecting){el.target.style.opacity='1';el.target.style.transform='translateY(0)';}});},{threshold:0.07});
+document.querySelectorAll('.reveal').forEach(function(el){el.style.opacity='0';el.style.transform='translateY(18px)';el.style.transition='opacity 0.55s ease,transform 0.55s ease';obs.observe(el);});
+</script>
+
+<script>
+(function(){
+  var busca = document.getElementById('edBusca');
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.ed-card'));
+  var conta = document.getElementById('edConta');
+  var vazio = document.getElementById('edVazio');
+  var sel = {};
+
+  function aplicar(){
+    var q = (busca.value || '').toLowerCase().trim();
+    var n = 0;
+    cards.forEach(function(c){
+      var ok = true;
+      for (var dim in sel) { if (sel[dim] && c.getAttribute('data-' + dim) !== sel[dim]) ok = false; }
+      if (ok && q && c.getAttribute('data-busca').indexOf(q) === -1) ok = false;
+      c.classList.toggle('hidden', !ok);
+      if (ok) n++;
+    });
+    conta.innerHTML = '<b>' + n + '</b> <span>' + (n === 1 ? 'edital encontrado' : 'editais encontrados') + '</span>';
+    vazio.classList.toggle('hidden', n > 0);
+  }
+
+  busca.addEventListener('input', aplicar);
+  document.querySelectorAll('.ed-chip').forEach(function(b){
+    b.addEventListener('click', function(){
+      var dim = b.getAttribute('data-filtro'), val = b.getAttribute('data-valor');
+      var ligar = sel[dim] !== val;
+      document.querySelectorAll('.ed-chip[data-filtro="' + dim + '"]').forEach(function(o){ o.classList.remove('on'); });
+      sel[dim] = ligar ? val : null;
+      if (ligar) b.classList.add('on');
+      aplicar();
+    });
+  });
+})();
+</script>
+</body>
+</html>
