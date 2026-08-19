@@ -28,6 +28,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import sys
 from datetime import datetime
 from html import escape
@@ -107,6 +108,66 @@ def casca_do_site() -> tuple[str, str, str]:
     return nav, footer, script
 
 
+# ── Rótulo de disciplina ────────────────────────────────────────────────
+# O JSON traz o rótulo VERBATIM do edital (é o nome do GROUP raiz da árvore),
+# que serve dentro da plataforma mas vem desigual entre os cards: um em caixa
+# alta, outro carregando o código do cargo. Aqui ele é normalizado pra vitrine.
+#
+# Três camadas, de propósito: regra automática pros padrões conhecidos,
+# EXCECOES pro que exige julgamento humano, e um AVISO ao gerar quando sobra
+# algo suspeito — sem o aviso, um rótulo novo e esquisito entra na página
+# pública e ninguém percebe até um aluno reparar.
+
+# Ficam minúsculas ao converter CAIXA ALTA (menos na 1ª posição).
+_MINUSCULAS = {"e", "de", "da", "das", "do", "dos", "a", "as", "o", "os", "em", "no", "na"}
+
+# Parênteses de recorte do edital que não dizem nada ao visitante.
+_PARENTESES_RUIDO = re.compile(r"\s*\((conhecimentos comuns|[áa]rea[^)]*|cargo[^)]*)\)", re.I)
+
+# Julgamento humano, um por caso. O de Santos é um bloco único do edital que
+# soma Geral + Societária + Análise das Demonstrações + Auditoria, e o
+# percentual é calculado sobre o bloco INTEIRO. Chamá-lo pelas duas primeiras
+# faz o número parecer MENOR que a cobertura real dessas duas — erra a favor do
+# candidato, que é o lado seguro de errar numa peça pública.
+EXCECOES_ROTULO = {
+    "CONTABILIDADE GERAL, SOCIETÁRIA, ANÁLISE DAS DEMONSTRAÇÕES E AUDITORIA":
+        "Contabilidade Geral e Societária",
+}
+
+_avisados: set[str] = set()
+
+
+def rotulo_disciplina(bruto: str) -> str:
+    """Rótulo pronto pra vitrine. Avisa (uma vez) sobre o que ficou suspeito."""
+    if bruto in EXCECOES_ROTULO:
+        return EXCECOES_ROTULO[bruto]
+
+    s = _PARENTESES_RUIDO.sub("", bruto).strip()
+    if s.isupper():
+        palavras = s.lower().split()
+        s = " ".join(
+            p if (i and p in _MINUSCULAS) else p.capitalize() for i, p in enumerate(palavras)
+        )
+
+    suspeito = None
+    if "(" in s:
+        suspeito = "parêntese não reconhecido"
+    elif len(s) > 40:
+        suspeito = str(len(s)) + " caracteres — vai quebrar o card em várias linhas"
+    elif s.isupper():
+        suspeito = "continua em caixa alta"
+
+    if suspeito and bruto not in _avisados:
+        _avisados.add(bruto)
+        print(
+            "[catalogo] AVISO: rótulo " + suspeito + ": " + repr(s) + "\n"
+            "[catalogo]   (do edital: " + repr(bruto) + ")\n"
+            "[catalogo]   Se quiser outro texto, acrescente em EXCECOES_ROTULO.",
+            file=sys.stderr,
+        )
+    return s
+
+
 def post_do_edital(ed: dict) -> str | None:
     """Casa o edital com um post do blog pelo início do concursoSlug."""
     slug = (ed.get("concursoSlug") or "").lower()
@@ -138,6 +199,11 @@ def status_da_prova(iso: str | None, hoje: datetime) -> tuple[str, str]:
     return ("avista", "Prova à vista")
 
 
+def tem_disciplina_visivel(ed: dict) -> bool:
+    """Depois de omitir os 0%, o edital ainda tem o que mostrar?"""
+    return any(int(d["pct"]) for d in ed["disciplinas"])
+
+
 def card(ed: dict, hoje: datetime) -> str:
     orgao = escape(ed["orgao"])
     cargo = escape(ed.get("cargo") or "")
@@ -161,7 +227,12 @@ def card(ed: dict, hoje: datetime) -> str:
 
     linhas = []
     for d in ed["disciplinas"]:
-        rotulo = escape(d["rotulo"])
+        # 0% sai do card (decisão do Vinícius, 19/08). A nota de rodapé segue
+        # dizendo que a conta é por disciplina, então o card não afirma cobrir
+        # o que não cobre — apenas não lista a disciplina não coberta.
+        if not int(d["pct"]):
+            continue
+        rotulo = escape(rotulo_disciplina(d["rotulo"]))
         pct = int(d["pct"])
         linhas.append(
             f'          <li class="ed-disc">\n'
@@ -212,7 +283,12 @@ def opcoes_filtro(editais: list[dict], campo: str, rotulos: dict | None = None) 
 
 def gerar(doc: dict) -> str:
     nav, footer, script_scroll = casca_do_site()
-    editais = doc["editais"]
+    # edital cujas disciplinas são TODAS 0% ficaria com um card vazio — sai da
+    # página inteiro, como já acontece com quem não tem disciplina na árvore
+    editais = [e for e in doc["editais"] if tem_disciplina_visivel(e)]
+    fora = len(doc["editais"]) - len(editais)
+    if fora:
+        print(str(fora) + " edital(is) fora: todas as disciplinas em 0%.", file=sys.stderr)
     hoje = datetime.strptime(doc["geradoEm"][:10], "%Y-%m-%d")
     gerado_br = hoje.strftime("%d/%m/%Y")
 

@@ -1,0 +1,378 @@
+{
+  "geradoEm": "2026-08-19T14:12:18.290Z",
+  "total": 20,
+  "editais": [
+    {
+      "concursoSlug": "secretaria-da-fazenda-do-estado-do-ceara-sefaz-ce",
+      "orgao": "Secretaria da Fazenda do Estado do Ceará (SEFAZ-CE)",
+      "cargo": "Auditor-Fiscal da Fazenda Estadual",
+      "banca": "FCC",
+      "esfera": "ESTADUAL",
+      "uf": "CE",
+      "area": "FISCAL",
+      "dataProva": null,
+      "linkOficial": null,
+      "disciplinas": [
+        {
+          "rotulo": "Contabilidade Geral (conhecimentos comuns)",
+          "pct": 100
+        },
+        {
+          "rotulo": "Contabilidade Pública (conhecimentos comuns)",
+          "pct": 0
+        },
+        {
+          "rotulo": "Auditoria (conhecimentos comuns)",
+          "pct": 0
+        },
+        {
+          "rotulo": "Contabilidade Avançada (área A01 — Gestão Fazendária)",
+          "pct": 100
+        },
+        {
+          "rotulo": "Contabilidade de Custos (área A01 — Gestão Fazendária)",
+          "pct": 0
+        }
+      ]
+    },
+    {
+      "concursoSlug": "tribunal-de-contas-do-estado-do-maranhao-tce-ma",
+      "orgao": "Tribunal de Contas do Estado do Maranhão (TCE/MA)",
+      "cargo": "Auditor Estadual de Controle Externo – Especialidade: Controle Externo (Cargo 12)",
+      "banca": "CEBRASPE (CESPE)",
+      "esfera": "ESTADUAL",
+      "uf": "MA",
+      "area": "TRIBUNAIS_DE_CONTAS",
+      "dataProva": "2026-11-29",
+      "linkOficial": "http://www.cebraspe.org.br/concursos/tce_ma_26",
+      "disciplinas": [
+        {
+          "rotulo": "Contabilidade Geral",
+          "pct": 100
+        }
+      ]
+    },
+    {
+      "concursoSlug": "tribunal-de-contas-do-estado-do-maranhao-tce-ma",
+      "orgao": "Tribunal de Contas do Estado do Maranhão (TCE/MA)",
+      "cargo": "Analista Estadual de Apoio ao Controle Externo – Área: Apoio Técnico-Administrativo – Especialidade: Contabilidade (Cargo 2)",
+      "banca": "CEBRASPE (CESPE)",
+      "esfera": "ESTADUAL",
+      "uf": "MA",
+      "area": "TRIBUNAIS_DE_CONTAS",
+      "dataProva": "2026-11-22",
+      "linkOficial": "http://www.cebraspe.org.br/concursos/tce_ma_26",
+      "disciplinas": [
+        {
+          "rotulo": "Contabilidade Geral",
+          "pct": 100
+        }
+      ]
+    },
+    {
+      "concursoSlug": "prefeitura-de-manaus-secretaria-municipal-de-financas-planejamento-e-tecnologia-",
+      "orgao": "Prefeitura de Manaus — Secretaria Municipal de Finanças, Planejamento e Tecnologia da Informação – SEMEF",
+      "cargo": "Auditor-Fiscal de Tributos Municipais – AFTM – Nível I",
+      "banca": "FCC",
+      "esfera": "MUNICIPAL",
+      "uf": "AM",
+      "area": "FISCAL",
+      "dataProva": "2026-11-01",
+      "linkOficial": "https://www.concursosfcc.com.br",
+      "disciplinas": [
+        {
+          "rotulo": "Contabilidade Geral",
+          "pct": 78
+        }
+      ]
+    },
+    {
+      "concursoSlug": "prefeitura-municipal-de-santos-sp-secretaria-municipal-de-financas-e-gestao-sefi",
+      "orgao": "Prefeitura Municipal de Santos/SP — Secretaria Municipal de Finanças e Gestão (SEFIN)",
+      "cargo": "Auditor Fiscal de Tributos Municipais",
+      "banca": "IBAM — Instituto Brasileiro de Administração Municipal",
+      "esfera": "MUNICIPAL",
+      "uf": "SP",
+      "area": "FISCAL",
+      "dataProva": "2026-10-18",
+      "linkOficial": "https://www.ibamsp-concursos.org.br/informacoes/179/",
+      "disciplinas": [
+        {
+          "rotulo": "CONTABILIDADE GERAL, SOCIETÁRIA, ANÁLISE DAS DEMONSTRAÇÕES E AUDITORIA",
+          "pct": 78
+        }
+      ]
+    },
+    {
+      "concursoSlug": "tribunal-de-justica-do-estado-do-parana-tjpr",
+      "orgao": "Tribunal de Justiça do Estado do Paraná (TJPR)",
+      "cargo": "Contador (Cód. 01)",
+      "banca": "FUNDATEC",
+      "esfera": "ESTADUAL",
+      "uf": "PR",
+      "area": "JUDICIARIO",
+      "dataProva": "2026-10-18",
+      "linkOficial": "https://portal.tjpr.jus.br/pesquisa_athos/anexo/7205439",
+      "disciplinas": [
+        {
+          "rotulo": "Contabilidade Geral",
+          "pct": 68
+        }
+      ]
+    },
+    {
+      "concursoSlug": "conselho-federal-de-contabilidade-cfc",
+      "orgao": "Conselho Federal de Contabilidade (CFC)",
+      "cargo": "Bacharel em Ciências Contábeis (Exame de Suficiência — registro de Contador no CRC)",
+      "banca": "FGV",
+      "esfera": "FEDERAL",
+      "uf": null,
+      "area": "SUFICIENCIA",
+      "dataProva": "2026-09-27",
+      "linkOficial": "https://conhecimento.fgv.br/exames/cfc/2026.2",
+      "disciplinas": [
+        {
+          "rotulo": "Contabilidade Geral",
+          "pct": 100
+        },
+        {
+          "rotulo": "Teoria da Contabilidade",
+          "pct": 100
+        }
+      ]
+    },
+    {
+      "concursoSlug": "conselho-regional-de-educacao-fisica-da-21-regiao-cref-21-ma",
+      "orgao": "Conselho Regional de Educação Física da 21ª Região – CREF-21/MA",
+      "cargo": "Contador (Cód. 405)",
+      "banca": "QUADRIX",
+      "esfera": "FEDERAL",
+      "uf": "MA",
+      "area": "GERAL",
+      "dataProva": "2026-09-13",
+      "linkOficial": "https://quadrix.org.br/informacoes/3060/",
+      "disciplinas": [
+        {
+          "rotulo": "Contabilidade Geral",
+          "pct": 78
+        }
+      ]
+    },
+    {
+      "concursoSlug": "ministerio-da-economia-secretaria-especial-da-receita-federal-do-brasil",
+      "orgao": "Ministério da Economia — Secretaria Especial da Receita Federal do Brasil",
+      "cargo": "Analista-Tributário da Receita Federal do Brasil",
+      "banca": "FGV",
+      "esfera": "FEDERAL",
+      "uf": null,
+      "area": "FISCAL",
+      "dataProva": "2023-03-19",
+      "linkOficial": "https://conhecimento.fgv.br/concursos/rfb22",
+      "disciplinas": [
+        {
+          "rotulo": "Contabilidade Geral",
+          "pct": 100
+        }
+      ]
+    },
+    {
+      "concursoSlug": "ministerio-da-economia-secretaria-especial-da-receita-federal-do-brasil",
+      "orgao": "Ministério da Economia — Secretaria Especial da Receita Federal do Brasil",
+      "cargo": "Auditor-Fiscal da Receita Federal do Brasil",
+      "banca": "FGV",
+      "esfera": "FEDERAL",
+      "uf": null,
+      "area": "FISCAL",
+      "dataProva": "2023-03-19",
+      "linkOficial": "https://conhecimento.fgv.br/concursos/rfb22",
+      "disciplinas": [
+        {
+          "rotulo": "Contabilidade Geral",
+          "pct": 100
+        }
+      ]
+    },
+    {
+      "concursoSlug": "tribunal-de-justica-do-estado-do-tocantins-tjto",
+      "orgao": "Tribunal de Justiça do Estado do Tocantins (TJTO)",
+      "cargo": "Contador/Distribuidor – Especialidade: Ciências Contábeis ou Econômicas (Nível Superior)",
+      "banca": "FGV",
+      "esfera": "ESTADUAL",
+      "uf": "TO",
+      "area": "JUDICIARIO",
+      "dataProva": "2022-06-26",
+      "linkOficial": "https://conhecimento.fgv.br/concursos/tjto22",
+      "disciplinas": [
+        {
+          "rotulo": "CONTABILIDADE GERAL E SOCIETÁRIA",
+          "pct": 86
+        }
+      ]
+    },
+    {
+      "concursoSlug": "tribunal-de-contas-do-estado-do-rio-de-janeiro-tce-rj",
+      "orgao": "Tribunal de Contas do Estado do Rio de Janeiro (TCE/RJ)",
+      "cargo": "Analista de Controle Externo – Área: Controle Externo – Especialidade: Ciências Contábeis (Cargo 1)",
+      "banca": "CEBRASPE (CESPE)",
+      "esfera": "ESTADUAL",
+      "uf": "RJ",
+      "area": "TRIBUNAIS_DE_CONTAS",
+      "dataProva": "2021-02-06",
+      "linkOficial": "https://www.cebraspe.org.br/concursos/tce_rj_20",
+      "disciplinas": [
+        {
+          "rotulo": "Contabilidade Geral",
+          "pct": 96
+        },
+        {
+          "rotulo": "Contabilidade Pública",
+          "pct": 0
+        }
+      ]
+    },
+    {
+      "concursoSlug": "governo-do-distrito-federal-secretaria-de-estado-de-economia-do-distrito-federal",
+      "orgao": "Governo do Distrito Federal — Secretaria de Estado de Economia do Distrito Federal (SEEC/DF)",
+      "cargo": "Auditor Fiscal da Receita do Distrito Federal",
+      "banca": "CEBRASPE (CESPE)",
+      "esfera": "ESTADUAL",
+      "uf": "DF",
+      "area": "FISCAL",
+      "dataProva": "2020-02-02",
+      "linkOficial": "http://www.cebraspe.org.br/concursos/seec_auditor_19",
+      "disciplinas": [
+        {
+          "rotulo": "Contabilidade Geral",
+          "pct": 94
+        }
+      ]
+    },
+    {
+      "concursoSlug": "governo-do-estado-da-bahia-secretaria-da-administracao-do-estado-da-bahia-saeb-s",
+      "orgao": "Governo do Estado da Bahia — Secretaria da Administração do Estado da Bahia (SAEB) / Secretaria da Fazenda do Estado da Bahia (SEFAZ)",
+      "cargo": "Auditor Fiscal — Administração Tributária (C03)",
+      "banca": "FCC",
+      "esfera": "ESTADUAL",
+      "uf": "BA",
+      "area": "FISCAL",
+      "dataProva": "2019-05-26",
+      "linkOficial": "https://www.concursosfcc.com.br",
+      "disciplinas": [
+        {
+          "rotulo": "Contabilidade Geral",
+          "pct": 70
+        }
+      ]
+    },
+    {
+      "concursoSlug": "governo-do-estado-da-bahia-secretaria-da-administracao-do-estado-da-bahia-saeb-s",
+      "orgao": "Governo do Estado da Bahia — Secretaria da Administração do Estado da Bahia (SAEB) / Secretaria da Fazenda do Estado da Bahia (SEFAZ)",
+      "cargo": "Auditor Fiscal — Administração, Finanças e Controle Interno (A01)",
+      "banca": "FCC",
+      "esfera": "ESTADUAL",
+      "uf": "BA",
+      "area": "FISCAL",
+      "dataProva": "2019-05-26",
+      "linkOficial": "https://www.concursosfcc.com.br",
+      "disciplinas": [
+        {
+          "rotulo": "Contabilidade Geral",
+          "pct": 70
+        }
+      ]
+    },
+    {
+      "concursoSlug": "governo-do-estado-da-bahia-secretaria-da-administracao-do-estado-da-bahia-saeb-s",
+      "orgao": "Governo do Estado da Bahia — Secretaria da Administração do Estado da Bahia (SAEB) / Secretaria da Fazenda do Estado da Bahia (SEFAZ)",
+      "cargo": "Auditor Fiscal — Tecnologia da Informação (B02)",
+      "banca": "FCC",
+      "esfera": "ESTADUAL",
+      "uf": "BA",
+      "area": "FISCAL",
+      "dataProva": "2019-05-26",
+      "linkOficial": "https://www.concursosfcc.com.br",
+      "disciplinas": [
+        {
+          "rotulo": "Contabilidade Geral",
+          "pct": 70
+        }
+      ]
+    },
+    {
+      "concursoSlug": "estado-do-rio-grande-do-sul-secretaria-da-fazenda-sefaz-rs",
+      "orgao": "Estado do Rio Grande do Sul — Secretaria da Fazenda (SEFAZ/RS)",
+      "cargo": "Auditor-Fiscal da Receita Estadual, Classe A",
+      "banca": "CEBRASPE (CESPE)",
+      "esfera": "ESTADUAL",
+      "uf": "RS",
+      "area": "FISCAL",
+      "dataProva": "2019-02-02",
+      "linkOficial": "https://www.cebraspe.org.br/concursos/sefaz_rs_18_auditor",
+      "disciplinas": [
+        {
+          "rotulo": "Contabilidade Geral",
+          "pct": 100
+        },
+        {
+          "rotulo": "Contabilidade Avançada",
+          "pct": 100
+        }
+      ]
+    },
+    {
+      "concursoSlug": "secretaria-de-estado-da-fazenda-de-santa-catarina-sef-sc-diretoria-de-administra",
+      "orgao": "Secretaria de Estado da Fazenda de Santa Catarina (SEF/SC) — Diretoria de Administração Tributária",
+      "cargo": "Auditor-Fiscal da Receita Estadual, Nível I — Gestão Tributária (B02)",
+      "banca": "FCC",
+      "esfera": "ESTADUAL",
+      "uf": "SC",
+      "area": "FISCAL",
+      "dataProva": "2018-11-18",
+      "linkOficial": "https://www.concursosfcc.com.br/concursos/sefsc118/index.html",
+      "disciplinas": [
+        {
+          "rotulo": "Contabilidade Geral",
+          "pct": 100
+        }
+      ]
+    },
+    {
+      "concursoSlug": "secretaria-de-estado-da-fazenda-de-santa-catarina-sef-sc-diretoria-de-administra",
+      "orgao": "Secretaria de Estado da Fazenda de Santa Catarina (SEF/SC) — Diretoria de Administração Tributária",
+      "cargo": "Auditor-Fiscal da Receita Estadual, Nível I — Auditoria e Fiscalização (A01)",
+      "banca": "FCC",
+      "esfera": "ESTADUAL",
+      "uf": "SC",
+      "area": "FISCAL",
+      "dataProva": "2018-11-18",
+      "linkOficial": "https://www.concursosfcc.com.br/concursos/sefsc118/index.html",
+      "disciplinas": [
+        {
+          "rotulo": "Contabilidade Geral",
+          "pct": 100
+        },
+        {
+          "rotulo": "Contabilidade Avançada",
+          "pct": 95
+        }
+      ]
+    },
+    {
+      "concursoSlug": "secretaria-de-estado-da-fazenda-de-santa-catarina-sef-sc-diretoria-de-administra",
+      "orgao": "Secretaria de Estado da Fazenda de Santa Catarina (SEF/SC) — Diretoria de Administração Tributária",
+      "cargo": "Auditor-Fiscal da Receita Estadual, Nível I — Tecnologia da Informação (C03)",
+      "banca": "FCC",
+      "esfera": "ESTADUAL",
+      "uf": "SC",
+      "area": "FISCAL",
+      "dataProva": "2018-11-18",
+      "linkOficial": "https://www.concursosfcc.com.br/concursos/sefsc118/index.html",
+      "disciplinas": [
+        {
+          "rotulo": "Contabilidade Geral",
+          "pct": 100
+        }
+      ]
+    }
+  ]
+}
