@@ -504,7 +504,40 @@
   border-color: #C8A84B;
   background: rgba(255,255,255,0.1);
 }
-.fc-ec-inline-cta .fc-ec-fineprint { color: rgba(255,255,255,0.5); }
+.fc-ec-inline-cta .fc-ec-fineprint {
+  color: rgba(255,255,255,0.5);
+  /* o reset `.fc-ec-inline-cta p` zera o margin-top do fineprint; com o botão no
+     lugar do formulário (mais baixo), sem isto ele encosta no botão */
+  margin-top: 16px !important;
+}
+
+/* Botão do CTA inline. É um link, não um <button>, porque o bloco virou CTA de compra
+   em vez de captura de e-mail. Precisa de !important para vencer o reset defensivo de
+   `.fc-ec-inline-cta a`, que força todo link a dourado sublinhado. Os valores são os
+   mesmos de `.fc-ec-form button` — o botão sai pixel a pixel igual ao anterior. */
+.fc-ec-inline-cta a.fc-ec-btn {
+  display: inline-block;
+  flex: 0 0 auto;
+  padding: 14px 22px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: #fff !important;
+  background: #C0392B !important;
+  border: 2px solid #C0392B !important;
+  border-radius: 2px;
+  text-decoration: none !important;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.fc-ec-inline-cta a.fc-ec-btn:hover {
+  background: #922B1F !important;
+  border-color: #922B1F !important;
+  color: #fff !important;
+}
 
 /* ================= REFERRAL SUCCESS PANEL ================= */
 .fc-ec-referral { text-align: center; }
