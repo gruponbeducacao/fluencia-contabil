@@ -918,7 +918,9 @@
 
   function initInlineCTA() {
     if (!isBlogPost()) return;
-    if (isSubscribed()) return;
+    // Sem guarda de isSubscribed(): isto deixou de ser captura de e-mail e virou CTA de
+    // compra. Quem já está na base é justamente quem pode assinar — esconder dele a oferta
+    // seria esconder justamente de quem está mais perto de comprar.
 
     var root = findArticleRoot();
     if (!root) return;
@@ -944,17 +946,16 @@
     }
 
     var html = ''
-      + '<aside class="fc-ec-inline-cta" aria-label="Lives gratuitas de Contabilidade">'
+      + '<aside class="fc-ec-inline-cta" aria-label="Assine o curso de Contabilidade">'
       +   '<div class="fc-ec-inline-body">'
-      +     '<span class="fc-ec-eyebrow">4 lives gratuitas</span>'
+      +     '<span class="fc-ec-eyebrow">matrículas abertas</span>'
       +     '<div class="fc-ec-bar"></div>'
-      +     '<h3 class="fc-ec-title">De 4 a 7 de agosto, às 20h, eu te mostro a lógica da contabilidade.</h3>'
-      +     '<p class="fc-ec-desc">Quatro noites gratuitas com o <strong>Prof. Vinícius Ferraz</strong> — começando por débito e crédito e terminando na abertura das vagas do curso.</p>'
-      +     '<form class="fc-ec-form" novalidate>'
-      +       '<input type="email" placeholder="Seu melhor e-mail" required autocomplete="email">'
-      +       '<button type="submit">Quero minha vaga</button>'
-      +     '</form>'
-      +     '<p class="fc-ec-fineprint">Sem compromisso. Você pode cancelar quando quiser.</p>'
+      +     '<h3 class="fc-ec-title">Contabilidade para concursos, ensinada como um idioma.</h3>'
+      +     '<p class="fc-ec-desc">Da letra da norma à questão da banca, com exemplos numéricos e lançamentos comentados — pelo raciocínio, não pela memorização. Com o <strong>Prof. Vinícius Ferraz</strong>.</p>'
+      +     '<div class="fc-ec-form">'
+      +       '<a class="fc-ec-btn" href="/cursos.html#assinar">Quero assinar</a>'
+      +     '</div>'
+      +     '<p class="fc-ec-fineprint">7 dias de garantia. Cancele quando quiser.</p>'
       +   '</div>'
       + '</aside>';
 
@@ -965,30 +966,9 @@
     // Insere antes do anchor (se for H2 = antes do próximo capítulo; se p = antes do parágrafo)
     anchor.parentNode.insertBefore(el, anchor);
 
-    var form = el.querySelector('.fc-ec-form');
-    var body = el.querySelector('.fc-ec-inline-body');
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      var input = form.querySelector('input[type="email"]');
-      var btn = form.querySelector('button');
-      var email = (input.value || '').trim();
-      if (!isValidEmail(email)) {
-        input.focus();
-        input.style.borderColor = '#C0392B';
-        return;
-      }
-      btn.disabled = true;
-      btn.textContent = 'Enviando...';
-      submitEmail(email, 'blog_inline_cta', 'lista_espera').finally(function () {
-        markSubscribed();
-        var opts = ctaShowsWhatsAppGroup() ? { waGroupHref: WHATSAPP_GROUP_URL } : {};
-        renderReferralPanel(body, email, opts);
-        hideStickyIfAny();
-      });
-    });
   }
 
-  /* ================= INTERCEPTAÇÕES DE FORMS EXISTENTES ================= */
+/* ================= INTERCEPTAÇÕES DE FORMS EXISTENTES ================= */
 
   // Lista de espera (cursos.html):
   // Fluxo atual: submitLista() → esconde #formEspera, mostra #formSuccess
