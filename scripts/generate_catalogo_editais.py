@@ -100,16 +100,26 @@ def tags_email_capture() -> str:
     with open(PAGINA_MODELO, encoding="utf-8") as f:
         modelo = f.read()
 
-    tags = re.findall(
-        r'<(?:link rel="stylesheet" href|script src)="assets/email-capture\.[a-z]+\?v=\d+"[^>]*>',
+    # DUAS buscas, e a do <script> exige o </script> de fechamento. Uma regex
+    # única terminada em `[^>]*>` casa só a tag de ABERTURA: o </script> ficava
+    # de fora, o parser tratava todo o resto do documento como conteúdo do
+    # script e a página subia com o <body> VAZIO — sem erro no console, sem
+    # falha no build. Foi exatamente o que foi ao ar em 19/08.
+    css = re.findall(
+        r'<link rel="stylesheet" href="assets/email-capture\.css\?v=\d+"[^>]*>',
         modelo,
     )
-    if len(tags) != 2:
+    js = re.findall(
+        r'<script src="assets/email-capture\.js\?v=\d+"[^>]*></script>',
+        modelo,
+    )
+    if len(css) != 1 or len(js) != 1:
         raise SystemExit(
-            f"[catalogo] esperava 2 tags de email-capture em cursos.html, achei {len(tags)}. "
-            "O bloco mudou de forma — ajuste tags_email_capture() antes de gerar."
+            f"[catalogo] esperava 1 link e 1 script de email-capture em cursos.html, "
+            f"achei {len(css)} e {len(js)}. O bloco mudou de forma — "
+            "ajuste tags_email_capture() antes de gerar."
         )
-    return "\n".join(tags)
+    return css[0] + "\n" + js[0]
 
 
 def casca_do_site() -> tuple[str, str, str]:
@@ -535,6 +545,40 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 """
 
 
+def fiscalizar(html: str, esperado: int) -> None:
+    """Recusa HTML que o navegador não renderizaria. Falha DURA, antes de escrever.
+
+    Existe porque em 19/08 a página foi ao ar com o <body> vazio: uma tag
+    `<script src=...>` entrou sem o `</script>`, o parser engoliu o resto do
+    documento como conteúdo do script e não houve erro em lugar nenhum — nem no
+    build, nem no console, nem no `grep` que eu tinha usado pra conferir. Um
+    arquivo bem-formado não é o mesmo que uma página que renderiza; só olhar
+    (ou contar tags) pega isso.
+    """
+    corte = html.find("<body")
+    if corte < 0:
+        raise SystemExit("[catalogo] HTML sem <body> — abortando.")
+
+    head = html[:corte]
+    abre, fecha = head.count("<script"), head.count("</script>")
+    if abre != fecha:
+        raise SystemExit(
+            f"[catalogo] <head> com {abre} <script> e {fecha} </script>. Desbalanceado: "
+            "o navegador trataria o resto do documento como código e a página subiria "
+            "EM BRANCO. Abortando."
+        )
+
+    cards = html.count('<article class="ed-card ')
+    if cards != esperado:
+        raise SystemExit(
+            f"[catalogo] esperava {esperado} cards no HTML e contei {cards}. Abortando."
+        )
+
+    for marca, oque in (("<nav", "o menu"), ("</footer>", "o rodapé"), ("</html>", "o fecho do documento")):
+        if marca not in html:
+            raise SystemExit(f"[catalogo] o HTML não tem {oque} ({marca}). Abortando.")
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="Gera editais.html a partir do JSON do catálogo.")
     ap.add_argument("--check", action="store_true", help="não escreve; falha se o arquivo estiver desatualizado")
@@ -553,6 +597,7 @@ def main() -> int:
         return 1
 
     html = gerar(doc)
+    fiscalizar(html, sum(1 for e in doc["editais"] if tem_disciplina_visivel(e)))
 
     if args.check:
         atual = open(HTML_SAIDA, encoding="utf-8").read() if os.path.exists(HTML_SAIDA) else None
