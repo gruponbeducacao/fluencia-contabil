@@ -166,7 +166,7 @@ def card(ed: dict, hoje: datetime) -> str:
         linhas.append(
             f'          <li class="ed-disc">\n'
             f'            <span class="ed-disc-nome">{rotulo}</span>\n'
-            f'            <span class="ed-disc-pct">{pct}%</span>\n'
+            f'            <span class="ed-disc-pct">{pct}<b>%</b></span>\n'
             f'            <span class="ed-bar"><i style="width:{pct}%"></i></span>\n'
             f"          </li>"
         )
@@ -299,9 +299,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 .ed-chip{{font-family:inherit;font-size:var(--fs-sm);font-weight:600;padding:6px 14px;border:1px solid #DDD;background:#FFF;color:var(--texto);border-radius:var(--radius-lg);cursor:pointer;transition:all var(--t-fast)}}
 .ed-chip:hover{{border-color:var(--azul-med)}}
 .ed-chip.on{{background:var(--azul);border-color:var(--azul);color:#FFF}}
-.ed-conta{{font-size:var(--fs-sm);color:#666;margin:var(--space-4) 0}}
-.ed-grid{{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:var(--space-6)}}
-.ed-card{{background:#FFF;border:1px solid #E8E8E8;border-radius:var(--radius-md);padding:var(--space-6);display:flex;flex-direction:column}}
+.ed-conta{{display:flex;align-items:baseline;gap:8px;padding-bottom:14px;border-bottom:1px solid #E8E8E8;margin:var(--space-6) 0 var(--space-6)}}
+.ed-conta b{{font-size:22px;font-weight:800;color:var(--azul);font-variant-numeric:tabular-nums}}
+.ed-conta span{{font-size:var(--fs-base);font-weight:600;color:#555}}
+.ed-grid{{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-6)}}
+.ed-card{{background:#FFF;border:1px solid #E8E8E8;border-radius:var(--radius-md);padding:var(--space-6);display:flex;flex-direction:column;transition:border-color var(--t-fast),box-shadow var(--t-fast)}}
+.ed-card:hover{{border-color:var(--dourado);box-shadow:0 6px 20px rgba(200,168,75,.14)}}
 .ed-card.hidden{{display:none}}
 .ed-card-top{{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:var(--space-3)}}
 .ed-status{{font-size:var(--fs-xs);font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:var(--radius-lg)}}
@@ -312,10 +315,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 .ed-cargo{{font-size:var(--fs-sm);color:#555;margin:0 0 var(--space-3);line-height:1.4}}
 .ed-pills{{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:var(--space-5)}}
 .ed-pill{{font-size:var(--fs-xs);font-weight:600;padding:3px 10px;background:var(--cream);color:var(--azul-med);border-radius:var(--radius-lg)}}
-.ed-discs{{list-style:none;padding:0;margin:0 0 8px;display:flex;flex-direction:column;gap:10px}}
-.ed-disc{{display:grid;grid-template-columns:1fr auto;gap:2px 10px}}
+.ed-discs{{list-style:none;padding:0;margin:0 0 8px;display:flex;flex-direction:column;gap:12px}}
+.ed-disc{{display:grid;grid-template-columns:1fr auto;gap:5px 10px}}
 .ed-disc-nome{{font-size:var(--fs-sm);font-weight:600;color:var(--texto)}}
-.ed-disc-pct{{font-size:var(--fs-sm);font-weight:800;color:var(--azul);font-variant-numeric:tabular-nums}}
+.ed-disc-pct{{font-size:17px;font-weight:800;color:var(--azul);font-variant-numeric:tabular-nums;line-height:1}}
+.ed-disc-pct b{{font-size:11px;font-weight:700;color:#777}}
 .ed-bar{{grid-column:1/-1;height:6px;background:#EEE;border-radius:3px;overflow:hidden}}
 .ed-bar i{{display:block;height:100%;background:linear-gradient(90deg,var(--dourado),var(--dourado-esc))}}
 .ed-legenda{{font-size:var(--fs-xs);color:#777;margin:0 0 var(--space-4);line-height:1.35}}
@@ -323,8 +327,18 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 .ed-link{{font-size:var(--fs-sm);font-weight:700;color:var(--azul-med);text-decoration:none}}
 .ed-link:hover{{text-decoration:underline}}
 .ed-vazio{{padding:var(--space-10) 0;text-align:center;color:#666}}
-.ed-nota{{margin-top:var(--space-10);padding-top:var(--space-6);border-top:1px solid #E8E8E8;font-size:var(--fs-sm);color:#666;line-height:1.6;max-width:var(--max-prose)}}
-@media(max-width:768px){{.ed-grid{{grid-template-columns:1fr}}.ed-filtro-lbl{{min-width:100%}}}}
+/* o estado vazio nasce com .hidden, mas a única regra de .hidden era
+   .ed-card.hidden — sem esta, a mensagem 'nenhum edital encontrado'
+   ficava visível ABAIXO dos cards o tempo todo */
+.ed-vazio.hidden{{display:none}}
+.ed-cta{{margin-top:var(--space-10);padding:28px 32px;background:var(--cream);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}}
+.ed-cta h2{{font-size:20px;font-weight:800;color:var(--azul);margin:0 0 6px;line-height:1.25}}
+.ed-cta p{{font-family:'Source Serif 4',Georgia,serif;font-size:15.5px;line-height:1.55;color:#444;margin:0;max-width:54ch}}
+.ed-cta a{{flex:0 0 auto;font-size:14px;font-weight:700;color:#FFF;background:var(--cta);padding:14px 28px;border-radius:var(--radius-md);text-decoration:none}}
+.ed-cta a:hover{{background:var(--cta-hover)}}
+.ed-nota{{margin-top:var(--space-8);padding-top:var(--space-6);border-top:1px solid #E8E8E8;font-size:var(--fs-sm);color:#666;line-height:1.6;max-width:var(--max-prose)}}
+@media(max-width:1024px){{.ed-grid{{grid-template-columns:repeat(2,minmax(0,1fr))}}}}
+@media(max-width:768px){{.ed-grid{{grid-template-columns:1fr}}.ed-filtro-lbl{{min-width:100%}}.ed-cta{{flex-direction:column;align-items:flex-start}}}}
 </style>
 <script type="application/ld+json">
 {json.dumps(ld, ensure_ascii=False, indent=2)}
@@ -358,13 +372,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       {filtros}
     </div>
 
-    <p class="ed-conta" id="edConta">{len(editais)} {'edital' if len(editais) == 1 else 'editais'} {'mapeado' if len(editais) == 1 else 'mapeados'}</p>
+    <p class="ed-conta" id="edConta"><b>{len(editais)}</b> <span>{'edital mapeado' if len(editais) == 1 else 'editais mapeados'}</span></p>
 
     <div class="ed-grid" id="edGrid">
 {cards}
     </div>
 
     <p class="ed-vazio hidden" id="edVazio">Nenhum edital encontrado para essa combinação. Seu concurso ainda não está aqui? <a href="contato.html">Fale com a gente</a> que a gente mapeia.</p>
+
+    <div class="ed-cta">
+      <div>
+        <h2>Não achou o seu concurso?</h2>
+        <p>A gente mapeia o edital e publica aqui. É o mesmo mapeamento que os alunos usam para estudar por dentro da plataforma.</p>
+      </div>
+      <a href="contato.html">Pedir o meu edital</a>
+    </div>
 
     <p class="ed-nota">Dados de {gerado_br}. A cobertura é sempre a de <strong>cada disciplina</strong> — nunca do edital inteiro, que traz também matérias fora da Contabilidade. Editais mudam: confira sempre o documento oficial da banca.</p>
   </div>
@@ -391,7 +413,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       c.classList.toggle('hidden', !ok);
       if (ok) n++;
     }});
-    conta.textContent = n + (n === 1 ? ' edital encontrado' : ' editais encontrados');
+    conta.innerHTML = '<b>' + n + '</b> <span>' + (n === 1 ? 'edital encontrado' : 'editais encontrados') + '</span>';
     vazio.classList.toggle('hidden', n > 0);
   }}
 
