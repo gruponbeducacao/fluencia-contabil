@@ -84,6 +84,17 @@
     var refIn = safeLocalGet(KEYS.refIn);
     if (refIn) data.append('ref', refIn);
 
+    // Avisa o GTM que houve captura. O gatilho nativo de Form Submission não
+    // serve aqui: o envio é fetch com preventDefault, e a resposta é opaca
+    // (no-cors) — não há confirmação do servidor para esperar. Como
+    // submitEmail() só é chamada depois de isValidEmail(), o evento só sai em
+    // captura real. Este é o funil único de toda captura: um push aqui cobre
+    // newsletter, lista de espera e as caixas do blog.
+    try {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ event: 'lead_capturado', origem: origem });
+    } catch (e) {}
+
     return fetch(ENDPOINT, { method: 'POST', body: data, mode: 'no-cors' });
   }
 
