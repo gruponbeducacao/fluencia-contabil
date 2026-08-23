@@ -43,6 +43,9 @@
  *   4. testSendMarketingEmail() — envia A1 pro seu email
  *   5. importMailerLiteContacts() / importMailerLiteUnsubs() — migração
  *   6. cutoverDisableMailerLite() — desliga o trigger do MailerLite
+ *   7. setupTrackingAberturas()   — pixel de abertura + métricas na planilha
+ *                                   (1×, 28/07/2026 — só mede o que for enviado
+ *                                    DEPOIS; L1 e Bolsão ficaram sem o dado)
  * ═══════════════════════════════════════════════════════════════════════
  */
 
@@ -75,6 +78,21 @@ const MAILER_SHEETS = {
   IMPORT_ML:  'Import ML',
   UNSUBS_ML:  'Unsubs ML'
 };
+
+// ── Métricas de abertura (event destination CloudWatch) ──
+// O SES só insere o pixel de abertura quando o configuration set tem um
+// event destination publicando OPEN — por isso os envios até 27/07/2026
+// (L1 inclusive) não têm taxa de abertura, e o dado não é recuperável.
+const SES_EVENT_DEST     = 'cloudwatch-metricas';
+const SES_TAG_CAMPANHA   = 'campanha';   // message tag = dimensão no CloudWatch
+const SES_TAG_DEFAULT    = 'sem-campanha';
+const SES_EVENT_TYPES    = ['SEND', 'DELIVERY', 'OPEN', 'BOUNCE', 'COMPLAINT', 'REJECT'];
+// CLICK fica de fora de propósito: ligar CLICK faz o SES REESCREVER todos os
+// links do email pra passarem por r.<região>.awstrack.me. Só ligar junto com
+// um domínio de tracking próprio (PutConfigurationSetTrackingOptions).
+
+// Colunas de métrica na aba Broadcasts (preenchidas por atualizarMetricasBroadcasts)
+const BCAST_METRIC_COLS = ['Entregues', 'Aberturas', 'Índice Abertura', 'Bounces', 'Métricas Em'];
 
 // Limites por execução (margem folgada sob as quotas SES 50k/dia e
 // UrlFetchApp 20k/dia: sync 1min×10 + seq 1h×30 + broadcasts 5min×80)
@@ -217,6 +235,17 @@ function bytesToHex_(bytes) {
   return bytes.map(function(b) { return ('0' + ((b + 256) % 256).toString(16)).slice(-2); }).join('');
 }
 
+/**
+ * Message tag do SES só aceita [A-Za-z0-9_-] (máx 256). IDs da aba Broadcasts
+ * ('L2', 'LIVE1-D3') já passam limpos; acento/espaço de um ID digitado à mão
+ * viraria 400 no SendEmail e derrubaria o envio inteiro — daí o saneamento.
+ */
+function sesTagValue_(s) {
+  var v = String(s).normalize('NFD').replace(/[̀-ͯ]/g, '')
+                   .replace(/[^A-Za-z0-9_-]/g, '-').substring(0, 256);
+  return v || SES_TAG_DEFAULT;
+}
+
 function safeParse_(text) {
   try { return JSON.parse(text); } catch (_) { return { _raw: text }; }
 }
@@ -227,8 +256,13 @@ function safeParse_(text) {
 /**
  * Envia 1 email de marketing via SES com list management (unsubscribe
  * automático + supressão de quem já saiu do tópico).
+ *
+ * campanha (opcional): rótulo que vira message tag e, no CloudWatch, a
+ * dimensão que separa as métricas por envio (ex.: 'L2', 'B-3'). Sem ele os
+ * eventos caem todos no balde 'sem-campanha' e não dá pra medir um envio
+ * isolado. Ver setupTrackingAberturas().
  */
-function sesSendMarketing_(toEmail, subject, html, topicName) {
+function sesSendMarketing_(toEmail, subject, html, topicName, campanha) {
   var props = PropertiesService.getScriptProperties();
   if (props.getProperty('MAILER_ENABLED') !== 'true') {
     throw new Error('MAILER_ENABLED != true — envio bloqueado (kill switch)');
@@ -250,6 +284,9 @@ function sesSendMarketing_(toEmail, subject, html, topicName) {
       Body: { Html: { Data: html, Charset: 'UTF-8' } }
     } }
   };
+  if (campanha) {
+    payload.EmailTags = [{ Name: SES_TAG_CAMPANHA, Value: sesTagValue_(campanha) }];
+  }
 
   var res = sesRequest_('POST', ['v2', 'email', 'outbound-emails'], payload);
   if (!res.ok) throw new Error('SES SendEmail HTTP ' + res.code + ': ' + String(res.raw).substring(0, 300));
@@ -491,7 +528,8 @@ function processSequences() {
 
         try {
           var html = renderTemplate_(step.template, nome);
-          sesSendMarketing_(email, step.assunto, html, cfg.topic);
+          sesSendMarketing_(email, step.assunto, html, cfg.topic,
+                            cfg.sequencia + '-' + (passo + 1));
           var novoPasso = passo + 1;
           sheet.getRange(rowNum, cols['Seq Passo']).setValue(
             novoPasso >= seqSteps.length ? 'concluída' : novoPasso);
@@ -562,6 +600,7 @@ function processBroadcasts() {
       if (!(agendado instanceof Date) || agendado > now) continue;
 
       var rowNum = r + 2;
+      var bcastId = String(rows[r][0] || '');
       var assunto = String(rows[r][1] || '');
       var template = String(rows[r][2] || '');
       var topicos = String(rows[r][3] || '').split(',').map(function(s) { return s.trim(); }).filter(Boolean);
@@ -580,7 +619,7 @@ function processBroadcasts() {
         var rec = recipients[cursor];
         try {
           var html = renderTemplate_(template, rec.nome);
-          sesSendMarketing_(rec.email, assunto, html, rec.topic);
+          sesSendMarketing_(rec.email, assunto, html, rec.topic, bcastId);
         } catch (err) {
           errors++;
           logError('Broadcast linha ' + rowNum + ': ' + err, { parameter: { email: rec.email } });
@@ -778,6 +817,220 @@ function setupSesInfra() {
     : (/AlreadyExists/i.test(r2.raw) ? 'ℹ️ Configuration set já existia' : '❌ Config set: HTTP ' + r2.code + ' ' + r2.raw));
 
   Logger.log('Lembrete: a IDENTIDADE (news.fluenciacontabil.com.br) se verifica no console SES — ver runbook.');
+}
+
+
+// ═════════════ MÉTRICAS DE ABERTURA (SES → CloudWatch → planilha) ═════════════
+
+/**
+ * 1× — liga o rastreamento de abertura. Cria (ou atualiza) o event destination
+ * CloudWatch no configuration set, cria as colunas de métrica na aba Broadcasts
+ * e agenda a coleta. Idempotente.
+ *
+ * ⚠️ Só vale do momento da execução em diante: sem event destination o SES nem
+ * insere o pixel, e o dado dos envios anteriores (L1 e tudo do Bolsão) não
+ * existe nem é recuperável. A data de ativação fica em TRACKING_ABERTURA_DESDE
+ * pra coleta não reportar 0% em quem nunca foi medido.
+ *
+ * Permissões necessárias na policy do IAM user fluencia-mailer:
+ *   ses:CreateConfigurationSetEventDestination
+ *   ses:UpdateConfigurationSetEventDestination
+ *   cloudwatch:GetMetricStatistics   (usado por atualizarMetricasBroadcasts)
+ */
+function setupTrackingAberturas() {
+  var props = PropertiesService.getScriptProperties();
+  var configSet = props.getProperty('SES_CONFIG_SET') || 'fluencia-marketing';
+
+  var dest = {
+    Enabled: true,
+    MatchingEventTypes: SES_EVENT_TYPES,
+    CloudWatchDestination: { DimensionConfigurations: [{
+      DimensionName: SES_TAG_CAMPANHA,
+      DimensionValueSource: 'MESSAGE_TAG',
+      DefaultDimensionValue: SES_TAG_DEFAULT
+    }] }
+  };
+
+  var base = ['v2', 'email', 'configuration-sets', configSet, 'event-destinations'];
+  var r = sesRequest_('POST', base, { EventDestinationName: SES_EVENT_DEST, EventDestination: dest });
+  if (!r.ok && /AlreadyExists/i.test(r.raw)) {
+    r = sesRequest_('PUT', base.concat([SES_EVENT_DEST]), { EventDestination: dest });
+  }
+  if (!r.ok) {
+    Logger.log('❌ Event destination: HTTP ' + r.code + ' ' + r.raw);
+    if (/AccessDenied|not authorized/i.test(String(r.raw))) {
+      Logger.log('→ falta permissão no IAM user fluencia-mailer (ver cabeçalho desta função)');
+    }
+    return;
+  }
+  Logger.log('✅ Rastreamento ativo em "' + configSet + '" — eventos: ' + SES_EVENT_TYPES.join(', '));
+
+  if (!props.getProperty('TRACKING_ABERTURA_DESDE')) {
+    props.setProperty('TRACKING_ABERTURA_DESDE', new Date().toISOString());
+  }
+
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MAILER_SHEETS.BROADCASTS);
+  if (sheet) {
+    var headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0].map(String);
+    BCAST_METRIC_COLS.forEach(function(col) {
+      if (headers.indexOf(col) === -1) {
+        var c = sheet.getLastColumn() + 1;
+        sheet.getRange(1, c).setValue(col).setFontWeight('bold')
+          .setBackground('#1B2A4A').setFontColor('#FFFFFF');
+        headers.push(col);
+      }
+    });
+  }
+
+  recreateTrigger_('atualizarMetricasBroadcasts', function(t) { return t.timeBased().everyHours(6); });
+  Logger.log('✅ Colunas criadas e coleta agendada (6/6h). Teste agora com atualizarMetricasBroadcasts().');
+}
+
+/**
+ * Trigger 6/6h. Preenche Entregues/Aberturas/Índice/Bounces na aba Broadcasts,
+ * lendo o CloudWatch com a dimensão "campanha" = ID da linha do broadcast.
+ *
+ * ⚠️ "Aberturas" conta EVENTOS, não pessoas: quem abre 3× conta 3. Abertura
+ * única exigiria os eventos brutos (Firehose/SNS) deduplicados por messageId.
+ * O índice presta pra comparar campanhas entre si — não como taxa absoluta de
+ * leitores, ainda mais com Apple MPP e o proxy de imagens do Gmail, que
+ * disparam o pixel sem ninguém ter lido.
+ */
+function atualizarMetricasBroadcasts() {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MAILER_SHEETS.BROADCASTS);
+  if (!sheet || sheet.getLastRow() < 2) return;
+
+  var cols = headerIndexes_(sheet);
+  var faltando = BCAST_METRIC_COLS.filter(function(c) { return !cols[c]; });
+  if (faltando.length) {
+    Logger.log('Rode setupTrackingAberturas() primeiro — colunas ausentes: ' + faltando.join(', '));
+    return;
+  }
+
+  var desde = PropertiesService.getScriptProperties().getProperty('TRACKING_ABERTURA_DESDE');
+  var desdeDate = desde ? new Date(desde) : null;
+  var now = new Date();
+  var lidas = 0;
+
+  var rows = sheet.getRange(2, 1, sheet.getLastRow() - 1, sheet.getLastColumn()).getValues();
+  for (var r = 0; r < rows.length; r++) {
+    var rowNum = r + 2;
+    var id = String(rows[r][0] || '');
+    var status = String(rows[r][5] || '');
+    var agendado = rows[r][4];
+    if (!id || status.indexOf('ok') !== 0 || !(agendado instanceof Date)) continue;
+
+    // Envio anterior ao pixel: marca uma vez e nunca mais consulta
+    if (desdeDate && agendado < desdeDate) {
+      if (!rows[r][cols['Índice Abertura'] - 1]) {
+        sheet.getRange(rowNum, cols['Índice Abertura']).setValue('n/d (sem rastreamento)');
+      }
+      continue;
+    }
+
+    // Campanha encerrada há mais de 30 dias e já coletada: número não muda mais
+    var jaColetado = rows[r][cols['Métricas Em'] - 1];
+    if (jaColetado instanceof Date && (now - agendado) > 30 * 86400000) continue;
+
+    try {
+      var inicio = new Date(agendado.getTime() - 3600000);
+      var entregues = cwSumSES_('Delivery', id, inicio, now);
+      var aberturas = cwSumSES_('Open', id, inicio, now);
+      var bounces = cwSumSES_('Bounce', id, inicio, now);
+
+      sheet.getRange(rowNum, cols['Entregues']).setValue(entregues);
+      sheet.getRange(rowNum, cols['Aberturas']).setValue(aberturas);
+      sheet.getRange(rowNum, cols['Índice Abertura'])
+        .setValue(entregues > 0 ? Math.round(aberturas / entregues * 1000) / 10 + '%' : '—');
+      sheet.getRange(rowNum, cols['Bounces']).setValue(bounces);
+      sheet.getRange(rowNum, cols['Métricas Em']).setValue(now);
+      lidas++;
+    } catch (err) {
+      logError('Métricas broadcast ' + id + ': ' + err, { parameter: { id: id } });
+    }
+  }
+  if (lidas > 0) console.log('Métricas atualizadas: ' + lidas + ' broadcast(s)');
+}
+
+/** Soma os datapoints de uma métrica AWS/SES filtrada pela campanha. */
+function cwSumSES_(metricName, campanha, start, end) {
+  var res = cwRequest_({
+    Action: 'GetMetricStatistics',
+    Version: '2010-08-01',
+    Namespace: 'AWS/SES',
+    MetricName: metricName,
+    'Dimensions.member.1.Name': SES_TAG_CAMPANHA,
+    'Dimensions.member.1.Value': sesTagValue_(campanha),
+    StartTime: Utilities.formatDate(start, 'UTC', "yyyy-MM-dd'T'HH:mm:ss'Z'"),
+    EndTime: Utilities.formatDate(end, 'UTC', "yyyy-MM-dd'T'HH:mm:ss'Z'"),
+    Period: '86400',
+    'Statistics.member.1': 'Sum'
+  });
+  if (!res.ok) throw new Error('CloudWatch HTTP ' + res.code + ': ' + String(res.raw).substring(0, 300));
+
+  var root = XmlService.parse(res.raw).getRootElement();
+  var ns = root.getNamespace();
+  var result = root.getChild('GetMetricStatisticsResult', ns);
+  var dps = result && result.getChild('Datapoints', ns);
+  if (!dps) return 0;
+  return dps.getChildren('member', ns).reduce(function(acc, m) {
+    var sum = m.getChild('Sum', ns);
+    return acc + (sum ? Number(sum.getText()) : 0);
+  }, 0);
+}
+
+/**
+ * CloudWatch Query API com SigV4 (service 'monitoring', não 'ses'): POST
+ * form-encoded na raiz, resposta XML. Aqui o content-type entra nos
+ * SignedHeaders — o Query protocol rejeita a assinatura sem ele.
+ */
+function cwRequest_(params) {
+  var props  = PropertiesService.getScriptProperties();
+  var akid   = props.getProperty('AWS_ACCESS_KEY_ID');
+  var secret = props.getProperty('AWS_SECRET_ACCESS_KEY');
+  if (!akid || !secret) throw new Error('AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY não configurados');
+
+  var region  = props.getProperty('SES_REGION') || 'us-east-1';
+  var host    = 'monitoring.' + region + '.amazonaws.com';
+  var ctype   = 'application/x-www-form-urlencoded; charset=utf-8';
+  var amzDate = Utilities.formatDate(new Date(), 'UTC', "yyyyMMdd'T'HHmmss'Z'");
+  var dateStamp = amzDate.substring(0, 8);
+
+  var body = Object.keys(params).sort().map(function(k) {
+    return rfc3986Encode_(k) + '=' + rfc3986Encode_(params[k]);
+  }).join('&');
+
+  var canonicalRequest = [
+    'POST',
+    '/',
+    '',
+    'content-type:' + ctype + '\n' + 'host:' + host + '\n' + 'x-amz-date:' + amzDate + '\n',
+    'content-type;host;x-amz-date',
+    sha256Hex_(body)
+  ].join('\n');
+
+  var scope = dateStamp + '/' + region + '/monitoring/aws4_request';
+  var stringToSign = ['AWS4-HMAC-SHA256', amzDate, scope, sha256Hex_(canonicalRequest)].join('\n');
+
+  var kDate    = hmacBytes_(dateStamp, Utilities.newBlob('AWS4' + secret).getBytes());
+  var kRegion  = hmacBytes_(region, kDate);
+  var kService = hmacBytes_('monitoring', kRegion);
+  var kSigning = hmacBytes_('aws4_request', kService);
+  var signature = bytesToHex_(hmacBytes_(stringToSign, kSigning));
+
+  var res = UrlFetchApp.fetch('https://' + host + '/', {
+    method: 'post',
+    contentType: ctype,
+    headers: {
+      'X-Amz-Date': amzDate,
+      'Authorization': 'AWS4-HMAC-SHA256 Credential=' + akid + '/' + scope +
+                       ', SignedHeaders=content-type;host;x-amz-date, Signature=' + signature
+    },
+    payload: body,
+    muteHttpExceptions: true
+  });
+  var code = res.getResponseCode();
+  return { code: code, ok: code >= 200 && code < 300, raw: res.getContentText() };
 }
 
 /** 1× — colunas novas nas 4 abas + abas de config pré-preenchidas + triggers. Idempotente. */
@@ -1266,9 +1519,25 @@ function ensaioBroadcastBolsao() {
 function testSendMarketingEmail() {
   var to = 'vinicius.ferraz@gruponbeducacao.com'; // ← edite se quiser testar outro inbox
   var html = renderTemplate_('sequencia-a/A1-bem-vindo.html', 'Vinícius Teste');
-  var id = sesSendMarketing_(to, '[TESTE SES] Bem-vindo(a) à Fluência Contábil', html, 'newsletter');
+  var id = sesSendMarketing_(to, '[TESTE SES] Bem-vindo(a) à Fluência Contábil', html, 'newsletter', 'teste');
   Logger.log('✅ Enviado. MessageId=' + id + ' → confira o inbox ' + to +
              ' (inclusive o link de descadastro no rodapé).');
+}
+
+/**
+ * Prova de 1 clique do rastreamento, SEM depender de um broadcast real:
+ * rode testSendMarketingEmail(), ABRA o email (com imagens habilitadas),
+ * espere ~5 min e rode isto. Open ≥ 1 = o pixel está funcionando.
+ *
+ * Open=0 com Delivery=1 costuma ser: setupTrackingAberturas() não rodou, o
+ * inbox bloqueou imagens, ou os eventos ainda não chegaram ao CloudWatch.
+ */
+function testMetricasAbertura() {
+  var fim = new Date();
+  var inicio = new Date(fim.getTime() - 86400000);
+  ['Send', 'Delivery', 'Open', 'Bounce'].forEach(function(m) {
+    Logger.log(m + ' (campanha "teste", últimas 24h): ' + cwSumSES_(m, 'teste', inicio, fim));
+  });
 }
 
 /**

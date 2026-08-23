@@ -12,8 +12,10 @@
  *
  * ─── PRÉ-REQUISITO ────────────────────────────────────────────────────
  * Script Properties → MAILERLITE_API_KEY = (API key)
- * Script Properties → MENSAGEIRO_WEBHOOK_URL = (URL do webhook do fluxo)
- * Script Properties → MENSAGEIRO_WEBHOOK_SECRET = (secret do header)
+ * Script Properties → MENSAGEIRO_WEBHOOK_URL = (webhook dos demais fluxos)
+ * Script Properties → MENSAGEIRO_WEBHOOK_SECRET = (secret dos demais fluxos)
+ * Script Properties → MENSAGEIRO_LIVES_WEBHOOK_URL = (webhook exclusivo das Lives)
+ * Script Properties → MENSAGEIRO_LIVES_WEBHOOK_SECRET = (secret exclusivo das Lives)
  *   (nunca hardcoded no código — este arquivo é público via GitHub Pages)
  *
  * ─── PÓS-DEPLOY (rodar 1× após cada deploy) ───────────────────────────
@@ -77,13 +79,19 @@ function doPost(e) {
     return routeByOrigin(p);
   } catch (err) {
     logError(err, e);
-    return jsonResponse({ ok: false, error: String(err) });
+    // Genérico de propósito: o browser legítimo usa mode:'no-cors' e nem lê
+    // esta resposta, mas quem faz POST com curl lia nomes de função, nomes de
+    // aba e exceções cruas do SpreadsheetApp. O detalhe fica no _errors.
+    return jsonResponse({ ok: false, error: 'erro ao processar' });
   }
 }
 
+// Resposta neutra: identificar o negócio e devolver o relógio do servidor era
+// reconhecimento de graça pra quem só achasse a URL (ela está em texto claro
+// no JS de todas as páginas). Nada no site consome este GET — verificado.
 function doGet(e) {
   return ContentService
-    .createTextOutput('Endpoint unificado · LEADS Fluência Contábil · ' + new Date().toISOString())
+    .createTextOutput('ok')
     .setMimeType(ContentService.MimeType.TEXT);
 }
 
@@ -119,10 +127,10 @@ function handleNewsletter(p) {
   var sheet = ensureSheet(SHEETS.NEWSLETTER, NEWSLETTER_HEADERS, NEWSLETTER_NOTES);
   sheet.appendRow([
     new Date(), p.email,
-    String(p.origem || ''), String(p.ref || ''),
-    String(p.pagina || ''), String(p.referrer || ''),
-    String(p.utm_source || ''), String(p.utm_medium || ''), String(p.utm_campaign || ''),
-    String(p.dispositivo || ''),
+    safeCell_(p.origem), safeCell_(p.ref),
+    safeCell_(p.pagina), safeCell_(p.referrer),
+    safeCell_(p.utm_source), safeCell_(p.utm_medium), safeCell_(p.utm_campaign),
+    safeCell_(p.dispositivo),
     '', ''  // ML Sync, ML Sync At
   ]);
   return jsonResponse({ ok: true, aba: SHEETS.NEWSLETTER });
@@ -131,12 +139,12 @@ function handleNewsletter(p) {
 function handleLista(p) {
   var sheet = ensureSheet(SHEETS.LISTA, LISTA_HEADERS, LISTA_NOTES);
   sheet.appendRow([
-    new Date(), String(p.nome || '').trim(), p.email,
+    new Date(), safeCell_(String(p.nome || '').trim()), p.email,
     normalizePhone(p.telefone_digits || p.telefone || p.whatsapp || ''),
-    String(p.origem || ''), String(p.ref || ''),
-    String(p.pagina || ''), String(p.referrer || ''),
-    String(p.utm_source || ''), String(p.utm_medium || ''), String(p.utm_campaign || ''),
-    String(p.dispositivo || ''),
+    safeCell_(p.origem), safeCell_(p.ref),
+    safeCell_(p.pagina), safeCell_(p.referrer),
+    safeCell_(p.utm_source), safeCell_(p.utm_medium), safeCell_(p.utm_campaign),
+    safeCell_(p.dispositivo),
     '', ''
   ]);
   return jsonResponse({ ok: true, aba: SHEETS.LISTA });
@@ -145,12 +153,12 @@ function handleLista(p) {
 function handleDicionario(p) {
   var sheet = ensureSheet(SHEETS.DICIONARIO, DICIONARIO_HEADERS, DICIONARIO_NOTES);
   sheet.appendRow([
-    new Date(), String(p.nome || '').trim(), p.email,
+    new Date(), safeCell_(String(p.nome || '').trim()), p.email,
     normalizePhone(p.telefone_digits || p.telefone || ''),
-    String(p.origem || ''),
-    String(p.pagina || ''), String(p.referrer || ''),
-    String(p.utm_source || ''), String(p.utm_medium || ''), String(p.utm_campaign || ''),
-    String(p.dispositivo || ''),
+    safeCell_(p.origem),
+    safeCell_(p.pagina), safeCell_(p.referrer),
+    safeCell_(p.utm_source), safeCell_(p.utm_medium), safeCell_(p.utm_campaign),
+    safeCell_(p.dispositivo),
     '', ''
   ]);
   return jsonResponse({ ok: true, aba: SHEETS.DICIONARIO });
@@ -160,12 +168,12 @@ function handleBolsao(p) {
   // Aba pós-MailerLite: sem colunas ML Sync (SES/Seq/CRM são adicionadas pelo setupBolsao do ses_mailer.gs)
   var sheet = ensureSheet(SHEETS.BOLSAO, BOLSAO_HEADERS, BOLSAO_NOTES);
   sheet.appendRow([
-    new Date(), String(p.nome || '').trim(), p.email,
+    new Date(), safeCell_(String(p.nome || '').trim()), p.email,
     normalizePhone(p.telefone_digits || p.telefone || p.whatsapp || ''),
-    String(p.origem || ''), String(p.ref || ''),
-    String(p.pagina || ''), String(p.referrer || ''),
-    String(p.utm_source || ''), String(p.utm_medium || ''), String(p.utm_campaign || ''),
-    String(p.dispositivo || '')
+    safeCell_(p.origem), safeCell_(p.ref),
+    safeCell_(p.pagina), safeCell_(p.referrer),
+    safeCell_(p.utm_source), safeCell_(p.utm_medium), safeCell_(p.utm_campaign),
+    safeCell_(p.dispositivo)
   ]);
   return jsonResponse({ ok: true, aba: SHEETS.BOLSAO });
 }
@@ -174,12 +182,12 @@ function handleLives(p) {
   var sheet = ensureSheet(SHEETS.LIVES, LIVES_HEADERS, LIVES_NOTES);
   var rowNum = sheet.getLastRow() + 1;
   sheet.appendRow([
-    new Date(), String(p.nome || '').trim(), p.email,
+    new Date(), safeCell_(String(p.nome || '').trim()), p.email,
     normalizePhone(p.telefone_digits || p.telefone || p.whatsapp || ''),
-    String(p.origem || ''), String(p.ref || ''),
-    String(p.pagina || ''), String(p.referrer || ''),
-    String(p.utm_source || ''), String(p.utm_medium || ''), String(p.utm_campaign || ''),
-    String(p.dispositivo || ''),
+    safeCell_(p.origem), safeCell_(p.ref),
+    safeCell_(p.pagina), safeCell_(p.referrer),
+    safeCell_(p.utm_source), safeCell_(p.utm_medium), safeCell_(p.utm_campaign),
+    safeCell_(p.dispositivo),
     '', '', '', ''
   ]);
   dispatchLiveLeadImmediately_(p, sheet, rowNum);
@@ -192,6 +200,16 @@ function handleLives(p) {
  * pelos workers assíncronos já existentes.
  */
 function dispatchLiveLeadImmediately_(p, sheet, rowNum) {
+  var lock = LockService.getScriptLock();
+  lock.waitLock(30000);
+  try {
+    dispatchLiveLeadImmediatelyUnlocked_(p, sheet, rowNum);
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function dispatchLiveLeadImmediatelyUnlocked_(p, sheet, rowNum) {
   var headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0].map(String);
   var cols = {};
   headers.forEach(function(name, i) { cols[name] = i + 1; });
@@ -204,7 +222,7 @@ function dispatchLiveLeadImmediately_(p, sheet, rowNum) {
   // Mensageiro/CRM — imediato via webhook. A aba Lives usa CRM Sync.
   var crmSyncCol = cols['CRM Sync'] || cols['Mensageiro Sync'];
   var crmSyncAtCol = cols['CRM Sync At'] || cols['Mensageiro Sync At'];
-  if (typeof pushToMensageiro === 'function' && crmSyncCol) {
+  if (typeof pushToMensageiroLives_ === 'function' && crmSyncCol) {
     var crmPayload = {
       evento: 'lives_lead', nome: nome, email: email, telefone: telefoneE164,
       customer: { name: nome, email: email, phone: telefoneE164 },
@@ -214,7 +232,7 @@ function dispatchLiveLeadImmediately_(p, sheet, rowNum) {
       timestamp: now.toISOString()
     };
     try {
-      pushToMensageiro(crmPayload);
+      pushToMensageiroLives_(crmPayload);
       sheet.getRange(rowNum, crmSyncCol).setValue('ok');
       if (crmSyncAtCol) sheet.getRange(rowNum, crmSyncAtCol).setValue(now);
     } catch (err) {
@@ -347,8 +365,27 @@ const LIVES_NOTES = [
 
 // ══════════════════════ HELPERS ══════════════════════
 
+/**
+ * Neutraliza gatilho de fórmula do Sheets preservando o texto legível.
+ *
+ * appendRow() usa a mesma semântica de setValues(): string começada por
+ * = + - @ vira FÓRMULA VIVA, que executa quando alguém abre a planilha —
+ * com a sessão de quem abriu. IMPORTXML/IMPORTDATA exfiltram a coluna de
+ * e-mails pra um servidor externo; REPT pesado inutiliza o arquivo.
+ * O prefixo ' faz a célula ser tratada como texto literal.
+ *
+ * Vale pros 4 sites: todos postam neste mesmo endpoint.
+ */
+function safeCell_(v) {
+  var s = String(v == null ? '' : v).slice(0, 300);
+  return /^[=+\-@\t\r]/.test(s) ? "'" + s : s;
+}
+
 function isValidEmail(email) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email));
+  var s = String(email);
+  if (s.length > 254) return false;           // RFC 5321
+  if (/^[=+\-@\t\r]/.test(s)) return false;   // gatilho de fórmula do Sheets
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
 }
 
 function normalizePhone(tel) {
@@ -427,16 +464,49 @@ function ensureSheet(name, headers, notes) {
   return sheet;
 }
 
+/**
+ * Resumo do payload sem dado pessoal.
+ *
+ * A aba _errors é criada em silêncio, ninguém expurga e ela não está
+ * documentada como contendo PII. Guardar e-mail/nome/telefone ali cria uma
+ * segunda cópia do lead fora do fluxo controlado — a cópia que um pedido de
+ * exclusão vai esquecer, e o "fantasma" que faz quem pediu pra sair voltar a
+ * receber e-mail.
+ *
+ * O hash de 8 chars preserva o que o log precisa (correlacionar ocorrências
+ * do mesmo lead) sem guardar o endereço.
+ */
+function resumoSemPII_(e) {
+  var p = (e && e.parameter) ? e.parameter : {};
+  var email = String(p.email || '');
+  var hash = '';
+  if (email) {
+    hash = Utilities.computeDigest(
+        Utilities.DigestAlgorithm.SHA_256, email.toLowerCase(), Utilities.Charset.UTF_8)
+      .map(function (b) { return ('0' + ((b + 256) % 256).toString(16)).slice(-2); })
+      .join('').substring(0, 8);
+  }
+  return JSON.stringify({
+    origem: String(p.origem || ''),
+    pagina: String(p.pagina || ''),
+    sheet: String(p.sheet || ''),
+    temEmail: !!email,
+    emailHash: hash
+  });
+}
+
 function logError(err, e) {
   try {
     var ss = SpreadsheetApp.getActiveSpreadsheet();
     var log = ss.getSheetByName(SHEETS.ERRORS) || ss.insertSheet(SHEETS.ERRORS);
     if (log.getLastRow() === 0) {
-      log.appendRow(['Timestamp', 'Erro', 'Parâmetros']);
+      log.appendRow(['Timestamp', 'Erro', 'Contexto (sem dado pessoal)']);
       log.getRange(1, 1, 1, 3).setFontWeight('bold');
       log.setFrozenRows(1);
     }
-    log.appendRow([new Date(), String(err), JSON.stringify(e && e.parameter ? e.parameter : {})]);
+    // safeCell_ aqui também: a mensagem de erro pode carregar texto que veio
+    // do cliente, e esta aba é uma planilha como qualquer outra.
+    log.appendRow([new Date(), safeCell_(String(err)), safeCell_(resumoSemPII_(e))]);
   } catch (_) {}
 }
 
@@ -717,7 +787,7 @@ function syncPendingLivesToMensageiro() {
       };
 
       try {
-        pushToMensageiro(payload);
+        pushToMensageiroLives_(payload);
         sheet.getRange(rowNum, syncCol).setValue('ok');
         sheet.getRange(rowNum, syncAtCol).setValue(new Date());
       } catch (err) {
@@ -1144,4 +1214,64 @@ function setupDashboard() {
   Logger.log('   Locale: ' + locale + ' | Separador de argumentos: ' + SEP);
   Logger.log('   Cobre: Newsletter, Lista, Dicionário, Lives');
   Logger.log('   Antiga preservada como Dashboard_old_*');
+}
+
+/** Envia somente os leads da LP de Lives para o webhook específico das Lives. */
+function pushToMensageiroLives_(payload) {
+  var props = PropertiesService.getScriptProperties();
+  var url = props.getProperty('MENSAGEIRO_LIVES_WEBHOOK_URL');
+  var secret = props.getProperty('MENSAGEIRO_LIVES_WEBHOOK_SECRET');
+
+  if (!url || !secret) {
+    throw new Error('MENSAGEIRO_LIVES_WEBHOOK_URL / MENSAGEIRO_LIVES_WEBHOOK_SECRET não configuradas em Script Properties');
+  }
+
+  var response = UrlFetchApp.fetch(url, {
+    method: 'post',
+    contentType: 'application/json',
+    headers: { 'X-Mensageiro-Webhook-Secret': secret },
+    payload: JSON.stringify(payload),
+    muteHttpExceptions: true
+  });
+
+  var code = response.getResponseCode();
+  if (code < 200 || code >= 300) {
+    throw new Error('Mensageiro Lives HTTP ' + code + ': ' + response.getContentText().substring(0, 300));
+  }
+  var responseText = response.getContentText();
+  try { return JSON.parse(responseText); } catch (_) { return { raw: responseText }; }
+}
+
+/** Teste direto do webhook exclusivo das Lives. Dispara uma mensagem real. */
+function testMensageiroLivesWebhook() {
+  var props = PropertiesService.getScriptProperties();
+  var testPhone = props.getProperty('MENSAGEIRO_TEST_PHONE');
+  if (!testPhone) {
+    Logger.log('Defina MENSAGEIRO_TEST_PHONE antes de rodar este teste.');
+    return;
+  }
+
+  var now = Date.now();
+  var payload = {
+    evento: 'lives_lead_teste',
+    nome: 'Teste Lives Apps Script',
+    email: 'teste.lives.' + now + '@example.com',
+    telefone: formatPhoneE164BR(testPhone),
+    customer: {
+      name: 'Teste Lives Apps Script',
+      email: 'teste.lives.' + now + '@example.com',
+      phone: formatPhoneE164BR(testPhone)
+    },
+    origem: 'teste_apps_script_lives',
+    pagina: '/lives',
+    timestamp: new Date().toISOString()
+  };
+
+  try {
+    var result = pushToMensageiroLives_(payload);
+    Logger.log('Webhook Lives HTTP OK: ' + JSON.stringify(result).substring(0, 500));
+    Logger.log('Confira o WhatsApp de ' + testPhone + '.');
+  } catch (err) {
+    Logger.log('Erro no webhook Lives: ' + err);
+  }
 }
