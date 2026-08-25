@@ -39,7 +39,12 @@ JSON_ENTRADA = os.path.join(RAIZ, "scripts", "data", "catalogo-editais.json")
 HTML_SAIDA = os.path.join(RAIZ, "editais.html")
 
 SITE_URL = "https://fluenciacontabil.com.br"
-GTM_ID = "GTM-WB2NTFXL"  # container do site principal (CLAUDE.md, decisão 10)
+# Container PRÓPRIO do site, o mesmo das outras 6 páginas (index, cursos,
+# contato...). Era GTM-WB2NTFXL até 25/08/2026: o site migrou para o container
+# próprio no commit 9751375, editando os HTML à mão, e ninguém atualizou o
+# gerador — então regenerar esta página revertia o rastreamento dela sozinha,
+# para um container VAZIO, sem nada acusar. Se trocar de novo, troque aqui junto.
+GTM_ID = "GTM-MGQFHR5J"
 TITULO = "Editais mapeados: quanto de Contabilidade o curso cobre"
 DESCRICAO = (
     "Veja, edital por edital, quanto do conteúdo de Contabilidade de cada concurso "
@@ -377,6 +382,7 @@ def gerar(doc: dict) -> str:
     return f"""<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+<meta charset="UTF-8">
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){{w[l]=w[l]||[];w[l].push({{'gtm.start':
 new Date().getTime(),event:'gtm.js'}});var f=d.getElementsByTagName(s)[0],
@@ -384,7 +390,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 }})(window,document,'script','dataLayer','{GTM_ID}');</script>
 <!-- End Google Tag Manager -->
-<meta charset="UTF-8"><link rel="icon" type="image/png" href="assets/favicon.png"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="assets/favicon.png"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="{escape(DESCRICAO)}">
 <link rel="canonical" href="{SITE_URL}/editais.html">
 <meta property="og:title" content="{escape(TITULO)} | Fluência Contábil">

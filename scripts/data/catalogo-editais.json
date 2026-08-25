@@ -1,6 +1,6 @@
 {
-  "geradoEm": "2026-08-19T14:12:18.290Z",
-  "total": 20,
+  "geradoEm": "2026-08-25T16:14:25.087Z",
+  "total": 21,
   "editais": [
     {
       "concursoSlug": "secretaria-da-fazenda-do-estado-do-ceara-sefaz-ce",
@@ -32,6 +32,23 @@
         {
           "rotulo": "Contabilidade de Custos (área A01 — Gestão Fazendária)",
           "pct": 0
+        }
+      ]
+    },
+    {
+      "concursoSlug": "secretaria-de-estado-da-fazenda-de-alagoas-sefaz-al",
+      "orgao": "Secretaria de Estado da Fazenda de Alagoas (SEFAZ/AL)",
+      "cargo": "Auditor Fiscal da Administração Tributária Estadual (AFTE)",
+      "banca": "CEBRASPE (CESPE)",
+      "esfera": "ESTADUAL",
+      "uf": "AL",
+      "area": "FISCAL",
+      "dataProva": "2026-12-20",
+      "linkOficial": "http://www.cebraspe.org.br/concursos/sefaz_al_26",
+      "disciplinas": [
+        {
+          "rotulo": "Contabilidade Geral",
+          "pct": 100
         }
       ]
     },
@@ -161,7 +178,7 @@
     {
       "concursoSlug": "ministerio-da-economia-secretaria-especial-da-receita-federal-do-brasil",
       "orgao": "Ministério da Economia — Secretaria Especial da Receita Federal do Brasil",
-      "cargo": "Analista-Tributário da Receita Federal do Brasil",
+      "cargo": "Auditor-Fiscal da Receita Federal do Brasil",
       "banca": "FGV",
       "esfera": "FEDERAL",
       "uf": null,
@@ -178,7 +195,7 @@
     {
       "concursoSlug": "ministerio-da-economia-secretaria-especial-da-receita-federal-do-brasil",
       "orgao": "Ministério da Economia — Secretaria Especial da Receita Federal do Brasil",
-      "cargo": "Auditor-Fiscal da Receita Federal do Brasil",
+      "cargo": "Analista-Tributário da Receita Federal do Brasil",
       "banca": "FGV",
       "esfera": "FEDERAL",
       "uf": null,
@@ -267,7 +284,7 @@
     {
       "concursoSlug": "governo-do-estado-da-bahia-secretaria-da-administracao-do-estado-da-bahia-saeb-s",
       "orgao": "Governo do Estado da Bahia — Secretaria da Administração do Estado da Bahia (SAEB) / Secretaria da Fazenda do Estado da Bahia (SEFAZ)",
-      "cargo": "Auditor Fiscal — Administração, Finanças e Controle Interno (A01)",
+      "cargo": "Auditor Fiscal — Tecnologia da Informação (B02)",
       "banca": "FCC",
       "esfera": "ESTADUAL",
       "uf": "BA",
@@ -284,7 +301,7 @@
     {
       "concursoSlug": "governo-do-estado-da-bahia-secretaria-da-administracao-do-estado-da-bahia-saeb-s",
       "orgao": "Governo do Estado da Bahia — Secretaria da Administração do Estado da Bahia (SAEB) / Secretaria da Fazenda do Estado da Bahia (SEFAZ)",
-      "cargo": "Auditor Fiscal — Tecnologia da Informação (B02)",
+      "cargo": "Auditor Fiscal — Administração, Finanças e Controle Interno (A01)",
       "banca": "FCC",
       "esfera": "ESTADUAL",
       "uf": "BA",
