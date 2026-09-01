@@ -77,6 +77,18 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 .oferta-equiv strong{color:var(--dourado-esc);font-weight:700;}
 .oferta-antes{color:#9CA3AF;font-weight:600;text-decoration:line-through;text-decoration-color:#C0392B;text-decoration-thickness:2px;margin-right:5px;}
 .oferta-duo .oferta-list{grid-template-columns:1fr;max-width:none;margin:22px 0 26px;gap:8px;}
+
+/* ENTRADAS — caminhos alternativos: pacote de concurso e material avulso */
+.entrada-wrap{max-width:860px;margin-inline:auto;text-align:center;}
+.entrada-duo{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:34px;align-items:start;}
+.entrada-duo .oferta-card{margin-top:0;padding:34px 26px;display:flex;flex-direction:column;border-color:rgba(27,42,74,0.14);box-shadow:0 6px 20px rgba(27,42,74,0.05);}
+.entrada-duo .oferta-plano{color:var(--azul-med);}
+.entrada-duo .oferta-parcela{font-size:clamp(24px,3.2vw,32px);}
+.entrada-duo .oferta-list{grid-template-columns:1fr;max-width:none;margin:22px 0 26px;gap:8px;}
+.entrada-duo .oferta-card .btn-p{align-self:center;}
+.oferta-list li.entrada-nao{color:#777;}
+.oferta-list li.entrada-nao::before{content:'—';color:#9CA3AF;font-weight:700;}
+@media(max-width:768px){.entrada-duo{grid-template-columns:1fr;gap:28px;}}
 /* PRODUTOS FUTUROS */
 .futuros-intro{text-align:center;max-width:640px;margin-inline:auto;margin-bottom:48px;}
 .futuros-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
@@ -133,6 +145,52 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   ]
 }
 </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Course",
+  "name": "Contabilidade para a SEFAZ AL 2026",
+  "description": "Pacote fechado de Contabilidade Geral para o concurso de Auditor Fiscal da SEFAZ AL 2026, com acesso até 27/12/2026. Não cobre Contabilidade Pública nem Auditoria Fiscal.",
+  "provider": {
+    "@type": "Organization",
+    "name": "Fluência Contábil"
+  },
+  "instructor": {
+    "@type": "Person",
+    "name": "Vinícius Ferraz"
+  },
+  "hasCourseInstance": {
+    "@type": "CourseInstance",
+    "courseMode": "online"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "237.00",
+    "priceCurrency": "BRL",
+    "availability": "https://schema.org/InStock",
+    "url": "https://fluenciacontabil.com.br/sefaz-al-2026.html"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "Dicionário Contábil — Edição 2026",
+  "description": "Dicionário de contabilidade em PDF com mais de 400 verbetes em 125 páginas e índice clicável, acompanhado da Aula 01 — Método das Partidas Dobradas em vídeo e em PDF.",
+  "brand": {
+    "@type": "Brand",
+    "name": "Fluência Contábil"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "47.00",
+    "priceCurrency": "BRL",
+    "availability": "https://schema.org/InStock",
+    "url": "https://dicionario.fluenciacontabil.com.br/"
+  }
+}
+</script>
 <link rel="stylesheet" href="assets/email-capture.css?v=20260819">
 <script src="assets/email-capture.js?v=20260821" defer></script>
 </head>
@@ -177,7 +235,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div style="max-width:1200px;margin-inline:auto;position:relative;z-index:2;">
     <span class="lbl">Produtos e Cursos</span>
     <h1 style="font-size:clamp(30px,4vw,50px);font-weight:900;color:var(--branco);letter-spacing:-1px;margin-bottom:16px;line-height:1.1;">Tudo que você precisa<br>para ser <em style="font-style:normal;color:var(--dourado);">aprovado.</em></h1>
-    <p style="font-size:16px;line-height:1.8;color:rgba(255,255,255,0.55);font-family:'Source Serif 4',serif;max-width:580px;">Um curso principal com matrículas abertas e uma roadmap clara de expansão. Formação completa para quem quer mais do que passar — quer entender.</p>
+    <p style="font-size:16px;line-height:1.8;color:rgba(255,255,255,0.55);font-family:'Source Serif 4',serif;max-width:580px;">O curso completo com matrículas abertas, dois caminhos mais curtos para começar e um roadmap claro de expansão. Formação para quem quer mais do que passar — quer entender.</p>
   </div>
 </section>
 
@@ -443,6 +501,77 @@ if(hamBtn&&mobMenu){
   </div>
 </section>
 <!-- ===== /OFERTA ===== -->
+
+<!-- ===== ENTRADAS — outros caminhos de compra =====
+     Dois produtos com checkout PROPRIO, fora da assinatura. Ficam DEPOIS do
+     bloco #assinar de proposito: a assinatura continua sendo o produto padrao
+     e e' o que a topbar e o menu vendem.
+
+       Pacote SEFAZ AL 2026   R$ 237 a' vista OU 12x de R$ 24,51 — checkout ZtyEAiG
+       Dicionario Contabil    R$ 47  a' vista OU 11x de R$ 5,22  — checkout pBSgGdf
+
+     Mesma regra do bloco de cima: a parcela embute juros do gateway e NAO e' o
+     valor a' vista dividido. Nunca publicar a parcela sozinha.
+       12 x 24,51 = R$ 294,12   |   11 x 5,22 = R$ 57,42
+
+     O item "nao cobre Contabilidade Publica nem Auditoria Fiscal" e' OBRIGATORIO:
+     como o botao vai direto pro checkout, este card e' o unico lugar onde o
+     comprador le o escopo antes de pagar. Nao remover.
+
+     O utm_content e' lido no GTM pelo regex utm_content=([a-z]+), que para no
+     primeiro caractere nao-minusculo. Por isso "sefazal" e "dicionario" — sem
+     digito, hifen ou underscore, senao o content_name chega truncado.
+
+     Acesso do pacote conferido em producao (01/09/2026): Product
+     sefaz-al-2026-afte ativo, 17 aulas + tour, 3 delas com liberacao
+     programada em 09/09, 14/10 e 04/11.                                   -->
+<section style="padding:80px 5%;background:var(--cream);">
+  <div class="entrada-wrap">
+    <span class="lbl" style="display:block;">Outras formas de começar</span><div class="bar" style="margin:10px auto 24px;"></div>
+    <h2 class="h2">Dois caminhos mais curtos.</h2>
+    <p class="body-t">Um pacote fechado para quem já tem data marcada na SEFAZ AL e um material avulso para quem quer começar por menos. Nenhum dos dois substitui o curso completo — são portas de entrada.</p>
+
+    <div class="entrada-duo">
+      <div class="oferta-card">
+        <div class="oferta-plano">Pacote de concurso · SEFAZ AL 2026</div>
+        <div class="oferta-parcela"><span>12× de</span> R$ 24,51</div>
+        <p class="oferta-avista">ou <strong>R$ 237</strong> à vista</p>
+        <p class="oferta-equiv">Acesso até 27/12/2026 · a prova é em 20/12</p>
+
+        <ul class="oferta-list">
+          <li>17 aulas de Contabilidade Geral — 16 em vídeo + 1 bônus em PDF</li>
+          <li>Cobre os 11 tópicos de Contabilidade Geral do edital</li>
+          <li>3 dessas aulas são liberadas até 04/11</li>
+          <li><span><strong>Plano de Estudos</strong> calibrado até o dia da prova</span></li>
+          <li><span><strong>Meu Edital</strong> e <strong>Mapa de Incidência</strong> inclusos</span></li>
+          <li>Questões comentadas de banca real</li>
+          <li class="entrada-nao">Não cobre Contabilidade Pública nem Auditoria Fiscal</li>
+        </ul>
+
+        <a href="https://pay.kiwify.com.br/ZtyEAiG?src=cursos&amp;utm_source=site&amp;utm_medium=cursos&amp;utm_campaign=pacote_sefaz_al&amp;utm_content=sefazal" class="btn-p">Garantir meu acesso</a>
+      </div>
+
+      <div class="oferta-card">
+        <div class="oferta-plano">Material avulso · Dicionário Contábil</div>
+        <div class="oferta-parcela"><span>11× de</span> R$ 5,22</div>
+        <p class="oferta-avista">ou <strong>R$ 47</strong> à vista</p>
+        <p class="oferta-equiv">Pagamento único · o material fica com você, não expira</p>
+
+        <ul class="oferta-list">
+          <li>PDF com mais de 400 verbetes em 125 páginas</li>
+          <li>Índice clicável — acha o termo em segundos</li>
+          <li><span>Bônus: <strong>Aula 01 — Método das Partidas Dobradas</strong>, em vídeo e em PDF</span></li>
+          <li>Entrega imediata por e-mail</li>
+        </ul>
+
+        <a href="https://pay.kiwify.com.br/pBSgGdf?src=cursos&amp;utm_source=site&amp;utm_medium=cursos&amp;utm_campaign=dicionario&amp;utm_content=dicionario" class="btn-p">Quero o Dicionário</a>
+      </div>
+    </div>
+
+    <p class="oferta-nota">Os dois têm 7 dias de garantia incondicional · pagamento seguro via Kiwify.<br>No cartão as parcelas têm juros do gateway — por isso mostramos o valor à vista junto.</p>
+  </div>
+</section>
+<!-- ===== /ENTRADAS ===== -->
 
 <section style="padding:100px 5%;background:var(--branco);">
   <div class="inner">
