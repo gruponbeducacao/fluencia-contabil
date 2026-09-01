@@ -15,10 +15,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta property="og:title" content="Depoimentos de Alunos — Fluência Contábil">
 <meta property="og:description" content="Veja o que os alunos do Prof. Vinícius Ferraz dizem sobre o método Fluência Contábil. Depoimentos reais de aprovados em concursos fiscais e de controle.">
 <meta property="og:type" content="website">
+<meta property="og:image" content="https://fluenciacontabil.com.br/assets/hero-institucional.jpg">
 <meta property="og:url" content="https://fluenciacontabil.com.br/depoimentos.html">
 <meta property="og:site_name" content="Fluência Contábil">
 <meta property="og:locale" content="pt_BR">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://fluenciacontabil.com.br/assets/hero-institucional.jpg">
 <meta name="twitter:title" content="Depoimentos de Alunos — Fluência Contábil">
 <meta name="twitter:description" content="Veja o que os alunos do Prof. Vinícius Ferraz dizem sobre o método Fluência Contábil. Depoimentos reais de aprovados em concursos fiscais e de controle.">
 <title>Depoimentos — Fluência Contábil</title>
@@ -27,24 +29,60 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/site.css">
 <style>
-.big-quote{font-size:clamp(20px,2.5vw,30px);font-family:'Source Serif 4',serif;font-style:italic;color:var(--azul);line-height:1.55;margin-bottom:24px;position:relative;padding:0 20px;}
-.big-quote::before{content:'"';position:absolute;left:-12px;top:-16px;font-size:80px;color:rgba(201,168,76,0.2);font-style:normal;line-height:1;}
-.dep-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:56px;}
-.dep-card{background:var(--cream);border-radius:4px;padding:28px;border:1px solid rgba(201,168,76,0.15);transition:all 0.3s;display:flex;flex-direction:column;gap:16px;}
-.dep-card:hover{box-shadow:0 8px 32px rgba(27,42,74,0.1);transform:translateY(-3px);}
-.dep-stars{color:var(--dourado);font-size:14px;letter-spacing:2px;}
-.dep-text{font-size:14px;line-height:1.75;color:#444;font-family:'Source Serif 4',serif;font-style:italic;flex:1;}
-.dep-footer{display:flex;align-items:center;gap:12px;border-top:1px solid rgba(201,168,76,0.2);padding-top:16px;}
-.dep-avatar{width:40px;height:40px;background:var(--azul);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:var(--dourado);flex-shrink:0;}
-.dep-info strong{display:block;font-size:13px;font-weight:800;color:var(--azul);}
-.dep-info span{font-size:11px;color:#888;}
 .dep-num-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;}
 .dep-num-card{padding:48px 32px;text-align:center;border-right:1px solid rgba(255,255,255,0.07);}
 .dep-num-card:last-child{border-right:none;}
 .dep-num-val{font-size:52px;font-weight:900;color:var(--dourado);line-height:1;letter-spacing:-2px;}
 .dep-num-lbl{font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-top:10px;display:block;}
-@media(max-width:1024px){.dep-grid{grid-template-columns:1fr 1fr;}.dep-num-grid{grid-template-columns:1fr;}}
-@media(max-width:768px){.dep-grid{grid-template-columns:1fr;}}
+@media(max-width:1024px){.dep-num-grid{grid-template-columns:1fr;}}
+/* RESULTADO APURADO — o saldo que fecha a conta, com o comprovante ao lado */
+.dep-resultado{background:var(--azul);padding:64px 5%;position:relative;overflow:hidden;border-top:3px solid var(--dourado);}
+.dep-resultado::after{content:'';position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(200,168,75,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(200,168,75,.05) 1px,transparent 1px);background-size:56px 56px;}
+.dep-resultado-grid{position:relative;z-index:1;display:grid;grid-template-columns:auto 1fr auto;gap:44px;align-items:center;}
+.dep-cifra{text-align:center;padding-right:40px;border-right:1px solid rgba(200,168,75,.28);}
+.dep-cifra-num{display:block;font-size:clamp(64px,9vw,116px);font-weight:900;color:var(--dourado);line-height:.86;letter-spacing:-5px;}
+.dep-cifra-lbl{display:block;font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.42);margin-top:10px;}
+.dep-resultado-txt h2{font-size:clamp(21px,2.6vw,30px);font-weight:900;color:#fff;margin:0 0 8px;line-height:1.14;letter-spacing:-.5px;}
+.dep-cargo{font-family:'Source Serif 4',serif;font-size:14px;line-height:1.6;color:rgba(255,255,255,.55);margin:0 0 18px;}
+.dep-mov{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 0;border-top:1px solid rgba(255,255,255,.1);border-bottom:1px solid rgba(255,255,255,.1);}
+.dep-mov-de,.dep-mov-para{font-size:13.5px;font-weight:800;font-variant-numeric:tabular-nums;}
+.dep-mov-de{color:rgba(255,255,255,.4);text-decoration:line-through;text-decoration-color:rgba(255,255,255,.25);}
+.dep-mov-para{color:var(--dourado);}
+.dep-mov-seta{color:rgba(200,168,75,.6);}
+.dep-mov-nota{font-family:'Source Serif 4',serif;font-size:12.5px;font-style:italic;color:rgba(255,255,255,.42);}
+.dep-quote{font-family:'Source Serif 4',serif;font-size:15.5px;font-style:italic;color:rgba(255,255,255,.8);margin:18px 0 0;}
+.dep-plat{font-family:'Source Serif 4',serif;font-size:13px;line-height:1.65;color:rgba(255,255,255,.5);margin:12px 0 0;}
+.dep-plat em{color:rgba(255,255,255,.72);}
+
+/* comprovante: a moldura de janela, como na demo da assinatura.html */
+.dep-print{margin:0;background:#0B1220;border-radius:8px;overflow:hidden;box-shadow:0 16px 40px rgba(0,0,0,.3);width:fit-content;}
+.dep-print-top{display:flex;align-items:center;gap:6px;padding:8px 11px;border-bottom:1px solid rgba(255,255,255,.08);}
+.dep-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.18);flex-shrink:0;}
+.dep-print-url{flex:1;min-width:0;margin-left:4px;background:rgba(255,255,255,.06);border-radius:5px;font-size:10px;color:rgba(255,255,255,.5);padding:4px 9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.dep-print img{display:block;height:auto;max-width:100%;}
+
+/* O RAZÃO — cada fala é um registro; a numeração é a ordem, não enfeite */
+.dep-conta{margin-top:44px;}
+.dep-conta-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;padding-bottom:11px;border-bottom:2px solid var(--dourado);}
+.dep-conta-head h3{font-size:17px;font-weight:800;color:var(--azul);margin:0;}
+.dep-conta-head>span{font-family:'Source Serif 4',serif;font-size:13.5px;color:#888;font-style:italic;}
+.dep-conta-n{margin-left:auto;font-family:'Montserrat',sans-serif;font-style:normal;font-size:10.5px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--dourado-esc);}
+.dep-scroll{overflow-x:auto;}
+.dep-razao{width:100%;border-collapse:collapse;min-width:620px;}
+.dep-razao th{font-size:9.5px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:#a5a5a5;text-align:left;padding:14px 16px 10px;border-bottom:1px solid #ececec;white-space:nowrap;}
+.dep-razao td{padding:17px 16px;border-bottom:1px solid #f0f0f0;vertical-align:top;}
+.dep-razao tbody tr:hover{background:var(--cream);}
+.dep-razao tr.dep-anexo:hover{background:transparent;}
+.dep-n{font-size:12.5px;font-weight:800;color:var(--dourado-esc);font-variant-numeric:tabular-nums;width:1%;white-space:nowrap;}
+.dep-hist{font-family:'Source Serif 4',serif;font-size:14.5px;line-height:1.7;color:#3d3d3d;font-style:italic;}
+.dep-quem{font-size:12.5px;font-weight:800;color:var(--azul);white-space:nowrap;}
+.dep-canal{font-size:10px;font-weight:700;letter-spacing:1.1px;text-transform:uppercase;color:#9a9a9a;white-space:nowrap;text-align:right;}
+.dep-anexo-btn{display:flex;width:fit-content;align-items:center;gap:6px;margin-top:13px;background:none;border:1px solid rgba(200,168,75,.5);border-radius:2px;color:var(--dourado-esc);font-family:'Montserrat',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.1px;text-transform:uppercase;padding:6px 11px;cursor:pointer;transition:all .2s ease;}
+.dep-anexo-btn:hover{background:var(--cream);border-color:var(--dourado);color:var(--azul);}
+.dep-anexo-btn:focus-visible{outline:2px solid var(--dourado);outline-offset:2px;}
+.dep-anexo td{padding:4px 16px 22px;background:#fff;}
+@media(max-width:1000px){.dep-resultado-grid{grid-template-columns:auto 1fr;gap:32px;}.dep-resultado-grid .dep-print{grid-column:1/-1;}}
+@media(max-width:700px){.dep-resultado-grid{grid-template-columns:1fr;gap:26px;}.dep-cifra{padding-right:0;border-right:none;padding-bottom:22px;border-bottom:1px solid rgba(200,168,75,.28);}.dep-print img{width:100%!important;max-width:330px;}}
 </style>
 <link rel="stylesheet" href="assets/email-capture.css?v=20260819">
 <script src="assets/email-capture.js?v=20260821" defer></script>
@@ -99,207 +137,182 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <p style="margin:16px auto 0;">Mais de 3.000 alunos que estudaram com o professor Vinícius Ferraz. Aprovações em SEFAZ, TCE, Senado, Câmara e muito mais.</p>
   </div>
 </section>
-<!-- ===== APROVACAO =====
+<!-- ===== RESULTADO APURADO =====
      Fonte: print de WhatsApp de 11/08/2026 em _MARKETING/_depoimentos/ mais o
-     resultado final do concurso da Prefeitura de Senador Canedo (GO), cargo
-     Fiscal de Tributos Municipais, banca Instituto Verbena/UFG.
-     O nome dele ja' saiu publicamente no e-mail L5 do lancamento.
+     resultado final do concurso da Prefeitura de Senador Canedo (GO), cargo Fiscal
+     de Tributos Municipais, banca Instituto Verbena/UFG. O nome dele ja' saiu
+     publicamente no e-mail L5 do lancamento.
+     O print foi RECORTADO para excluir a tabela de resultado, que trazia nome e
+     numero de inscricao de ~20 outros candidatos. Nao republicar o print inteiro.
      ATENCAO: a mencao a' lista PcD e' dado pessoal sensivel (LGPD art. 5 II).
      Entrou por decisao do Vinicius em 01/09/2026, que confirmou ter o aceite.
-     Se o aceite cair, tirar a linha da PcD — nao a aprovacao inteira.
-     Ele e' 1o colocado e AGUARDA convocacao: nao anunciar como nomeado.  -->
-<section style="padding:80px 5%;background:var(--cream);">
-  <div style="max-width:860px;margin-inline:auto;text-align:center;">
-    <span class="lbl" style="justify-content:center;display:flex;">Aprovação</span>
-    <div class="bar" style="margin:10px auto 28px;"></div>
-    <p class="big-quote">Eu saí da 15ª posição e fui para a primeira com a discursiva. [...] Sou grato por fazer parte da Fluência Contábil.</p>
-    <div style="font-size:13px;font-weight:800;color:var(--azul);text-transform:uppercase;letter-spacing:1.5px;">Ransley Moreira Alves</div>
-    <div style="font-size:12px;color:#888;margin-top:6px;line-height:1.6;">1º lugar na lista PcD · Fiscal de Tributos Municipais<br>Prefeitura de Senador Canedo (GO)</div>
-    <p style="font-size:13px;color:#666;font-family:'Source Serif 4',serif;font-style:italic;margin-top:22px;padding-top:20px;border-top:1px solid rgba(201,168,76,0.3);max-width:600px;margin-inline:auto;">Na plataforma, ele avaliou o curso com nota 10: "Excelente didática, a contabilidade é trabalhada com profundidade desde a primeira aula."</p>
+     Ele e' 1o colocado e AGUARDA convocacao: nao anunciar como nomeado.       -->
+<section class="dep-resultado">
+  <div class="inner dep-resultado-grid">
+    <div class="dep-cifra"><span class="dep-cifra-num">1º</span><span class="dep-cifra-lbl">lugar</span></div>
+    <div class="dep-resultado-txt">
+      <span class="lbl">Resultado apurado</span>
+      <h2>Ransley Moreira Alves</h2>
+      <p class="dep-cargo">1º lugar na lista PcD · Fiscal de Tributos Municipais<br>Prefeitura de Senador Canedo (GO)</p>
+      <div class="dep-mov"><span class="dep-mov-de">15ª posição</span><span class="dep-mov-seta" aria-hidden="true">→</span><span class="dep-mov-para">1ª posição</span><span class="dep-mov-nota">a discursiva fez a diferença</span></div>
+      <p class="dep-quote">“Sou grato por fazer parte da Fluência Contábil.”</p>
+      <p class="dep-plat">Na plataforma, avaliou o curso com nota 10: <em>“Excelente didática, a contabilidade é trabalhada com profundidade desde a primeira aula.”</em></p>
+    </div>
+    <figure class="dep-print">
+      <div class="dep-print-top"><span class="dep-dot"></span><span class="dep-dot"></span><span class="dep-dot"></span><span class="dep-print-url">WhatsApp · 11 ago 2026</span></div>
+      <picture><source srcset="assets/depoimentos/aprovacao-ransley-2026-08-11.webp" type="image/webp"><img src="assets/depoimentos/aprovacao-ransley-2026-08-11.png" alt="Print da conversa em que o aluno anuncia o primeiro lugar na lista PcD" width="540" height="405" loading="lazy" decoding="async" style="width:320px"></picture>
+    </figure>
   </div>
 </section>
 <section style="padding:100px 5%;background:var(--branco);">
   <div class="inner">
     <span class="lbl">Depoimentos</span><div class="bar"></div>
-    <h2 class="h2">Histórias de quem passou pelo método.</h2>
-    <div class="dep-grid">
-<div class="dep-card">
-  <div class="dep-stars">★★★★★</div>
-  <p class="dep-text">"Excelente aula. Muito obrigada professor Vinícius, estou entendo coisas que achei que nunca iria aprender... Sua didática é ótima. Grava mais por favor... Precisamos da sua ajuda"</p>
-  <div class="dep-footer">
-    <div class="dep-avatar">C</div>
-    <div class="dep-info">
-      <strong>@carolinnepmaia</strong>
-      <span>YouTube</span>
+    <h2 class="h2">Dezesseis registros, lançados por assunto.</h2>
+    <p class="body-t">Cada linha é uma fala real de aluno, com o canal em que chegou. Onde existe print da conversa, ele está anexado ao registro.</p>
+    <div class="dep-conta">
+      <div class="dep-conta-head"><h3>Didática e método</h3><span>como a aula é conduzida</span><span class="dep-conta-n">9 registros</span></div>
+      <div class="dep-scroll"><table class="dep-razao">
+        <thead><tr><th scope="col">Nº</th><th scope="col">Histórico</th><th scope="col">Aluno</th><th scope="col">Canal</th></tr></thead>
+        <tbody>
+      <tr>
+        <td class="dep-n">01</td>
+        <td class="dep-hist">“Excelente aula. Muito obrigada professor Vinícius, estou entendo coisas que achei que nunca iria aprender... Sua didática é ótima. Grava mais por favor... Precisamos da sua ajuda”</td>
+        <td class="dep-quem">@carolinnepmaia</td>
+        <td class="dep-canal">YouTube</td>
+      </tr>
+      <tr>
+        <td class="dep-n">02</td>
+        <td class="dep-hist">“Não é modéstia, honestamente é uma das melhores aulas sobre quaisquer CPCs que já assisti. Obrigada por esse PRESENTE!”</td>
+        <td class="dep-quem">@yarabezerra9762</td>
+        <td class="dep-canal">YouTube</td>
+      </tr>
+      <tr>
+        <td class="dep-n">03</td>
+        <td class="dep-hist">“De altíssimo nível seu conteúdo e aprofundamento de um CPC tão complexo. Muito obrigado por disponibilizar do seu tempo e conteúdo tão rico. Acredito muito na lei do retorno. Você tem uma boa didática, mantenha-se firme, logo seu trabalho vai bombar! Parabéns!”</td>
+        <td class="dep-quem">@Mr4lessandro</td>
+        <td class="dep-canal">YouTube</td>
+      </tr>
+      <tr>
+        <td class="dep-n">04</td>
+        <td class="dep-hist">“Esse estudo me fez gostar, novamente, de estudar. Querer mais a cada dia. Ter mais conhecimento hoje do que ontem. Principalmente o Vinícius, com sua dedicação e cuidado conosco, ajudou nesse reinício.”</td>
+        <td class="dep-quem">Érica Freitas</td>
+        <td class="dep-canal">WhatsApp</td>
+      </tr>
+      <tr>
+        <td class="dep-n">05</td>
+        <td class="dep-hist">“Muito top a aula!!!!”</td>
+        <td class="dep-quem">Aline EA Rj</td>
+        <td class="dep-canal">WhatsApp</td>
+      </tr>
+      <tr>
+        <td class="dep-n">06</td>
+        <td class="dep-hist">“Aula excelente, professor. Estou estudando para certificações do mercado financeiro através dos seus vídeos. Muito obrigado!”</td>
+        <td class="dep-quem">@LuizMarconiluizmn</td>
+        <td class="dep-canal">YouTube</td>
+      </tr>
+      <tr>
+        <td class="dep-n">09</td>
+        <td class="dep-hist">“Sua didática é incrível, dá pra ver que você realmente gosta de contabilidade. [...] As aulas são sucintas, vão direto ao ponto, trazem exemplos da vida real e como as bancas cobram. Eu com certeza recomendaria pra todo mundo que está estudando contabilidade!”</td>
+        <td class="dep-quem">Aluno(a)</td>
+        <td class="dep-canal">WhatsApp</td>
+      </tr>
+      <tr>
+        <td class="dep-n">11</td>
+        <td class="dep-hist">“Eu achei a proposta excelente. Os slides bem formatados, bem estruturados. A forma de abordagem do conteúdo bem interessante, com os estímulos para o estudo dos CPCs desde o início da jornada. [...] Não tem jeito, a contabilidade funciona assim, como um quebra-cabeças.”</td>
+        <td class="dep-quem">Aluno(a)</td>
+        <td class="dep-canal">WhatsApp</td>
+      </tr>
+      <tr>
+        <td class="dep-n">15</td>
+        <td class="dep-hist">“É de uma atenção ao detalhe. Realmente fora da curva. [...] Sem contar o seu lado humano, que é 10/10, o melhor que temos.”
+            <button type="button" class="dep-anexo-btn" aria-expanded="false" aria-controls="comprov-3"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M21.4 11.05 12.25 20.2a5.5 5.5 0 0 1-7.78-7.78l9.19-9.19a3.67 3.67 0 0 1 5.18 5.18l-9.2 9.2a1.83 1.83 0 0 1-2.59-2.6l8.49-8.48"/></svg> ver comprovante</button></td>
+        <td class="dep-quem">Aluno(a)</td>
+        <td class="dep-canal">WhatsApp</td>
+      </tr>
+      <tr class="dep-anexo" id="comprov-3" hidden>
+        <td colspan="4">
+        <figure class="dep-print">
+          <div class="dep-print-top"><span class="dep-dot"></span><span class="dep-dot"></span><span class="dep-dot"></span><span class="dep-print-url">WhatsApp · print da conversa</span></div>
+          <picture><source srcset="assets/depoimentos/whatsapp-atencao-ao-detalhe.webp" type="image/webp"><img src="assets/depoimentos/whatsapp-atencao-ao-detalhe.png" alt="Print da conversa: aluna fala em atenção ao detalhe e no lado humano do professor" width="383" height="269" loading="lazy" decoding="async" style="width:380px"></picture>
+        </figure>
+        </td>
+      </tr>
+        </tbody></table></div>
     </div>
-  </div>
-</div>
-<div class="dep-card">
-  <div class="dep-stars">★★★★★</div>
-  <p class="dep-text">"Não é modéstia, honestamente é uma das melhores aulas sobre quaisquer CPCs que já assisti. Obrigada por esse PRESENTE!"</p>
-  <div class="dep-footer">
-    <div class="dep-avatar">Y</div>
-    <div class="dep-info">
-      <strong>@yarabezerra9762</strong>
-      <span>YouTube</span>
+    <div class="dep-conta">
+      <div class="dep-conta-head"><h3>A plataforma</h3><span>o que o aluno encontra ao entrar</span><span class="dep-conta-n">4 registros</span></div>
+      <div class="dep-scroll"><table class="dep-razao">
+        <thead><tr><th scope="col">Nº</th><th scope="col">Histórico</th><th scope="col">Aluno</th><th scope="col">Canal</th></tr></thead>
+        <tbody>
+      <tr>
+        <td class="dep-n">07</td>
+        <td class="dep-hist">“O sistema de ranking gamificado ficou ótimo! A ideia de utilizar a própria plataforma como simulador também foi excelente. Contabilidade sempre foi a minha maior dificuldade na área fiscal, e a forma como o conteúdo é apresentado tem ajudado bastante. As aulas são objetivas, certeiras e vão direto ao ponto. [...] Outro ponto positivo é a escrita e a objetividade dos PDFs, bem como a diagramação deles.”</td>
+        <td class="dep-quem">João Renan S.</td>
+        <td class="dep-canal">Plataforma</td>
+      </tr>
+      <tr>
+        <td class="dep-n">08</td>
+        <td class="dep-hist">“Estou impressionada demais com esse seu trabalho, que está magnífico! Não há nada semelhante no mercado. Nada! Parabéns demais por idealizar e construir tudo isso que está gigante!!! Um privilégio estar aqui, agora.”
+            <button type="button" class="dep-anexo-btn" aria-expanded="false" aria-controls="comprov-1"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M21.4 11.05 12.25 20.2a5.5 5.5 0 0 1-7.78-7.78l9.19-9.19a3.67 3.67 0 0 1 5.18 5.18l-9.2 9.2a1.83 1.83 0 0 1-2.59-2.6l8.49-8.48"/></svg> ver comprovante</button></td>
+        <td class="dep-quem">Fernanda C.</td>
+        <td class="dep-canal">WhatsApp</td>
+      </tr>
+      <tr class="dep-anexo" id="comprov-1" hidden>
+        <td colspan="4">
+        <figure class="dep-print">
+          <div class="dep-print-top"><span class="dep-dot"></span><span class="dep-dot"></span><span class="dep-dot"></span><span class="dep-print-url">WhatsApp · print da conversa</span></div>
+          <picture><source srcset="assets/depoimentos/whatsapp-impressionada-mercado.webp" type="image/webp"><img src="assets/depoimentos/whatsapp-impressionada-mercado.png" alt="Print da conversa: aluna diz que o trabalho está magnífico e que não há nada semelhante no mercado" width="369" height="472" loading="lazy" decoding="async" style="width:380px"></picture>
+        </figure>
+        </td>
+      </tr>
+      <tr>
+        <td class="dep-n">13</td>
+        <td class="dep-hist">“A plataforma está sensacional. Bem completa, e sua didática amarra o conteúdo, favorecendo a compreensão. Essa oportunidade de ver os assuntos com mais detalhes é mesmo um diferencial.”
+            <button type="button" class="dep-anexo-btn" aria-expanded="false" aria-controls="comprov-2"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M21.4 11.05 12.25 20.2a5.5 5.5 0 0 1-7.78-7.78l9.19-9.19a3.67 3.67 0 0 1 5.18 5.18l-9.2 9.2a1.83 1.83 0 0 1-2.59-2.6l8.49-8.48"/></svg> ver comprovante</button></td>
+        <td class="dep-quem">Aluno(a)</td>
+        <td class="dep-canal">WhatsApp</td>
+      </tr>
+      <tr class="dep-anexo" id="comprov-2" hidden>
+        <td colspan="4">
+        <figure class="dep-print">
+          <div class="dep-print-top"><span class="dep-dot"></span><span class="dep-dot"></span><span class="dep-dot"></span><span class="dep-print-url">WhatsApp · print da conversa</span></div>
+          <picture><source srcset="assets/depoimentos/whatsapp-plataforma-sensacional.webp" type="image/webp"><img src="assets/depoimentos/whatsapp-plataforma-sensacional.png" alt="Print da conversa: aluno elogia a plataforma e a didática que amarra o conteúdo" width="371" height="273" loading="lazy" decoding="async" style="width:380px"></picture>
+        </figure>
+        </td>
+      </tr>
+      <tr>
+        <td class="dep-n">14</td>
+        <td class="dep-hist">“As funcionalidades e a criatividade para inovação me surpreenderam, deixo meus sinceros parabéns.”</td>
+        <td class="dep-quem">Bruno D.</td>
+        <td class="dep-canal">Aluno</td>
+      </tr>
+        </tbody></table></div>
     </div>
-  </div>
-</div>
-<div class="dep-card">
-  <div class="dep-stars">★★★★★</div>
-  <p class="dep-text">"De altíssimo nível seu conteúdo e aprofundamento de um CPC tão complexo. Muito obrigado por disponibilizar do seu tempo e conteúdo tão rico. Acredito muito na lei do retorno. Você tem uma boa didática, mantenha-se firme, logo seu trabalho vai bombar! Parabéns!"</p>
-  <div class="dep-footer">
-    <div class="dep-avatar">A</div>
-    <div class="dep-info">
-      <strong>@Mr4lessandro</strong>
-      <span>YouTube</span>
+    <div class="dep-conta">
+      <div class="dep-conta-head"><h3>Questões e simulador</h3><span>o treino para a prova</span><span class="dep-conta-n">3 registros</span></div>
+      <div class="dep-scroll"><table class="dep-razao">
+        <thead><tr><th scope="col">Nº</th><th scope="col">Histórico</th><th scope="col">Aluno</th><th scope="col">Canal</th></tr></thead>
+        <tbody>
+      <tr>
+        <td class="dep-n">10</td>
+        <td class="dep-hist">“Recurso perfeito: a aula já tá vinculada ao tema e a análise estatística de quantidade de questões indicadas. Esse recurso, pra uma reta final e uma trilha, vai dar bom. Economizar tempo e agilizar os conteúdos.”</td>
+        <td class="dep-quem">Marcos Vinícius R.</td>
+        <td class="dep-canal">WhatsApp</td>
+      </tr>
+      <tr>
+        <td class="dep-n">12</td>
+        <td class="dep-hist">“Isso aqui é mt legal. [...] Tá muito diferenciado. Adorei o layout do sistema de questões.”</td>
+        <td class="dep-quem">Maria Clara R.</td>
+        <td class="dep-canal">WhatsApp</td>
+      </tr>
+      <tr>
+        <td class="dep-n">16</td>
+        <td class="dep-hist">“Aquela aba de provas de contabilidade da SEFAZ é muito boa. Arrasou!”</td>
+        <td class="dep-quem">Aluno(a)</td>
+        <td class="dep-canal">Instagram</td>
+      </tr>
+        </tbody></table></div>
     </div>
-  </div>
-</div>
-<div class="dep-card">
-  <div class="dep-stars">★★★★★</div>
-  <p class="dep-text">"Esse estudo me fez gostar, novamente, de estudar. Querer mais a cada dia. Ter mais conhecimento hoje do que ontem. Principalmente o Vinícius, com sua dedicação e cuidado conosco, ajudou nesse reinício."</p>
-  <div class="dep-footer">
-    <div class="dep-avatar">É</div>
-    <div class="dep-info">
-      <strong>Érica Freitas</strong>
-      <span>WhatsApp — Turma ISS-RJ</span>
-    </div>
-  </div>
-</div>
-<div class="dep-card">
-  <div class="dep-stars">★★★★★</div>
-  <p class="dep-text">"Muito top a aula!!!!"</p>
-  <div class="dep-footer">
-    <div class="dep-avatar">A</div>
-    <div class="dep-info">
-      <strong>Aline EA Rj</strong>
-      <span>WhatsApp — Turma ISS-RJ</span>
-    </div>
-  </div>
-</div>
-<div class="dep-card">
-  <div class="dep-stars">★★★★★</div>
-  <p class="dep-text">"Aula excelente, professor. Estou estudando para certificações do mercado financeiro através dos seus vídeos. Muito obrigado!"</p>
-  <div class="dep-footer">
-    <div class="dep-avatar">L</div>
-    <div class="dep-info">
-      <strong>@LuizMarconiluizmn</strong>
-      <span>YouTube</span>
-    </div>
-  </div>
-</div>
-<div class="dep-card">
-  <div class="dep-stars">★★★★★</div>
-  <p class="dep-text">"O sistema de ranking gamificado ficou ótimo! A ideia de utilizar a própria plataforma como simulador também foi excelente. Contabilidade sempre foi a minha maior dificuldade na área fiscal, e a forma como o conteúdo é apresentado tem ajudado bastante. As aulas são objetivas, certeiras e vão direto ao ponto. [...] Outro ponto positivo é a escrita e a objetividade dos PDFs, bem como a diagramação deles."</p>
-  <div class="dep-footer">
-    <div class="dep-avatar">J</div>
-    <div class="dep-info">
-      <strong>João Renan S.</strong>
-      <span>Plataforma — Plano Anual</span>
-    </div>
-  </div>
-</div>
-<div class="dep-card">
-  <div class="dep-stars">★★★★★</div>
-  <p class="dep-text">"Estou impressionada demais com esse seu trabalho, que está magnífico! Não há nada semelhante no mercado. Nada! Parabéns demais por idealizar e construir tudo isso que está gigante!!! Um privilégio estar aqui, agora."</p>
-  <div class="dep-footer">
-    <div class="dep-avatar">F</div>
-    <div class="dep-info">
-      <strong>Fernanda C.</strong>
-      <span>WhatsApp</span>
-    </div>
-  </div>
-</div>
-<div class="dep-card">
-  <div class="dep-stars">★★★★★</div>
-  <p class="dep-text">"Sua didática é incrível, dá pra ver que você realmente gosta de contabilidade. [...] As aulas são sucintas, vão direto ao ponto, trazem exemplos da vida real e como as bancas cobram. Eu com certeza recomendaria pra todo mundo que está estudando contabilidade!"</p>
-  <div class="dep-footer">
-    <div class="dep-avatar">W</div>
-    <div class="dep-info">
-      <strong>Aluno(a)</strong>
-      <span>WhatsApp</span>
-    </div>
-  </div>
-</div>
-<div class="dep-card">
-  <div class="dep-stars">★★★★★</div>
-  <p class="dep-text">"Recurso perfeito: a aula já tá vinculada ao tema e a análise estatística de quantidade de questões indicadas. Esse recurso, pra uma reta final e uma trilha, vai dar bom. Economizar tempo e agilizar os conteúdos."</p>
-  <div class="dep-footer">
-    <div class="dep-avatar">M</div>
-    <div class="dep-info">
-      <strong>Marcos Vinícius R.</strong>
-      <span>WhatsApp</span>
-    </div>
-  </div>
-</div>
-<div class="dep-card">
-  <div class="dep-stars">★★★★★</div>
-  <p class="dep-text">"Eu achei a proposta excelente. Os slides bem formatados, bem estruturados. A forma de abordagem do conteúdo bem interessante, com os estímulos para o estudo dos CPCs desde o início da jornada. [...] Não tem jeito, a contabilidade funciona assim, como um quebra-cabeças."</p>
-  <div class="dep-footer">
-    <div class="dep-avatar">W</div>
-    <div class="dep-info">
-      <strong>Aluno(a)</strong>
-      <span>WhatsApp</span>
-    </div>
-  </div>
-</div>
-<div class="dep-card">
-  <div class="dep-stars">★★★★★</div>
-  <p class="dep-text">"Isso aqui é mt legal. [...] Tá muito diferenciado. Adorei o layout do sistema de questões."</p>
-  <div class="dep-footer">
-    <div class="dep-avatar">M</div>
-    <div class="dep-info">
-      <strong>Maria Clara R.</strong>
-      <span>WhatsApp — sobre o Simulador</span>
-    </div>
-  </div>
-</div>
-<div class="dep-card">
-  <div class="dep-stars">★★★★★</div>
-  <p class="dep-text">"A plataforma está sensacional. Bem completa, e sua didática amarra o conteúdo, favorecendo a compreensão. Essa oportunidade de ver os assuntos com mais detalhes é mesmo um diferencial."</p>
-  <div class="dep-footer">
-    <div class="dep-avatar">W</div>
-    <div class="dep-info">
-      <strong>Aluno(a)</strong>
-      <span>WhatsApp</span>
-    </div>
-  </div>
-</div>
-<div class="dep-card">
-  <div class="dep-stars">★★★★★</div>
-  <p class="dep-text">"As funcionalidades e a criatividade para inovação me surpreenderam, deixo meus sinceros parabéns."</p>
-  <div class="dep-footer">
-    <div class="dep-avatar">B</div>
-    <div class="dep-info">
-      <strong>Bruno D.</strong>
-      <span>Aluno</span>
-    </div>
-  </div>
-</div>
-<div class="dep-card">
-  <div class="dep-stars">★★★★★</div>
-  <p class="dep-text">"É de uma atenção ao detalhe. Realmente fora da curva. [...] Sem contar o seu lado humano, que é 10/10, o melhor que temos."</p>
-  <div class="dep-footer">
-    <div class="dep-avatar">W</div>
-    <div class="dep-info">
-      <strong>Aluno(a)</strong>
-      <span>WhatsApp</span>
-    </div>
-  </div>
-</div>
-<div class="dep-card">
-  <div class="dep-stars">★★★★★</div>
-  <p class="dep-text">"Aquela aba de provas de contabilidade da SEFAZ é muito boa. Arrasou!"</p>
-  <div class="dep-footer">
-    <div class="dep-avatar">I</div>
-    <div class="dep-info">
-      <strong>Aluno(a)</strong>
-      <span>Instagram</span>
-    </div>
-  </div>
-</div>
-</div>
   </div>
 </section>
 <section style="padding:80px 5%;background:var(--azul);">
@@ -355,5 +368,15 @@ if(hamBtn&&mobMenu){
     });
   });
 }
+</script>
+<script>
+document.querySelectorAll('.dep-anexo-btn').forEach(function(b){
+  b.addEventListener('click',function(){
+    var alvo=document.getElementById(b.getAttribute('aria-controls'));
+    var aberto=b.getAttribute('aria-expanded')==='true';
+    b.setAttribute('aria-expanded',aberto?'false':'true');
+    alvo.hidden=aberto;
+  });
+});
 </script>
 </body></html>

@@ -25,6 +25,11 @@ IMAGES = [
     "assets/foto-vinicius.jpg",                                  # bio professor
     "assets/prof-hero.jpg",                                      # hero professor
     "assets/favicon.png",                                        # favicon (super grande)
+    # comprovantes dos depoimentos (renderizados a ~280-380px na pagina)
+    "assets/depoimentos/aprovacao-ransley-2026-08-11.png",
+    "assets/depoimentos/whatsapp-impressionada-mercado.png",
+    "assets/depoimentos/whatsapp-plataforma-sensacional.png",
+    "assets/depoimentos/whatsapp-atencao-ao-detalhe.png",
 ]
 
 # Limite de dimensao: se a imagem passar disso, redimensiona.
