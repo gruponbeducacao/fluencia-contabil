@@ -29,7 +29,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <style>
 .canais-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:24px;margin-bottom:64px;}
 .canais-grid>a>span{overflow-wrap:anywhere;}
-.contato-grid{display:grid;grid-template-columns:1fr 1.15fr;gap:72px;align-items:start;}
 .canal-card{display:flex;gap:18px;align-items:flex-start;padding:20px;border:1.5px solid rgba(27,42,74,0.08);border-radius:4px;margin-bottom:12px;transition:all 0.25s;text-decoration:none;color:inherit;}
 .canal-card:hover{border-color:var(--dourado);background:var(--cream);transform:translateX(4px);}
 .canal-icon{font-size:22px;flex-shrink:0;margin-top:2px;}
@@ -65,15 +64,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 .ea-send{width:36px;height:36px;background:var(--dourado);border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;flex-shrink:0;}
 .ea-send:hover{background:var(--dourado-esc);transform:scale(1.05);}
 /* FORM */
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
-.fg{display:flex;flex-direction:column;gap:6px;margin-bottom:16px;}
-.fg label{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--azul);}
-.fg input,.fg select,.fg textarea{padding:13px 16px;border:1.5px solid rgba(27,42,74,0.15);border-radius:2px;font-size:14px;font-family:'Montserrat',sans-serif;color:var(--texto);background:var(--branco);outline:none;transition:border-color 0.2s;}
-.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--dourado);}
-.fg textarea{resize:vertical;min-height:110px;}
 .form-ok{display:none;background:rgba(200,168,75,0.1);border:1px solid rgba(200,168,75,0.3);padding:18px;border-radius:4px;font-size:14px;color:var(--azul);font-weight:600;text-align:center;margin-top:16px;}
-@media(max-width:1100px){.contato-grid{grid-template-columns:1fr;gap:48px;}}
-@media(max-width:768px){.contato-hero{padding:50px 20px!important;}.form-row{grid-template-columns:1fr;}.contato-grid{grid-template-columns:1fr;gap:32px;}.canais-grid{grid-template-columns:1fr;gap:16px;margin-bottom:40px;}.ea-chat{height:260px;}.canal-card{flex-direction:column;gap:12px;}.chat-wrap h3{font-size:18px;}.ea-input-area{padding:10px 12px;}.fg input,.fg select,.fg textarea{font-size:16px;padding:14px 14px;}}
+@media(max-width:768px){.contato-hero{padding:50px 20px!important;}.canais-grid{grid-template-columns:1fr;gap:16px;margin-bottom:40px;}.ea-chat{height:260px;}.canal-card{flex-direction:column;gap:12px;}.chat-wrap h3{font-size:18px;}.ea-input-area{padding:10px 12px;}}
 </style>
 <link rel="stylesheet" href="assets/email-capture.css?v=20260819">
 <script src="assets/email-capture.js?v=20260821" defer></script>
@@ -119,7 +111,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div style="max-width:1200px;margin-inline:auto;position:relative;z-index:2;">
     <span class="lbl">Fale Conosco</span>
     <h1 style="font-size:clamp(28px,4vw,50px);font-weight:900;color:var(--branco);letter-spacing:-1px;margin-bottom:16px;line-height:1.1;">Estamos aqui.<br><em style="font-style:normal;color:var(--dourado);">Como podemos ajudar?</em></h1>
-    <p style="font-size:16px;line-height:1.8;color:rgba(255,255,255,0.55);font-family:'Source Serif 4',serif;max-width:560px;">Dúvidas sobre o curso, o método, matrícula ou qualquer outro assunto. Use o suporte online ao vivo ou escolha outro canal.</p>
+    <p style="font-size:16px;line-height:1.8;color:rgba(255,255,255,0.55);font-family:'Source Serif 4',serif;max-width:560px;">Dúvidas sobre o curso, o método, matrícula ou qualquer outro assunto. Escolha o canal que preferir — o WhatsApp é o mais direto.</p>
   </div>
 </section>
 
@@ -170,77 +162,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <p style="font-size:13px;color:#666;font-family:'Source Serif 4',serif;">Respondemos mensagens de segunda a sexta, das 9h às 18h. Para dúvidas rápidas, o WhatsApp é o canal mais direto.</p>
     </div>
 
-    <!-- FORMULÁRIO -->
-    <div class="contato-grid">
-      <div>
-        <span style="display:block;font-size:10px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--dourado);margin-bottom:10px;">Envie uma mensagem</span>
-        <div style="width:44px;height:3px;background:var(--dourado);margin-bottom:28px;"></div>
-        <h2 style="font-size:clamp(20px,2.5vw,30px);font-weight:900;color:var(--azul);line-height:1.15;margin-bottom:12px;">Prefere escrever<br>diretamente para a gente?</h2>
-        <p style="font-size:14px;line-height:1.75;color:#666;font-family:'Source Serif 4',serif;">Preencha o formulário ao lado. Sua mensagem chegará direto em nossa caixa de entrada e respondemos em até 2 dias úteis.</p>
-      </div>
-      <div>
-        <div style="display:flex;flex-direction:column;gap:12px;" id="contatoForm">
-          <div style="display:flex;flex-direction:column;gap:5px;">
-            <label style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--azul);">Nome</label>
-            <input type="text" id="cfNome" placeholder="Seu nome completo" style="padding:13px 16px;border:1.5px solid rgba(27,42,74,0.15);border-radius:2px;font-size:14px;font-family:'Montserrat',sans-serif;color:var(--texto);outline:none;transition:border-color 0.2s;" onfocus="this.style.borderColor='var(--dourado)'" onblur="this.style.borderColor='rgba(27,42,74,0.15)'">
-          </div>
-          <div style="display:flex;flex-direction:column;gap:5px;">
-            <label style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--azul);">E-mail</label>
-            <input type="email" id="cfEmail" placeholder="seu@email.com" style="padding:13px 16px;border:1.5px solid rgba(27,42,74,0.15);border-radius:2px;font-size:14px;font-family:'Montserrat',sans-serif;color:var(--texto);outline:none;transition:border-color 0.2s;" onfocus="this.style.borderColor='var(--dourado)'" onblur="this.style.borderColor='rgba(27,42,74,0.15)'">
-          </div>
-          <div style="display:flex;flex-direction:column;gap:5px;">
-            <label style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--azul);">Assunto</label>
-            <select id="cfAssunto" style="padding:13px 16px;border:1.5px solid rgba(27,42,74,0.15);border-radius:2px;font-size:14px;font-family:'Montserrat',sans-serif;color:var(--texto);outline:none;background:white;transition:border-color 0.2s;" onfocus="this.style.borderColor='var(--dourado)'" onblur="this.style.borderColor='rgba(27,42,74,0.15)'">
-              <option value="">Selecione o assunto</option>
-              <option>Dúvida sobre o curso</option>
-              <option>Assinatura e matrícula</option>
-              <option>Parceria ou imprensa</option>
-              <option>Outro</option>
-            </select>
-          </div>
-          <div style="display:flex;flex-direction:column;gap:5px;">
-            <label style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--azul);">Mensagem</label>
-            <textarea id="cfMsg" placeholder="Escreva sua mensagem..." rows="4" style="padding:13px 16px;border:1.5px solid rgba(27,42,74,0.15);border-radius:2px;font-size:14px;font-family:'Montserrat',sans-serif;color:var(--texto);outline:none;resize:vertical;transition:border-color 0.2s;" onfocus="this.style.borderColor='var(--dourado)'" onblur="this.style.borderColor='rgba(27,42,74,0.15)'"></textarea>
-          </div>
-          <button onclick="submitContato()" style="padding:14px 32px;background:var(--dourado);color:var(--azul);font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;border:none;border-radius:2px;cursor:pointer;transition:all 0.2s;font-family:'Montserrat',sans-serif;margin-top:4px;" onmouseover="this.style.background='var(--dourado-esc)'" onmouseout="this.style.background='var(--dourado)'">Enviar mensagem</button>
-        </div>
-        <div id="contatoOk" style="display:none;background:rgba(200,168,75,0.08);border:1px solid rgba(200,168,75,0.3);border-radius:4px;padding:24px;text-align:center;">
-          <div style="font-size:24px;margin-bottom:10px;">✉️</div>
-          <div style="font-size:15px;font-weight:800;color:var(--azul);margin-bottom:6px;">Mensagem enviada!</div>
-          <p style="font-size:13px;color:#666;font-family:'Source Serif 4',serif;">Recebemos sua mensagem e retornaremos em até 2 dias úteis no e-mail informado.</p>
-        </div>
-      </div>
-    </div>
   </div>
 </section>
 
 <script>
-function submitContato() {
-  var nome    = document.getElementById('cfNome').value.trim();
-  var email   = document.getElementById('cfEmail').value.trim();
-  var assunto = document.getElementById('cfAssunto').value;
-  var msg     = document.getElementById('cfMsg').value.trim();
-  if (!nome)  { alert('Por favor, informe seu nome.');      return; }
-  if (!email) { alert('Por favor, informe seu e-mail.');    return; }
-  if (!msg)   { alert('Por favor, escreva sua mensagem.');  return; }
-
-  // Formspree — substitua YOUR_FORM_ID pelo ID do seu formulário em formspree.io
-  // É gratuito para até 50 envios/mês. Crie em https://formspree.io
-  var FORMSPREE = 'https://script.google.com/macros/s/AKfycbw9M0BRgqvT7srgiNmRTFKh-YvkVP6C6hnW8VwLhROSKAYCBQIdOz3U_XcuwEUrVyctzQ/exec';
-
-  fetch(FORMSPREE, {
-    method: 'POST',
-    
-    body: new URLSearchParams({ nome: nome, email: email, assunto: assunto, mensagem: msg }), mode: 'no-cors'
-  })
-  .then(function(r) { return r.json(); })
-  .catch(function() { return {ok: true}; })
-  .finally(function() {
-    document.getElementById('contatoForm').style.display = 'none';
-    document.getElementById('contatoOk').style.display = 'block';
-  });
-}
-
 /* Hamburger Menu */
 var hamBtn=document.getElementById('hamburgerBtn');
 var mobMenu=document.getElementById('mobileMenu');
