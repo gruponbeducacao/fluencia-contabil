@@ -1,6 +1,6 @@
 {
-  "geradoEm": "2026-09-01T12:35:15.224Z",
-  "total": 21,
+  "geradoEm": "2026-09-02T12:07:54.344Z",
+  "total": 24,
   "editais": [
     {
       "concursoSlug": "secretaria-da-fazenda-do-estado-do-ceara-sefaz-ce",
@@ -53,6 +53,44 @@
       ]
     },
     {
+      "concursoSlug": "petrobras-transporte-s-a-transpetro",
+      "orgao": "Petrobras Transporte S.A. – TRANSPETRO",
+      "cargo": "Profissional Transpetro de Nível Superior – Júnior — Ênfase 13: Contabilidade",
+      "banca": "CESGRANRIO",
+      "esfera": "FEDERAL",
+      "uf": "RJ",
+      "area": "EMPRESAS_PUBLICAS",
+      "dataProva": "2026-11-29",
+      "linkOficial": "https://concursos.cesgranrio.org.br/portal/avaliacoes/22",
+      "disciplinas": [
+        {
+          "rotulo": "CONTABILIDADE GERAL E SOCIETÁRIA",
+          "pct": 79
+        },
+        {
+          "rotulo": "LEGISLAÇÃO SOCIETÁRIA",
+          "pct": 100
+        }
+      ]
+    },
+    {
+      "concursoSlug": "petrobras-transporte-s-a-transpetro",
+      "orgao": "Petrobras Transporte S.A. – TRANSPETRO",
+      "cargo": "Profissional Transpetro de Nível Superior – Júnior — Ênfase 1: Administração",
+      "banca": "CESGRANRIO",
+      "esfera": "FEDERAL",
+      "uf": "RJ",
+      "area": "EMPRESAS_PUBLICAS",
+      "dataProva": "2026-11-29",
+      "linkOficial": "https://concursos.cesgranrio.org.br/portal/avaliacoes/22",
+      "disciplinas": [
+        {
+          "rotulo": "CONTABILIDADE",
+          "pct": 100
+        }
+      ]
+    },
+    {
       "concursoSlug": "tribunal-de-contas-do-estado-do-maranhao-tce-ma",
       "orgao": "Tribunal de Contas do Estado do Maranhão (TCE/MA)",
       "cargo": "Auditor Estadual de Controle Externo – Especialidade: Controle Externo (Cargo 12)",
@@ -62,6 +100,23 @@
       "area": "TRIBUNAIS_DE_CONTAS",
       "dataProva": "2026-11-29",
       "linkOficial": "http://www.cebraspe.org.br/concursos/tce_ma_26",
+      "disciplinas": [
+        {
+          "rotulo": "Contabilidade Geral",
+          "pct": 100
+        }
+      ]
+    },
+    {
+      "concursoSlug": "secretaria-de-estado-da-fazenda-de-santa-catarina-sefaz-sc",
+      "orgao": "Secretaria de Estado da Fazenda de Santa Catarina — SEFAZ/SC",
+      "cargo": "Auditor Estadual de Finanças Públicas - Ciências Contábeis",
+      "banca": "FCC",
+      "esfera": "ESTADUAL",
+      "uf": "SC",
+      "area": "FISCAL",
+      "dataProva": "2026-11-22",
+      "linkOficial": "https://portal.doe.sea.sc.gov.br/repositorio/2026/20260901/Jornal/22831.pdf",
       "disciplinas": [
         {
           "rotulo": "Contabilidade Geral",
@@ -356,6 +411,23 @@
     {
       "concursoSlug": "secretaria-de-estado-da-fazenda-de-santa-catarina-sef-sc-diretoria-de-administra",
       "orgao": "Secretaria de Estado da Fazenda de Santa Catarina (SEF/SC) — Diretoria de Administração Tributária",
+      "cargo": "Auditor-Fiscal da Receita Estadual, Nível I — Tecnologia da Informação (C03)",
+      "banca": "FCC",
+      "esfera": "ESTADUAL",
+      "uf": "SC",
+      "area": "FISCAL",
+      "dataProva": "2018-11-18",
+      "linkOficial": "https://www.concursosfcc.com.br/concursos/sefsc118/index.html",
+      "disciplinas": [
+        {
+          "rotulo": "Contabilidade Geral",
+          "pct": 100
+        }
+      ]
+    },
+    {
+      "concursoSlug": "secretaria-de-estado-da-fazenda-de-santa-catarina-sef-sc-diretoria-de-administra",
+      "orgao": "Secretaria de Estado da Fazenda de Santa Catarina (SEF/SC) — Diretoria de Administração Tributária",
       "cargo": "Auditor-Fiscal da Receita Estadual, Nível I — Auditoria e Fiscalização (A01)",
       "banca": "FCC",
       "esfera": "ESTADUAL",
@@ -371,23 +443,6 @@
         {
           "rotulo": "Contabilidade Avançada",
           "pct": 95
-        }
-      ]
-    },
-    {
-      "concursoSlug": "secretaria-de-estado-da-fazenda-de-santa-catarina-sef-sc-diretoria-de-administra",
-      "orgao": "Secretaria de Estado da Fazenda de Santa Catarina (SEF/SC) — Diretoria de Administração Tributária",
-      "cargo": "Auditor-Fiscal da Receita Estadual, Nível I — Tecnologia da Informação (C03)",
-      "banca": "FCC",
-      "esfera": "ESTADUAL",
-      "uf": "SC",
-      "area": "FISCAL",
-      "dataProva": "2018-11-18",
-      "linkOficial": "https://www.concursosfcc.com.br/concursos/sefsc118/index.html",
-      "disciplinas": [
-        {
-          "rotulo": "Contabilidade Geral",
-          "pct": 100
         }
       ]
     }
