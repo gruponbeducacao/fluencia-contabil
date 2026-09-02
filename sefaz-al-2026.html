@@ -28,7 +28,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&family=Instrument+Serif&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Instrument+Serif&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Instrument+Serif&display=swap" rel="stylesheet"></noscript>
 
 <style>
 /* Oferta de card UNICO: a grade da LP de assinatura e' de dois planos. */
@@ -1488,8 +1490,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="hero-grid">
     <div class="hero-texto">
       <picture>
-        <source srcset="assets/FC_Simbolo_BrancoDourado_FUNDO_AZUL.webp" type="image/webp">
-        <img class="hero-logo" src="assets/FC_Simbolo_BrancoDourado_FUNDO_AZUL.png" alt="Fluência Contábil" width="480" height="480">
+        <source srcset="assets/logo-fc-192.webp" type="image/webp">
+        <img class="hero-logo" src="assets/logo-fc-192.png" alt="Fluência Contábil" width="192" height="149">
       </picture>
 
       <div class="hero-badge">🏛️ Edital nº 1 publicado · Cebraspe · Prova 20/12/2026</div>
@@ -1529,7 +1531,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <div class="hero-foto">
       <picture>
-        <source srcset="assets/hero-institucional.webp" type="image/webp">
+        <source type="image/webp" sizes="(min-width: 900px) 45vw, 96vw" srcset="assets/hero-institucional-800.webp 800w, assets/hero-institucional.webp 1400w">
         <img src="assets/hero-institucional.jpg" alt="Livro da Fluência Contábil sobre mesa de escritório, com plano de contas, balancete e calculadora" width="1400" height="932" fetchpriority="high">
       </picture>
     </div>
@@ -1770,8 +1772,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <nav class="demo-side" id="demoSide" aria-label="Navegação da demonstração da plataforma">
           <div class="demo-brand">
             <picture>
-              <source srcset="assets/FC_Simbolo_BrancoDourado_FUNDO_AZUL.webp" type="image/webp">
-              <img src="assets/FC_Simbolo_BrancoDourado_FUNDO_AZUL.png" alt="" width="480" height="480">
+              <source srcset="assets/logo-fc-192.webp" type="image/webp">
+              <img src="assets/logo-fc-192.png" alt="" width="192" height="149" loading="lazy">
             </picture>
             <div>
               <div class="demo-brand-name">Fluência Contábil</div>
@@ -3020,6 +3022,64 @@ document.querySelectorAll('.reveal').forEach(function (el) { revealObserver.obse
         a.href = url.toString();
       } catch (e) {}
     });
+  } catch (e) {}
+})();
+
+/* ===== ONDE O VISITANTE PARA =====
+   A campanha trouxe 127 visitas a' pagina e nenhum clique em comprar. Com esse
+   volume, zero ainda e' compativel com uma taxa real de 1% — nao decide nada
+   sozinho. O que falta saber e' ONDE a pessoa sai: quem bate o olho e volta e
+   quem le tudo e trava no preco pedem consertos OPOSTOS, e sem esse dado um
+   redesenho seria no escuro.
+
+   Chamada DIRETA ao fbq, e nao dataLayer: o container GTM-MGQFHR5J nao escuta
+   evento nenhum desta pagina — 'checkout_click' aparece ZERO vezes nele. O
+   InitiateCheckout so' existe porque o CTA chama fbq na mao, logo abaixo. Ir
+   por dataLayer aqui produziria silencio.
+
+   Cada marca dispara uma vez por visita. Tudo em try/catch: medicao que quebra
+   a pagina custa mais do que pagina sem medicao. */
+(function () {
+  try {
+    var MARCAS = [25, 50, 75, 100];
+    var visto = {};
+
+    function marcar(nome, dados) {
+      if (visto[nome]) return;
+      visto[nome] = 1;
+      try { if (window.fbq) fbq('trackCustom', nome, dados || {}); } catch (e) {}
+    }
+
+    var agendado = false;
+    function aoRolar() {
+      if (agendado) return;
+      agendado = true;
+      requestAnimationFrame(function () {
+        agendado = false;
+        var doc = document.documentElement;
+        var rolavel = doc.scrollHeight - window.innerHeight;
+        if (rolavel <= 0) return;
+        var pct = ((window.scrollY || doc.scrollTop) / rolavel) * 100;
+        for (var i = 0; i < MARCAS.length; i++) {
+          if (pct >= MARCAS[i]) marcar('Rolagem' + MARCAS[i], { profundidade: MARCAS[i] });
+        }
+      });
+    }
+    window.addEventListener('scroll', aoRolar, { passive: true });
+    aoRolar();
+
+    /* Chegar a' oferta e' onde o preco aparece. Separar "nao chegou ate' la'"
+       de "chegou e nao clicou" e' a diferenca entre consertar a PAGINA e
+       consertar o MOMENTO — a inscricao do concurso so' abre em 17/09. */
+    var oferta = document.getElementById('oferta');
+    if (oferta && 'IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entradas) {
+        for (var i = 0; i < entradas.length; i++) {
+          if (entradas[i].isIntersecting) { marcar('VisualizouOferta'); io.disconnect(); return; }
+        }
+      }, { threshold: 0.4 });
+      io.observe(oferta);
+    }
   } catch (e) {}
 })();
 
