@@ -4,14 +4,21 @@
 <meta charset="UTF-8">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MGQFHR5J');</script>
+<!-- End Google Tag Manager -->
 <title>Aula ao vivo — Contabilidade Geral na SEFAZ SC · Fluência Contábil</title>
-<meta name="description" content="Aula ao vivo e gratuita em 17/09, 20h: equivalencia patrimonial e consolidacao, os 7 topicos de Contabilidade Geral que o Edital 01/2026 da SEFAZ SC cobra. Resolvendo questoes da FCC.">
+<meta name="description" content="Aula ao vivo e gratuita em 17/09, 20h: equivalencia patrimonial, consolidacao e dividendos — os 7 topicos de Contabilidade Geral que o Edital 01/2026 da SEFAZ SC cobra, resolvidos em questoes da FCC.">
 <link rel="canonical" href="https://fluenciacontabil.com.br/aula-sefaz-sc.html">
 <meta name="robots" content="noindex, follow">
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="Aula ao vivo — Contabilidade Geral na SEFAZ SC">
-<meta property="og:description" content="17/09, 20h. Os 7 topicos de Contabilidade Geral do edital, resolvendo questoes da FCC. Gratuita.">
+<meta property="og:description" content="17/09, 20h. Os 7 topicos de Contabilidade Geral do edital, resolvidos em questoes da FCC. Gratuita.">
 <meta property="og:url" content="https://fluenciacontabil.com.br/aula-sefaz-sc.html">
 <meta property="og:image" content="https://fluenciacontabil.com.br/assets/floripa-hero.jpg">
 <meta property="og:locale" content="pt_BR">
@@ -19,12 +26,15 @@
 <link rel="icon" href="assets/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
   :root{
-    --navy:#14213D; --navy2:#1B2A4A; --dourado:#C8A84B; --creme:#FBF6E9;
-    --txt:#1A1A1A; --cinza:#5A6A7E; --borda:#E8E0D0;
+    --navy:#14213D; --navy2:#1B2A4A; --navy3:#2E4A7A;
+    --dourado:#C8A84B; --dourado2:#E0C778;
+    --creme:#FBF6E9; --branco:#FFFFFF;
+    --vermelho:#C0392B; --vermelho-hover:#A93226;
+    --txt:#1F2430; --cinza:#5A6A7E; --cinza2:#8A97A8; --borda:#E5DECD;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
@@ -33,93 +43,215 @@
     background:var(--creme); color:var(--txt); line-height:1.6;
     -webkit-font-smoothing:antialiased;
   }
-  .wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 22px}
+  b,strong{font-weight:700}
+
+  /* ---------- barra superior ---------- */
+  .topbar{
+    background:var(--navy);color:var(--creme);font-size:12.5px;font-weight:600;
+    letter-spacing:.04em;text-align:center;padding:9px 16px;
+    border-bottom:1px solid rgba(200,168,75,.28);
+  }
+  .topbar b{color:var(--dourado);font-weight:800}
 
   /* ---------- hero ---------- */
   .hero{
+    position:relative;
     background:
-      linear-gradient(180deg,rgba(20,33,61,.90) 0%,rgba(20,33,61,.80) 55%,rgba(20,33,61,.95) 100%),
+      linear-gradient(180deg,rgba(20,33,61,.93) 0%,rgba(20,33,61,.86) 50%,rgba(20,33,61,.97) 100%),
       url('assets/floripa-hero.jpg') center/cover no-repeat;
-    color:#fff; padding:38px 0 54px;
+    color:#fff;padding:30px 0 60px;
   }
-  .marca{display:flex;align-items:center;gap:11px;margin-bottom:34px}
-  .marca img{height:38px;width:auto;display:block}
-  .marca span{font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;line-height:1.15;color:var(--creme)}
-  .grid{display:grid;grid-template-columns:1fr 420px;gap:44px;align-items:start}
+  .marca{display:flex;align-items:center;gap:11px;margin-bottom:38px}
+  .marca img{height:40px;width:auto;display:block}
+  .marca span{font-size:12px;font-weight:800;letter-spacing:.17em;text-transform:uppercase;line-height:1.15;color:var(--creme)}
+
+  .grid{display:grid;grid-template-columns:1fr 428px;gap:52px;align-items:start}
+
   .selo{
-    display:inline-block;background:rgba(200,168,75,.16);border:1px solid rgba(200,168,75,.45);
-    color:var(--dourado);font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
-    padding:7px 15px;border-radius:999px;margin-bottom:20px;
+    display:inline-flex;align-items:center;gap:8px;
+    background:rgba(192,57,43,.18);border:1px solid rgba(192,57,43,.55);
+    color:#F5B7B1;font-size:11.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
+    padding:7px 15px;border-radius:999px;margin-bottom:22px;
   }
-  h1{font-size:40px;line-height:1.14;font-weight:800;letter-spacing:-.02em;margin-bottom:18px}
-  h1 b{color:var(--dourado);font-weight:800}
-  .sub{font-size:17px;line-height:1.55;color:rgba(255,255,255,.86);margin-bottom:24px}
-  .quando{
-    display:flex;gap:10px;flex-wrap:wrap;font-size:13px;font-weight:700;
-    letter-spacing:.04em;margin-bottom:8px;
+  .selo i{width:7px;height:7px;border-radius:50%;background:var(--vermelho);
+    box-shadow:0 0 0 0 rgba(192,57,43,.7);animation:pulso 2s infinite}
+  @keyframes pulso{
+    0%{box-shadow:0 0 0 0 rgba(192,57,43,.65)}
+    70%{box-shadow:0 0 0 9px rgba(192,57,43,0)}
+    100%{box-shadow:0 0 0 0 rgba(192,57,43,0)}
   }
-  .quando span{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);padding:8px 14px;border-radius:8px}
+
+  h1{font-size:46px;line-height:1.10;font-weight:800;letter-spacing:-.025em;margin-bottom:20px}
+  h1 b{color:var(--dourado);font-weight:900}
+  .sub{font-size:17.5px;line-height:1.58;color:rgba(255,255,255,.88);margin-bottom:28px;max-width:600px}
+  .sub b{color:#fff;font-weight:700}
+
+  .quando{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:26px}
+  .quando span{
+    display:flex;align-items:center;gap:7px;
+    background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.20);
+    padding:9px 15px;border-radius:9px;font-size:13.5px;font-weight:700;letter-spacing:.02em;
+  }
+
+  .prova-band{display:flex;align-items:baseline;gap:13px;flex-wrap:wrap}
+  .prova-band .n{font-size:40px;font-weight:900;color:var(--dourado);line-height:1;letter-spacing:-.03em}
+  .prova-band .l{font-size:13.5px;color:rgba(255,255,255,.80);line-height:1.4}
 
   /* ---------- formulário ---------- */
   .card{
-    background:#fff;border-radius:14px;padding:28px 26px;
-    box-shadow:0 18px 46px rgba(0,0,0,.30);color:var(--txt);
+    background:var(--branco);border-radius:16px;padding:30px 28px 26px;
+    box-shadow:0 24px 60px rgba(0,0,0,.38);color:var(--txt);
   }
-  .card h2{font-size:21px;font-weight:800;line-height:1.25;margin-bottom:6px;color:var(--navy)}
-  .card .obs{font-size:13px;color:var(--cinza);margin-bottom:20px}
-  .campo{margin-bottom:14px}
-  .campo label{display:block;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--cinza);margin-bottom:6px}
+  .free{
+    display:inline-flex;align-items:center;gap:7px;
+    background:#EAF5EC;color:#2E7D32;border:1px solid #CFE3D3;
+    font-size:11.5px;font-weight:800;letter-spacing:.10em;text-transform:uppercase;
+    padding:6px 14px;border-radius:999px;margin-bottom:13px;
+  }
+  .card h2{font-size:22px;font-weight:800;line-height:1.24;margin-bottom:7px;color:var(--navy);letter-spacing:-.01em}
+  .card .obs{font-size:13px;color:var(--cinza);margin-bottom:22px;line-height:1.5}
+  .card .obs b{color:#2E7D32;font-weight:700}
+  .campo{margin-bottom:13px}
+  .campo label{display:block;font-size:11.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--cinza);margin-bottom:6px}
   .campo input{
-    width:100%;padding:13px 14px;border:1.5px solid var(--borda);border-radius:9px;
-    font-family:inherit;font-size:15px;color:var(--txt);background:#fff;transition:border-color .15s;
+    width:100%;padding:14px 15px;border:1.5px solid var(--borda);border-radius:10px;
+    font-family:inherit;font-size:15px;color:var(--txt);background:#FDFCF8;transition:border-color .15s,background .15s;
   }
-  .campo input:focus{outline:none;border-color:var(--dourado)}
+  .campo input:focus{outline:none;border-color:var(--navy3);background:#fff}
+  .campo input::placeholder{color:#B9C2CC}
+
   .btn{
-    width:100%;padding:16px;background:var(--dourado);color:var(--navy);border:none;border-radius:9px;
-    font-family:inherit;font-size:15px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
-    cursor:pointer;transition:transform .12s,box-shadow .15s;
+    width:100%;padding:18px;background:var(--vermelho);color:#fff;border:none;border-radius:10px;
+    font-family:inherit;font-size:15.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;
+    cursor:pointer;margin-top:6px;
+    box-shadow:0 6px 20px rgba(192,57,43,.32);
+    transition:background .15s,transform .12s,box-shadow .15s;
   }
-  .btn:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(200,168,75,.36)}
-  .btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
-  .nota{font-size:12px;color:var(--cinza);text-align:center;margin-top:12px;line-height:1.45}
-  .erro{color:#C0392B;font-size:13px;font-weight:600;margin-top:10px;display:none}
+  .btn:hover{background:var(--vermelho-hover);transform:translateY(-2px);box-shadow:0 10px 28px rgba(192,57,43,.44)}
+  .btn:disabled{opacity:.62;cursor:not-allowed;transform:none;box-shadow:none}
+  .nota{font-size:11.5px;color:var(--cinza2);text-align:center;margin-top:13px;line-height:1.5}
+  .erro{color:var(--vermelho);font-size:13px;font-weight:600;margin-top:11px;display:none}
   .erro.on{display:block}
 
-  /* ---------- conteúdo ---------- */
-  .sec{padding:52px 0}
-  .sec h2{font-size:27px;font-weight:800;line-height:1.25;color:var(--navy);margin-bottom:10px;letter-spacing:-.01em}
-  .sec h2 b{color:var(--dourado)}
-  .sec>.wrap>p{font-size:16px;color:var(--cinza);max-width:660px;margin-bottom:26px}
-  .itens{display:grid;grid-template-columns:repeat(auto-fit,minmax(268px,1fr));gap:14px}
-  .item{background:#fff;border:1px solid var(--borda);border-radius:11px;padding:19px 20px}
-  .item b{display:block;font-size:15px;color:var(--navy);margin-bottom:5px;font-weight:700}
-  .item span{font-size:14px;color:var(--cinza);line-height:1.5}
-  .franco{
-    background:#fff;border:1px solid var(--borda);border-left:none;border-radius:11px;
-    padding:22px 24px;margin-top:22px;
+  .ok{display:none;text-align:center;padding:8px 0 4px}
+  .ok.on{display:block}
+  .ok .tick{
+    width:56px;height:56px;border-radius:50%;background:#EAF5EC;color:#2E7D32;
+    display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 16px;
   }
-  .franco b{color:var(--navy);display:block;margin-bottom:7px;font-size:15px}
-  .franco p{font-size:14.5px;color:var(--cinza);line-height:1.6}
+  .ok h3{font-size:20px;color:var(--navy);font-weight:800;margin-bottom:9px}
+  .ok p{font-size:14px;color:var(--cinza);line-height:1.6;margin-bottom:12px}
+  .ok .dest{
+    background:var(--creme);border:1px solid var(--borda);border-radius:10px;
+    padding:13px 15px;font-size:13.5px;color:var(--navy);font-weight:600;line-height:1.5;
+  }
 
-  /* ---------- professor + rodapé ---------- */
-  .prof{background:var(--navy2);color:#fff;padding:44px 0}
-  .prof .wrap{display:flex;gap:24px;align-items:center;flex-wrap:wrap}
-  .prof img{width:96px;height:96px;border-radius:50%;object-fit:cover;border:3px solid var(--dourado);flex-shrink:0}
-  .prof h3{font-size:20px;font-weight:800;margin-bottom:7px}
-  .prof p{font-size:14.5px;color:rgba(255,255,255,.82);max-width:620px;line-height:1.6}
-  footer{background:var(--navy);color:rgba(255,255,255,.62);text-align:center;padding:26px 20px;font-size:12.5px;line-height:1.7}
+  /* ---------- prova social ---------- */
+  .social{background:var(--navy2);color:#fff;padding:22px 0}
+  .social .wrap{display:flex;gap:44px;justify-content:center;flex-wrap:wrap;text-align:center}
+  .social div b{display:block;font-size:25px;font-weight:900;color:var(--dourado);line-height:1.1;letter-spacing:-.02em}
+  .social div span{font-size:12px;color:rgba(255,255,255,.72);letter-spacing:.04em}
+
+  /* ---------- conteúdo ---------- */
+  .sec{padding:62px 0}
+  .kicker{font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--dourado);margin-bottom:12px}
+  .sec h2{font-size:31px;font-weight:800;line-height:1.20;color:var(--navy);margin-bottom:12px;letter-spacing:-.02em;max-width:740px}
+  .sec h2 b{color:var(--vermelho)}
+  .lead{font-size:16.5px;color:var(--cinza);max-width:690px;margin-bottom:34px;line-height:1.6}
+
+  .itens{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:16px}
+  .item{
+    background:var(--branco);border:1px solid var(--borda);border-radius:13px;padding:24px 22px;
+    transition:transform .15s,box-shadow .15s;
+  }
+  .item:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(20,33,61,.10)}
+  .item .num{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:30px;height:30px;border-radius:8px;background:var(--navy);color:var(--dourado);
+    font-size:14px;font-weight:900;margin-bottom:13px;
+  }
+  .item b{display:block;font-size:16px;color:var(--navy);margin-bottom:7px;font-weight:700;line-height:1.35}
+  .item span{font-size:14px;color:var(--cinza);line-height:1.58;display:block}
+
+  /* ---------- para quem é ---------- */
+  .paraquem{background:var(--branco);border-top:1px solid var(--borda);border-bottom:1px solid var(--borda)}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:8px}
+  .col{border-radius:13px;padding:24px}
+  .col.sim{background:#F2F8F3;border:1px solid #CFE3D3}
+  .col.nao{background:#FBF3F2;border:1px solid #EDD3CF}
+  .col h3{font-size:16px;font-weight:800;margin-bottom:14px;letter-spacing:-.01em}
+  .col.sim h3{color:#2E7D32}
+  .col.nao h3{color:var(--vermelho)}
+  .col ul{list-style:none}
+  .col li{font-size:14.5px;line-height:1.55;color:var(--txt);padding-left:26px;position:relative;margin-bottom:11px}
+  .col li:last-child{margin-bottom:0}
+  .col.sim li::before{content:"✓";position:absolute;left:0;top:0;color:#2E7D32;font-weight:900}
+  .col.nao li::before{content:"✕";position:absolute;left:0;top:0;color:var(--vermelho);font-weight:900}
+
+  /* ---------- professor ---------- */
+  .prof{background:var(--navy);color:#fff;padding:56px 0}
+  .prof .wrap{display:flex;gap:30px;align-items:center;flex-wrap:wrap}
+  .prof img{width:118px;height:118px;border-radius:50%;object-fit:cover;border:3px solid var(--dourado);flex-shrink:0}
+  .prof .kicker{margin-bottom:8px}
+  .prof h3{font-size:23px;font-weight:800;margin-bottom:10px;letter-spacing:-.01em}
+  .prof p{font-size:15px;color:rgba(255,255,255,.84);max-width:660px;line-height:1.65}
+
+  /* ---------- fechamento ---------- */
+  .fecho{background:var(--creme);padding:62px 0;text-align:center}
+  .fecho h2{font-size:31px;font-weight:800;color:var(--navy);margin-bottom:12px;letter-spacing:-.02em;max-width:640px;margin-left:auto;margin-right:auto;line-height:1.2}
+  .fecho p{font-size:16.5px;color:var(--cinza);margin-bottom:28px;max-width:600px;margin-left:auto;margin-right:auto}
+  .btn-grande{
+    display:inline-block;background:var(--vermelho);color:#fff;text-decoration:none;
+    padding:19px 44px;border-radius:11px;font-size:16px;font-weight:800;
+    letter-spacing:.05em;text-transform:uppercase;
+    box-shadow:0 8px 26px rgba(192,57,43,.34);transition:background .15s,transform .12s,box-shadow .15s;
+  }
+  .btn-grande:hover{background:var(--vermelho-hover);transform:translateY(-2px);box-shadow:0 12px 34px rgba(192,57,43,.46)}
+  .fecho .mini{font-size:13px;color:var(--cinza2);margin-top:16px}
+
+  footer{background:var(--navy2);color:rgba(255,255,255,.60);text-align:center;padding:30px 20px;font-size:12.5px;line-height:1.8}
   footer a{color:var(--dourado);text-decoration:none}
 
-  @media (max-width:900px){
-    .grid{grid-template-columns:1fr;gap:30px}
+  /* ---------- barra fixa mobile ---------- */
+  .sticky{
+    display:none;position:fixed;left:0;right:0;bottom:0;z-index:50;
+    background:rgba(20,33,61,.97);border-top:1px solid rgba(200,168,75,.30);
+    padding:11px 16px;
+  }
+  .sticky a{
+    display:block;background:var(--vermelho);color:#fff;text-decoration:none;text-align:center;
+    padding:15px;border-radius:10px;font-size:14.5px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;
+  }
+
+  @media (max-width:960px){
+    .grid{grid-template-columns:1fr;gap:34px}
+    h1{font-size:35px}
+    .sec h2,.fecho h2{font-size:26px}
+    .cols{grid-template-columns:1fr}
+  }
+  @media (max-width:720px){
+    .hero{padding:24px 0 46px}
     h1{font-size:30px}
-    .hero{padding:28px 0 40px}
-    .sec{padding:40px 0}
-    .sec h2{font-size:23px}
+    .sub{font-size:16px}
+    .sec{padding:48px 0}
+    .social .wrap{gap:26px}
+    .social div b{font-size:21px}
+    .prof .wrap{flex-direction:column;text-align:center}
+    .sticky{display:block}
+    body{padding-bottom:76px}
   }
 </style>
 </head>
 <body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MGQFHR5J"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<div class="topbar">
+  Aula ao vivo <b>100% gratuita</b> · 17 de setembro, 20h · Edital 01/2026 · 20 vagas para Ciências Contábeis
+</div>
 
 <section class="hero">
   <div class="wrap">
@@ -130,67 +262,123 @@
 
     <div class="grid">
       <div>
-        <div class="selo">Aula ao vivo e gratuita</div>
-        <h1>Os <b>7 tópicos</b> de Contabilidade Geral que a SEFAZ SC vai cobrar — resolvidos ao vivo.</h1>
-        <p class="sub">Equivalência patrimonial, consolidação e o tratamento de dividendos: o pedaço do edital que não se resolve com resumo. Vou resolver questões da FCC na tela, do jeito que a banca cobra.</p>
+        <div class="selo"><i></i> Aula ao vivo · gratuita · 17 de setembro</div>
+        <h1>A Contabilidade Geral da SEFAZ SC cabe em <b>7 tópicos</b>. Vou resolver todos eles na sua frente.</h1>
+        <p class="sub">Equivalência patrimonial, consolidação e o tratamento dos dividendos. É o pedaço do edital que <b>não se resolve com resumo</b> — e é onde a FCC separa quem entendeu de quem decorou. Duas horas resolvendo questão na tela.</p>
+
         <div class="quando">
-          <span>📅 17 de setembro</span>
-          <span>🕗 20h (Brasília)</span>
-          <span>💻 Ao vivo, online</span>
+          <span>📅 Quarta, 17 de setembro</span>
+          <span>🕗 20h de Brasília</span>
+          <span>💻 Ao vivo e online</span>
+        </div>
+
+        <div class="prova-band">
+          <div class="n" id="dias">—</div>
+          <div class="l">dias até a prova<br>de 22 de novembro</div>
         </div>
       </div>
 
       <div class="card">
-        <h2>Garanta sua vaga</h2>
-        <p class="obs">É gratuita. Você recebe o link por e-mail e no WhatsApp.</p>
-        <form id="form" novalidate>
-          <div class="campo">
-            <label for="nome">Seu nome</label>
-            <input type="text" id="nome" name="nome" autocomplete="name" required>
-          </div>
-          <div class="campo">
-            <label for="email">Seu melhor e-mail</label>
-            <input type="email" id="email" name="email" autocomplete="email" inputmode="email" required>
-          </div>
-          <div class="campo">
-            <label for="telefone">WhatsApp (com DDD)</label>
-            <input type="tel" id="telefone" name="telefone" autocomplete="tel" inputmode="tel" placeholder="(48) 90000-0000" required>
-          </div>
-          <button type="submit" class="btn" id="btn">Quero participar</button>
-          <div class="erro" id="erro"></div>
-          <p class="nota">Sem custo e sem pegadinha. Você pode sair da lista quando quiser, em um clique.</p>
-        </form>
+        <div id="formArea">
+          <div class="free">✦ Gratuita · não pede cartão</div>
+          <h2>Garanta sua vaga</h2>
+          <p class="obs"><b>Você não paga nada.</b> O link chega no seu e-mail e no WhatsApp, e eu aviso de novo pouco antes de começar.</p>
+          <form id="form" novalidate>
+            <div class="campo">
+              <label for="nome">Seu nome</label>
+              <input type="text" id="nome" name="nome" autocomplete="name" placeholder="Como você quer ser chamado" required>
+            </div>
+            <div class="campo">
+              <label for="email">Seu melhor e-mail</label>
+              <input type="email" id="email" name="email" autocomplete="email" inputmode="email" placeholder="voce@email.com" required>
+            </div>
+            <div class="campo">
+              <label for="telefone">WhatsApp (com DDD)</label>
+              <input type="tel" id="telefone" name="telefone" autocomplete="tel" inputmode="tel" placeholder="(48) 90000-0000" required>
+            </div>
+            <button type="submit" class="btn" id="btn">Quero minha vaga gratuita</button>
+            <div class="erro" id="erro"></div>
+            <p class="nota">Sem custo, sem cartão e sem pegadinha. Você sai da lista quando quiser, em um clique.</p>
+          </form>
+        </div>
+
+        <div class="ok" id="ok">
+          <div class="tick">✓</div>
+          <h3>Vaga garantida.</h3>
+          <p>A confirmação chega no seu e-mail, e o link da sala vem pelo WhatsApp no dia da aula.</p>
+          <div class="dest">📅 Quarta, 17 de setembro, às 20h<br>Deixe o lembrete no celular agora.</div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
+<div class="social">
+  <div class="wrap">
+    <div><b>R$ 0</b><span>custo da aula</span></div>
+    <div><b>2h</b><span>ao vivo</span></div>
+    <div><b>7</b><span>tópicos do edital</span></div>
+    <div><b>3.000+</b><span>alunos</span></div>
+    <div><b>40</b><span>turmas</span></div>
+  </div>
+</div>
+
 <section class="sec">
   <div class="wrap">
-    <h2>O que você leva da aula, <b>tendo comprado algo ou não</b></h2>
-    <p>A aula é de conteúdo, não de venda. No fim eu apresento o curso, e quem não quiser comprar sai sabendo resolver as questões do mesmo jeito.</p>
+    <div class="kicker">O que a gente resolve na tela</div>
+    <h2>Quatro blocos, questão da FCC em cada um.</h2>
+    <p class="lead">Nada de slide teórico. Eu abro a questão, leio o enunciado com você e resolvo — apontando onde a banca planta o erro e por que a alternativa mais bonita costuma ser a errada.</p>
+
     <div class="itens">
       <div class="item">
+        <div class="num">1</div>
         <b>Por que o dividendo tem dois tratamentos</b>
-        <span>No método da equivalência ele reduz o investimento; no custo, é receita. A mesma entrada de caixa, dois lançamentos opostos — e é aí que a FCC separa quem entendeu de quem decorou.</span>
+        <span>Na equivalência ele reduz o investimento; no custo, é receita. A mesma entrada de caixa, dois lançamentos opostos. É a pergunta que mais derruba gente boa.</span>
       </div>
       <div class="item">
+        <div class="num">2</div>
         <b>Consolidação sem decoreba</b>
-        <span>Eliminação de saldos e de lucros não realizados entre as entidades do grupo, na lógica de por que se elimina — não na regra solta.</span>
+        <span>Eliminação de saldos e de lucros não realizados entre as entidades do grupo — na lógica de <i>por que</i> se elimina, que é o que permite resolver a questão que você nunca viu.</span>
       </div>
       <div class="item">
+        <div class="num">3</div>
         <b>Impairment de investimento</b>
-        <span>O teste do CPC 01 aplicado ao investimento avaliado por equivalência, que é como o edital pede.</span>
+        <span>O teste do CPC 01 aplicado ao investimento avaliado por equivalência, que é exatamente o recorte que o Anexo III pede.</span>
       </div>
       <div class="item">
+        <div class="num">4</div>
         <b>O mapa do edital</b>
-        <span>Onde a Contabilidade pesa nesta prova, por que os Específicos valem peso 2, e por onde eu começaria se faltassem 66 dias.</span>
+        <span>Onde a Contabilidade pesa nesta prova, por que os Conhecimentos Específicos valem peso 2 — e por onde eu começaria com o tempo que ainda resta.</span>
       </div>
     </div>
+  </div>
+</section>
 
-    <div class="franco">
-      <b>Uma coisa dita antes, para você decidir se vale seu tempo</b>
-      <p>Esta aula trata de <strong>Contabilidade Geral</strong> — os 7 tópicos do Anexo III. Ela <strong>não</strong> cobre Contabilidade Aplicada ao Setor Público, Responsabilidade Fiscal, Custos nem Tecnologia, que juntas são a maior parte da prova de Conhecimentos Específicos. Se o que você procura é CASP, esta aula não vai te servir, e prefiro dizer isso agora.</p>
+<section class="sec paraquem">
+  <div class="wrap">
+    <div class="kicker">Antes de você reservar seu tempo</div>
+    <h2>Esta aula é sobre <b>Contabilidade Geral</b>. Só.</h2>
+    <p class="lead">Prefiro que você saiba disso agora, e não às 20h de quarta.</p>
+
+    <div class="cols">
+      <div class="col sim">
+        <h3>Faz sentido pra você se…</h3>
+        <ul>
+          <li>Você vai prestar a SEFAZ SC na área de Ciências Contábeis</li>
+          <li>Travou em equivalência patrimonial ou em consolidação</li>
+          <li>Responde bem a teoria, mas erra quando a questão vira número</li>
+          <li>Quer ver como a FCC cobra <i>este</i> assunto, e não contabilidade em geral</li>
+        </ul>
+      </div>
+      <div class="col nao">
+        <h3>Não faz sentido se…</h3>
+        <ul>
+          <li>O que você precisa agora é Contabilidade Aplicada ao Setor Público</li>
+          <li>Você procura Responsabilidade Fiscal, Custos ou Tecnologia</li>
+          <li>Você quer uma revisão geral da prova inteira</li>
+          <li>Você nunca viu débito e crédito — o ritmo vai passar por cima</li>
+        </ul>
+      </div>
     </div>
   </div>
 </section>
@@ -199,9 +387,19 @@
   <div class="wrap">
     <img src="assets/foto-vinicius.jpg" alt="Prof. Vinícius Ferraz">
     <div>
+      <div class="kicker">Quem dá a aula</div>
       <h3>Prof. Vinícius Ferraz</h3>
-      <p>Auditor fiscal e professor de contabilidade para concursos. Mais de 3.000 alunos em 40 turmas. Foi ele quem apurou, no Portal da Transparência e nas leis complementares de Santa Catarina, que o salário do edital veio 67% acima do que os portais noticiaram por um mês inteiro.</p>
+      <p>Auditor fiscal e professor de contabilidade para concursos, com mais de 3.000 alunos em 40 turmas. Ensina contabilidade como idioma: primeiro a lógica que sustenta o lançamento, depois a regra — porque é assim que se resolve a questão que ninguém viu antes. Foi ele quem destrinchou o Anexo III da SEFAZ SC tópico por tópico, e é esse mapa que ele traz para a aula.</p>
     </div>
+  </div>
+</section>
+
+<section class="fecho">
+  <div class="wrap">
+    <h2>Quarta, 17 de setembro, às 20h. Sem custo nenhum.</h2>
+    <p>A aula é de conteúdo. No fim eu apresento o curso, e quem não quiser comprar sai sabendo resolver as questões do mesmo jeito.</p>
+    <a href="#form" class="btn-grande" id="ctaFim">Quero minha vaga gratuita</a>
+    <div class="mini">Gratuita, sem cartão · vaga confirmada por e-mail e WhatsApp</div>
   </div>
 </section>
 
@@ -210,20 +408,45 @@
   <a href="https://fluenciacontabil.com.br/">fluenciacontabil.com.br</a> &middot; contato@gruponbeducacao.com
 </footer>
 
+<div class="sticky" id="sticky">
+  <a href="#form">Vaga gratuita · 17/09, 20h</a>
+</div>
+
 <script>
 (function(){
   'use strict';
-  // Mesmo endpoint das outras capturas do site. O roteamento é por `origem`:
-  // qualquer valor que COMECE com `lives_form` cai no handleLives do Apps Script,
-  // que grava na aba Lives, dispara o Mensageiro e faz upsert no SES no tópico
-  // `lives`. Por isso esta página não exigiu nenhuma alteração no Apps Script.
+
+  // Mesmo endpoint das outras capturas do site; o roteamento é por `origem`.
+  //
+  // NÃO usar `lives_form_*` aqui. Essa família cai no handleLives, que dispara a
+  // sequência D do SES ("Você está dentro: 4 lives + Dicionário grátis") e o
+  // webhook `lives_lead` do Mensageiro — ambos com conteúdo da campanha de
+  // agosto, errado para quem se inscreve nesta aula.
+  //
+  // `aula_sefaz_sc` cai num handler próprio, com aba própria e tópico SES
+  // próprio, que grava o lead e NÃO dispara nada automático.
+  // Ver _MARKETING/_campanhas/_sefaz_sc_2026/PATCH_apps_script_aulas_ao_vivo.md
   var ENDPOINT = 'https://script.google.com/macros/s/AKfycbx8lWrX5F0IByv0JEJ0iBGPjtLto7f2VxDHIh0uT0gZtvoj8EDVx0NFiriou-Dt0cxh/exec';
-  var ORIGEM = 'lives_form_sefaz_sc';
-  var OBRIGADO = 'obrigado-lives.html';
+  var ORIGEM = 'aula_sefaz_sc';
 
   var form = document.getElementById('form');
   var btn  = document.getElementById('btn');
   var erro = document.getElementById('erro');
+  var area = document.getElementById('formArea');
+  var ok   = document.getElementById('ok');
+  // Rótulo lido do próprio botão: assim, mudar a copy no HTML não deixa o texto
+  // de "tentar de novo" divergindo do original.
+  var ROTULO_BTN = btn.textContent;
+
+  // Dias até a prova: CALCULADO. Número escrito à mão envelhece em silêncio e a
+  // página passa a mentir sem ninguém perceber.
+  (function(){
+    var alvo = new Date(2026, 10, 22);            // 22/11/2026 (mês é 0-based)
+    var hoje = new Date(); hoje.setHours(0, 0, 0, 0);
+    var d = Math.max(0, Math.round((alvo - hoje) / 86400000));
+    var el = document.getElementById('dias');
+    if (el) el.textContent = d;
+  })();
 
   function digits(s){ return String(s||'').replace(/\D+/g,''); }
   function emailOk(s){ return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(s||'').trim()); }
@@ -238,7 +461,21 @@
 
   function falha(msg){
     erro.textContent = msg; erro.classList.add('on');
-    btn.disabled = false; btn.textContent = 'Quero participar';
+    btn.disabled = false; btn.textContent = ROTULO_BTN;
+  }
+
+  // Confirmação INLINE, sem redirect. A obrigado-lives.html é a página das 4
+  // lives de agosto: mandar esta turma pra lá entregaria conteúdo de outra
+  // campanha — o mesmo defeito que a escolha de `origem` acima evita.
+  var confirmado = false;
+  function sucesso(){
+    if (confirmado) return;
+    confirmado = true;
+    area.style.display = 'none';
+    ok.classList.add('on');
+    var st = document.getElementById('sticky');
+    if (st) st.style.display = 'none';
+    try { ok.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch(e){}
   }
 
   form.addEventListener('submit', function(ev){
@@ -256,8 +493,11 @@
 
     btn.disabled = true; btn.textContent = 'Enviando...';
 
-    try { if (window.fbq) fbq('track','Lead',{content_name:'Aula_SEFAZ_SC'}); } catch(e){}
+    // O container GTM-MGQFHR5J tem o gatilho `lead_capturado`, que aciona o
+    // evento Lead da Meta. Sem o snippet do GTM no <head>, este push some sem
+    // erro nenhum e a campanha para de otimizar por inscrição.
     try { if (window.dataLayer) window.dataLayer.push({event:'lead_capturado', origem:ORIGEM}); } catch(e){}
+    try { if (window.fbq) fbq('track','Lead',{content_name:'Aula_SEFAZ_SC'}); } catch(e){}
 
     var payload = Object.assign({
       nome: nome,
@@ -274,16 +514,19 @@
     var fd = new FormData();
     Object.keys(payload).forEach(function(k){ fd.append(k, payload[k]); });
 
-    var foi = false;
-    function segue(){ if (foi) return; foi = true; window.location.href = OBRIGADO; }
-
     // `no-cors` não deixa ler a resposta — o Apps Script grava mesmo assim.
     // O setTimeout é a rede de segurança: sem ele, uma rede ruim deixaria o
     // lead preenchido preso na tela com o botão desabilitado.
     fetch(ENDPOINT, { method:'POST', body: fd, mode:'no-cors' })
       .catch(function(){})
-      .finally(segue);
-    setTimeout(segue, 2500);
+      .finally(sucesso);
+    setTimeout(sucesso, 2500);
+  });
+
+  // O CTA do fim leva ao formulário e já põe o cursor no primeiro campo.
+  var ctaFim = document.getElementById('ctaFim');
+  if (ctaFim) ctaFim.addEventListener('click', function(){
+    setTimeout(function(){ try { document.getElementById('nome').focus(); } catch(e){} }, 420);
   });
 })();
 </script>
