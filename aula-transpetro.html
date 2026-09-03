@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aula ao vivo — Contabilidade na Transpetro 2026 · Fluência Contábil</title>
+<meta name="description" content="Aula ao vivo e gratuita em 10/09, 20h: as cinco demonstracoes que o Edital 04 da Transpetro lista uma a uma, resolvidas com questao de banca. A Contabilidade e o maior bloco do programa da enfase.">
+<link rel="canonical" href="https://fluenciacontabil.com.br/aula-transpetro.html">
+<meta name="robots" content="noindex, follow">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Aula ao vivo — Contabilidade na Transpetro 2026">
+<meta property="og:description" content="10/09, 20h. As cinco demonstracoes que o edital lista uma a uma, resolvidas ao vivo. Gratuita.">
+<meta property="og:url" content="https://fluenciacontabil.com.br/aula-transpetro.html">
+<meta property="og:image" content="https://fluenciacontabil.com.br/assets/terminal-hero.jpg">
+<meta property="og:locale" content="pt_BR">
+
+<link rel="icon" href="assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --navy:#14213D; --navy2:#1B2A4A; --dourado:#C8A84B; --creme:#FBF6E9;
+    --txt:#1A1A1A; --cinza:#5A6A7E; --borda:#E8E0D0;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Montserrat',-apple-system,'Segoe UI',Arial,sans-serif;
+    background:var(--creme); color:var(--txt); line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+
+  /* ---------- hero ---------- */
+  .hero{
+    background:
+      linear-gradient(180deg,rgba(20,33,61,.90) 0%,rgba(20,33,61,.80) 55%,rgba(20,33,61,.95) 100%),
+      url('assets/terminal-hero.jpg') center/cover no-repeat;
+    color:#fff; padding:38px 0 54px;
+  }
+  .marca{display:flex;align-items:center;gap:11px;margin-bottom:34px}
+  .marca img{height:38px;width:auto;display:block}
+  .marca span{font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;line-height:1.15;color:var(--creme)}
+  .grid{display:grid;grid-template-columns:1fr 420px;gap:44px;align-items:start}
+  .selo{
+    display:inline-block;background:rgba(200,168,75,.16);border:1px solid rgba(200,168,75,.45);
+    color:var(--dourado);font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
+    padding:7px 15px;border-radius:999px;margin-bottom:20px;
+  }
+  h1{font-size:38px;line-height:1.16;font-weight:800;letter-spacing:-.02em;margin-bottom:18px}
+  h1 b{color:var(--dourado);font-weight:800}
+  .sub{font-size:17px;line-height:1.55;color:rgba(255,255,255,.86);margin-bottom:24px}
+  .quando{
+    display:flex;gap:10px;flex-wrap:wrap;font-size:13px;font-weight:700;
+    letter-spacing:.04em;margin-bottom:8px;
+  }
+  .quando span{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);padding:8px 14px;border-radius:8px}
+
+  /* ---------- formulário ---------- */
+  .card{
+    background:#fff;border-radius:14px;padding:28px 26px;
+    box-shadow:0 18px 46px rgba(0,0,0,.30);color:var(--txt);
+  }
+  .card h2{font-size:21px;font-weight:800;line-height:1.25;margin-bottom:6px;color:var(--navy)}
+  .card .obs{font-size:13px;color:var(--cinza);margin-bottom:20px}
+  .campo{margin-bottom:14px}
+  .campo label{display:block;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--cinza);margin-bottom:6px}
+  .campo input{
+    width:100%;padding:13px 14px;border:1.5px solid var(--borda);border-radius:9px;
+    font-family:inherit;font-size:15px;color:var(--txt);background:#fff;transition:border-color .15s;
+  }
+  .campo input:focus{outline:none;border-color:var(--dourado)}
+  .btn{
+    width:100%;padding:16px;background:var(--dourado);color:var(--navy);border:none;border-radius:9px;
+    font-family:inherit;font-size:15px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+    cursor:pointer;transition:transform .12s,box-shadow .15s;
+  }
+  .btn:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(200,168,75,.36)}
+  .btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
+  .nota{font-size:12px;color:var(--cinza);text-align:center;margin-top:12px;line-height:1.45}
+  .erro{color:#C0392B;font-size:13px;font-weight:600;margin-top:10px;display:none}
+  .erro.on{display:block}
+
+  /* ---------- tarja do prazo de inscrição ---------- */
+  .prazo{
+    background:var(--navy2);color:rgba(255,255,255,.90);text-align:center;
+    padding:14px 20px;font-size:14px;line-height:1.5;
+  }
+  .prazo b{color:var(--dourado)}
+
+  /* ---------- conteúdo ---------- */
+  .sec{padding:52px 0}
+  .sec h2{font-size:27px;font-weight:800;line-height:1.25;color:var(--navy);margin-bottom:10px;letter-spacing:-.01em}
+  .sec h2 b{color:var(--dourado)}
+  .sec>.wrap>p{font-size:16px;color:var(--cinza);max-width:660px;margin-bottom:26px}
+  .itens{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+  .item{background:#fff;border:1px solid var(--borda);border-radius:11px;padding:19px 20px}
+  .item b{display:block;font-size:15px;color:var(--navy);margin-bottom:5px;font-weight:700}
+  .item span{font-size:14px;color:var(--cinza);line-height:1.5}
+  .franco{
+    background:#fff;border:1px solid var(--borda);border-radius:11px;
+    padding:22px 24px;margin-top:22px;
+  }
+  .franco b{color:var(--navy);display:block;margin-bottom:7px;font-size:15px}
+  .franco p{font-size:14.5px;color:var(--cinza);line-height:1.6}
+
+  /* ---------- professor + rodapé ---------- */
+  .prof{background:var(--navy2);color:#fff;padding:44px 0}
+  .prof .wrap{display:flex;gap:24px;align-items:center;flex-wrap:wrap}
+  .prof img{width:96px;height:96px;border-radius:50%;object-fit:cover;object-position:center 18%;border:3px solid var(--dourado);flex-shrink:0}
+  .prof h3{font-size:20px;font-weight:800;margin-bottom:7px}
+  .prof p{font-size:14.5px;color:rgba(255,255,255,.82);max-width:620px;line-height:1.6}
+  footer{background:var(--navy);color:rgba(255,255,255,.62);text-align:center;padding:26px 20px;font-size:12.5px;line-height:1.7}
+  footer a{color:var(--dourado);text-decoration:none}
+
+  @media (max-width:900px){
+    .grid{grid-template-columns:1fr;gap:30px}
+    .itens{grid-template-columns:1fr}
+    h1{font-size:29px}
+    .hero{padding:28px 0 40px}
+    .sec{padding:40px 0}
+    .sec h2{font-size:23px}
+  }
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="marca">
+      <img src="assets/FC_Simbolo_BrancoDourado_FUNDO_AZUL.png" alt="Fluência Contábil">
+      <span>Fluência<br>Contábil</span>
+    </div>
+
+    <div class="grid">
+      <div>
+        <div class="selo">Aula ao vivo e gratuita</div>
+        <h1>Na prova da Transpetro, <b>a Contabilidade é o maior bloco do programa</b>. Vou resolver ao vivo a parte em que o edital não deixa margem.</h1>
+        <p class="sub">As cinco demonstrações que o Edital nº 04 lista uma a uma — Balanço Patrimonial, DRE e Resultado Abrangente, Fluxos de Caixa <em>pelos dois métodos</em>, Valor Adicionado e Mutações do Patrimônio Líquido. É o único ponto do programa em que a Cesgranrio diz exatamente o que quer. Aula aberta, resolvendo questão de banca na tela.</p>
+        <div class="quando">
+          <span>📅 Quinta, 10 de setembro</span>
+          <span>🕗 20h (Brasília)</span>
+          <span>💻 Ao vivo, online</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Garanta sua vaga</h2>
+        <p class="obs">É gratuita. Você recebe o link por e-mail e no WhatsApp.</p>
+        <form id="form" novalidate>
+          <div class="campo">
+            <label for="nome">Seu nome</label>
+            <input type="text" id="nome" name="nome" autocomplete="name" required>
+          </div>
+          <div class="campo">
+            <label for="email">Seu melhor e-mail</label>
+            <input type="email" id="email" name="email" autocomplete="email" inputmode="email" required>
+          </div>
+          <div class="campo">
+            <label for="telefone">WhatsApp (com DDD)</label>
+            <input type="tel" id="telefone" name="telefone" autocomplete="tel" inputmode="tel" placeholder="(21) 90000-0000" required>
+          </div>
+          <button type="submit" class="btn" id="btn">Quero participar</button>
+          <div class="erro" id="erro"></div>
+          <p class="nota">Sem custo e sem pegadinha. Você pode sair da lista quando quiser, em um clique.</p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="prazo">
+  As inscrições do concurso vão até <b>14 de setembro</b> — quatro dias depois da aula. A prova objetiva é em <b>29 de novembro</b>.
+</div>
+
+<section class="sec">
+  <div class="wrap">
+    <h2>O que você leva da aula, <b>tendo comprado algo ou não</b></h2>
+    <p>A aula é de conteúdo, não de venda. No fim eu apresento o pacote, e quem não quiser comprar sai sabendo resolver as questões do mesmo jeito.</p>
+    <div class="itens">
+      <div class="item">
+        <b>A DFC pelos dois métodos, no mesmo conjunto de dados</b>
+        <span>O edital escreve "Método Direto e Indireto" com todas as letras. Vou montar os dois a partir dos mesmos números e mostrar por que o caixa operacional tem que dar igual — e onde a conta quebra quando não dá.</span>
+      </div>
+      <div class="item">
+        <b>A DVA fecha ou está errada</b>
+        <span>O valor adicionado a distribuir é igual ao distribuído, sempre. Essa amarração é o gabarito escondido: quando não fecha, o erro está num lugar só, e quase sempre é o mesmo.</span>
+      </div>
+      <div class="item">
+        <b>DMPL: mutação não é destinação</b>
+        <span>O que transita pelo patrimônio líquido e o que é distribuição de resultado. Por que a reserva legal entra antes do dividendo, e o que o ajuste de avaliação patrimonial faz ali no meio.</span>
+      </div>
+      <div class="item">
+        <b>Onde a Contabilidade pesa nesta prova</b>
+        <span>As específicas são 50 das 70 questões e decidem o ranqueamento. A Cesgranrio não reparte por disciplina, mas dá para medir o programa: a Contabilidade Geral e Societária é 35% do texto do Anexo IV, mais que o dobro do segundo bloco. Vou mostrar isso, o corte do item 7.1.4.3 que elimina quem zera qualquer matéria — inglês incluído — e por onde eu começaria com 80 dias pela frente.</span>
+      </div>
+    </div>
+
+    <div class="franco">
+      <b>Uma coisa dita antes, para você decidir se vale seu tempo</b>
+      <p>Esta aula trata de <strong>Contabilidade Geral e Societária</strong>, no bloco das demonstrações. Ela <strong>não</strong> cobre Análise de Balanços, nem Auditoria, Tributos, Custos, Governança e Compliance, SPED, Orçamento Empresarial ou Administração Financeira — que também estão no programa da Ênfase 13 e são cobrados na mesma prova. Se o que você precisa hoje é um desses, esta aula não vai te servir, e prefiro dizer agora.</p>
+    </div>
+  </div>
+</section>
+
+<section class="prof">
+  <div class="wrap">
+    <img src="assets/foto-vinicius.jpg" alt="Prof. Vinícius Ferraz">
+    <div>
+      <h3>Prof. Vinícius Ferraz</h3>
+      <p>Auditor Fiscal do Município do Rio de Janeiro e professor de contabilidade para concursos, com quatro aprovações em concursos públicos de elite. Mais de 3.000 alunos em 40 turmas. Foi ele quem foi ao Acordo Coletivo publicado pela própria Transpetro e mostrou que o valor anunciado no edital é o menor dos seis da linha de quem entra.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Fluência Contábil &middot; Prof. Vinícius Ferraz Neves<br>
+  <a href="https://fluenciacontabil.com.br/">fluenciacontabil.com.br</a> &middot; contato@fluenciacontabil.com.br
+</footer>
+
+<script>
+(function(){
+  'use strict';
+  // Mesmo endpoint das outras capturas do site. O roteamento é por `origem`.
+  //
+  // ATENCAO — `aula_transpetro` DEPENDE do patch `handleAulaAoVivo` no
+  // apps_script_unified.gs (PATCH_apps_script_aulas_ao_vivo.md, da campanha da
+  // SEFAZ SC). Enquanto o patch nao estiver aplicado, esta origem nao casa com
+  // nenhuma regra do routeByOrigin e cai no fallback `handleLista`: o lead E
+  // GRAVADO na aba Lista de Espera, mas nada e disparado.
+  //
+  // A alternativa `lives_form_*` seria pior e por isso NAO foi usada: ela cai no
+  // handleLives, que chama dispatchLiveLeadImmediately_ e dispara a sequencia D
+  // do SES e o webhook do Mensageiro com o conteudo da campanha de agosto — o
+  // inscrito receberia e-mail e WhatsApp de outra campanha, o que nao se desfaz.
+  var ENDPOINT = 'https://script.google.com/macros/s/AKfycbx8lWrX5F0IByv0JEJ0iBGPjtLto7f2VxDHIh0uT0gZtvoj8EDVx0NFiriou-Dt0cxh/exec';
+  var ORIGEM = 'aula_transpetro';
+  var OBRIGADO = 'obrigado-aula-transpetro.html';
+
+  var form = document.getElementById('form');
+  var btn  = document.getElementById('btn');
+  var erro = document.getElementById('erro');
+
+  function digits(s){ return String(s||'').replace(/\D+/g,''); }
+  function emailOk(s){ return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(s||'').trim()); }
+
+  function getUTMs(){
+    var q = new URLSearchParams(window.location.search), o = {};
+    ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','src'].forEach(function(k){
+      if (q.get(k)) o[k] = q.get(k);
+    });
+    return o;
+  }
+
+  function falha(msg){
+    erro.textContent = msg; erro.classList.add('on');
+    btn.disabled = false; btn.textContent = 'Quero participar';
+  }
+
+  form.addEventListener('submit', function(ev){
+    ev.preventDefault();
+    erro.classList.remove('on');
+
+    var nome = document.getElementById('nome').value.trim();
+    var email = document.getElementById('email').value.trim().toLowerCase();
+    var tel = document.getElementById('telefone').value.trim();
+
+    if (nome.length < 2) return falha('Digite seu nome.');
+    if (!emailOk(email)) return falha('Confira o e-mail: parece estar incompleto.');
+    // 10 dígitos = fixo com DDD; 11 = celular com o 9. Abaixo disso falta DDD.
+    if (digits(tel).length < 10) return falha('Digite o WhatsApp com DDD.');
+
+    btn.disabled = true; btn.textContent = 'Enviando...';
+
+    try { if (window.fbq) fbq('track','Lead',{content_name:'Aula_Transpetro'}); } catch(e){}
+    try { if (window.dataLayer) window.dataLayer.push({event:'lead_capturado', origem:ORIGEM}); } catch(e){}
+
+    var payload = Object.assign({
+      nome: nome,
+      email: email,
+      telefone: tel,
+      telefone_digits: digits(tel),
+      origem: ORIGEM,
+      campanha: 'Transpetro 2026',
+      timestamp: new Date().toISOString(),
+      pagina: window.location.pathname + window.location.search,
+      referrer: document.referrer || '',
+      dispositivo: (window.innerWidth <= 720) ? 'Mobile' : 'Desktop'
+    }, getUTMs());
+
+    var fd = new FormData();
+    Object.keys(payload).forEach(function(k){ fd.append(k, payload[k]); });
+
+    var foi = false;
+    function segue(){ if (foi) return; foi = true; window.location.href = OBRIGADO; }
+
+    // `no-cors` não deixa ler a resposta — o Apps Script grava mesmo assim.
+    // O setTimeout é a rede de segurança: sem ele, uma rede ruim deixaria o
+    // lead preenchido preso na tela com o botão desabilitado.
+    fetch(ENDPOINT, { method:'POST', body: fd, mode:'no-cors' })
+      .catch(function(){})
+      .finally(segue);
+    setTimeout(segue, 2500);
+  });
+})();
+</script>
+</body>
+</html>
