@@ -3026,60 +3026,85 @@ document.querySelectorAll('.reveal').forEach(function (el) { revealObserver.obse
 })();
 
 /* ===== ONDE O VISITANTE PARA =====
-   A campanha trouxe 127 visitas a' pagina e nenhum clique em comprar. Com esse
-   volume, zero ainda e' compativel com uma taxa real de 1% — nao decide nada
-   sozinho. O que falta saber e' ONDE a pessoa sai: quem bate o olho e volta e
-   quem le tudo e trava no preco pedem consertos OPOSTOS, e sem esse dado um
-   redesenho seria no escuro.
+   A campanha trouxe 255 visitas e nenhum InitiateCheckout atribuido. Com esse
+   volume ja' da' para descartar taxa acima de ~1,5%, mas nao para dizer ONDE a
+   pessoa sai — e quem bate o olho e volta e quem le tudo e trava no preco pedem
+   consertos OPOSTOS.
 
    Chamada DIRETA ao fbq, e nao dataLayer: o container GTM-MGQFHR5J nao escuta
-   evento nenhum desta pagina — 'checkout_click' aparece ZERO vezes nele. O
-   InitiateCheckout so' existe porque o CTA chama fbq na mao, logo abaixo. Ir
-   por dataLayer aqui produziria silencio.
+   evento nenhum desta pagina ('checkout_click' aparece ZERO vezes nele). O
+   InitiateCheckout so' existe porque o CTA chama fbq na mao, logo abaixo.
 
-   Cada marca dispara uma vez por visita. Tudo em try/catch: medicao que quebra
-   a pagina custa mais do que pagina sem medicao. */
+   🐛 A primeira versao disto consumia a marca ANTES de checar se o fbq existia:
+
+       if (visto[nome]) return;
+       visto[nome] = 1;                       // <- perdia o evento
+       try { if (window.fbq) fbq(...) } catch (e) {}
+
+   O GTM carrega assincrono e quem vem de anuncio no celular comeca a rolar em
+   1-2 segundos, antes de o container terminar. O evento era descartado e a
+   marca ficava gasta para sempre naquela visita. Resultado medido em 03/09: 326
+   PageViews produziram 4 Rolagem25. Agora a marca so' e' consumida DEPOIS do
+   envio, e ha uma reavaliacao quando o fbq aparece, para nao perder quem rolou
+   cedo e parou.
+
+   Sem IntersectionObserver de proposito: a oferta e' avaliada dentro da mesma
+   funcao da rolagem, entao existe um caminho so' que pode falhar, e ele e' o
+   mesmo que a reavaliacao reexecuta. */
 (function () {
   try {
     var MARCAS = [25, 50, 75, 100];
     var visto = {};
 
+    // Devolve true so' quando o evento REALMENTE saiu.
     function marcar(nome, dados) {
-      if (visto[nome]) return;
+      if (visto[nome]) return false;
+      if (!window.fbq) return false;
       visto[nome] = 1;
-      try { if (window.fbq) fbq('trackCustom', nome, dados || {}); } catch (e) {}
+      try { fbq('trackCustom', nome, dados || {}); } catch (e) {}
+      return true;
+    }
+
+    function ofertaVisivel() {
+      var el = document.getElementById('oferta');
+      if (!el) return false;
+      var r = el.getBoundingClientRect();
+      var visivel = Math.min(r.bottom, window.innerHeight) - Math.max(r.top, 0);
+      return visivel > 0 && visivel >= Math.min(r.height, window.innerHeight) * 0.4;
+    }
+
+    function avaliar() {
+      var doc = document.documentElement;
+      var rolavel = doc.scrollHeight - window.innerHeight;
+      if (rolavel > 0) {
+        var pct = ((window.scrollY || doc.scrollTop) / rolavel) * 100;
+        for (var i = 0; i < MARCAS.length; i++) {
+          if (pct >= MARCAS[i]) marcar('Rolagem' + MARCAS[i], { profundidade: MARCAS[i] });
+        }
+      }
+      // Chegar a' oferta e' onde o preco aparece. Separar "nao chegou ate' la'"
+      // de "chegou e nao clicou" e' a diferenca entre consertar a PAGINA e
+      // consertar o MOMENTO — a inscricao do concurso so' abre em 17/09.
+      if (ofertaVisivel()) marcar('VisualizouOferta');
     }
 
     var agendado = false;
     function aoRolar() {
       if (agendado) return;
       agendado = true;
-      requestAnimationFrame(function () {
-        agendado = false;
-        var doc = document.documentElement;
-        var rolavel = doc.scrollHeight - window.innerHeight;
-        if (rolavel <= 0) return;
-        var pct = ((window.scrollY || doc.scrollTop) / rolavel) * 100;
-        for (var i = 0; i < MARCAS.length; i++) {
-          if (pct >= MARCAS[i]) marcar('Rolagem' + MARCAS[i], { profundidade: MARCAS[i] });
-        }
-      });
+      requestAnimationFrame(function () { agendado = false; avaliar(); });
     }
-    window.addEventListener('scroll', aoRolar, { passive: true });
-    aoRolar();
 
-    /* Chegar a' oferta e' onde o preco aparece. Separar "nao chegou ate' la'"
-       de "chegou e nao clicou" e' a diferenca entre consertar a PAGINA e
-       consertar o MOMENTO — a inscricao do concurso so' abre em 17/09. */
-    var oferta = document.getElementById('oferta');
-    if (oferta && 'IntersectionObserver' in window) {
-      var io = new IntersectionObserver(function (entradas) {
-        for (var i = 0; i < entradas.length; i++) {
-          if (entradas[i].isIntersecting) { marcar('VisualizouOferta'); io.disconnect(); return; }
-        }
-      }, { threshold: 0.4 });
-      io.observe(oferta);
-    }
+    window.addEventListener('scroll', aoRolar, { passive: true });
+    window.addEventListener('resize', aoRolar, { passive: true });
+    avaliar();
+
+    // Quem rolou antes de o GTM carregar e parou nunca seria contado sem isto.
+    var tentativas = 0;
+    var esperandoFbq = setInterval(function () {
+      if (window.fbq) { clearInterval(esperandoFbq); avaliar(); }
+      else if (++tentativas > 120) { clearInterval(esperandoFbq); }  // desiste em 30s: GTM em 3G passa dos 10s
+    }, 250);
   } catch (e) {}
 })();
 
