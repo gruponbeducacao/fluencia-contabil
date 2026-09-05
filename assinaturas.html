@@ -1357,6 +1357,226 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .dor-quote { font-size: 18px; }
   }
 </style>
+<style>
+/* ==========================================================================
+   PERSUASAO — as sete secoes trazidas da LP do Dicionario (05/09/2026), mais
+   proximas provas com seletor de plano, degrau do Dicionario, prova social com
+   comprovante, slot de VSL e captura de e-mail da Aula 01.
+   Bloco proprio de proposito: so' insercao, nenhuma regra antiga tocada.
+   ========================================================================== */
+
+/* -- 1. a dor na voz de quem sente ---------------------------------------- */
+.dor-sec { background: var(--cream-alt); }
+.dor-baloes { display: grid; gap: 14px; margin: 38px auto 30px; max-width: 760px; }
+.dor-balao { position: relative; margin: 0; background: var(--branco); border: 1px solid var(--cinza-borda);
+  border-radius: 12px; padding: 18px 22px 18px 52px; font-size: 16.5px; line-height: 1.6; color: var(--quase-preto); }
+.dor-balao::before { content: "\201C"; position: absolute; left: 18px; top: 10px; font-family: Georgia, serif;
+  font-size: 40px; line-height: 1; color: var(--dourado); }
+.dor-fecho { max-width: 760px; margin: 0 auto; text-align: center; font-size: 17px; line-height: 1.7; color: var(--cinza-medio); }
+
+/* -- 2. stack de valor ---------------------------------------------------- */
+.stack-sec { background: var(--branco); }
+.stack-lista { list-style: none; padding: 0; margin: 38px auto 26px; max-width: 800px; display: grid; gap: 14px; }
+.stack-item { display: grid; grid-template-columns: 44px 1fr; gap: 16px; align-items: start;
+  background: var(--branco); border: 1px solid var(--cinza-borda); border-radius: 12px; padding: 20px 22px;
+  font-size: 16px; line-height: 1.65; }
+.stack-num { display: flex; align-items: center; justify-content: center; width: 34px; height: 34px;
+  border-radius: 50%; background: var(--azul-profundo); color: var(--dourado); font-weight: 800; font-size: 15px; }
+.stack-item em { display: block; margin-top: 6px; font-style: normal; color: var(--cinza-medio); font-size: 15px; }
+.stack-beta { display: inline-block; margin-left: 6px; padding: 1px 7px; border-radius: 999px; font-size: 10.5px;
+  font-weight: 800; letter-spacing: .6px; text-transform: uppercase; background: var(--dourado); color: var(--azul-profundo); vertical-align: 2px; }
+.stack-ancora { max-width: 760px; margin: 0 auto; text-align: center; font-size: 16px; line-height: 1.7;
+  color: var(--quase-preto); background: var(--cream-alt); border-radius: 12px; padding: 20px 24px; }
+
+/* -- 3. anatomia do curso ------------------------------------------------- */
+.anat-sec { background: var(--cream); }
+.anat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 38px; }
+.anat-card { background: var(--branco); border: 1px solid var(--cinza-borda); border-top: 3px solid var(--dourado);
+  border-radius: 12px; padding: 24px; }
+.anat-card h3 { margin: 0 0 10px; font-size: 17px; line-height: 1.35; color: var(--azul-profundo); }
+.anat-card p { margin: 0; font-size: 15.5px; line-height: 1.65; color: var(--cinza-medio); }
+.anat-card a { color: var(--dourado-texto); font-weight: 700; }
+
+/* -- 4. o que nao e ------------------------------------------------------- */
+.naoe-sec { background: var(--branco); }
+.naoe-lista { list-style: none; padding: 0; margin: 36px auto 26px; max-width: 780px; display: grid; gap: 12px; }
+.naoe-lista li { background: var(--branco); border: 1px solid var(--cinza-borda); border-left: 3px solid var(--vermelho);
+  border-radius: 10px; padding: 16px 20px; font-size: 16px; line-height: 1.6; }
+.naoe-fecho { max-width: 780px; margin: 0 auto; text-align: center; font-size: 16px; line-height: 1.7; color: var(--cinza-medio); }
+
+/* -- 5. depois da compra -------------------------------------------------- */
+.passo-sec { background: var(--cream-alt); }
+.passo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 38px; }
+.passo-card { position: relative; background: var(--branco); border: 1px solid var(--cinza-borda);
+  border-radius: 12px; padding: 26px 22px 22px; }
+.passo-num { position: absolute; top: -14px; left: 22px; width: 30px; height: 30px; border-radius: 50%;
+  background: var(--dourado); color: var(--azul-profundo); font-weight: 800; font-size: 14px;
+  display: flex; align-items: center; justify-content: center; }
+.passo-card h3 { margin: 6px 0 8px; font-size: 16.5px; color: var(--azul-profundo); }
+.passo-card p { margin: 0; font-size: 15.5px; line-height: 1.65; color: var(--cinza-medio); }
+
+/* -- 6. fechamento por contraste ------------------------------------------ */
+.contraste-sec { background: var(--azul-profundo); }
+.contraste-sec .section-title { color: #fff; }
+.contraste-sec .section-label { color: var(--dourado); }
+.contraste-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 38px; }
+.contraste-col { border-radius: 14px; padding: 26px 24px; }
+.contraste-col--sem { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.14); }
+.contraste-col--com { background: var(--branco); border: 1px solid var(--dourado); }
+.contraste-topo { font-size: 13px; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase; margin-bottom: 16px; }
+.contraste-col--sem .contraste-topo { color: #9FB0CE; }
+.contraste-col--com .contraste-topo { color: var(--dourado-texto); }
+.contraste-col ul { list-style: none; padding: 0; margin: 0 0 20px; display: grid; gap: 10px; }
+.contraste-col li { position: relative; padding-left: 22px; font-size: 15.5px; line-height: 1.6; }
+.contraste-col--sem li { color: #C9D4E6; }
+.contraste-col--com li { color: var(--quase-preto); }
+.contraste-col--sem li::before { content: "\00D7"; position: absolute; left: 0; color: #7E8EA8; font-weight: 700; }
+.contraste-col--com li::before { content: "\2713"; position: absolute; left: 0; color: var(--verde-ok); font-weight: 700; }
+.contraste-custo { border-top: 1px solid rgba(0,0,0,.10); padding-top: 14px; font-size: 16px; }
+.contraste-col--sem .contraste-custo { border-top-color: rgba(255,255,255,.14); color: #C9D4E6; }
+.contraste-col--com .contraste-custo { color: var(--quase-preto); }
+.contraste-custo span { font-size: 14px; color: var(--cinza-medio); }
+.contraste-col--sem .contraste-custo span { color: #8FA0BC; }
+.contraste-cta { text-align: center; margin-top: 30px; }
+.contraste-nota { margin: 12px 0 0; font-size: 14px; color: #9FB0CE; }
+
+/* -- 7. selos de confianca + rodape juridico ------------------------------ */
+.selos-sec { background: var(--cream-alt); padding-top: 44px; padding-bottom: 44px; }
+.selos-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
+.selo { display: flex; gap: 12px; align-items: flex-start; font-size: 14.5px; line-height: 1.5; color: var(--cinza-medio); }
+.selo strong { color: var(--azul-profundo); }
+.selo-ico { font-size: 20px; line-height: 1; }
+.selos-legal { text-align: center; font-size: 13px; line-height: 1.7; color: var(--cinza-medio);
+  border-top: 1px solid var(--cinza-borda); padding-top: 22px; margin: 0; }
+.selos-legal span { display: inline-block; margin-top: 8px; font-size: 12.5px; color: #7C838C; max-width: 640px; }
+
+/* -- P. proximas provas + seletor de plano ------------------------------- */
+.prova-sec { background: var(--azul-medio); }
+.prova-sec[hidden] { display: none; }
+.prova-sec .section-label { color: var(--dourado); }
+.prova-sec .section-title { color: var(--branco); }
+.prova-sec .section-text { color: rgba(255,255,255,.75); }
+.prova-lista { list-style: none; margin: 34px auto 0; padding: 0; max-width: 860px; }
+.prova-item { display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 18px;
+  padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,.12); }
+.prova-item[hidden] { display: none; }
+.prova-org strong { display: block; font-size: 16px; font-weight: 800; color: var(--branco); letter-spacing: -.2px; }
+.prova-org span { display: block; font-size: 12.5px; color: rgba(255,255,255,.6); margin-top: 3px; }
+.prova-dias { text-align: right; font-variant-numeric: tabular-nums; min-width: 64px; }
+.prova-dias b { display: block; font-size: 32px; line-height: 1; color: var(--dourado); font-weight: 800; }
+.prova-dias span { display: block; font-size: 9.5px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase;
+  color: rgba(255,255,255,.45); margin-top: 3px; }
+.prova-escolher { border: 1px solid rgba(200,168,75,.55); background: transparent; color: var(--dourado);
+  font-family: 'Montserrat', sans-serif; font-size: 12.5px; font-weight: 800; padding: 9px 14px; border-radius: 8px;
+  cursor: pointer; white-space: nowrap; transition: background .2s, color .2s; }
+.prova-escolher:hover, .prova-escolher:focus-visible { background: var(--dourado); color: var(--azul-profundo); outline: none; }
+.prova-item.escolhida .prova-escolher { background: var(--dourado); color: var(--azul-profundo); }
+.prova-nota { max-width: 860px; margin: 26px auto 0; font-size: 14.5px; line-height: 1.7; color: rgba(255,255,255,.65); }
+.prova-indicacao { max-width: 860px; margin: 22px auto 0; padding: 16px 20px; border-radius: 12px;
+  background: rgba(255,255,255,.08); border: 1px solid rgba(200,168,75,.4); color: var(--branco); font-size: 15.5px; line-height: 1.6; }
+.prova-indicacao[hidden] { display: none; }
+.prova-indicacao strong { color: var(--dourado); }
+.prova-cta { text-align: center; margin-top: 26px; }
+
+/* a oferta recebe a indicacao vinda do seletor */
+.oferta-indicacao { max-width: 760px; margin: 0 auto 28px; padding: 14px 20px; border-radius: 12px; text-align: center;
+  background: var(--cream-alt); border: 1px solid var(--dourado); font-size: 15.5px; line-height: 1.6; color: var(--quase-preto); }
+.oferta-indicacao[hidden] { display: none; }
+.oferta-indicacao strong { color: var(--dourado-texto); }
+.plano-card--indicado { outline: 3px solid var(--dourado); outline-offset: 2px; }
+.plano-indicado-tag { display: none; margin: 0 0 10px; font-size: 11.5px; font-weight: 800; letter-spacing: 1px;
+  text-transform: uppercase; color: var(--dourado-texto); }
+.plano-card--indicado .plano-indicado-tag { display: block; }
+.plano-mes { display: block; margin-top: 4px; font-size: 12.5px; color: var(--cinza-medio); }
+.plano-mes strong { color: var(--dourado-texto); }
+
+/* -- D. degrau: comecar pelo Dicionario ---------------------------------- */
+.degrau-sec { background: var(--cream); padding-top: 60px; padding-bottom: 60px; }
+.degrau-box { max-width: 860px; margin: 0 auto; display: grid; grid-template-columns: 1fr auto; gap: 26px; align-items: center;
+  background: var(--branco); border: 1px solid var(--cinza-borda); border-radius: 16px; padding: 28px 30px; }
+.degrau-box h3 { margin: 0 0 8px; font-size: 20px; line-height: 1.3; color: var(--azul-profundo); }
+.degrau-box p { margin: 0; font-size: 15.5px; line-height: 1.65; color: var(--cinza-medio); }
+.degrau-preco { text-align: center; }
+.degrau-preco b { display: block; font-size: 30px; font-weight: 800; color: var(--azul-profundo); line-height: 1; }
+.degrau-preco small { display: block; font-size: 12.5px; color: var(--cinza-medio); margin: 6px 0 12px; }
+.degrau-preco .btn { padding: 14px 22px; font-size: 14px; }
+
+/* -- R. resultado apurado (prova social com comprovante) ----------------- */
+.dep-destaque { margin-top: 44px; display: grid; grid-template-columns: auto 1fr; gap: 26px; align-items: start;
+  background: var(--branco); border: 1px solid var(--dourado); border-radius: 16px; padding: 28px 30px;
+  box-shadow: 0 14px 36px rgba(27,42,74,0.10); }
+.dep-cifra { text-align: center; padding: 6px 14px; border-right: 1px solid var(--cinza-borda); }
+.dep-cifra-num { display: block; font-size: 52px; font-weight: 800; line-height: 1; color: var(--dourado-escuro); }
+.dep-cifra-lbl { display: block; font-size: 12px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--cinza-medio); margin-top: 4px; }
+.dep-destaque h3 { margin: 4px 0 4px; font-size: 21px; color: var(--azul-profundo); }
+.dep-destaque .dep-cargo { margin: 0 0 12px; font-size: 14.5px; line-height: 1.5; color: var(--cinza-medio); }
+.dep-mov { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 0 0 14px; padding: 8px 12px; border-radius: 10px;
+  background: var(--cream-alt); font-size: 14px; font-weight: 700; color: var(--azul-profundo); }
+.dep-mov-seta { color: var(--dourado-escuro); }
+.dep-mov-nota { font-weight: 500; color: var(--cinza-medio); font-size: 13px; }
+.dep-destaque .dep-quote { margin: 0 0 10px; font-size: 17px; line-height: 1.55; color: var(--quase-preto); font-weight: 600; }
+.dep-destaque .dep-plat { margin: 0 0 14px; font-size: 14.5px; line-height: 1.6; color: var(--cinza-medio); }
+.dep-anexo-btn { display: inline-flex; align-items: center; gap: 7px; border: 1px solid var(--cinza-borda); background: var(--branco);
+  color: var(--azul-profundo); font-family: 'Montserrat', sans-serif; font-size: 12.5px; font-weight: 700; padding: 8px 13px;
+  border-radius: 8px; cursor: pointer; }
+.dep-anexo-btn:hover { border-color: var(--dourado); }
+.dep-anexo-btn[aria-expanded="true"] { background: var(--cream-alt); }
+.dep-print { margin: 16px 0 0; max-width: 340px; border: 1px solid var(--cinza-borda); border-radius: 12px; overflow: hidden; background: #F4F5F7; }
+.dep-print[hidden] { display: none; }
+.dep-print-top { display: flex; align-items: center; gap: 6px; padding: 8px 12px; background: #E9EBEF; font-size: 11.5px; color: var(--cinza-medio); }
+.dep-dot { width: 8px; height: 8px; border-radius: 50%; background: #C9CDD4; }
+.dep-print-url { margin-left: 6px; }
+.dep-print img { display: block; width: 100%; height: auto; }
+.dep-print figcaption { padding: 8px 12px; font-size: 11.5px; color: var(--cinza-medio); }
+.dep-selo.aluno { background: var(--azul-profundo); color: var(--dourado); }
+
+/* -- V. slot de VSL na hero (oculto ate haver video) --------------------- */
+.hero-vsl { position: relative; z-index: 2; max-width: 1140px; margin: 0 auto; padding: 0 24px 56px; }
+.hero-vsl[hidden] { display: none !important; }
+.vsl-moldura { max-width: 900px; margin: 0 auto; border-radius: 14px; overflow: hidden;
+  border: 1px solid rgba(200,168,75,.32); box-shadow: 0 28px 60px rgba(0,0,0,.42); background: #0E1626; }
+.vsl-moldura iframe.vsl-frame { display: block; width: 100%; aspect-ratio: 16/9; border: 0; }
+
+/* -- E. captura de e-mail da Aula 01 (widget local, nao carrega email-capture.js) */
+.fc-cap-overlay { position: fixed; inset: 0; z-index: 200; display: flex; align-items: center; justify-content: center;
+  padding: 20px; background: rgba(19,31,56,.72); backdrop-filter: blur(2px); }
+.fc-cap-overlay[hidden] { display: none; }
+.fc-cap-modal { position: relative; width: 100%; max-width: 440px; background: var(--branco); border-radius: 16px;
+  padding: 30px 28px 24px; box-shadow: 0 30px 80px rgba(0,0,0,.4); text-align: center; }
+.fc-cap-close { position: absolute; top: 10px; right: 12px; border: 0; background: transparent; font-size: 26px; line-height: 1;
+  color: var(--cinza-medio); cursor: pointer; }
+.fc-cap-ico { font-size: 34px; line-height: 1; margin-bottom: 10px; }
+.fc-cap-modal h3 { margin: 0 0 8px; font-size: 20px; color: var(--azul-profundo); }
+.fc-cap-modal p { margin: 0 0 18px; font-size: 14.5px; line-height: 1.6; color: var(--cinza-medio); }
+.fc-cap-form { display: grid; gap: 10px; }
+.fc-cap-form input { width: 100%; padding: 14px 16px; border: 1px solid var(--cinza-borda); border-radius: 8px;
+  font-family: 'Montserrat', sans-serif; font-size: 15px; }
+.fc-cap-form input:focus-visible { outline: 2px solid var(--azul-medio); outline-offset: 1px; }
+.fc-cap-form .btn { width: 100%; padding: 15px 20px; font-size: 15px; }
+.fc-cap-form .btn[disabled] { opacity: .6; cursor: wait; }
+.fc-cap-erro { display: none; margin: -4px 0 0; font-size: 13px; color: var(--vermelho); }
+.fc-cap-erro.on { display: block; }
+.fc-cap-legal { margin: 14px 0 6px !important; font-size: 12px !important; color: #7C838C !important; }
+.fc-cap-skip { font-size: 13px; color: var(--cinza-medio); text-decoration: underline; text-underline-offset: 3px; }
+.fc-cap-ok { display: none; font-size: 15px; color: var(--verde-ok); font-weight: 700; margin-top: 10px; }
+.fc-cap-ok.on { display: block; }
+
+@media (max-width: 860px) {
+  .anat-grid, .passo-grid, .contraste-grid { grid-template-columns: 1fr; }
+  .selos-grid { grid-template-columns: 1fr 1fr; }
+  .degrau-box { grid-template-columns: 1fr; text-align: center; }
+  .dep-destaque { grid-template-columns: 1fr; }
+  .dep-cifra { border-right: 0; border-bottom: 1px solid var(--cinza-borda); padding-bottom: 12px; }
+}
+@media (max-width: 560px) {
+  .selos-grid { grid-template-columns: 1fr; }
+  .stack-item { grid-template-columns: 32px 1fr; gap: 12px; padding: 18px; }
+  .dor-balao { padding: 16px 18px 16px 46px; font-size: 15.5px; }
+  .prova-item { grid-template-columns: 1fr auto; }
+  .prova-item .prova-escolher { grid-column: 1 / -1; justify-self: start; }
+  .fc-cap-modal { padding: 26px 20px 20px; }
+}
+</style>
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
@@ -1403,7 +1623,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <a class="hero-degusta-btn" id="btnAmostraAula01"
              href="aulas/aula-01-partidas-dobradas.pdf?v=20260813"
              download="Fluencia-Contabil-Aula-01-Partidas-Dobradas.pdf"
-             data-fc-cta="amostra-aula01" data-fc-local="hero" data-fc-lp="b">
+             data-fc-cta="amostra-aula01" data-fc-local="hero" data-fc-lp="b" data-fc-capture="aula01">
             <span class="hd-ico" aria-hidden="true">📄</span>
             <span class="hd-txt">
               <b>Baixar grátis a Aula 01 completa</b>
@@ -1420,6 +1640,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <source srcset="assets/hero-institucional.webp" type="image/webp">
         <img src="assets/hero-institucional.jpg" alt="Livro da Fluência Contábil sobre mesa de escritório, com plano de contas, balancete e calculadora" width="1400" height="932" fetchpriority="high">
       </picture>
+    </div>
+  </div>
+
+  <!-- ===== SLOT DE VSL (oculto ate haver video) =====
+       Para ativar: (1) apagar o atributo hidden do div abaixo; (2) trocar __PANDA_ID__
+       pelo id do video no data-src. Biblioteca do Panda: vz-7867cfdb-be1 (a mesma das LPs).
+       Sem src no HTML, o iframe oculto nao faz requisicao nenhuma; o JS copia data-src
+       para src so' quando o slot esta' visivel e o id foi preenchido. -->
+  <div class="hero-vsl" id="heroVsl" hidden>
+    <div class="vsl-moldura">
+      <iframe class="vsl-frame" id="heroVslFrame" title="Vídeo de apresentação da Fluência Contábil"
+        data-src="https://player-vz-7867cfdb-be1.tv.pandavideo.com.br/embed/?v=__PANDA_ID__"
+        allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture" allowfullscreen loading="lazy"></iframe>
     </div>
   </div>
 </section>
@@ -2060,6 +2293,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
     <div class="dep-grid">
       <div class="dep-card beta reveal">
+        <span class="dep-selo aluno">🎓 Aluno da 1ª turma</span>
+        <div class="aspas" aria-hidden="true">“</div>
+        <p>O sistema de ranking gamificado ficou ótimo! A ideia de utilizar a própria plataforma como simulador também foi excelente. Contabilidade sempre foi a minha maior dificuldade na área fiscal, e a forma como o conteúdo é apresentado tem ajudado bastante. As aulas são objetivas, certeiras e vão direto ao ponto.</p>
+        <div class="dep-autor">João Renan S. <span class="dep-fonte">· avaliação enviada pela plataforma</span></div>
+      </div>
+      <div class="dep-card beta reveal">
         <span class="dep-selo">🧪 Testou a plataforma</span>
         <div class="aspas" aria-hidden="true">“</div>
         <p>Estou impressionada demais com esse seu trabalho, que está magnífico! Não há nada semelhante no mercado. Nada! Parabéns demais por idealizar e construir tudo isso que está gigante.</p>
@@ -2087,6 +2326,24 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="dep-autor">Aline EA Rj <span class="dep-fonte">· WhatsApp, Turma ISS-RJ</span></div>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ===== A DOR, NA VOZ DE QUEM SENTE ===== -->
+<section class="section dor-sec">
+  <div class="container">
+    <div class="reveal center">
+      <div class="section-label">O problema</div>
+      <h2 class="section-title">Se alguma dessas frases é sua,<br>o problema não é falta de estudo.</h2>
+    </div>
+    <div class="dor-baloes">
+      <blockquote class="dor-balao reveal">Li o CPC, fiz resumo, decorei o lançamento. Na prova a banca trocou uma palavra e eu não reconheci o que ela estava pedindo.</blockquote>
+      <blockquote class="dor-balao reveal">Sei fazer a conta. O que me derruba é o enunciado: quando termino de entender o que perguntaram, o tempo acabou.</blockquote>
+      <blockquote class="dor-balao reveal">Estudo, esqueço, reviso, esqueço de novo. Cada revisão parece começar do zero.</blockquote>
+      <blockquote class="dor-balao reveal">Já perdi uma vaga por meio ponto. Meio ponto é uma questão de contabilidade.</blockquote>
+      <blockquote class="dor-balao reveal">É a matéria de maior peso do meu edital — e é justamente onde eu mais perco ponto.</blockquote>
+    </div>
+    <p class="dor-fecho reveal">Nenhuma dessas é falta de estudo. É falta de <strong>lógica interna</strong>: um jeito de ler a questão que não dependa de lembrar a regra. É isso que a Fluência ensina — e é por isso que o método vem antes do conteúdo.</p>
   </div>
 </section>
 
@@ -2274,6 +2531,54 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </section>
 
+<!-- ===== O QUE VOCE LEVA (stack de valor) ===== -->
+<section class="section stack-sec">
+  <div class="container">
+    <div class="reveal center">
+      <div class="section-label">O que você leva</div>
+      <h2 class="section-title">Sete coisas. Veja <span class="ouro">o que cada uma resolve</span>.</h2>
+    </div>
+    <ol class="stack-lista">
+      <li class="stack-item reveal">
+        <span class="stack-num">1</span>
+        <div><strong>35 aulas numeradas + 3 bônus, em 5 módulos</strong> — do zero à Contabilidade Avançada, em vídeo e PDF, mais 5 aulas de provas resolvidas.
+        <em>Resolve: você não monta o caminho. Ele já vem em ordem, da base aos textos difíceis.</em></div>
+      </li>
+      <li class="stack-item reveal">
+        <span class="stack-num">2</span>
+        <div><strong>Mais de 3.800 questões de banca real, comentadas</strong> — CEBRASPE, FGV, FCC, VUNESP e mais de 100 outras bancas, com filtro por assunto, banca, órgão e ano, e cadernos que você monta.
+        <em>Resolve: você treina com a pergunta do jeito que a banca escreve — e entende por que cada alternativa errada está errada.</em></div>
+      </li>
+      <li class="stack-item reveal">
+        <span class="stack-num">3</span>
+        <div><strong>Meu Edital</strong><span class="stack-beta">Beta</span> — cole o seu edital e ele vira uma lista verticalizada, cada item com a aula que o cobre.
+        <em>Resolve: acaba o garimpo no PDF do edital e a planilha feita à mão.</em></div>
+      </li>
+      <li class="stack-item reveal">
+        <span class="stack-num">4</span>
+        <div><strong>Mapa de Incidência</strong><span class="stack-beta">Beta</span> — o item da norma cruzado com a banca: quanto mais azul, mais aquela banca cobra.
+        <em>Resolve: você estuda primeiro o que a sua banca cobra de verdade, não o que parece importante.</em></div>
+      </li>
+      <li class="stack-item reveal">
+        <span class="stack-num">5</span>
+        <div><strong>Plano de Estudos</strong><span class="stack-beta">Beta</span> — agenda semanal na sua rotina, com revisão espaçada em D+3, 7, 16 e 35 dias. Revisão é resolver questão, não reler.
+        <em>Resolve: acaba o estuda-esquece. A revisão chega no dia certo, sozinha.</em></div>
+      </li>
+      <li class="stack-item reveal">
+        <span class="stack-num">6</span>
+        <div><strong>Simulador de Lançamentos</strong> — o jogo de débito e crédito, com XP, streak e ranking.
+        <em>Resolve: o alfabeto da contabilidade entra pela prática, não pela decoreba.</em></div>
+      </li>
+      <li class="stack-item reveal">
+        <span class="stack-num">7</span>
+        <div><strong>PDFs baixáveis de cada aula, certificado e comunidade de dúvidas</strong> — com resposta do próprio professor.
+        <em>Resolve: você estuda offline e não fica travado numa dúvida.</em></div>
+      </li>
+    </ol>
+    <p class="stack-ancora reveal">Para comparar: só o pacote de Contabilidade de <strong>um</strong> concurso — as 17 aulas recortadas para a SEFAZ AL — custa <strong>R$ 237</strong> e vale até a prova. A assinatura entrega as 35 aulas, o Meu Edital de <strong>qualquer</strong> edital e a plataforma inteira por <strong>R$ 427</strong> (3 meses) ou <strong>R$ 547</strong> (6 meses). O valor está logo abaixo.</p>
+  </div>
+</section>
+
 <!-- ===== OFERTA ===== -->
 <section class="section oferta" id="oferta">
   <div class="container">
@@ -2283,14 +2588,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <p class="section-text" style="margin-left:auto;margin-right:auto;">Sem módulo avulso, sem upsell no meio do caminho — você entra e tem tudo. A única diferença entre os dois planos é por quanto tempo a plataforma fica aberta pra você.</p>
     </div>
 
+    <!-- Preenchido pelo seletor "Qual é a sua próxima prova?" (secao proximas-provas). -->
+    <p class="oferta-indicacao" id="ofertaIndicacao" hidden></p>
+
     <!-- Mesmos checkouts e preços do cursos.html; os dois arquivos andam juntos. -->
     <div class="planos-pos">
       <div class="planos-duo">
-        <div class="plano-card">
+        <div class="plano-card" data-plano="trimestral">
+          <p class="plano-indicado-tag">Indicado para a sua prova</p>
           <div class="plano-nome">Trimestral · Edição 2026</div>
           <p class="plano-parcela">12× de <span class="x">R$ 44,16</span></p>
           <p class="plano-avista">ou <s class="plano-antes">R$ 547</s> <strong>R$ 427</strong> à vista</p>
-          <p class="plano-equiv">3 meses de acesso · pagamento único</p>
+          <p class="plano-equiv">3 meses de acesso · pagamento único<span class="plano-mes">equivale a <strong>R$ 142 por mês</strong> de acesso</span></p>
           <ul class="plano-list">
             <li><span>Curso completo: 5 módulos, 35 aulas + 3 bônus</span></li>
             <li><span>Questões comentadas de banca real</span></li>
@@ -2300,15 +2609,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <li><span>Simulador de Lançamentos e plataforma inteira</span></li>
             <li><span>PDFs baixáveis + certificado</span></li>
           </ul>
-          <a href="https://pay.kiwify.com.br/4Qx0g3O?src=lp-b&amp;utm_source=site&amp;utm_medium=lp&amp;utm_campaign=pos_janela_2026&amp;utm_content=trimestral" class="btn">Assinar o trimestral</a>
+          <a href="https://pay.kiwify.com.br/4Qx0g3O?src=lp-b&amp;utm_source=site&amp;utm_medium=lp&amp;utm_campaign=pos_janela_2026&amp;utm_content=trimestral" class="btn cta-compra" data-fc-local="trimestral">Assinar o trimestral</a>
         </div>
 
-        <div class="plano-card plano-card--destaque">
+        <div class="plano-card plano-card--destaque" data-plano="semestral">
           <span class="plano-badge">Melhor custo-benefício</span>
+          <p class="plano-indicado-tag">Indicado para a sua prova</p>
           <div class="plano-nome">Semestral · Edição 2026</div>
           <p class="plano-parcela">12× de <span class="x">R$ 56,57</span></p>
           <p class="plano-avista">ou <s class="plano-antes">R$ 697</s> <strong>R$ 547</strong> à vista</p>
-          <p class="plano-equiv">6 meses de acesso · sai <strong>36% mais barato por mês</strong> que o trimestral</p>
+          <p class="plano-equiv">6 meses de acesso · sai <strong>36% mais barato por mês</strong> que o trimestral<span class="plano-mes">equivale a <strong>R$ 91 por mês</strong> de acesso</span></p>
           <ul class="plano-list">
             <li><span>Curso completo: 5 módulos, 35 aulas + 3 bônus</span></li>
             <li><span>Questões comentadas de banca real</span></li>
@@ -2318,7 +2628,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <li><span>Simulador de Lançamentos e plataforma inteira</span></li>
             <li><span>PDFs baixáveis + certificado</span></li>
           </ul>
-          <a href="https://pay.kiwify.com.br/DXvdSEu?src=lp-b&amp;utm_source=site&amp;utm_medium=lp&amp;utm_campaign=pos_janela_2026&amp;utm_content=semestral" class="btn">Assinar o semestral</a>
+          <a href="https://pay.kiwify.com.br/DXvdSEu?src=lp-b&amp;utm_source=site&amp;utm_medium=lp&amp;utm_campaign=pos_janela_2026&amp;utm_content=semestral" class="btn cta-compra" data-fc-local="semestral">Assinar o semestral</a>
         </div>
       </div>
 
@@ -2348,12 +2658,164 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </section>
 
+<!-- ===== ANATOMIA DO CURSO ===== -->
+<section class="section anat-sec">
+  <div class="container">
+    <div class="reveal center">
+      <div class="section-label">Por que é assim</div>
+      <h2 class="section-title">Não é uma pilha de videoaulas.<br>É um <span class="ouro">idioma ensinado em ordem</span>.</h2>
+    </div>
+    <div class="anat-grid">
+      <div class="anat-card reveal">
+        <h3>Por que 5 módulos, e nessa ordem</h3>
+        <p>Fundamentos → Demonstrações Contábeis → Intermediária → Avançada, e um 5º módulo só de provas resolvidas. É a ordem de um idioma: primeiro os códigos (débito e crédito), depois a gramática (partidas dobradas), depois os textos (as demonstrações) — e só então os capítulos que a banca usa pra separar candidatos. Pular etapa é o que faz a Avançada parecer impossível.</p>
+      </div>
+      <div class="anat-card reveal">
+        <h3>Por que questão de banca real em toda aula</h3>
+        <p>Nenhuma questão inventada: enunciado, alternativas e gabarito vêm da prova original, com órgão, banca e ano. O comentário do professor aponta o item da norma que resolve e explica por que cada alternativa errada está errada — é ali que você aprende a ler como a banca escreve.</p>
+      </div>
+      <div class="anat-card reveal">
+        <h3>Por que as caixas especiais</h3>
+        <p>Cada PDF de aula traz caixas como <strong>Macete de Prova</strong>, <strong>É Hora de Pegar a Norma</strong> e <strong>Peça do Quebra-Cabeça</strong>. Elas separam o que é conceito do que é armadilha — na revisão, você lê só as caixas. <a href="#btnAmostraAula01">Baixe a Aula 01 grátis</a> e confira no seu próprio PDF.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== O QUE A ASSINATURA NAO E ===== -->
+<section class="section naoe-sec">
+  <div class="container">
+    <div class="reveal center">
+      <div class="section-label">Honestidade</div>
+      <h2 class="section-title">O que a assinatura <span class="ouro">não</span> é.</h2>
+    </div>
+    <ul class="naoe-lista">
+      <li class="reveal"><strong>Não é curso de Contabilidade Pública, de Custos nem de Auditoria.</strong> É Contabilidade Geral, Societária e Avançada — a disciplina que mais pesa nos concursos de Fiscal e de Contador. Se o seu edital cobra as outras, elas ficam por sua conta.</li>
+      <li class="reveal"><strong>Não é preparatório completo.</strong> Não tem Direito, Português, Legislação Tributária nem Raciocínio Lógico. Uma disciplina, inteira e em profundidade.</li>
+      <li class="reveal"><strong>Não é assinatura recorrente nem acesso vitalício.</strong> Pagamento único, 3 ou 6 meses de acesso, sem renovação automática. O prazo está escrito antes do botão, não depois.</li>
+      <li class="reveal"><strong>Não é garantia de aprovação.</strong> Nenhum curso é — e quem promete isso está vendendo outra coisa.</li>
+    </ul>
+    <p class="naoe-fecho reveal">Se o que você precisa é um pacote com todas as disciplinas do edital, este não é o produto — e preferimos dizer isso aqui do que você descobrir depois de pagar.</p>
+  </div>
+</section>
+
+<!-- ===== DEGRAU: COMECAR PELO DICIONARIO =====
+     Mesmo checkout e preco do cursos.html (pBSgGdf, R$ 47 / 11x R$ 5,22). A compra
+     abre 3 dias de degustacao na plataforma (KIWIFY_TRIAL_MAP). Nao promete credito
+     na assinatura: isso e' decisao comercial ainda nao tomada. -->
+<section class="section degrau-sec">
+  <div class="container">
+    <div class="degrau-box reveal">
+      <div>
+        <div class="section-label">Ainda em dúvida?</div>
+        <h3>Comece pequeno: o Dicionário Contábil abre 3 dias da plataforma.</h3>
+        <p>400+ termos em 125 páginas, cada um com <strong>o que é</strong>, <strong>o fundamento na norma</strong> e <strong>a dica de prova</strong>. A compra libera 3 dias de acesso à plataforma — você vê as aulas, as questões e o Simulador por dentro antes de decidir pela assinatura.</p>
+      </div>
+      <div class="degrau-preco">
+        <b>R$ 47</b>
+        <small>à vista · ou 11× de R$ 5,22 · 7 dias de garantia</small>
+        <a href="https://pay.kiwify.com.br/pBSgGdf?src=lp-b&amp;utm_source=site&amp;utm_medium=lp&amp;utm_campaign=pos_janela_2026&amp;utm_content=dicionario" class="btn cta-compra" data-fc-local="degrau">Começar pelo Dicionário</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== QUAL E A SUA PROXIMA PROVA (urgencia honesta + seletor de plano) =====
+     Datas fixas no HTML; dias calculados no navegador; prova vencida some sozinha
+     e a secao inteira some se todas passarem. Fonte: scripts/data/catalogo-editais.json
+     (dataProva) + LPs do site (SEFAZ SC 22/11, Transpetro 29/11) + lista da LP do
+     Dicionario (Rio Verde 17/01/2027). ?estado=YYYY-MM-DD simula "hoje" para teste. -->
+<section class="section prova-sec" id="proximas-provas" hidden>
+  <div class="container">
+    <div class="reveal center">
+      <div class="section-label">O relógio que importa</div>
+      <h2 class="section-title">Qual é a <span class="ouro">sua</span> próxima prova?</h2>
+      <p class="section-text" style="margin-left:auto;margin-right:auto;">Esta página não tem contagem regressiva de oferta. Mas estes editais estão abertos, e a data deles não negocia. Toque na sua prova e a página indica o plano que cobre até o dia dela.</p>
+    </div>
+    <ul class="prova-lista">
+      <li class="prova-item" data-prova="2026-09-27" data-org="CFC">
+        <div class="prova-org"><strong>CFC · Exame de Suficiência</strong><span>Bacharel em Ciências Contábeis · FGV</span></div>
+        <div class="prova-dias"><b></b><span>dias</span></div>
+        <button type="button" class="prova-escolher">É a minha prova</button>
+      </li>
+      <li class="prova-item" data-prova="2026-10-18" data-org="TJ-PR">
+        <div class="prova-org"><strong>TJ-PR</strong><span>Contador · FUNDATEC</span></div>
+        <div class="prova-dias"><b></b><span>dias</span></div>
+        <button type="button" class="prova-escolher">É a minha prova</button>
+      </li>
+      <li class="prova-item" data-prova="2026-10-18" data-org="Santos/SP">
+        <div class="prova-org"><strong>Santos/SP</strong><span>Auditor Fiscal de Tributos Municipais · IBAM</span></div>
+        <div class="prova-dias"><b></b><span>dias</span></div>
+        <button type="button" class="prova-escolher">É a minha prova</button>
+      </li>
+      <li class="prova-item" data-prova="2026-11-01" data-org="Manaus (SEMEF)">
+        <div class="prova-org"><strong>Manaus (SEMEF)</strong><span>Auditor-Fiscal de Tributos Municipais · FCC</span></div>
+        <div class="prova-dias"><b></b><span>dias</span></div>
+        <button type="button" class="prova-escolher">É a minha prova</button>
+      </li>
+      <li class="prova-item" data-prova="2026-11-22" data-org="TCE/MA">
+        <div class="prova-org"><strong>TCE/MA</strong><span>Analista · Contabilidade · Cebraspe</span></div>
+        <div class="prova-dias"><b></b><span>dias</span></div>
+        <button type="button" class="prova-escolher">É a minha prova</button>
+      </li>
+      <li class="prova-item" data-prova="2026-11-22" data-org="SEFAZ SC">
+        <div class="prova-org"><strong>SEFAZ SC</strong><span>Auditor de Finanças Públicas · FCC</span></div>
+        <div class="prova-dias"><b></b><span>dias</span></div>
+        <button type="button" class="prova-escolher">É a minha prova</button>
+      </li>
+      <li class="prova-item" data-prova="2026-11-29" data-org="Transpetro">
+        <div class="prova-org"><strong>Transpetro</strong><span>Contabilidade · Cesgranrio</span></div>
+        <div class="prova-dias"><b></b><span>dias</span></div>
+        <button type="button" class="prova-escolher">É a minha prova</button>
+      </li>
+      <li class="prova-item" data-prova="2026-12-20" data-org="SEFAZ AL">
+        <div class="prova-org"><strong>SEFAZ AL</strong><span>Auditor Fiscal · Cebraspe</span></div>
+        <div class="prova-dias"><b></b><span>dias</span></div>
+        <button type="button" class="prova-escolher">É a minha prova</button>
+      </li>
+      <li class="prova-item" data-prova="2027-01-17" data-org="Rio Verde/GO">
+        <div class="prova-org"><strong>Rio Verde/GO</strong><span>Auditor Fiscal · UniRV</span></div>
+        <div class="prova-dias"><b></b><span>dias</span></div>
+        <button type="button" class="prova-escolher">É a minha prova</button>
+      </li>
+    </ul>
+    <p class="prova-indicacao" id="provaIndicacao" hidden></p>
+    <p class="prova-nota">Contabilidade cai em todas. Se a sua prova não está na lista, a conta é a mesma: 3 meses de acesso no trimestral, 6 no semestral, contados do dia da compra.</p>
+    <div class="prova-cta reveal"><a href="#oferta" class="btn cta-compra" data-fc-local="provas">Ver os planos</a></div>
+  </div>
+</section>
+
 <!-- ===== DEPOIMENTOS ===== -->
 <section class="section depoimentos">
   <div class="container">
     <div class="reveal center">
       <div class="section-label">Quem já estudou com o professor</div>
       <h2 class="section-title">A didática que os alunos <span class="ouro">reconhecem.</span></h2>
+    </div>
+
+    <!-- ===== RESULTADO APURADO =====
+         Mesma fonte e mesmas regras da depoimentos.html: print de WhatsApp de 11/08/2026
+         RECORTADO (a tabela de resultado trazia nome e inscricao de ~20 candidatos — nao
+         republicar inteiro). A mencao a' lista PcD e' dado sensivel; entrou por decisao do
+         Vinicius em 01/09/2026, com aceite do aluno. Ele e' 1o colocado e AGUARDA convocacao:
+         nao anunciar como nomeado. Atribuicao: aluno do professor (a plataforma abriu em
+         agosto/2026), nunca "aprovado pela plataforma". -->
+    <div class="dep-destaque reveal">
+      <div class="dep-cifra"><span class="dep-cifra-num">1º</span><span class="dep-cifra-lbl">lugar</span></div>
+      <div>
+        <div class="section-label">Resultado apurado</div>
+        <h3>Ransley Moreira Alves</h3>
+        <p class="dep-cargo">1º lugar na lista PcD · Fiscal de Tributos Municipais · Prefeitura de Senador Canedo (GO) · aluno do professor</p>
+        <div class="dep-mov"><span>15ª posição</span><span class="dep-mov-seta" aria-hidden="true">→</span><span>1ª posição</span><span class="dep-mov-nota">a discursiva fez a diferença</span></div>
+        <p class="dep-quote">“Sou grato por fazer parte da Fluência Contábil.”</p>
+        <p class="dep-plat">Na plataforma, avaliou o curso com nota 10: <em>“Excelente didática, a contabilidade é trabalhada com profundidade desde a primeira aula.”</em></p>
+        <button type="button" class="dep-anexo-btn" aria-expanded="false" aria-controls="comprovRansley">🔗 ver comprovante</button>
+        <figure class="dep-print" id="comprovRansley" hidden>
+          <div class="dep-print-top"><span class="dep-dot"></span><span class="dep-dot"></span><span class="dep-dot"></span><span class="dep-print-url">WhatsApp · 11 ago 2026</span></div>
+          <picture><source srcset="assets/depoimentos/aprovacao-ransley-2026-08-11.webp" type="image/webp"><img src="assets/depoimentos/aprovacao-ransley-2026-08-11.png" alt="Print da conversa em que o aluno anuncia o primeiro lugar na lista PcD" width="540" height="405" loading="lazy" decoding="async"></picture>
+          <figcaption>Recorte da conversa. O resultado completo está no site da banca (Instituto Verbena/UFG).</figcaption>
+        </figure>
+      </div>
     </div>
     <div class="dep-grid">
       <div class="dep-card reveal">
@@ -2375,6 +2837,33 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="aspas" aria-hidden="true">“</div>
         <p>Excelente didática, a contabilidade é trabalhada com profundidade desde a primeira aula.</p>
         <div class="dep-autor">Ransley Moreira Alves <span class="dep-fonte">· Aluno beta da plataforma</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== O QUE ACONTECE DEPOIS DA COMPRA ===== -->
+<section class="section passo-sec">
+  <div class="container">
+    <div class="reveal center">
+      <div class="section-label">Depois da compra</div>
+      <h2 class="section-title">Em poucos minutos, <span class="ouro">você está estudando</span>.</h2>
+    </div>
+    <div class="passo-grid">
+      <div class="passo-card reveal">
+        <span class="passo-num">1</span>
+        <h3>Você paga</h3>
+        <p>Pix, boleto ou cartão, pelo checkout da Kiwify. À vista: R$ 427 no trimestral ou R$ 547 no semestral. No cartão: 12× de R$ 44,16 ou 12× de R$ 56,57 — as parcelas têm juros do gateway, por isso o à vista está sempre ao lado.</p>
+      </div>
+      <div class="passo-card reveal">
+        <span class="passo-num">2</span>
+        <h3>Recebe o acesso por e-mail</h3>
+        <p>Confirmado o pagamento, chega um e-mail de boas-vindas com o link para você definir sua senha na plataforma. Pix e cartão liberam em minutos; boleto, na compensação.</p>
+      </div>
+      <div class="passo-card reveal">
+        <span class="passo-num">3</span>
+        <h3>Entra e começa</h3>
+        <p>As aulas, as questões e o Simulador já estão lá. Cole o seu edital no Meu Edital e o Plano de Estudos monta a agenda a partir do tempo que falta para a sua prova.</p>
       </div>
     </div>
   </div>
@@ -2443,6 +2932,42 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </section>
 
+<!-- ===== FECHAMENTO POR CONTRASTE ===== -->
+<section class="section contraste-sec">
+  <div class="container">
+    <div class="reveal center">
+      <div class="section-label">A decisão</div>
+      <h2 class="section-title">Duas formas de chegar na <span class="ouro">sua prova</span>.</h2>
+    </div>
+    <div class="contraste-grid">
+      <div class="contraste-col contraste-col--sem reveal">
+        <div class="contraste-topo">Do jeito que está</div>
+        <ul>
+          <li>Reler o CPC e refazer o resumo a cada revisão</li>
+          <li>Decorar o lançamento e torcer para a banca não trocar a palavra</li>
+          <li>Resolver questão aleatória, sem saber o que já aprendeu</li>
+          <li>Descobrir na prova o que ficou para trás</li>
+        </ul>
+        <div class="contraste-custo">Custo: <strong>R$ 0</strong><br><span>e mais um ciclo estuda-esquece</span></div>
+      </div>
+      <div class="contraste-col contraste-col--com reveal">
+        <div class="contraste-topo">Com a assinatura</div>
+        <ul>
+          <li>A lógica antes da regra, em 35 aulas em ordem</li>
+          <li>Mais de 3.800 questões comentadas, filtradas pela sua banca</li>
+          <li>Revisão agendada em D+3, 7, 16 e 35 — sempre com questão</li>
+          <li>Saber, antes da prova, o que já está fechado</li>
+        </ul>
+        <div class="contraste-custo">Custo: <strong>R$ 427</strong> ou <strong>R$ 547</strong><br><span>3 ou 6 meses · 12× no cartão · pagamento único</span></div>
+      </div>
+    </div>
+    <div class="contraste-cta reveal">
+      <a href="#oferta" class="btn cta-compra" data-fc-local="contraste">Ver os planos</a>
+      <p class="contraste-nota">7 dias de garantia incondicional. Não era para você, devolvemos 100%.</p>
+    </div>
+  </div>
+</section>
+
 <!-- ===== CTA FINAL ===== -->
 <section class="section cta-final">
   <div class="container">
@@ -2462,6 +2987,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 </main>
 
+<!-- ===== SELOS DE CONFIANCA + RODAPE JURIDICO ===== -->
+<section class="section selos-sec">
+  <div class="container">
+    <div class="selos-grid">
+      <div class="selo reveal"><span class="selo-ico">🔒</span><div><strong>Compra segura</strong><br>Checkout processado pela Kiwify</div></div>
+      <div class="selo reveal"><span class="selo-ico">↩️</span><div><strong>7 dias de garantia</strong><br>Devolução integral, sem perguntas</div></div>
+      <div class="selo reveal"><span class="selo-ico">🎓</span><div><strong>3.000+ alunos</strong><br>ao longo de 40 turmas</div></div>
+      <div class="selo reveal"><span class="selo-ico">📅</span><div><strong>Pagamento único</strong><br>Sem renovação automática</div></div>
+    </div>
+    <p class="selos-legal">NEVES E BALHE EDUCAÇÃO LTDA. — CNPJ 55.373.571/0001-63<br>
+    Av. Paulista, 1106, Sala 01 — Andar 16, Bela Vista, São Paulo/SP<br>
+    <span>Este é um material preparatório. Não há garantia de aprovação em concurso público: o resultado depende do desempenho individual do candidato e das regras da banca.</span></p>
+  </div>
+</section>
+
 <!-- ===== FOOTER ===== -->
 <footer class="footer">
   <div class="footer-logo">FLUÊNCIA <span>CONTÁBIL</span></div>
@@ -2475,6 +3015,29 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
   <span class="fc-wa-float-label">Fale com a gente</span>
 </a>
+
+<!-- ===== CAPTURA DE E-MAIL — AULA 01 (widget local) =====
+     Esta LP nao carrega o email-capture.js de proposito (ver comentario no CSS do
+     atendimento flutuante). O modal abaixo posta no MESMO endpoint do Apps Script com
+     origem "assinatura_aula01": sem rota propria em routeByOrigin, ela cai na aba
+     Newsletter (fallback), que esta' em MAILER_TABS — por isso o texto legal fala em
+     newsletter. O href do botao da hero segue funcionando como fallback sem cadastro. -->
+<div class="fc-cap-overlay" id="fcCapOverlay" hidden role="dialog" aria-modal="true" aria-labelledby="fcCapTitle">
+  <div class="fc-cap-modal">
+    <button class="fc-cap-close" type="button" id="fcCapClose" aria-label="Fechar">×</button>
+    <div class="fc-cap-ico" aria-hidden="true">📄</div>
+    <h3 id="fcCapTitle">Aula 01 completa, em PDF</h3>
+    <p>73 páginas: o Método das Partidas Dobradas, com 30 questões comentadas. Deixe seu e-mail e o download começa na hora.</p>
+    <form class="fc-cap-form" id="fcCapForm" novalidate>
+      <input type="email" id="fcCapEmail" name="email" placeholder="seu@email.com" required autocomplete="email" inputmode="email" aria-label="Seu e-mail">
+      <p class="fc-cap-erro" id="fcCapErro">Confere o e-mail? Ele não parece válido.</p>
+      <button type="submit" class="btn" id="fcCapBtn">Baixar a Aula 01</button>
+    </form>
+    <p class="fc-cap-ok" id="fcCapOk">✅ Pronto — o download começou. Bons estudos!</p>
+    <p class="fc-cap-legal">Sem spam. Você entra na newsletter da Fluência Contábil e pode sair quando quiser.</p>
+    <a class="fc-cap-skip" id="fcCapSkip" href="aulas/aula-01-partidas-dobradas.pdf?v=20260813" download="Fluencia-Contabil-Aula-01-Partidas-Dobradas.pdf">Prefiro baixar sem cadastrar</a>
+  </div>
+</div>
 
 <script>
 /* A janela Aluno Fundador encerrou em 16/08/2026. A oferta desta pagina passou a
@@ -3124,6 +3687,187 @@ document.querySelectorAll('.reveal').forEach(function (el) { revealObserver.obse
   }
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
+})();
+
+/* ===== PROXIMAS PROVAS + SELETOR DE PLANO =====
+   Datas fixas no HTML, dias calculados na hora: a pagina nao envelhece. Prova vencida
+   some sozinha; se todas passarem, a secao inteira fica oculta (ela nasce com hidden).
+   ?estado=YYYY-MM-DD simula "hoje" para teste (ex.: ?estado=2027-02-01 -> tudo oculto). */
+(function () {
+  var sec = document.getElementById('proximas-provas');
+  if (!sec) return;
+  var estado = new URLSearchParams(location.search).get('estado');
+  var hoje = /^\d{4}-\d{2}-\d{2}$/.test(estado || '')
+    ? new Date(+estado.slice(0, 4), +estado.slice(5, 7) - 1, +estado.slice(8, 10))
+    : new Date();
+  hoje.setHours(0, 0, 0, 0);
+  var vivas = 0;
+
+  function fmt(d) { return ('0' + d.getDate()).slice(-2) + '/' + ('0' + (d.getMonth() + 1)).slice(-2); }
+
+  sec.querySelectorAll('.prova-item').forEach(function (li) {
+    var p = (li.getAttribute('data-prova') || '').split('-');
+    if (p.length !== 3) { li.hidden = true; return; }
+    // construtor com componentes: evita o parse UTC de 'YYYY-MM-DD', que no Brasil joga a data para o dia anterior
+    var prova = new Date(+p[0], +p[1] - 1, +p[2]);
+    var dias = Math.ceil((prova - hoje) / 86400000);
+    if (dias < 0) { li.hidden = true; return; }
+    var b = li.querySelector('.prova-dias b');
+    var rot = li.querySelector('.prova-dias span');
+    if (dias === 0) {
+      if (b) { b.textContent = 'hoje'; b.style.fontSize = '20px'; }
+      if (rot) { rot.textContent = 'é a prova'; }
+    } else {
+      if (b) { b.textContent = dias; }
+      if (rot) { rot.textContent = dias === 1 ? 'dia' : 'dias'; }
+    }
+    li.__dias = dias; li.__prova = prova;
+    vivas++;
+  });
+  if (vivas > 0) sec.hidden = false;
+
+  // Seletor: o plano e' indicado pelo tempo ate' a prova, contado da compra.
+  // <= 92 dias: o trimestral (3 meses) cobre ate' a prova. <= 184: o semestral cobre.
+  // Acima disso nenhum dos dois alcanca a prova — e a pagina diz isso, em vez de fingir.
+  var indProva = document.getElementById('provaIndicacao');
+  var indOferta = document.getElementById('ofertaIndicacao');
+  var cards = document.querySelectorAll('.plano-card[data-plano]');
+  sec.querySelectorAll('.prova-escolher').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var li = btn.closest('.prova-item');
+      if (!li || li.__dias == null) return;
+      var dias = li.__dias, sem = Math.floor(dias / 7);
+      var org = li.getAttribute('data-org') || 'a sua prova';
+      var data = fmt(li.__prova);
+      var plano, txt;
+      if (dias <= 92) {
+        plano = 'trimestral';
+        txt = 'Para <strong>' + org + '</strong>, em ' + data + ', faltam <strong>' + sem + ' semanas</strong>. O <strong>trimestral</strong> (3 meses) cobre até o dia da prova.';
+      } else if (dias <= 184) {
+        plano = 'semestral';
+        txt = 'Para <strong>' + org + '</strong>, em ' + data + ', faltam <strong>' + sem + ' semanas</strong>. O trimestral não chega até lá; o <strong>semestral</strong> (6 meses) cobre até o dia da prova.';
+      } else {
+        plano = 'semestral';
+        txt = 'Para <strong>' + org + '</strong>, em ' + data + ', faltam <strong>' + sem + ' semanas</strong> — mais que os 6 meses do semestral. Ele cobre a base inteira e a maior parte do caminho; a reta final você decide depois, sem renovação automática.';
+      }
+      sec.querySelectorAll('.prova-item').forEach(function (x) { x.classList.remove('escolhida'); });
+      li.classList.add('escolhida');
+      if (indProva) { indProva.innerHTML = txt + ' <a href="#oferta" style="color:var(--dourado);font-weight:800;">Ver o plano ↓</a>'; indProva.hidden = false; }
+      if (indOferta) { indOferta.innerHTML = txt; indOferta.hidden = false; }
+      cards.forEach(function (c) { c.classList.toggle('plano-card--indicado', c.getAttribute('data-plano') === plano); });
+      try { window.dataLayer = window.dataLayer || []; dataLayer.push({ event: 'prova_escolhida', prova: org, dias: dias, plano_indicado: plano }); } catch (e) {}
+    });
+  });
+})();
+
+/* ===== SLOT DE VSL — so' carrega o player se o slot estiver visivel e com id preenchido ===== */
+(function () {
+  var slot = document.getElementById('heroVsl'), f = document.getElementById('heroVslFrame');
+  if (!slot || !f || slot.hidden) return;
+  var src = f.getAttribute('data-src') || '';
+  if (src && src.indexOf('__PANDA_ID__') === -1) f.setAttribute('src', src);
+})();
+
+/* ===== COMPROVANTE (prova social) ===== */
+document.querySelectorAll('.dep-anexo-btn[aria-controls]').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    var alvo = document.getElementById(btn.getAttribute('aria-controls'));
+    if (!alvo) return;
+    var aberto = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', aberto ? 'false' : 'true');
+    alvo.hidden = aberto;
+  });
+});
+
+/* ===== ROLAGEM + OFERTA VISTA (dataLayer; a Meta so' nasce no GTM) =====
+   Marcos de 25/50/75/100% e "visualizou_oferta" quando #oferta ocupa >= 40% da tela.
+   Inerte ate' o GTM-MGQFHR5J ganhar gatilhos para esses eventos. Sem fbq inline:
+   e' a regra do assets/origem.js (evento da Meta duplicado foi o que virou 6 vendas
+   em 21 checkouts). */
+(function () {
+  var marcas = [25, 50, 75, 100], feitas = {}, ofertaVista = false;
+  var oferta = document.getElementById('oferta');
+  function push(o) { try { window.dataLayer = window.dataLayer || []; dataLayer.push(o); } catch (e) {} }
+  function tick() {
+    var h = document.documentElement.scrollHeight - window.innerHeight;
+    var pct = h > 0 ? Math.round((window.scrollY / h) * 100) : 100;
+    marcas.forEach(function (m) { if (!feitas[m] && pct >= m) { feitas[m] = true; push({ event: 'rolagem', profundidade: m }); } });
+    if (!ofertaVista && oferta) {
+      var r = oferta.getBoundingClientRect();
+      var visivel = Math.min(r.bottom, window.innerHeight) - Math.max(r.top, 0);
+      if (visivel >= window.innerHeight * 0.4) { ofertaVista = true; push({ event: 'visualizou_oferta' }); }
+    }
+  }
+  window.addEventListener('scroll', tick, { passive: true });
+  window.addEventListener('resize', tick);
+  tick();
+})();
+
+/* ===== CAPTURA DE E-MAIL — AULA 01 =====
+   Mesmo endpoint e mesmos campos do assets/email-capture.js (que esta LP nao carrega).
+   Quem ja' e' lead (localStorage fc_ec_subscribed, a chave do email-capture) baixa direto. */
+(function () {
+  var gat = document.querySelector('[data-fc-capture="aula01"]');
+  var ov = document.getElementById('fcCapOverlay');
+  if (!gat || !ov) return;
+  var ENDPOINT = 'https://script.google.com/macros/s/AKfycbx8lWrX5F0IByv0JEJ0iBGPjtLto7f2VxDHIh0uT0gZtvoj8EDVx0NFiriou-Dt0cxh/exec';
+  var form = document.getElementById('fcCapForm'), input = document.getElementById('fcCapEmail');
+  var erro = document.getElementById('fcCapErro'), okMsg = document.getElementById('fcCapOk');
+  var btn = document.getElementById('fcCapBtn'), skip = document.getElementById('fcCapSkip');
+  var fechar = document.getElementById('fcCapClose'), foco = null;
+  function lsGet(k) { try { return window.localStorage.getItem(k); } catch (e) { return null; } }
+  function lsSet(k, v) { try { window.localStorage.setItem(k, v); } catch (e) {} }
+  function push(o) { try { window.dataLayer = window.dataLayer || []; dataLayer.push(o); } catch (e) {} }
+  function baixar(metodo) {
+    push({ event: 'download_aula01', metodo: metodo, cta_location: gat.getAttribute('data-fc-local') || 'hero' });
+    var a = document.createElement('a');
+    a.href = gat.getAttribute('href'); a.download = gat.getAttribute('download') || '';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  }
+  function abrir() { foco = document.activeElement; ov.hidden = false; setTimeout(function () { input.focus(); }, 50); }
+  function fecharModal() { ov.hidden = true; if (foco && foco.focus) foco.focus(); }
+
+  gat.addEventListener('click', function (e) {
+    if (lsGet('fc_ec_subscribed') === '1') { push({ event: 'download_aula01', metodo: 'ja_lead', cta_location: 'hero' }); return; }
+    e.preventDefault();
+    abrir();
+  });
+  fechar.addEventListener('click', fecharModal);
+  ov.addEventListener('click', function (e) { if (e.target === ov) fecharModal(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !ov.hidden) fecharModal(); });
+  skip.addEventListener('click', function () {
+    push({ event: 'download_aula01', metodo: 'sem_email', cta_location: 'hero' });
+    setTimeout(fecharModal, 300);
+  });
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var email = (input.value || '').trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { erro.classList.add('on'); input.focus(); return; }
+    erro.classList.remove('on');
+    btn.disabled = true; btn.textContent = 'Enviando...';
+    var data = new URLSearchParams();
+    data.append('email', email);
+    data.append('origem', 'assinatura_aula01');
+    try {
+      var q = new URLSearchParams(window.location.search);
+      data.append('pagina', window.location.pathname + window.location.search);
+      data.append('referrer', document.referrer || '');
+      data.append('utm_source', q.get('utm_source') || '');
+      data.append('utm_medium', q.get('utm_medium') || '');
+      data.append('utm_campaign', q.get('utm_campaign') || '');
+      data.append('dispositivo', window.matchMedia('(max-width: 720px)').matches ? 'Mobile' : 'Desktop');
+    } catch (e2) {}
+    var done = function () {
+      lsSet('fc_ec_subscribed', '1');
+      push({ event: 'lead_capturado', origem: 'assinatura_aula01' });
+      form.style.display = 'none'; okMsg.classList.add('on');
+      baixar('com_email');
+      setTimeout(fecharModal, 1800);
+    };
+    try {
+      fetch(ENDPOINT, { method: 'POST', body: data, mode: 'no-cors' }).then(done, done);
+    } catch (e3) { done(); }
+  });
 })();
 
 /* ===== ATENDIMENTO NO WHATSAPP — exibicao e tracking =====
