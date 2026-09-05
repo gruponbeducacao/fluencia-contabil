@@ -3370,65 +3370,6 @@ document.querySelectorAll('.reveal').forEach(function (el) { revealObserver.obse
   onScroll();
 })();
 
-/* ===== UTM DE ORIGEM ATE O CHECKOUT =====
-   Os 7 CTAs nascem com utm_source=site&utm_medium=lp no HTML. Sem este bloco,
-   quem chega por anuncio pago chega a' Kiwify carimbado como organico — o Meta
-   reporta a conversao (ele atribui por fbclid), mas a Kiwify e o Gestao nao
-   sabem separar. Como o Meta super-reporta, a decisao de verba sairia do numero
-   do vendedor, sem conferencia contra o extrato real.
-
-   REGRAS, e cada uma tem um porque:
-   · Parametro de ENTRADA vence o fixo — e' ele que diz de onde a pessoa veio.
-   · Sem parametro de entrada, nada muda. O trafego organico continua
-     utm_source=site, e o historico da Kiwify nao ganha um degrau artificial.
-   · O utm_content da POSICAO (hero, prova, oferta, tour, garantia, faq, sticky)
-     sobrevive: e' o unico jeito de saber QUAL CTA converteu. Se o anuncio mandar
-     utm_content, ele vai para utm_term em vez de apagar a posicao.
-   · fbclid e gclid passam adiante: sao eles que fecham a atribuicao do lado das
-     plataformas.
-   · Roda no carregamento, e nao no clique: o usuario copia o link, abre em outra
-     aba, o navegador faz prefetch. Reescrever no clique perderia esses casos. */
-(function () {
-  try {
-    var entrada = new URLSearchParams(location.search);
-    var HERDA = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'fbclid', 'gclid'];
-    var temAlgo = HERDA.some(function (k) { return entrada.get(k); }) || entrada.get('utm_content');
-    if (!temAlgo) return;
-
-    document.querySelectorAll('a.cta-compra[href*="pay.kiwify"]').forEach(function (a) {
-      try {
-        var url = new URL(a.href);
-        HERDA.forEach(function (k) {
-          var v = entrada.get(k);
-          if (v) url.searchParams.set(k, v);
-        });
-        // A posicao do CTA e' informacao que so' existe aqui. O utm_content do
-        // anuncio entra como utm_term para as duas conviverem.
-        var conteudoDoAnuncio = entrada.get('utm_content');
-        if (conteudoDoAnuncio && !entrada.get('utm_term')) {
-          url.searchParams.set('utm_term', conteudoDoAnuncio);
-        }
-        a.href = url.toString();
-      } catch (e) {}
-    });
-  } catch (e) {}
-})();
-
-/* ===== TRACKING DOS CTAs DE CHECKOUT =====
-   Cada CTA leva utm_content proprio (hero, prova, oferta, tour, garantia,
-   faq, sticky) e empurra checkout_click com a mesma posicao no dataLayer.
-   fbq/gtag em try/catch proprios: so existem se o container os configurar. */
-(function () {
-  document.querySelectorAll('a.cta-compra[href*="pay.kiwify"]').forEach(function (a) {
-    a.addEventListener('click', function () {
-      var loc = a.getAttribute('data-fc-local') || '';
-      try { window.dataLayer = window.dataLayer || []; dataLayer.push({ event: 'checkout_click', cta_location: loc }); } catch (e) {}
-      try { if (window.fbq) fbq('track', 'InitiateCheckout', { content_name: 'Pacote_Transpetro_2026', content_category: loc }); } catch (e) {}
-      try { if (window.gtag) gtag('event', 'checkout_click', { cta_location: loc }); } catch (e) {}
-    });
-  });
-})();
-
 /* ===== ATENDIMENTO NO WHATSAPP — exibicao e tracking ===== */
 (function () {
   var flut = document.getElementById('fcWaFloat');
@@ -3438,12 +3379,11 @@ document.querySelectorAll('.reveal').forEach(function (el) { revealObserver.obse
     a.addEventListener('click', function () {
       var loc = a.getAttribute('data-fc-local') || '';
       try { window.dataLayer = window.dataLayer || []; dataLayer.push({ event: 'whatsapp_cta_click', cta_location: loc }); } catch (e) {}
-      try { if (window.fbq) fbq('track', 'Contact', { content_name: 'Transpetro_WhatsApp_Atendimento', content_category: loc }); } catch (e) {}
-      try { if (window.gtag) gtag('event', 'whatsapp_click', { cta_location: loc }); } catch (e) {}
     });
   });
 })();
 </script>
+<script src="assets/origem.js?v=20260905" defer></script>
 
 
 <style>

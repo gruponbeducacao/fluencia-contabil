@@ -11,8 +11,12 @@
      transformaria tudo isso em 404. -->
 <meta name="robots" content="noindex, follow">
 <link rel="canonical" href="https://fluenciacontabil.com.br/cursos.html">
-<meta http-equiv="refresh" content="0; url=cursos.html#assinar">
-<script>window.location.replace('cursos.html#assinar');</script>
+<meta http-equiv="refresh" content="2; url=cursos.html#assinar">
+<!-- A bio do Instagram e descrições antigas apontam para cá. A query string
+     (utm_*) segue junto: sem isso o tráfego da bio chega em cursos.html sem
+     origem e a venda entra no Gestão como orgânica. O refresh de 2 s é só o
+     fallback sem JS, e ele perde os parâmetros. -->
+<script>window.location.replace('cursos.html' + window.location.search + '#assinar');</script>
 <style>
   body{margin:0;background:#1B2A4A;color:#fff;font-family:'Montserrat',Arial,Helvetica,sans-serif;
        display:flex;align-items:center;justify-content:center;min-height:100vh;text-align:center;padding:24px;}

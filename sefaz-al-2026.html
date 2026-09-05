@@ -3298,148 +3298,6 @@ document.querySelectorAll('.reveal').forEach(function (el) { revealObserver.obse
   onScroll();
 })();
 
-/* ===== UTM DE ORIGEM ATE O CHECKOUT =====
-   Os 7 CTAs nascem com utm_source=site&utm_medium=lp no HTML. Sem este bloco,
-   quem chega por anuncio pago chega a' Kiwify carimbado como organico — o Meta
-   reporta a conversao (ele atribui por fbclid), mas a Kiwify e o Gestao nao
-   sabem separar. Como o Meta super-reporta, a decisao de verba sairia do numero
-   do vendedor, sem conferencia contra o extrato real.
-
-   REGRAS, e cada uma tem um porque:
-   · Parametro de ENTRADA vence o fixo — e' ele que diz de onde a pessoa veio.
-   · Sem parametro de entrada, nada muda. O trafego organico continua
-     utm_source=site, e o historico da Kiwify nao ganha um degrau artificial.
-   · O utm_content da POSICAO (hero, prova, oferta, tour, garantia, faq, sticky)
-     sobrevive: e' o unico jeito de saber QUAL CTA converteu. Se o anuncio mandar
-     utm_content, ele vai para utm_term em vez de apagar a posicao.
-   · fbclid e gclid passam adiante: sao eles que fecham a atribuicao do lado das
-     plataformas.
-   · Roda no carregamento, e nao no clique: o usuario copia o link, abre em outra
-     aba, o navegador faz prefetch. Reescrever no clique perderia esses casos. */
-(function () {
-  try {
-    var entrada = new URLSearchParams(location.search);
-    var HERDA = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'fbclid', 'gclid'];
-    var temAlgo = HERDA.some(function (k) { return entrada.get(k); }) || entrada.get('utm_content');
-    if (!temAlgo) return;
-
-    document.querySelectorAll('a.cta-compra[href*="pay.kiwify"]').forEach(function (a) {
-      try {
-        var url = new URL(a.href);
-        HERDA.forEach(function (k) {
-          var v = entrada.get(k);
-          if (v) url.searchParams.set(k, v);
-        });
-        // A posicao do CTA e' informacao que so' existe aqui. O utm_content do
-        // anuncio entra como utm_term para as duas conviverem.
-        var conteudoDoAnuncio = entrada.get('utm_content');
-        if (conteudoDoAnuncio && !entrada.get('utm_term')) {
-          url.searchParams.set('utm_term', conteudoDoAnuncio);
-        }
-        a.href = url.toString();
-      } catch (e) {}
-    });
-  } catch (e) {}
-})();
-
-/* ===== ONDE O VISITANTE PARA =====
-   A campanha trouxe 255 visitas e nenhum InitiateCheckout atribuido. Com esse
-   volume ja' da' para descartar taxa acima de ~1,5%, mas nao para dizer ONDE a
-   pessoa sai — e quem bate o olho e volta e quem le tudo e trava no preco pedem
-   consertos OPOSTOS.
-
-   Chamada DIRETA ao fbq, e nao dataLayer: o container GTM-MGQFHR5J nao escuta
-   evento nenhum desta pagina ('checkout_click' aparece ZERO vezes nele). O
-   InitiateCheckout so' existe porque o CTA chama fbq na mao, logo abaixo.
-
-   🐛 A primeira versao disto consumia a marca ANTES de checar se o fbq existia:
-
-       if (visto[nome]) return;
-       visto[nome] = 1;                       // <- perdia o evento
-       try { if (window.fbq) fbq(...) } catch (e) {}
-
-   O GTM carrega assincrono e quem vem de anuncio no celular comeca a rolar em
-   1-2 segundos, antes de o container terminar. O evento era descartado e a
-   marca ficava gasta para sempre naquela visita. Resultado medido em 03/09: 326
-   PageViews produziram 4 Rolagem25. Agora a marca so' e' consumida DEPOIS do
-   envio, e ha uma reavaliacao quando o fbq aparece, para nao perder quem rolou
-   cedo e parou.
-
-   Sem IntersectionObserver de proposito: a oferta e' avaliada dentro da mesma
-   funcao da rolagem, entao existe um caminho so' que pode falhar, e ele e' o
-   mesmo que a reavaliacao reexecuta. */
-(function () {
-  try {
-    var MARCAS = [25, 50, 75, 100];
-    var visto = {};
-
-    // Devolve true so' quando o evento REALMENTE saiu.
-    function marcar(nome, dados) {
-      if (visto[nome]) return false;
-      if (!window.fbq) return false;
-      visto[nome] = 1;
-      try { fbq('trackCustom', nome, dados || {}); } catch (e) {}
-      return true;
-    }
-
-    function ofertaVisivel() {
-      var el = document.getElementById('oferta');
-      if (!el) return false;
-      var r = el.getBoundingClientRect();
-      var visivel = Math.min(r.bottom, window.innerHeight) - Math.max(r.top, 0);
-      return visivel > 0 && visivel >= Math.min(r.height, window.innerHeight) * 0.4;
-    }
-
-    function avaliar() {
-      var doc = document.documentElement;
-      var rolavel = doc.scrollHeight - window.innerHeight;
-      if (rolavel > 0) {
-        var pct = ((window.scrollY || doc.scrollTop) / rolavel) * 100;
-        for (var i = 0; i < MARCAS.length; i++) {
-          if (pct >= MARCAS[i]) marcar('Rolagem' + MARCAS[i], { profundidade: MARCAS[i] });
-        }
-      }
-      // Chegar a' oferta e' onde o preco aparece. Separar "nao chegou ate' la'"
-      // de "chegou e nao clicou" e' a diferenca entre consertar a PAGINA e
-      // consertar o MOMENTO — a inscricao do concurso so' abre em 17/09.
-      if (ofertaVisivel()) marcar('VisualizouOferta');
-    }
-
-    var agendado = false;
-    function aoRolar() {
-      if (agendado) return;
-      agendado = true;
-      requestAnimationFrame(function () { agendado = false; avaliar(); });
-    }
-
-    window.addEventListener('scroll', aoRolar, { passive: true });
-    window.addEventListener('resize', aoRolar, { passive: true });
-    avaliar();
-
-    // Quem rolou antes de o GTM carregar e parou nunca seria contado sem isto.
-    var tentativas = 0;
-    var esperandoFbq = setInterval(function () {
-      if (window.fbq) { clearInterval(esperandoFbq); avaliar(); }
-      else if (++tentativas > 120) { clearInterval(esperandoFbq); }  // desiste em 30s: GTM em 3G passa dos 10s
-    }, 250);
-  } catch (e) {}
-})();
-
-/* ===== TRACKING DOS CTAs DE CHECKOUT =====
-   Cada CTA leva utm_content proprio (hero, prova, oferta, tour, garantia,
-   faq, sticky) e empurra checkout_click com a mesma posicao no dataLayer.
-   fbq/gtag em try/catch proprios: so existem se o container os configurar. */
-(function () {
-  document.querySelectorAll('a.cta-compra[href*="pay.kiwify"]').forEach(function (a) {
-    a.addEventListener('click', function () {
-      var loc = a.getAttribute('data-fc-local') || '';
-      try { window.dataLayer = window.dataLayer || []; dataLayer.push({ event: 'checkout_click', cta_location: loc }); } catch (e) {}
-      try { if (window.fbq) fbq('track', 'InitiateCheckout', { content_name: 'Pacote_SEFAZ_AL_2026', content_category: loc }); } catch (e) {}
-      try { if (window.gtag) gtag('event', 'checkout_click', { cta_location: loc }); } catch (e) {}
-    });
-  });
-})();
-
 /* ===== ATENDIMENTO NO WHATSAPP — exibicao e tracking ===== */
 (function () {
   var flut = document.getElementById('fcWaFloat');
@@ -3449,12 +3307,11 @@ document.querySelectorAll('.reveal').forEach(function (el) { revealObserver.obse
     a.addEventListener('click', function () {
       var loc = a.getAttribute('data-fc-local') || '';
       try { window.dataLayer = window.dataLayer || []; dataLayer.push({ event: 'whatsapp_cta_click', cta_location: loc }); } catch (e) {}
-      try { if (window.fbq) fbq('track', 'Contact', { content_name: 'SefazAL_WhatsApp_Atendimento', content_category: loc }); } catch (e) {}
-      try { if (window.gtag) gtag('event', 'whatsapp_click', { cta_location: loc }); } catch (e) {}
     });
   });
 })();
 </script>
+<script src="assets/origem.js?v=20260905" defer></script>
 
 </body>
 </html>
