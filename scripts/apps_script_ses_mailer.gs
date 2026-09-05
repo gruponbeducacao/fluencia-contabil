@@ -308,6 +308,67 @@ function templateUrl_(relPath) {
   return base.replace(/\/$/, '') + '/' + String(relPath).replace(/^\//, '');
 }
 
+/**
+ * Etiqueta de origem em todo link nosso do e-mail (convenção em
+ * _MARKETING/_CRM/CONVENCAO_UTM.md).
+ *
+ * Por que aqui, e não no template: 85 dos 95 templates não carregam UTM
+ * nenhuma, e os que fecham venda (L3B–L7) apontam para pay.kiwify.com.br cru.
+ * Toda venda por e-mail chegava ao Gestão como "sem origem". Injetar no
+ * render cobre os 95 de uma vez e todo template futuro.
+ *
+ * Regras:
+ *   · Só hrefs para fluenciacontabil.com.br (qualquer subdomínio) e
+ *     pay.kiwify.com.br. Descadastro, YouTube, WhatsApp e imagens ficam em paz.
+ *   · Link que JÁ traz utm_campaign não é tocado: o que está no template vence.
+ *   · Parâmetro já presente no link não é sobrescrito, um a um.
+ *   · O separador dentro do atributo é &amp; — é HTML, não URL crua.
+ *
+ * utm = { utm_source, utm_medium, utm_campaign, utm_content } (strings; vazias
+ * são ignoradas).
+ */
+function injetarUtm_(html, utm) {
+  var chaves = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content'];
+  var alvo = /href=(["'])(https?:\/\/(?:[a-z0-9-]+\.)*(?:fluenciacontabil\.com\.br|pay\.kiwify\.com\.br)(?:[\/?#][^"']*)?)\1/gi;
+  return String(html).replace(alvo, function (todo, aspas, url) {
+    if (/[?&](?:amp;)?utm_campaign=/.test(url)) return todo;
+    var hash = '';
+    var i = url.indexOf('#');
+    if (i >= 0) { hash = url.slice(i); url = url.slice(0, i); }
+    var partes = [];
+    for (var k = 0; k < chaves.length; k++) {
+      var chave = chaves[k];
+      var valor = utm && utm[chave] ? String(utm[chave]).trim() : '';
+      if (!valor) continue;
+      if (new RegExp('[?&](?:amp;)?' + chave + '=').test(url)) continue;
+      partes.push(chave + '=' + encodeURIComponent(valor));
+    }
+    if (!partes.length) return todo;
+    var sep = url.indexOf('?') >= 0 ? '&amp;' : '?';
+    return 'href=' + aspas + url + sep + partes.join('&amp;') + hash + aspas;
+  });
+}
+
+/**
+ * A etiqueta de um broadcast: a coluna "Etiqueta" da aba, quando existir e
+ * estiver preenchida (= etiqueta da campanha no Gestão), senão
+ * `broadcast-<id>` — assim a venda nunca chega sem utm_campaign, e o Gestão
+ * mostra a fonte mesmo quando ninguém amarrou o envio a uma campanha.
+ */
+function utmDoBroadcast_(sheet, rowNum, cols, id) {
+  var etiqueta = '';
+  if (cols['Etiqueta']) {
+    etiqueta = String(sheet.getRange(rowNum, cols['Etiqueta']).getValue() || '').trim();
+  }
+  var codigo = String(id || '').trim();
+  return {
+    utm_source: 'email',
+    utm_medium: 'broadcast',
+    utm_campaign: etiqueta || ('broadcast-' + codigo.toLowerCase().replace(/[^a-z0-9_-]+/g, '-')),
+    utm_content: codigo
+  };
+}
+
 
 // ══════════════════════ 1. SYNC DE CONTATOS (planilha → SES) ══════════════════════
 
@@ -491,6 +552,14 @@ function processSequences() {
 
         try {
           var html = renderTemplate_(step.template, nome);
+          // sequencia-d / D3: a régua automática não é campanha do Gestão, mas a
+          // venda que ela fizer chega com fonte e passo em vez de "sem origem".
+          html = injetarUtm_(html, {
+            utm_source: 'email',
+            utm_medium: 'sequencia',
+            utm_campaign: 'sequencia-' + String(cfg.sequencia).toLowerCase(),
+            utm_content: String(cfg.sequencia) + (passo + 1)
+          });
           sesSendMarketing_(email, step.assunto, html, cfg.topic);
           var novoPasso = passo + 1;
           sheet.getRange(rowNum, cols['Seq Passo']).setValue(
@@ -554,6 +623,7 @@ function processBroadcasts() {
 
     var now = new Date();
     var rows = sheet.getRange(2, 1, sheet.getLastRow() - 1, 9).getValues();
+    var cols = headerIndexes_(sheet); // "Etiqueta" é opcional (setupEtiquetaBroadcasts)
 
     for (var r = 0; r < rows.length; r++) {
       var status = String(rows[r][5] || '');
@@ -573,13 +643,14 @@ function processBroadcasts() {
       var recipients = collectRecipients_(topicos);
       var cursor = parseInt(rows[r][6], 10) || 0;
       sheet.getRange(rowNum, 8).setValue(recipients.length);
+      var utm = utmDoBroadcast_(sheet, rowNum, cols, rows[r][0]);
 
       var sentThisRun = 0;
       var errors = 0;
       while (cursor < recipients.length && sentThisRun < BCAST_SEND_BATCH) {
         var rec = recipients[cursor];
         try {
-          var html = renderTemplate_(template, rec.nome);
+          var html = injetarUtm_(renderTemplate_(template, rec.nome), utm);
           sesSendMarketing_(rec.email, assunto, html, rec.topic);
         } catch (err) {
           errors++;
@@ -1263,6 +1334,47 @@ function ensaioBroadcastBolsao() {
 }
 
 /** Envia o email A1 pra um endereço de teste (edite o destino antes de rodar). */
+/**
+ * 1× — garante a coluna "Etiqueta" na aba Broadcasts (no fim, sem mexer nas
+ * nove primeiras que o motor lê por posição nem nas de métrica). Preencher
+ * com a etiqueta da campanha no Gestão (ex.: sefaz_sc_2026); vazia, o motor
+ * usa broadcast-<id>.
+ */
+function setupEtiquetaBroadcasts() {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MAILER_SHEETS.BROADCASTS);
+  if (!sheet) { Logger.log('❌ aba Broadcasts não existe'); return; }
+  var cols = headerIndexes_(sheet);
+  if (cols['Etiqueta']) { Logger.log('✅ Etiqueta já existe na coluna ' + cols['Etiqueta']); return; }
+  var c = sheet.getLastColumn() + 1;
+  sheet.getRange(1, c).setValue('Etiqueta').setFontWeight('bold')
+    .setBackground('#1B2A4A').setFontColor('#FFFFFF');
+  Logger.log('✅ Coluna Etiqueta criada na posição ' + c);
+}
+
+/** Auto-teste da injeção de UTM — rodar no editor; não envia nada. */
+function testInjetarUtm() {
+  var utm = { utm_source: 'email', utm_medium: 'broadcast', utm_campaign: 'sefaz_sc_2026', utm_content: 'L3D' };
+  var casos = [
+    ['<a href="https://pay.kiwify.com.br/Ze6v1aC">x</a>',
+     '<a href="https://pay.kiwify.com.br/Ze6v1aC?utm_source=email&amp;utm_medium=broadcast&amp;utm_campaign=sefaz_sc_2026&amp;utm_content=L3D">x</a>'],
+    ['<a href="https://fluenciacontabil.com.br/cursos.html#assinar">x</a>',
+     '<a href="https://fluenciacontabil.com.br/cursos.html?utm_source=email&amp;utm_medium=broadcast&amp;utm_campaign=sefaz_sc_2026&amp;utm_content=L3D#assinar">x</a>'],
+    ['<a href="https://dicionario.fluenciacontabil.com.br/?src=email">x</a>',
+     '<a href="https://dicionario.fluenciacontabil.com.br/?src=email&amp;utm_source=email&amp;utm_medium=broadcast&amp;utm_campaign=sefaz_sc_2026&amp;utm_content=L3D">x</a>'],
+    ['<a href="https://fluenciacontabil.com.br/cursos.html?utm_source=ses&amp;utm_campaign=blog-x">x</a>',
+     '<a href="https://fluenciacontabil.com.br/cursos.html?utm_source=ses&amp;utm_campaign=blog-x">x</a>'],
+    ['<a href="{{amazonSESUnsubscribeUrl}}">sair</a> <a href="https://youtube.com/live/abc">yt</a> <img src="https://fluenciacontabil.com.br/a.png">',
+     '<a href="{{amazonSESUnsubscribeUrl}}">sair</a> <a href="https://youtube.com/live/abc">yt</a> <img src="https://fluenciacontabil.com.br/a.png">']
+  ];
+  var falhas = 0;
+  casos.forEach(function (c, i) {
+    var saiu = injetarUtm_(c[0], utm);
+    if (saiu !== c[1]) { falhas++; Logger.log('❌ caso ' + (i + 1) + ' esperado: ' + c[1] + ' | saiu: ' + saiu); }
+  });
+  Logger.log(falhas ? '❌ ' + falhas + ' caso(s) falharam' : '✅ injetarUtm_: ' + casos.length + ' casos ok');
+  return falhas === 0;
+}
+
 function testSendMarketingEmail() {
   var to = 'vinicius.ferraz@gruponbeducacao.com'; // ← edite se quiser testar outro inbox
   var html = renderTemplate_('sequencia-a/A1-bem-vindo.html', 'Vinícius Teste');
