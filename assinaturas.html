@@ -3139,12 +3139,11 @@ document.querySelectorAll('.reveal').forEach(function (el) { revealObserver.obse
     a.addEventListener('click', function () {
       var loc = a.getAttribute('data-fc-local') || '';
       try { window.dataLayer = window.dataLayer || []; dataLayer.push({ event: 'whatsapp_cta_click', cta_location: loc }); } catch (e) {}
-      try { if (window.fbq) fbq('track', 'Contact', { content_name: 'Assinatura_WhatsApp_Atendimento', content_category: loc }); } catch (e) {}
-      try { if (window.gtag) gtag('event', 'whatsapp_click', { cta_location: loc }); } catch (e) {}
     });
   });
 })();
 </script>
+<script src="assets/origem.js?v=20260905" defer></script>
 
 </body>
 </html>

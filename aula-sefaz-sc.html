@@ -497,7 +497,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     // evento Lead da Meta. Sem o snippet do GTM no <head>, este push some sem
     // erro nenhum e a campanha para de otimizar por inscrição.
     try { if (window.dataLayer) window.dataLayer.push({event:'lead_capturado', origem:ORIGEM}); } catch(e){}
-    try { if (window.fbq) fbq('track','Lead',{content_name:'Aula_SEFAZ_SC'}); } catch(e){}
 
     var payload = Object.assign({
       nome: nome,

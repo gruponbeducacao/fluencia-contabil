@@ -76,6 +76,11 @@
       data.append('utm_source',   urlParams.get('utm_source')   || '');
       data.append('utm_medium',   urlParams.get('utm_medium')   || '');
       data.append('utm_campaign', urlParams.get('utm_campaign') || '');
+      // Criativo, id do anúncio e src: sem eles a captura sabe a campanha mas
+      // não sabe qual peça trouxe a pessoa. O Apps Script já lê os três.
+      data.append('utm_content',  urlParams.get('utm_content')  || '');
+      data.append('utm_term',     urlParams.get('utm_term')     || '');
+      data.append('src',          urlParams.get('src')          || '');
       data.append('dispositivo',
         window.matchMedia('(max-width: 720px)').matches ? 'Mobile' : 'Desktop');
     } catch (e) {}
@@ -533,13 +538,11 @@
     return 'https://wa.me/' + WHATSAPP_ATENDIMENTO + '?text=' + encodeURIComponent(texto);
   }
 
-  // Mesmo disparo triplo dos CTAs de WhatsApp do lives.html: cada camada em
-  // seu próprio try/catch para que a ausência de uma (fbq só existe no
-  // container das LPs) não engula as outras.
+  // Só o dataLayer: é o container (GTM-MGQFHR5J) que transforma
+  // whatsapp_cta_click no evento Contact da Meta. Chamar fbq daqui também
+  // contaria o mesmo clique duas vezes.
   function trackWhatsApp(local) {
     evento('whatsapp_cta_click', { cta_location: local });
-    try { if (window.fbq) fbq('track', 'Contact', { content_name: 'Site_WhatsApp_Atendimento', content_category: local }); } catch (e) {}
-    try { if (window.gtag) gtag('event', 'whatsapp_click', { cta_location: local }); } catch (e) {}
   }
 
   // A barra de captura ocupa o rodapé inteiro (z-index 9500). Em vez de
