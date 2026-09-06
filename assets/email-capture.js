@@ -300,6 +300,9 @@
   }
 
   function initExitIntent() {
+    // Página de venda (cursos.html) declara window.FC_EC_MODO_VENDA: sem modal de
+    // saída pedindo newsletter em cima de quem está decidindo comprar.
+    if (window.FC_EC_MODO_VENDA) return;
     if (isSubscribed()) return;
     if (recentlyClosed(KEYS.exitClosedAt)) return;
 
@@ -442,6 +445,7 @@
   }
 
   function initSticky() {
+    if (window.FC_EC_MODO_VENDA) return; // idem: a barra fixa da página de venda é o CTA de compra
     if (isSubscribed()) return;
     if (recentlyClosed(KEYS.stickyClosedAt)) return;
 
@@ -526,7 +530,7 @@
       return { local: 'float-blog', texto: 'Oi! Vim pelo blog e queria saber mais sobre o curso.' };
     }
     if (/cursos|assinatura/.test(p)) {
-      return { local: 'float-assinatura', texto: 'Oi! Tenho uma dúvida sobre a assinatura anual.' };
+      return { local: 'float-assinatura', texto: 'Oi! Tenho uma dúvida sobre os planos do curso.' };
     }
     if (/contato/.test(p)) {
       return { local: 'float-contato', texto: 'Oi! Vim pela página de contato e preciso de ajuda.' };
