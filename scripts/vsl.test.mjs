@@ -4,12 +4,12 @@ import { readFileSync } from 'node:fs';
 import vm from 'node:vm';
 
 const source = readFileSync(new URL('../assets/vsl.js', import.meta.url), 'utf8');
-function run({ hidden = false, configured = true, storage = new Map() } = {}) {
+function run({ hidden = false, configured = true, storage = new Map(), atributoDoSrc = 'data-src', conteudo = null } = {}) {
   let clock = 0;
   const listeners = {}, domListeners = {};
-  const frame = { contentWindow: {}, getAttribute: () => 'https://player-vz-test.tv.pandavideo.com.br/embed/?v=video-test' };
+  const frame = { contentWindow: {}, getAttribute: k => k === atributoDoSrc ? 'https://player-vz-test.tv.pandavideo.com.br/embed/?v=video-test' : null };
   const slot = { hidden, contains: () => true,
-    getAttribute: k => ({'data-vsl-version': configured ? 'v1' : '', 'data-vsl-duration': '100', 'data-vsl-pitch': '70'})[k] };
+    getAttribute: k => ({'data-vsl-version': configured ? 'v1' : '', 'data-vsl-duration': '100', 'data-vsl-pitch': '70', 'data-vsl-content': conteudo})[k] };
   const window = { location: { href: 'https://fluenciacontabil.com.br/assinatura.html' },
     dataLayer: [], addEventListener: (name, fn) => listeners[name] = fn };
   const document = { visibilityState: 'visible', getElementById: id => id === 'heroVsl' ? slot : frame,
@@ -147,4 +147,22 @@ test('falha de rede na amostra permite tentar novamente e não registra envio ou
   assert.equal(r.ids.fcCapBtn.disabled, false);
   assert.equal(r.ids.fcCapErro.classList.contains('on'), true);
   assert.notEqual(r.ids.fcCapForm.style.display, 'none');
+});
+test('o iframe já visível conta pelo src; data-src não é obrigatório', () => {
+  // Onde o vídeo é o herói da página ele nasce com src e não pode depender
+  // deste script para carregar. O receptor tem de aceitar os dois caminhos.
+  const r = run({ atributoDoSrc: 'src' });
+  r.send('panda_play', 0); r.watch(1, 30);
+  assert.ok(r.names().includes('vsl_start'));
+  assert.ok(r.names().includes('vsl_25'));
+});
+test('content_name diz qual oferta o vídeo vende, e a assinatura é o padrão', () => {
+  // Sem o atributo, nada muda para quem já usava o receptor.
+  const padrao = run(); padrao.send('panda_play', 0);
+  assert.equal(padrao.window.dataLayer[0].content_name, 'assinatura_2026');
+  // Com ele, cada página se identifica — é o que separa os marcos de uma
+  // oferta dos da outra quando as duas emitem os mesmos eventos.
+  const dicionario = run({ conteudo: 'dicionario_2026_09' });
+  dicionario.send('panda_play', 0);
+  assert.equal(dicionario.window.dataLayer[0].content_name, 'dicionario_2026_09');
 });

@@ -7,8 +7,15 @@
   var slot = document.getElementById('heroVsl');
   var frame = document.getElementById('heroVslFrame');
   if (!slot || !frame || slot.hidden) return;
-  var src = frame.getAttribute('data-src') || '';
+  /* data-src existe para o slot que nasce oculto nao fazer requisicao. Onde o
+     video e' o heroi da pagina, o iframe ja' vem com src e nao pode depender
+     deste script para carregar: aceitamos os dois. */
+  var src = frame.getAttribute('data-src') || frame.getAttribute('src') || '';
   var version = slot.getAttribute('data-vsl-version') || '';
+  /* Qual oferta este video vende. Sem o atributo fica a assinatura, que foi a
+     primeira pagina a usar o receptor -- assim nenhuma pagina antiga muda de
+     nome ao ganhar uma irma. */
+  var conteudo = slot.getAttribute('data-vsl-content') || 'assinatura_2026';
   var duration = Number(slot.getAttribute('data-vsl-duration'));
   var pitch = Number(slot.getAttribute('data-vsl-pitch'));
   if (!src || src.indexOf('__PANDA_ID__') !== -1 || !version ||
@@ -52,7 +59,7 @@
     if (once !== false && sent[name]) return;
     if (once !== false) sent[name] = true;
     window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({event: name, content_name: 'assinatura_2026',
+    window.dataLayer.push({event: name, content_name: conteudo,
       vsl_version: version, video_id: video, video_duration: duration,
       video_position: Math.round(currentTime || 0), watched_seconds: Math.round(watched()),
       watched_percent: Math.min(100, Math.floor(watched() / duration * 100))});
