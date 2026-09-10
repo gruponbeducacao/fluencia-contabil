@@ -63,11 +63,21 @@ for m in re.finditer(r"utm_content=([^\"&]+)(?=[\"&])", visivel):
 # ── 4. Checkouts: um por produto, todos com utm_medium=cursos ───────────
 CHECKOUTS = {"4Qx0g3O": "trimestral", "DXvdSEu": "semestral", "ZtyEAiG": "sefazal",
              "pBSgGdf": "dicionario", "RKLuqqI": "transpetro", "ysIOuUp": "sefazsc"}
+# A etiqueta da campanha no Gestao, por checkout. `utm_campaign` e' o que casa a
+# venda com a campanha (CONVENCAO_UTM.md); errar aqui nao quebra nada visivel --
+# a venda simplesmente some do painel, sem erro e sem aviso. Foi o que houve com
+# o Dicionario, que saiu com `utm_campaign=dicionario` e ficou orfao: em 10/09/2026
+# uma venda paga caiu fora do card da campanha. Por isso a etiqueta e' fiscalizada.
+ETIQUETAS = {"4Qx0g3O": "pos_janela_2026", "DXvdSEu": "pos_janela_2026",
+             "ZtyEAiG": "pacote_sefaz_al", "pBSgGdf": "low-ticket-dicionario-2026-09",
+             "RKLuqqI": "transpetro_2026", "ysIOuUp": "sefaz_sc_2026"}
 for slug, content in CHECKOUTS.items():
     links = re.findall(rf'href="https://pay\.kiwify\.com\.br/{slug}\?[^"]*"', html)
     check(len(links) == 1, f"checkout {slug}: {len(links)} links (esperava 1)")
     for l in links:
         check("utm_medium=cursos" in l and f"utm_content={content}" in l, f"checkout {slug} sem utm_medium=cursos/utm_content={content}")
+        check(f"utm_campaign={ETIQUETAS[slug]}&" in l or l.rstrip('"').endswith(f"utm_campaign={ETIQUETAS[slug]}"),
+              f"checkout {slug}: utm_campaign nao e a etiqueta do Gestao (esperava {ETIQUETAS[slug]})")
 check(len(re.findall(r'pay\.kiwify\.com\.br/([A-Za-z0-9]+)', html)) == len(CHECKOUTS), "há checkout fora da lista conhecida")
 
 # ── 5. Contrato com o gerador de catálogo (fatia nav/footer por string) ──
