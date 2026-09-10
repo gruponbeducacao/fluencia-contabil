@@ -151,10 +151,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   }
   .hero-datas strong { color: var(--dourado); font-weight: 800; }
 
-  /* Degustacao — download direto do PDF da Aula 01 (acao secundaria) */
+  /* Degustacao — captura de e-mail para o PDF da Aula 01 (acao secundaria) */
   .hero-degusta { margin-top: 16px; padding-top: 15px; border-top: 1px solid var(--cinza-borda); }
   .hero-degusta-btn {
-    display: flex; align-items: center; gap: 11px;
+    display: flex; align-items: center; gap: 11px; width: 100%; font: inherit; text-align: left; cursor: pointer;
     background: transparent; border: 1px solid var(--cinza-borda);
     border-radius: 9px; padding: 10px 13px;
     color: var(--azul-profundo); text-decoration: none;
@@ -1537,7 +1537,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   padding: 20px; background: rgba(19,31,56,.72); backdrop-filter: blur(2px); }
 .fc-cap-overlay[hidden] { display: none; }
 .fc-cap-modal { position: relative; width: 100%; max-width: 440px; background: var(--branco); border-radius: 16px;
-  padding: 30px 28px 24px; box-shadow: 0 30px 80px rgba(0,0,0,.4); text-align: center; }
+  padding: 30px 28px 24px; max-height: calc(100dvh - 40px); overflow: auto; box-shadow: 0 30px 80px rgba(0,0,0,.4); text-align: center; }
 .fc-cap-close { position: absolute; top: 10px; right: 12px; border: 0; background: transparent; font-size: 26px; line-height: 1;
   color: var(--cinza-medio); cursor: pointer; }
 .fc-cap-ico { font-size: 34px; line-height: 1; margin-bottom: 10px; }
@@ -1545,14 +1545,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 .fc-cap-modal p { margin: 0 0 18px; font-size: 14.5px; line-height: 1.6; color: var(--cinza-medio); }
 .fc-cap-form { display: grid; gap: 10px; }
 .fc-cap-form input { width: 100%; padding: 14px 16px; border: 1px solid var(--cinza-borda); border-radius: 8px;
-  font-family: 'Montserrat', sans-serif; font-size: 15px; }
+  font-family: 'Montserrat', sans-serif; font-size: 16px; }
 .fc-cap-form input:focus-visible { outline: 2px solid var(--azul-medio); outline-offset: 1px; }
 .fc-cap-form .btn { width: 100%; padding: 15px 20px; font-size: 15px; }
 .fc-cap-form .btn[disabled] { opacity: .6; cursor: wait; }
 .fc-cap-erro { display: none; margin: -4px 0 0; font-size: 13px; color: var(--vermelho); }
 .fc-cap-erro.on { display: block; }
 .fc-cap-legal { margin: 14px 0 6px !important; font-size: 12px !important; color: #7C838C !important; }
-.fc-cap-skip { font-size: 13px; color: var(--cinza-medio); text-decoration: underline; text-underline-offset: 3px; }
 .fc-cap-ok { display: none; font-size: 15px; color: var(--verde-ok); font-weight: 700; margin-top: 10px; }
 .fc-cap-ok.on { display: block; }
 
@@ -1616,9 +1615,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <a href="#oferta" class="btn cta-compra">Ver os planos</a>
         <p class="hero-note">7 dias de garantia incondicional · Pix, boleto ou cartão em até 12×</p>
         <div class="hero-degusta">
-          <a class="hero-degusta-btn" id="btnAmostraAula01"
-             href="aulas/aula-01-partidas-dobradas.pdf?v=20260813"
-             download="Fluencia-Contabil-Aula-01-Partidas-Dobradas.pdf"
+          <button class="hero-degusta-btn" id="btnAmostraAula01" type="button"
+             data-fc-pdf="aulas/aula-01-partidas-dobradas.pdf?v=20260813"
+             data-fc-download="Fluencia-Contabil-Aula-01-Partidas-Dobradas.pdf"
              data-fc-cta="amostra-aula01" data-fc-local="hero" data-fc-lp="a" data-fc-capture="aula01">
             <span class="hd-ico" aria-hidden="true">📄</span>
             <span class="hd-txt">
@@ -1626,7 +1625,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               <i><span class="hd-full">PDF · 73 páginas · teoria + 30 questões comentadas · 4,7 MB</span><span class="hd-short">PDF · 73 páginas · 4,7 MB</span></i>
             </span>
             <span class="hd-seta" aria-hidden="true">↓</span>
-          </a>
+          </button>
         </div>
       </div>
     </div>
@@ -1641,15 +1640,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   <!-- ===== SLOT DE VSL (oculto ate haver video) =====
        Para ativar: (1) apagar o atributo hidden do div abaixo; (2) trocar __PANDA_ID__
-       pelo id do video no data-src. Biblioteca do Panda: vz-7867cfdb-be1 (a mesma das LPs).
+       pelo id externo do video no data-src; (3) preencher data-vsl-version, data-vsl-duration
+       e data-vsl-pitch (segundos) depois da gravacao; homologar antes de anunciar. Biblioteca do Panda: vz-7867cfdb-be1 (a mesma das LPs).
        Sem src no HTML, o iframe oculto nao faz requisicao nenhuma; o JS copia data-src
        para src so' quando o slot esta' visivel e o id foi preenchido. -->
-  <div class="hero-vsl" id="heroVsl" hidden>
+  <div class="hero-vsl" id="heroVsl" hidden data-vsl-version="" data-vsl-duration="" data-vsl-pitch="">
     <div class="vsl-moldura">
       <iframe class="vsl-frame" id="heroVslFrame" title="Vídeo de apresentação da Fluência Contábil"
         data-src="https://player-vz-7867cfdb-be1.tv.pandavideo.com.br/embed/?v=__PANDA_ID__"
         allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture" allowfullscreen loading="lazy"></iframe>
     </div>
+    <p style="text-align:center;margin-top:18px"><a href="#oferta" class="btn" data-fc-vsl-cta>Conhecer os planos da assinatura</a></p>
   </div>
 </section>
 
@@ -3017,7 +3018,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
      atendimento flutuante). O modal abaixo posta no MESMO endpoint do Apps Script com
      origem "assinatura_aula01": sem rota propria em routeByOrigin, ela cai na aba
      Newsletter (fallback), que esta' em MAILER_TABS — por isso o texto legal fala em
-     newsletter. O href do botao da hero segue funcionando como fallback sem cadastro. -->
+     newsletter. O download exige e-mail; quem ja se cadastrou usa a mesma chave local. -->
 <div class="fc-cap-overlay" id="fcCapOverlay" hidden role="dialog" aria-modal="true" aria-labelledby="fcCapTitle">
   <div class="fc-cap-modal">
     <button class="fc-cap-close" type="button" id="fcCapClose" aria-label="Fechar">×</button>
@@ -3031,7 +3032,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </form>
     <p class="fc-cap-ok" id="fcCapOk">✅ Pronto — o download começou. Bons estudos!</p>
     <p class="fc-cap-legal">Sem spam. Você entra na newsletter da Fluência Contábil e pode sair quando quiser.</p>
-    <a class="fc-cap-skip" id="fcCapSkip" href="aulas/aula-01-partidas-dobradas.pdf?v=20260813" download="Fluencia-Contabil-Aula-01-Partidas-Dobradas.pdf">Prefiro baixar sem cadastrar</a>
   </div>
 </div>
 
@@ -3809,36 +3809,32 @@ document.querySelectorAll('.dep-anexo-btn[aria-controls]').forEach(function (btn
   var ENDPOINT = 'https://script.google.com/macros/s/AKfycbx8lWrX5F0IByv0JEJ0iBGPjtLto7f2VxDHIh0uT0gZtvoj8EDVx0NFiriou-Dt0cxh/exec';
   var form = document.getElementById('fcCapForm'), input = document.getElementById('fcCapEmail');
   var erro = document.getElementById('fcCapErro'), okMsg = document.getElementById('fcCapOk');
-  var btn = document.getElementById('fcCapBtn'), skip = document.getElementById('fcCapSkip');
-  var fechar = document.getElementById('fcCapClose'), foco = null;
+  var btn = document.getElementById('fcCapBtn');
+  var fechar = document.getElementById('fcCapClose'), foco = null, emailEnviadoNestaPagina = false;
   function lsGet(k) { try { return window.localStorage.getItem(k); } catch (e) { return null; } }
   function lsSet(k, v) { try { window.localStorage.setItem(k, v); } catch (e) {} }
   function push(o) { try { window.dataLayer = window.dataLayer || []; dataLayer.push(o); } catch (e) {} }
   function baixar(metodo) {
     push({ event: 'download_aula01', metodo: metodo, cta_location: gat.getAttribute('data-fc-local') || 'hero' });
     var a = document.createElement('a');
-    a.href = gat.getAttribute('href'); a.download = gat.getAttribute('download') || '';
+    a.href = gat.getAttribute('data-fc-pdf'); a.download = gat.getAttribute('data-fc-download') || '';
     document.body.appendChild(a); a.click(); document.body.removeChild(a);
   }
   function abrir() { foco = document.activeElement; ov.hidden = false; setTimeout(function () { input.focus(); }, 50); }
   function fecharModal() { ov.hidden = true; if (foco && foco.focus) foco.focus(); }
 
   gat.addEventListener('click', function (e) {
-    if (lsGet('fc_ec_subscribed') === '1') { push({ event: 'download_aula01', metodo: 'ja_lead', cta_location: 'hero' }); return; }
+    if (emailEnviadoNestaPagina || lsGet('fc_ec_subscribed') === '1') { baixar('ja_lead'); return; }
     e.preventDefault();
     abrir();
   });
   fechar.addEventListener('click', fecharModal);
   ov.addEventListener('click', function (e) { if (e.target === ov) fecharModal(); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !ov.hidden) fecharModal(); });
-  skip.addEventListener('click', function () {
-    push({ event: 'download_aula01', metodo: 'sem_email', cta_location: 'hero' });
-    setTimeout(fecharModal, 300);
-  });
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     var email = (input.value || '').trim();
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { erro.classList.add('on'); input.focus(); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { erro.textContent = 'Confere o e-mail? Ele não parece válido.'; erro.classList.add('on'); input.focus(); return; }
     erro.classList.remove('on');
     btn.disabled = true; btn.textContent = 'Enviando...';
     var data = new URLSearchParams();
@@ -3854,15 +3850,22 @@ document.querySelectorAll('.dep-anexo-btn[aria-controls]').forEach(function (btn
       data.append('dispositivo', window.matchMedia('(max-width: 720px)').matches ? 'Mobile' : 'Desktop');
     } catch (e2) {}
     var done = function () {
+      emailEnviadoNestaPagina = true;
       lsSet('fc_ec_subscribed', '1');
       push({ event: 'lead_capturado', origem: 'assinatura_aula01' });
       form.style.display = 'none'; okMsg.classList.add('on');
       baixar('com_email');
       setTimeout(fecharModal, 1800);
     };
+    var failed = function () {
+      btn.disabled = false; btn.textContent = 'Baixar a Aula 01';
+      erro.textContent = 'Não foi possível enviar agora. Confira sua conexão e tente novamente.';
+      erro.classList.add('on');
+    };
+    // no-cors mantém o contrato atual; a gravação é conferida na planilha/Gestão.
     try {
-      fetch(ENDPOINT, { method: 'POST', body: data, mode: 'no-cors' }).then(done, done);
-    } catch (e3) { done(); }
+      fetch(ENDPOINT, { method: 'POST', body: data, mode: 'no-cors' }).then(done, failed);
+    } catch (e3) { failed(); }
   });
 })();
 
@@ -3884,6 +3887,7 @@ document.querySelectorAll('.dep-anexo-btn[aria-controls]').forEach(function (btn
 })();
 </script>
 <script src="assets/origem.js?v=20260909" defer></script>
+<script src="assets/vsl.js?v=20260910" defer></script>
 
 </body>
 </html>

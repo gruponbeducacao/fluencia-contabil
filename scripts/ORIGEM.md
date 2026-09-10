@@ -40,9 +40,9 @@ estabilidade do identificador, cookies tardios, storage indisponível, inclusão
 duplicada, links dinâmicos, destinos permitidos e cobertura dos HTMLs rastreados
 pelo Git. O workflow `origem.yml` executa essa verificação em PRs e merges.
 
-Ao alterar o asset, atualizar a versão nos HTMLs e no teste de cobertura. No site
-principal, regenerar `assinaturas.html` por `scripts/gen_variante_b.py`. Manter as
-cópias de `origem.js`, deste documento, dos testes e do workflow alinhadas entre
+Ao alterar o asset, atualizar a versão nos HTMLs e no teste de cobertura. A rota
+`assinaturas.html` apenas redireciona para `assinatura.html`, preservando query e
+fragmento; não possui campanha ou tags próprias. Manter as cópias de `origem.js`, deste documento, dos testes e do workflow alinhadas entre
 os repositórios do site e do Dicionário.
 
 O ensaio local comprova a preparação dos links e os eventos do script. A recepção
