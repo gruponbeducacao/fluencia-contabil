@@ -2,9 +2,9 @@
 """Fiscal das secoes de persuasao na LP de assinatura (assinatura.html).
 
 Porte do _fiscal_persuasao.py da Transpetro para o repo do site, com ROOT deduzido
-do proprio arquivo (como o gen_variante_b.py). Cobre as cinco armadilhas do
+do proprio arquivo. Cobre as cinco armadilhas do
 _MARKETING/Landing_Pages/_PROMPT_LEVAR_SECOES_PERSUASAO.md e as regras que a LP A
-tem a mais: variante B gerada, preco com centavos so' a partir de #oferta, slot de
+tem a mais: pagina unica, preco com centavos so' a partir de #oferta, slot de
 VSL oculto <-> id vazio, proximas provas com datas validas, captura da Aula 01.
 
 Uso:  python scripts/fiscal_persuasao_assinatura.py [antes.html]
@@ -99,7 +99,7 @@ n_s = len(re.findall(r"<s\b", s))
 ok("nenhum preço riscado novo (<s> igual à baseline)",
    n_s == (len(re.findall(r"<s\b", antes)) if antes is not None else 2), f"{n_s} <s>")
 hd = re.findall(r'^ {6}<p class="hero-datas">', s, flags=re.M)
-ok("<p class=\"hero-datas\"> 1x com 6 espaços (contrato do gen_variante_b)", len(hd) == 1, f"{len(hd)}x")
+ok("<p class=\"hero-datas\"> 1x com 6 espaços", len(hd) == 1, f"{len(hd)}x")
 
 # --------------------------------------------- F. honestidade da casa
 def visivel(t):
@@ -152,8 +152,8 @@ ok("slot fica dentro da hero e antes de O CURSO", s.index('id="heroVsl"') < i_cu
 ok("botão da Aula 01 marcado com data-fc-capture", 'data-fc-capture="aula01"' in s)
 ok("modal de captura presente e oculto", 'id="fcCapOverlay" hidden' in s)
 ok("origem assinatura_aula01 no POST", "'origem', 'assinatura_aula01'" in s)
-ok("fallback sem cadastro aponta para o mesmo PDF",
-   s.count('href="aulas/aula-01-partidas-dobradas.pdf?v=20260813"') == 2)
+ok("amostra exige captura e preserva o PDF existente",
+   'data-fc-pdf="aulas/aula-01-partidas-dobradas.pdf?v=20260813"' in s and "fcCapSkip" not in s)
 ok("email-capture.js continua NÃO carregado", not re.search(r'<(script|link)[^>]+email-capture', s))
 
 # ---------------------------------------------- J. estrutura e EOL
