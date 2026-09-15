@@ -11,7 +11,7 @@
      Nenhum preço mora neste arquivo: os valores vêm só de GET /continuar/:token, e o
      botão de compra passa por /continuar/:token/checkout, que confere o prazo e só
      então redireciona. O endereço do checkout nunca aparece aqui.
-     O crédito também não é fixo: quem compra o Dicionário pode levar order bumps no mesmo
+     O crédito também não é fixo: quem compra o Dicionário pode levar extras no mesmo
      checkout, e o abatimento soma o que a pessoa pagou. O número que vai para a tela é o
      abatimento da própria oferta (de − por); o campo "credito" da resposta só serve para
      mostrar a composição em itens, e só quando a conta fecha dos dois lados.
@@ -293,8 +293,8 @@
       <div class="topo-rotulo">Condição de quem comprou o Dicionário</div>
       <h1 data-campo="titulo-aberta"></h1>
       <p data-campo="aberta-sub"></p>
-      <!-- Composição do crédito (Dicionário + order bumps). Preenchida pelo JS só quando
-           há mais de um item E a conta fecha contra o abatimento da oferta. -->
+      <!-- Composição do crédito (Dicionário + extras da compra). Preenchida pelo JS só
+           quando há mais de um item E a conta fecha contra o abatimento da oferta. -->
       <p class="credito-itens" id="creditoItens" hidden></p>
       <p class="prazo" id="prazo"><span>Válida até <b data-campo="ultimo-dia"></b></span><span data-campo="dias"></span></p>
     </div>
@@ -471,8 +471,8 @@
 
 <!-- ===== O QUE É SEU =====
      O texto abaixo é o padrão: vale para quem levou só o Dicionário e para resposta
-     antiga, sem "credito". Com order bump, o JS reescreve os dois campos nomeando o
-     que a pessoa comprou — os nomes vêm da API e entram como texto, nunca como HTML. -->
+     antiga, sem "credito". Com extras na compra, o JS reescreve os dois campos nomeando
+     o que a pessoa levou — os nomes vêm da API e entram como texto, nunca como HTML. -->
 <section class="section fica-sec" data-estado="aberta" hidden>
   <div class="container">
     <div class="fica-box">
@@ -610,7 +610,7 @@
   function inteiroPositivo(v) { return numero(v) && Math.round(v) === v; }
   function planoOk(p) { return !!p && numero(p.de) && numero(p.por) && p.por <= p.de; }
 
-  /* ----- crédito: Dicionário + order bumps -----
+  /* ----- crédito: Dicionário + extras da compra -----
      O valor que vai para a tela sai SEMPRE do abatimento da oferta (de − por), nunca de
      credito.total: assim o crédito anunciado jamais diverge do "de/por" logo abaixo dele.
      O campo "credito" serve só para a composição, e só entra se a conta fechar dos dois
@@ -657,7 +657,7 @@
 
   /* ----- o que continua seu -----
      Com um item só, ou sem "credito" na resposta, fica o texto padrão do HTML, que fala
-     do Dicionário. Com order bump, a frase nomeia o que a pessoa levou. Usa a MESMA
+     do Dicionário. Com extras, a frase nomeia o que a pessoa levou. Usa a MESMA
      lista já validada do crédito: se a conta não fecha, a página não nomeia nada, em vez
      de nomear a partir de dado que ela já decidiu não usar. */
   var ficaPadrao = null;
@@ -673,8 +673,11 @@
     }
     var nomes = itens.map(function (it) { return it.nome; });
     ficaTitulo.textContent = 'O que você comprou continua seu, assinando ou não.';
+    /* Não pode prometer um e-mail único: o Dicionário é entregue por e-mail da
+       plataforma e os extras pelo e-mail do próprio checkout — remetentes
+       diferentes, e mandar procurar um só faria a pessoa procurar no lugar errado. */
     ficaTexto.textContent = 'O que você levou na compra — ' + enumerar(nomes) +
-      ' — está no e-mail que você recebeu. Não expira, não depende de login e não muda nada com o fim do acesso.';
+      ' — chegou por e-mail. Não expira, não depende de login e não muda nada com o fim do acesso.';
   }
 
   /* ----- estados ----- */
@@ -689,7 +692,7 @@
       ? 'os ' + reais(creditoTri) + ' que você pagou abatem'
       : 'o valor que você pagou abate';
 
-    /* Com order bump, o crédito não é só o Dicionário — a primeira linha acompanha. */
+    /* Com extras na compra, o crédito não é só o Dicionário — a primeira linha acompanha. */
     campo('titulo-aberta', comNome(nome, varios
       ? 'o que você comprou vale como entrada no plano.'
       : 'o Dicionário que você comprou vale como entrada no plano.'));
@@ -705,7 +708,7 @@
       linha.hidden = !varios;
     }
 
-    /* O que a pessoa não perde: com order bump, a seção nomeia o que ela comprou. */
+    /* O que a pessoa não perde: com extras, a seção nomeia o que ela levou junto. */
     renderFica(itens);
     campo('ultimo-dia', dia);
     var n = d.diasRestantes;

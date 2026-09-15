@@ -8,7 +8,8 @@ a regra tem fiscal.
 
   1. noindex/nofollow e no-referrer, este antes de qualquer recurso;
   2. nenhum rastreador nem script externo (todo JS desta página é inline);
-  3. nenhum endereço de checkout e nenhum preço fixo (os valores vêm só da API);
+  3. nenhum endereço de checkout, nenhum preço fixo (os valores vêm só da API) e nada
+     do nosso vocabulário interno no arquivo servido (nome do gateway, "bump");
   3b. crédito dos order bumps: nada de valor fixo na tela, e composição só quando a
       conta fecha (soma dos itens = credito.total = abatimento da oferta);
   3c. "o que continua seu" montado a partir de credito.itens, com o texto padrão de
@@ -69,6 +70,11 @@ check(all(u.startswith(("https://fonts.googleapis.com", "https://fonts.gstatic.c
 
 # ── 3. Checkout e preço ──────────────────────────────────────────────────
 check("kiwify" not in html.lower(), "endereço do checkout no HTML (o clique tem de passar pela API)")
+# Mesmo princípio do nome do gateway: vocabulário interno não entra no arquivo servido,
+# nem em comentário — comentário sobrevive no "ver código-fonte" da página. O comprador
+# não sabe o que é «bump»; entre nós (commit, PR, este fiscal) o termo técnico continua.
+check("bump" not in html.lower(),
+      "«bump» no HTML servido: usar o vocabulário do comprador (extras da compra)")
 check("/checkout?plano=" in limpo, "botão de compra não passa por /continuar/:token/checkout")
 check(not re.search(r"R\$\s*(?:&nbsp;)?\s*\d", limpo), "preço fixo no HTML: os valores vêm só da API")
 check(not re.search(r"\b\d{1,3},\d{2}\b", visivel), "valor com centavos fixo no texto")
@@ -115,6 +121,13 @@ check("ficaTitulo.textContent" in limpo and "ficaTexto.textContent" in limpo,
       "os textos da seção «o que continua seu» não entram como texto")
 check("ficaTitulo.innerHTML" not in limpo and "ficaTexto.innerHTML" not in limpo,
       "seção «o que continua seu» por innerHTML: o nome do item vem da API")
+# A frase de quem levou order bump não pode prometer UM e-mail: o Dicionário é entregue
+# por e-mail da plataforma e os bumps por e-mail da própria Kiwify — remetentes
+# diferentes. O texto padrão (um item só) segue podendo falar do e-mail da compra,
+# porque ali é um só mesmo.
+frase = re.search(r"ficaTexto\.textContent = 'O que você levou na compra.*?';", limpo, re.S)
+check(bool(frase) and "e-mail que você recebeu" not in frase.group(0),
+      "a frase com order bump promete um único e-mail (as entregas vêm de remetentes diferentes)")
 
 # ── 4. API e token ───────────────────────────────────────────────────────
 check("'https://api.fluenciacontabil.com.br'" in limpo and "'https://api-dev.fluenciacontabil.com.br'" in limpo,
