@@ -469,13 +469,16 @@
   </div>
 </section>
 
-<!-- ===== O QUE É SEU ===== -->
+<!-- ===== O QUE É SEU =====
+     O texto abaixo é o padrão: vale para quem levou só o Dicionário e para resposta
+     antiga, sem "credito". Com order bump, o JS reescreve os dois campos nomeando o
+     que a pessoa comprou — os nomes vêm da API e entram como texto, nunca como HTML. -->
 <section class="section fica-sec" data-estado="aberta" hidden>
   <div class="container">
     <div class="fica-box">
       <div class="section-label">O que não muda</div>
-      <h2 class="section-title">O Dicionário continua seu, assinando ou não.</h2>
-      <p>O Dicionário Contábil, com 125 páginas e mais de 400 verbetes, está no e-mail que você recebeu na compra. Não expira, não depende de login e não muda nada com o fim do acesso.</p>
+      <h2 class="section-title" data-campo-fica="titulo">O Dicionário continua seu, assinando ou não.</h2>
+      <p data-campo-fica="texto">O Dicionário Contábil, com 125 páginas e mais de 400 verbetes, está no e-mail que você recebeu na compra. Não expira, não depende de login e não muda nada com o fim do acesso.</p>
     </div>
   </div>
 </section>
@@ -625,7 +628,7 @@
       var nome = typeof it.nome === 'string' ? it.nome.trim().replace(/\s+/g, ' ').slice(0, 60) : '';
       if (!nome) return null;
       soma += it.valor;
-      itens.push(nome + ' ' + reais(it.valor));
+      itens.push({ nome: nome, valor: it.valor });
     }
     return soma === c.total ? itens : null;
   }
@@ -643,6 +646,35 @@
     if (alvo - hoje > meioAno) alvo.setFullYear(alvo.getFullYear() - 1);
     else if (hoje - alvo > meioAno) alvo.setFullYear(alvo.getFullYear() + 1);
     return alvo < hoje;
+  }
+
+  /* "A", "A e B", "A, B e C" — sem artigo antes do nome, que vem da API e pode ter
+     qualquer gênero. */
+  function enumerar(nomes) {
+    if (nomes.length === 1) return nomes[0];
+    return nomes.slice(0, -1).join(', ') + ' e ' + nomes[nomes.length - 1];
+  }
+
+  /* ----- o que continua seu -----
+     Com um item só, ou sem "credito" na resposta, fica o texto padrão do HTML, que fala
+     do Dicionário. Com order bump, a frase nomeia o que a pessoa levou. Usa a MESMA
+     lista já validada do crédito: se a conta não fecha, a página não nomeia nada, em vez
+     de nomear a partir de dado que ela já decidiu não usar. */
+  var ficaPadrao = null;
+  function renderFica(itens) {
+    var ficaTitulo = document.querySelector('[data-campo-fica="titulo"]');
+    var ficaTexto = document.querySelector('[data-campo-fica="texto"]');
+    if (!ficaTitulo || !ficaTexto) return;
+    if (!ficaPadrao) ficaPadrao = { titulo: ficaTitulo.textContent, texto: ficaTexto.textContent };
+    if (!itens || itens.length < 2) {
+      ficaTitulo.textContent = ficaPadrao.titulo;
+      ficaTexto.textContent = ficaPadrao.texto;
+      return;
+    }
+    var nomes = itens.map(function (it) { return it.nome; });
+    ficaTitulo.textContent = 'O que você comprou continua seu, assinando ou não.';
+    ficaTexto.textContent = 'O que você levou na compra — ' + enumerar(nomes) +
+      ' — está no e-mail que você recebeu. Não expira, não depende de login e não muda nada com o fim do acesso.';
   }
 
   /* ----- estados ----- */
@@ -667,9 +699,14 @@
     /* Nome de item vem da API: entra como texto, nunca como HTML. */
     var linha = document.getElementById('creditoItens');
     if (linha) {
-      linha.textContent = varios ? itens.join(' + ') + ' = ' + reais(creditoTri) + ' de crédito' : '';
+      linha.textContent = varios
+        ? itens.map(function (it) { return it.nome + ' ' + reais(it.valor); }).join(' + ') + ' = ' + reais(creditoTri) + ' de crédito'
+        : '';
       linha.hidden = !varios;
     }
+
+    /* O que a pessoa não perde: com order bump, a seção nomeia o que ela comprou. */
+    renderFica(itens);
     campo('ultimo-dia', dia);
     var n = d.diasRestantes;
     campo('dias', n === 1 ? 'hoje é o último dia' : (typeof n === 'number' && n > 1 ? 'faltam ' + Math.floor(n) + ' dias' : ''));

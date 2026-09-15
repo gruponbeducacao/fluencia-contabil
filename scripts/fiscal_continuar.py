@@ -11,6 +11,8 @@ a regra tem fiscal.
   3. nenhum endereço de checkout e nenhum preço fixo (os valores vêm só da API);
   3b. crédito dos order bumps: nada de valor fixo na tela, e composição só quando a
       conta fecha (soma dos itens = credito.total = abatimento da oferta);
+  3c. "o que continua seu" montado a partir de credito.itens, com o texto padrão de
+      quem levou só o Dicionário preservado no HTML;
   4. base da API por hostname, sem credentials, token fora da barra;
   5. atendimento só pelo número 1:1, nunca o de disparo em massa;
   6. marca e honestidade (sem border-left decorativo, sem bordão, rodapé jurídico);
@@ -90,6 +92,29 @@ comp = re.search(r'<p[^>]*id="creditoItens"[^>]*>', limpo)
 check(bool(comp) and "hidden" in comp.group(0), "linha da composição ausente ou não nasce oculta")
 check("linha.textContent" in limpo and "linha.innerHTML" not in limpo,
       "composição por innerHTML: o nome do item vem da API e tem de entrar como texto")
+
+# ── 3c. "O que continua seu" montado a partir de credito.itens ───────────
+# Quem levou o Guia ou o Simulado vê os dois nomeados nessa seção — mas o nome vem da
+# API, nunca do HTML, e a frase de quem levou só o Dicionário fica exatamente como era.
+check(not re.search(r"Guia de Lançamentos|Simulado Fluência", limpo, re.I),
+      "nome de order bump escrito na página: ele vem da API")
+# Casa o ELEMENTO, não a string solta: o querySelector do JS repete o mesmo texto e
+# deixaria passar um atributo renomeado no HTML.
+check(bool(re.search(r"<h2[^>]*data-campo-fica=\"titulo\"", limpo))
+      and bool(re.search(r"<p[^>]*data-campo-fica=\"texto\"", limpo)),
+      "seção «o que continua seu» sem os campos de texto no HTML")
+check("O Dicionário continua seu" in visivel and "125 páginas e mais de 400 verbetes" in visivel,
+      "texto padrão da seção «o que continua seu» (um item só) ausente")
+# A declaração «function renderFica(itens)» contém a mesma string da chamada: a regra
+# tem de casar a CHAMADA, numa linha própria, senão apagá-la passa batido — foi o que
+# a prova por mutação pegou.
+check("function renderFica" in limpo and bool(re.search(r"^\s*renderFica\(itens\);", limpo, re.M)),
+      "a seção «o que continua seu» não é montada a partir dos itens do crédito")
+check("ficaPadrao" in limpo, "o texto padrão da seção não é preservado para o caso de um item só")
+check("ficaTitulo.textContent" in limpo and "ficaTexto.textContent" in limpo,
+      "os textos da seção «o que continua seu» não entram como texto")
+check("ficaTitulo.innerHTML" not in limpo and "ficaTexto.innerHTML" not in limpo,
+      "seção «o que continua seu» por innerHTML: o nome do item vem da API")
 
 # ── 4. API e token ───────────────────────────────────────────────────────
 check("'https://api.fluenciacontabil.com.br'" in limpo and "'https://api-dev.fluenciacontabil.com.br'" in limpo,
