@@ -1,6 +1,6 @@
 {
   "versao": 1,
-  "gerado_em": "2026-09-15T10:35",
+  "gerado_em": "2026-09-15T13:55",
   "gerado_por": "_LIVES/_semanal/publicar_semana_lp.py",
   "aulas": [
     {
@@ -12,8 +12,8 @@
       "titulo": "ISS Guarulhos 2026: a correção ao vivo das <em>15 questões de Contabilidade Fiscal</em>.",
       "sub": "Quarta, 16/09, às 20h, eu resolvo uma a uma as questões de Contabilidade Fiscal da prova de Auditor(a) Fiscal aplicada pelo IBAM em 13/09. <strong>Pegue a folha de questões, resolva antes e receba as resoluções por e-mail depois da aula.</strong>",
       "questoes": 15,
-      "paginas": null,
-      "pdf": null,
+      "paginas": 17,
+      "pdf": "assets/aulas/folha-2026-09-16.pdf",
       "capa_jpg": "assets/aulas/live-2026-09-16-capa.jpg",
       "capa_webp": "assets/aulas/live-2026-09-16-capa.webp",
       "youtube": "https://www.youtube.com/live/I5ZIb31odvI"
