@@ -9,6 +9,8 @@ a regra tem fiscal.
   1. noindex/nofollow e no-referrer, este antes de qualquer recurso;
   2. nenhum rastreador nem script externo (todo JS desta página é inline);
   3. nenhum endereço de checkout e nenhum preço fixo (os valores vêm só da API);
+  3b. crédito dos order bumps: nada de valor fixo na tela, e composição só quando a
+      conta fecha (soma dos itens = credito.total = abatimento da oferta);
   4. base da API por hostname, sem credentials, token fora da barra;
   5. atendimento só pelo número 1:1, nunca o de disparo em massa;
   6. marca e honestidade (sem border-left decorativo, sem bordão, rodapé jurídico);
@@ -69,6 +71,25 @@ check("/checkout?plano=" in limpo, "botão de compra não passa por /continuar/:
 check(not re.search(r"R\$\s*(?:&nbsp;)?\s*\d", limpo), "preço fixo no HTML: os valores vêm só da API")
 check(not re.search(r"\b\d{1,3},\d{2}\b", visivel), "valor com centavos fixo no texto")
 check("124100" in limpo, "fator da parcela (24,1%, o mesmo da assinatura.html) não encontrado")
+
+# ── 3b. Crédito somado dos order bumps ───────────────────────────────────
+# Quem compra o Dicionário (47) pode levar o Guia (27) e o Simulado (19) no mesmo
+# checkout: o crédito é 47, 66, 74 ou 93. Nenhum desses totais pode estar escrito na
+# página — o número é o abatimento da própria oferta. O texto visível já sai sem
+# <style> e sem <script>, então o rgba(27,42,74,…) do CSS não conta como valor.
+check(not re.search(r"\b(?:47|66|74|93)\b", visivel), "valor de crédito fixo no texto da página")
+check("function lerCredito" in limpo and "d.credito" in limpo, "a página não lê «credito» da resposta da API")
+check("tri.de - tri.por" in limpo and "reais(creditoTri)" in limpo,
+      "o crédito exibido não é derivado da oferta (de − por)")
+check("creditoTri === creditoSem" in limpo, "abatimento não conferido nos dois planos")
+# A composição só aparece quando a conta fecha dos dois lados, e com mais de um item.
+check("c.total !== derivado" in limpo, "credito.total não é conferido contra o abatimento da oferta")
+check("soma === c.total" in limpo, "a soma dos itens não é conferida contra credito.total")
+check("itens.length > 1" in limpo, "a composição do crédito não exige mais de um item")
+comp = re.search(r'<p[^>]*id="creditoItens"[^>]*>', limpo)
+check(bool(comp) and "hidden" in comp.group(0), "linha da composição ausente ou não nasce oculta")
+check("linha.textContent" in limpo and "linha.innerHTML" not in limpo,
+      "composição por innerHTML: o nome do item vem da API e tem de entrar como texto")
 
 # ── 4. API e token ───────────────────────────────────────────────────────
 check("'https://api.fluenciacontabil.com.br'" in limpo and "'https://api-dev.fluenciacontabil.com.br'" in limpo,

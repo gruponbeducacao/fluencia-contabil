@@ -11,6 +11,10 @@
      Nenhum preço mora neste arquivo: os valores vêm só de GET /continuar/:token, e o
      botão de compra passa por /continuar/:token/checkout, que confere o prazo e só
      então redireciona. O endereço do checkout nunca aparece aqui.
+     O crédito também não é fixo: quem compra o Dicionário pode levar order bumps no mesmo
+     checkout, e o abatimento soma o que a pessoa pagou. O número que vai para a tela é o
+     abatimento da própria oferta (de − por); o campo "credito" da resposta só serve para
+     mostrar a composição em itens, e só quando a conta fecha dos dois lados.
      Fiscal: scripts/fiscal_continuar.py -->
 <meta name="referrer" content="no-referrer">
 <meta name="robots" content="noindex, nofollow">
@@ -84,6 +88,9 @@
   .topo p + p { margin-top: 12px; }
   .topo p a { color: var(--dourado); font-weight: 700; }
   .topo-carregando { font-size: 16px; color: rgba(255,255,255,0.7); padding: 24px 0; }
+  /* Composição do crédito: uma linha discreta, e só quando a pessoa levou mais de um
+     item no checkout. Com item único ela não aparece e o bloco fica como era. */
+  .topo .credito-itens { font-size: 14px; line-height: 1.65; color: rgba(255,255,255,0.6); max-width: 660px; }
   .prazo {
     display: inline-flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline;
     margin-top: 22px; padding: 11px 16px; border-radius: 10px;
@@ -286,6 +293,9 @@
       <div class="topo-rotulo">Condição de quem comprou o Dicionário</div>
       <h1 data-campo="titulo-aberta"></h1>
       <p data-campo="aberta-sub"></p>
+      <!-- Composição do crédito (Dicionário + order bumps). Preenchida pelo JS só quando
+           há mais de um item E a conta fecha contra o abatimento da oferta. -->
+      <p class="credito-itens" id="creditoItens" hidden></p>
       <p class="prazo" id="prazo"><span>Válida até <b data-campo="ultimo-dia"></b></span><span data-campo="dias"></span></p>
     </div>
 
@@ -361,7 +371,7 @@
         </div>
       </div>
 
-      <p class="planos-nota">Pagamento único, sem renovação automática · 7 dias de garantia incondicional · Cartão em até 12×, Pix ou boleto.<br>No cartão as parcelas têm juros do gateway — por isso mostramos o valor à vista junto. O valor riscado é o preço da página pública; a diferença é o que você já pagou no Dicionário.</p>
+      <p class="planos-nota">Pagamento único, sem renovação automática · 7 dias de garantia incondicional · Cartão em até 12×, Pix ou boleto.<br>No cartão as parcelas têm juros do gateway — por isso mostramos o valor à vista junto. O valor riscado é o preço da página pública; a diferença é o crédito do que você já pagou.</p>
     </div>
   </div>
 </section>
@@ -594,7 +604,31 @@
   function parcela(por) { return centavos(Math.round(por * 124100 / 12000)); }
 
   function numero(v) { return typeof v === 'number' && isFinite(v) && v > 0; }
+  function inteiroPositivo(v) { return numero(v) && Math.round(v) === v; }
   function planoOk(p) { return !!p && numero(p.de) && numero(p.por) && p.por <= p.de; }
+
+  /* ----- crédito: Dicionário + order bumps -----
+     O valor que vai para a tela sai SEMPRE do abatimento da oferta (de − por), nunca de
+     credito.total: assim o crédito anunciado jamais diverge do "de/por" logo abaixo dele.
+     O campo "credito" serve só para a composição, e só entra se a conta fechar dos dois
+     lados — a soma dos itens = credito.total = o abatimento (derivado). Resposta antiga,
+     sem o campo, cai em null aqui: a página segue com o total derivado e sem composição. */
+  function lerCredito(d, derivado) {
+    var c = d && d.credito;
+    if (!c || typeof c !== 'object') return null;
+    if (!inteiroPositivo(c.total) || c.total !== derivado) return null;
+    if (!Array.isArray(c.itens) || !c.itens.length || c.itens.length > 6) return null;
+    var soma = 0, itens = [];
+    for (var i = 0; i < c.itens.length; i++) {
+      var it = c.itens[i];
+      if (!it || typeof it !== 'object' || !inteiroPositivo(it.valor)) return null;
+      var nome = typeof it.nome === 'string' ? it.nome.trim().replace(/\s+/g, ' ').slice(0, 60) : '';
+      if (!nome) return null;
+      soma += it.valor;
+      itens.push(nome + ' ' + reais(it.valor));
+    }
+    return soma === c.total ? itens : null;
+  }
   function diaOk(s) { return typeof s === 'string' && /^\d{2}\/\d{2}$/.test(s) ? s : ''; }
   function nomeDe(d) { return typeof d.primeiroNome === 'string' ? d.primeiroNome.trim().slice(0, 60) : ''; }
   function comNome(nome, frase) { return nome ? nome + ', ' + frase : frase.charAt(0).toUpperCase() + frase.slice(1); }
@@ -615,13 +649,27 @@
   function renderAberta(d, token, nome, dia) {
     var tri = d.oferta.tri, sem = d.oferta.sem;
     var creditoTri = tri.de - tri.por, creditoSem = sem.de - sem.por;
-    var quanto = creditoTri > 0 && creditoTri === creditoSem
+    /* Só anuncia um valor de crédito se o abatimento for o mesmo nos dois planos. */
+    var vale = creditoTri > 0 && creditoTri === creditoSem;
+    var itens = vale ? lerCredito(d, creditoTri) : null;
+    var varios = !!itens && itens.length > 1;
+    var quanto = vale
       ? 'os ' + reais(creditoTri) + ' que você pagou abatem'
       : 'o valor que você pagou abate';
 
-    campo('titulo-aberta', comNome(nome, 'o Dicionário que você comprou vale como entrada no plano.'));
+    /* Com order bump, o crédito não é só o Dicionário — a primeira linha acompanha. */
+    campo('titulo-aberta', comNome(nome, varios
+      ? 'o que você comprou vale como entrada no plano.'
+      : 'o Dicionário que você comprou vale como entrada no plano.'));
     campo('aberta-sub', (dia ? 'Até ' + dia + ', ' : 'Por um prazo curto, ') + quanto +
       ' no valor da assinatura. É uma condição de quem comprou o Dicionário, não é o preço da página pública, e ela tem data para acabar.');
+
+    /* Nome de item vem da API: entra como texto, nunca como HTML. */
+    var linha = document.getElementById('creditoItens');
+    if (linha) {
+      linha.textContent = varios ? itens.join(' + ') + ' = ' + reais(creditoTri) + ' de crédito' : '';
+      linha.hidden = !varios;
+    }
     campo('ultimo-dia', dia);
     var n = d.diasRestantes;
     campo('dias', n === 1 ? 'hoje é o último dia' : (typeof n === 'number' && n > 1 ? 'faltam ' + Math.floor(n) + ' dias' : ''));
