@@ -517,7 +517,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   /* A agenda da semana. Gerada por _LIVES/_semanal/publicar_semana_lp.py —
      não editar à mão (o gerador sobrescreve). */
-  var AGENDA = 'assets/aulas/agenda.json';
+  /* O Cloudflare guarda assets por 4h e respeita query string: sem o `t` que
+     muda a cada 10 minutos, uma folha publicada de manhã só apareceria à tarde. */
+  var AGENDA = 'assets/aulas/agenda.json?t=' + Math.floor(Date.now() / 600000);
 
   /* Só `true` depois que `processAulasEmails` estiver no ar e testado no
      Apps Script — ver _MARKETING/_CRM/patches/aulas-confirmacao-automatica/. */
