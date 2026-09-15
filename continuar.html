@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<!-- ===== PÁGINA DO COMPRADOR DO DICIONÁRIO =====
+     Aberta por link pessoal (?c=<token>) que chega por e-mail e WhatsApp. O token é
+     credencial: a página guarda em sessionStorage, tira da barra de endereço e não
+     carrega NADA que leia a URL (nem o GTM que as outras páginas têm no head, nem
+     pixel, nem os assets de captura). O no-referrer vem antes de qualquer recurso
+     externo. Fora do sitemap e do menu.
+     Nenhum preço mora neste arquivo: os valores vêm só de GET /continuar/:token, e o
+     botão de compra passa por /continuar/:token/checkout, que confere o prazo e só
+     então redireciona. O endereço do checkout nunca aparece aqui.
+     O crédito também não é fixo: quem compra o Dicionário pode levar order bumps no mesmo
+     checkout, e o abatimento soma o que a pessoa pagou. O número que vai para a tela é o
+     abatimento da própria oferta (de − por); o campo "credito" da resposta só serve para
+     mostrar a composição em itens, e só quando a conta fecha dos dois lados.
+     Fiscal: scripts/fiscal_continuar.py -->
+<meta name="referrer" content="no-referrer">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A sua condição do Dicionário · Fluência Contábil</title>
+<meta name="description" content="Página pessoal de quem comprou o Dicionário Contábil.">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com" referrerpolicy="no-referrer">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin referrerpolicy="no-referrer">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet" referrerpolicy="no-referrer">
+<noscript><style>.js-only { display: none !important; }</style></noscript>
+
+<style>
+  /* Paleta e componentes espelhados da assinatura.html. */
+  :root {
+    --azul-profundo: #1B2A4A;
+    --azul-noite:    #131F38;
+    --azul-medio:    #2E4A7A;
+    --dourado:       #C8A84B;
+    --dourado-escuro:#A68A3E;
+    --dourado-texto: #7A5F22;
+    --cream:         #FBF6E9;
+    --cream-alt:     #F3EFE3;
+    --branco:        #FFFFFF;
+    --quase-preto:   #1A1A1A;
+    --cinza-medio:   #5A5F66;
+    --cinza-borda:   #E2E4E8;
+    --vermelho:      #C0392B;
+    --vermelho-hover:#A93226;
+    --azul-bg:       #E8EDF5;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    font-family: 'Montserrat', system-ui, -apple-system, sans-serif;
+    color: var(--quase-preto); background: var(--branco);
+    line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-wrap: break-word;
+  }
+  img { max-width: 100%; height: auto; display: block; }
+  .container { width: 100%; max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+
+  .btn {
+    display: inline-block; width: 100%;
+    background: var(--vermelho); color: var(--branco);
+    font-family: inherit; font-size: 15px; font-weight: 800; line-height: 1.3;
+    text-align: center; text-decoration: none;
+    padding: 16px 24px; border: 0; border-radius: 8px; cursor: pointer;
+    box-shadow: 0 6px 22px rgba(192,57,43,0.32);
+    transition: background 0.2s ease, transform 0.2s ease;
+  }
+  .btn:hover { background: var(--vermelho-hover); transform: translateY(-1px); }
+  .btn:focus-visible { outline: 3px solid var(--dourado); outline-offset: 3px; }
+  .btn[disabled] { opacity: 0.6; cursor: wait; transform: none; }
+  .btn--ouro { background: var(--dourado); color: var(--azul-profundo); box-shadow: 0 6px 22px rgba(200,168,75,0.3); }
+  .btn--ouro:hover { background: #B8993F; }
+
+  /* ===== TOPO ===== */
+  .topo { background: var(--azul-noite); color: var(--branco); padding: 24px 0 48px; position: relative; overflow: hidden; }
+  .topo::before {
+    content: ''; position: absolute; top: -120px; right: -140px; width: 420px; height: 420px;
+    background: radial-gradient(circle, rgba(200,168,75,0.09) 0%, transparent 70%);
+    border-radius: 50%; pointer-events: none;
+  }
+  .topo .container { position: relative; }
+  .topo-logo { width: 56px; height: 63px; margin-bottom: 28px; }
+  .topo-rotulo { font-size: 12px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; color: var(--dourado); margin-bottom: 12px; }
+  .topo h1 { font-size: 27px; line-height: 1.2; font-weight: 800; letter-spacing: -0.3px; margin-bottom: 16px; max-width: 760px; }
+  .topo p { font-size: 16px; line-height: 1.7; color: rgba(255,255,255,0.78); max-width: 660px; }
+  .topo p + p { margin-top: 12px; }
+  .topo p a { color: var(--dourado); font-weight: 700; }
+  .topo-carregando { font-size: 16px; color: rgba(255,255,255,0.7); padding: 24px 0; }
+  /* Composição do crédito: uma linha discreta, e só quando a pessoa levou mais de um
+     item no checkout. Com item único ela não aparece e o bloco fica como era. */
+  .topo .credito-itens { font-size: 14px; line-height: 1.65; color: rgba(255,255,255,0.6); max-width: 660px; }
+  .prazo {
+    display: inline-flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline;
+    margin-top: 22px; padding: 11px 16px; border-radius: 10px;
+    background: rgba(200,168,75,0.12); border: 1px solid rgba(200,168,75,0.45);
+    font-size: 14.5px; line-height: 1.5; color: var(--branco);
+  }
+  .topo .prazo { max-width: 100%; }
+  .prazo b { color: var(--dourado); font-weight: 800; }
+  .prazo span:empty { display: none; }
+  .prazo span + span::before { content: '·'; margin-right: 10px; color: rgba(255,255,255,0.45); }
+  .topo-acoes { margin-top: 26px; max-width: 440px; }
+  .link-sec { display: inline-block; margin-top: 16px; font-size: 14.5px; font-weight: 700; color: var(--dourado); text-underline-offset: 3px; }
+
+  /* ===== SEÇÕES ===== */
+  .section { padding: 56px 0; }
+  .section-label { font-size: 12px; font-weight: 800; color: var(--dourado-texto); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 10px; }
+  .section-title { font-size: 25px; line-height: 1.18; font-weight: 800; color: var(--azul-profundo); margin-bottom: 14px; }
+  .section-title .ouro { color: var(--dourado-escuro); }
+  .section-text { font-size: 16px; color: var(--cinza-medio); line-height: 1.7; max-width: 680px; }
+  .center { text-align: center; }
+  .center .section-text { margin-left: auto; margin-right: auto; }
+
+  /* ===== PLANOS (padrão de preço da assinatura.html) =====
+     A parcela embute juros do gateway (24,1%) e nunca vai sozinha: o à vista anda junto. */
+  .oferta { background: var(--cream); }
+  .planos-pos { margin: 34px auto 0; max-width: 880px; }
+  .planos-duo { display: grid; grid-template-columns: 1fr; gap: 28px; align-items: stretch; }
+  .plano-card {
+    position: relative; background: var(--branco); border: 1.5px solid rgba(200,168,75,0.45);
+    border-radius: 16px; padding: 32px 22px 26px; display: flex; flex-direction: column;
+    text-align: center; box-shadow: 0 10px 30px rgba(27,42,74,0.07);
+  }
+  .plano-card--destaque { border-color: var(--dourado); box-shadow: 0 14px 36px rgba(27,42,74,0.13); }
+  .plano-badge {
+    position: absolute; top: -11px; left: 50%; transform: translateX(-50%); white-space: nowrap;
+    background: var(--dourado); color: var(--azul-profundo); font-size: 9.5px; font-weight: 800;
+    letter-spacing: 1.6px; text-transform: uppercase; padding: 5px 14px; border-radius: 4px;
+  }
+  .plano-nome { font-size: 11px; font-weight: 800; letter-spacing: 2.5px; text-transform: uppercase; color: var(--dourado-texto); margin-bottom: 14px; }
+  .plano-parcela { font-size: 17px; font-weight: 700; color: var(--azul-profundo); line-height: 1.05; }
+  .plano-parcela .x { font-size: 36px; font-weight: 800; white-space: nowrap; }
+  .plano-avista { font-size: 15px; color: var(--cinza-medio); margin-top: 8px; }
+  .plano-avista strong { color: var(--azul-profundo); font-weight: 700; }
+  .plano-antes {
+    color: #A8A598; font-weight: 600; text-decoration: line-through;
+    text-decoration-color: var(--vermelho); text-decoration-thickness: 2px; margin-right: 5px;
+  }
+  .plano-equiv { font-size: 12.5px; color: var(--cinza-medio); margin: 10px 0 22px; line-height: 1.5; }
+  .plano-card .btn { margin-top: auto; }
+  .planos-nota { text-align: center; font-size: 13px; color: var(--cinza-medio); margin-top: 24px; line-height: 1.75; }
+  .oferta-indicacao {
+    max-width: 760px; margin: 26px auto 0; padding: 14px 18px; border-radius: 12px; text-align: center;
+    background: var(--cream-alt); border: 1px solid var(--dourado); font-size: 15px; line-height: 1.6; color: var(--quase-preto);
+  }
+  .oferta-indicacao strong { color: var(--dourado-texto); }
+  .plano-card--indicado { outline: 3px solid var(--dourado); outline-offset: 2px; }
+  .plano-indicado-tag { display: none; margin: 0 0 10px; font-size: 11.5px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: var(--dourado-texto); }
+  .plano-card--indicado .plano-indicado-tag { display: block; }
+
+  /* ===== O QUE VOCÊ VIU x O QUE CONTINUA TRANCADO ===== */
+  .viu-grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 30px; }
+  .viu-card { border-radius: 14px; padding: 24px 20px; }
+  .viu-card--aberto { background: var(--cream); border: 1px solid rgba(200,168,75,0.35); }
+  .viu-card--trancado { background: var(--azul-bg); border: 1px solid #D3DCEA; }
+  .viu-card h3 { font-size: 17px; font-weight: 800; color: var(--azul-profundo); margin-bottom: 10px; }
+  .viu-lista { list-style: none; }
+  .viu-lista li { display: flex; gap: 11px; font-size: 15px; line-height: 1.55; color: var(--quase-preto); padding: 7px 0; }
+  .viu-ico { flex: none; width: 18px; height: 18px; margin-top: 2px; font-size: 15px; font-weight: 900; line-height: 18px; text-align: center; color: var(--dourado-escuro); }
+  .viu-card--trancado .viu-ico { color: var(--azul-medio); }
+  .viu-fecho { max-width: 760px; margin: 26px auto 0; font-size: 15.5px; line-height: 1.7; color: var(--cinza-medio); text-align: center; }
+  .viu-fecho strong { color: var(--azul-profundo); }
+
+  /* ===== PRÓXIMAS PROVAS (mesmo seletor da assinatura.html) ===== */
+  .prova-sec { background: var(--azul-medio); }
+  .prova-sec .section-label { color: var(--dourado); }
+  .prova-sec .section-title { color: var(--branco); }
+  .prova-sec .section-title .ouro { color: var(--dourado); }
+  .prova-sec .section-text { color: rgba(255,255,255,0.75); }
+  .prova-lista { list-style: none; margin: 30px auto 0; padding: 0; max-width: 860px; }
+  .prova-item { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 10px 14px; padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.12); }
+  .prova-org { min-width: 0; }
+  .prova-org strong { display: block; font-size: 16px; font-weight: 800; color: var(--branco); letter-spacing: -0.2px; }
+  .prova-org span { display: block; font-size: 12.5px; color: rgba(255,255,255,0.6); margin-top: 3px; }
+  .prova-dias { text-align: right; font-variant-numeric: tabular-nums; min-width: 56px; }
+  .prova-dias b { display: block; font-size: 30px; line-height: 1; color: var(--dourado); font-weight: 800; }
+  .prova-dias span { display: block; font-size: 9.5px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-top: 3px; }
+  .prova-escolher {
+    grid-column: 1 / -1; justify-self: start;
+    border: 1px solid rgba(200,168,75,0.55); background: transparent; color: var(--dourado);
+    font-family: inherit; font-size: 12.5px; font-weight: 800; padding: 9px 14px; border-radius: 8px;
+    cursor: pointer; white-space: nowrap; transition: background 0.2s, color 0.2s;
+  }
+  .prova-escolher:hover, .prova-escolher:focus-visible { background: var(--dourado); color: var(--azul-profundo); outline: none; }
+  .prova-item.escolhida .prova-escolher { background: var(--dourado); color: var(--azul-profundo); }
+  .prova-indicacao {
+    max-width: 860px; margin: 22px auto 0; padding: 16px 18px; border-radius: 12px;
+    background: rgba(255,255,255,0.08); border: 1px solid rgba(200,168,75,0.4); color: var(--branco); font-size: 15px; line-height: 1.6;
+  }
+  .prova-indicacao strong { color: var(--dourado); }
+  .prova-indicacao a { color: var(--dourado); font-weight: 800; }
+  .prova-nota { max-width: 860px; margin: 24px auto 0; font-size: 14.5px; line-height: 1.7; color: rgba(255,255,255,0.65); }
+
+  /* ===== O QUE É SEU ===== */
+  .fica-sec { background: var(--cream-alt); }
+  .fica-box { max-width: 760px; margin: 0 auto; background: var(--branco); border: 1px solid var(--cinza-borda); border-radius: 16px; padding: 28px 22px; text-align: center; }
+  .fica-box p { font-size: 16px; line-height: 1.7; color: var(--cinza-medio); }
+
+  /* ===== GARANTIA ===== */
+  .garantia-grid { display: flex; flex-direction: column; gap: 24px; align-items: center; text-align: center; max-width: 860px; margin: 0 auto; }
+  .garantia-selo {
+    flex-shrink: 0; width: 130px; height: 130px; border-radius: 50%;
+    background: var(--cream); border: 2px solid var(--dourado);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
+  }
+  .garantia-selo .n { font-size: 38px; font-weight: 800; color: var(--azul-profundo); line-height: 1; }
+  .garantia-selo .t { font-size: 10.5px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: var(--dourado-texto); margin-top: 6px; padding: 0 12px; }
+
+  /* ===== FECHO ===== */
+  .fecho { background: var(--azul-noite); }
+  .fecho .section-label { color: var(--dourado); }
+  .fecho .section-title { color: var(--branco); }
+  .fecho .section-text { color: rgba(255,255,255,0.72); }
+  .fecho-botoes { display: grid; grid-template-columns: 1fr; gap: 20px; max-width: 660px; margin: 30px auto 0; }
+  .fecho-opcao small { display: block; margin-top: 9px; font-size: 13px; line-height: 1.5; color: rgba(255,255,255,0.65); text-align: center; }
+
+  /* ===== ATENDIMENTO =====
+     Verde do WhatsApp, não o vermelho do CTA: é ação de apoio, não concorrente da compra. */
+  .ajuda-sec { background: var(--cream); padding: 40px 0; }
+  .ajuda-box {
+    max-width: 800px; margin: 0 auto; display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
+    background: var(--branco); border: 1px solid var(--cinza-borda); border-radius: 12px; padding: 22px 20px;
+  }
+  .ajuda-txt { flex: 1 1 260px; min-width: 0; }
+  .ajuda-txt b { display: block; font-size: 15.5px; font-weight: 800; color: var(--azul-profundo); margin-bottom: 4px; }
+  .ajuda-txt span { display: block; font-size: 14px; color: var(--cinza-medio); line-height: 1.55; }
+  .ajuda-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px; flex: 1 1 100%;
+    background: #25D366; color: var(--branco); text-decoration: none;
+    font-size: 14.5px; font-weight: 800; padding: 14px 20px; border-radius: 8px;
+    transition: background 0.2s ease;
+  }
+  .ajuda-btn:hover { background: #1EBE5B; }
+  .ajuda-btn:focus-visible { outline: 2px solid var(--azul-medio); outline-offset: 3px; }
+  .ajuda-btn svg { width: 19px; height: 19px; flex: none; display: block; }
+
+  /* ===== RODAPÉ ===== */
+  .footer { background: var(--azul-noite); border-top: 1px solid rgba(255,255,255,0.07); padding: 32px 20px; text-align: center; }
+  .footer p { font-size: 13px; line-height: 1.7; color: rgba(255,255,255,0.58); max-width: 760px; margin: 0 auto; }
+  .footer p + p { margin-top: 8px; }
+  .footer a { color: rgba(255,255,255,0.78); }
+  .footer .legal { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 16px; }
+
+  @media (min-width: 600px) {
+    .prova-item { grid-template-columns: 1fr auto auto; gap: 18px; }
+    .prova-escolher { grid-column: auto; }
+    .ajuda-btn { flex: none; }
+  }
+  @media (min-width: 700px) {
+    .btn { width: auto; }
+    .plano-card .btn, .fecho-opcao .btn { width: 100%; }
+    .topo { padding: 32px 0 72px; }
+    .topo-logo { width: 64px; height: 72px; }
+    .topo h1 { font-size: 40px; }
+    .topo p { font-size: 17.5px; }
+    .section { padding: 80px 0; }
+    .section-title { font-size: 32px; }
+    .section-text { font-size: 17px; }
+    .planos-duo { grid-template-columns: 1fr 1fr; gap: 20px; }
+    .plano-card { padding: 34px 28px 30px; }
+    .plano-parcela .x { font-size: 38px; }
+    .viu-grid { grid-template-columns: 1fr 1fr; gap: 20px; }
+    .viu-card { padding: 28px 26px; }
+    .garantia-grid { flex-direction: row; text-align: left; gap: 44px; }
+    .garantia-selo { width: 150px; height: 150px; }
+    .fecho-botoes { grid-template-columns: 1fr 1fr; }
+    .fica-box { padding: 32px 36px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topo">
+  <div class="container">
+    <picture>
+      <source srcset="Logo_Completa_BrancoDourado_COM_TAGLINE.webp" type="image/webp">
+      <img class="topo-logo" src="Logo_Completa_BrancoDourado_COM_TAGLINE.png" alt="Fluência Contábil" width="356" height="400">
+    </picture>
+
+    <div class="js-only" data-estado="carregando">
+      <p class="topo-carregando" role="status">Carregando a sua condição…</p>
+    </div>
+
+    <noscript>
+      <div class="topo-rotulo">Dicionário Contábil</div>
+      <h1>Esta página precisa do JavaScript ligado para abrir a sua condição.</h1>
+      <p>Sem ele, os planos da assinatura estão na <a href="assinatura.html#oferta">página pública</a>. Dúvida? Atendimento pelo WhatsApp (21) 95904-2832, de segunda a sexta, das 9h às 18h.</p>
+    </noscript>
+
+    <div data-estado="aberta" hidden>
+      <div class="topo-rotulo">Condição de quem comprou o Dicionário</div>
+      <h1 data-campo="titulo-aberta"></h1>
+      <p data-campo="aberta-sub"></p>
+      <!-- Composição do crédito (Dicionário + order bumps). Preenchida pelo JS só quando
+           há mais de um item E a conta fecha contra o abatimento da oferta. -->
+      <p class="credito-itens" id="creditoItens" hidden></p>
+      <p class="prazo" id="prazo"><span>Válida até <b data-campo="ultimo-dia"></b></span><span data-campo="dias"></span></p>
+    </div>
+
+    <div data-estado="expirada" hidden>
+      <div class="topo-rotulo">Condição do Dicionário</div>
+      <h1 data-campo="titulo-expirada"></h1>
+      <p id="expiradaPrazo">Ela tinha data para acabar e saiu do ar. O Dicionário continua seu, sem prazo nenhum.</p>
+      <p id="expiradaEngano" hidden>Se você acha que é engano, fale com o atendimento e informe o e-mail usado na compra.</p>
+      <p>A assinatura continua disponível pelo preço da página pública, com 7 dias de garantia incondicional.</p>
+      <div class="topo-acoes"><a class="btn" href="assinatura.html#oferta" data-sai>Ver os planos da assinatura</a></div>
+    </div>
+
+    <div data-estado="ja_assinante" hidden>
+      <div class="topo-rotulo">A sua assinatura</div>
+      <h1 data-campo="titulo-assinante"></h1>
+      <p>A sua assinatura está ativa, então esta condição não se aplica a você: a plataforma já está aberta na sua conta. Entre com o e-mail da compra.</p>
+      <div class="topo-acoes"><a class="btn btn--ouro" href="https://portal.fluenciacontabil.com.br/login">Entrar na plataforma</a></div>
+    </div>
+
+    <div data-estado="publica" hidden>
+      <div class="topo-rotulo">Dicionário Contábil</div>
+      <h1>Esta página abre a condição de quem comprou o Dicionário.</h1>
+      <p>Ela funciona pelo link pessoal que chega no e-mail e no WhatsApp da compra. Sem esse link, os planos da assinatura estão na página pública, com 7 dias de garantia incondicional.</p>
+      <p>Comprou o Dicionário e o link não abriu? Fale com o atendimento e informe o e-mail usado na compra.</p>
+      <div class="topo-acoes"><a class="btn" href="assinatura.html#oferta" data-sai>Ver os planos da assinatura</a></div>
+    </div>
+
+    <div data-estado="falha" hidden>
+      <div class="topo-rotulo">Condição do Dicionário</div>
+      <h1>Não consegui carregar a sua condição agora.</h1>
+      <p>Isso costuma ser a conexão, e não mexe em nada da sua condição. Tente de novo em alguns segundos. Se continuar, fale com o atendimento.</p>
+      <div class="topo-acoes">
+        <button type="button" class="btn" id="tentarDeNovo">Tentar de novo</button>
+        <a class="link-sec" href="assinatura.html#oferta" data-sai>Ver os planos na página pública</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- ===== PLANOS COM O CRÉDITO ===== -->
+<section class="section oferta" id="planos" data-estado="aberta" hidden>
+  <div class="container">
+    <div class="center">
+      <div class="section-label">A sua condição</div>
+      <h2 class="section-title">Os dois planos, com <span class="ouro">o Dicionário abatido.</span></h2>
+      <p class="section-text">Sem módulo avulso e sem upsell no meio do caminho. A única diferença entre os dois planos é por quanto tempo a plataforma fica aberta para você.</p>
+    </div>
+
+    <!-- Preenchido pelo seletor "Qual é a sua próxima prova?". -->
+    <p class="oferta-indicacao" id="ofertaIndicacao" hidden></p>
+
+    <div class="planos-pos">
+      <div class="planos-duo">
+        <div class="plano-card" data-plano="trimestral">
+          <p class="plano-indicado-tag">Indicado para a sua prova</p>
+          <div class="plano-nome">Trimestral · Edição 2026</div>
+          <p class="plano-parcela">12× de <span class="x" data-campo="tri-parcela"></span></p>
+          <p class="plano-avista">ou <s class="plano-antes" data-campo="tri-de"></s> <strong data-campo="tri-por"></strong> à vista</p>
+          <p class="plano-equiv">3 meses de acesso · pagamento único</p>
+          <a class="btn" data-checkout="tri" href="#planos">Assinar o trimestral</a>
+        </div>
+
+        <div class="plano-card plano-card--destaque" data-plano="semestral">
+          <span class="plano-badge">Melhor custo-benefício</span>
+          <p class="plano-indicado-tag">Indicado para a sua prova</p>
+          <div class="plano-nome">Semestral · Edição 2026</div>
+          <p class="plano-parcela">12× de <span class="x" data-campo="sem-parcela"></span></p>
+          <p class="plano-avista">ou <s class="plano-antes" data-campo="sem-de"></s> <strong data-campo="sem-por"></strong> à vista</p>
+          <p class="plano-equiv">6 meses de acesso · pagamento único</p>
+          <a class="btn" data-checkout="sem" href="#planos">Assinar o semestral</a>
+        </div>
+      </div>
+
+      <p class="planos-nota">Pagamento único, sem renovação automática · 7 dias de garantia incondicional · Cartão em até 12×, Pix ou boleto.<br>No cartão as parcelas têm juros do gateway — por isso mostramos o valor à vista junto. O valor riscado é o preço da página pública; a diferença é o crédito do que você já pagou.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== O QUE VOCÊ VIU x O QUE CONTINUA TRANCADO =====
+     Escopo da degustação conforme a Seção 15 do GUIA_ATENDIMENTO_FLUENCIA (15/09/2026). -->
+<section class="section viu-sec" data-estado="aberta" hidden>
+  <div class="container">
+    <div class="center">
+      <div class="section-label">Sem rodeio</div>
+      <h2 class="section-title">O que você viu nos 3 dias, e <span class="ouro">o que continua trancado.</span></h2>
+    </div>
+    <div class="viu-grid">
+      <div class="viu-card viu-card--aberto">
+        <h3>O que você viu</h3>
+        <ul class="viu-lista">
+          <li><span class="viu-ico" aria-hidden="true">✓</span><span>A Aula 01 — Método das Partidas Dobradas, em vídeo e em PDF.</span></li>
+          <li><span class="viu-ico" aria-hidden="true">✓</span><span>O banco de questões com resolução comentada, com limite diário.</span></li>
+          <li><span class="viu-ico" aria-hidden="true">✓</span><span>O Mapa de Incidência, o Meu Edital e o Plano de Estudos.</span></li>
+        </ul>
+      </div>
+      <div class="viu-card viu-card--trancado">
+        <h3>O que continua trancado</h3>
+        <ul class="viu-lista">
+          <li><svg class="viu-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><span>As outras aulas do curso, as que apareceram com cadeado.</span></li>
+          <li><svg class="viu-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><span>Os PDFs dessas aulas.</span></li>
+          <li><svg class="viu-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><span>E, quando os 3 dias acabam, também o que você viu: a Aula 01, o banco de questões, o Mapa de Incidência, o Meu Edital e o Plano de Estudos.</span></li>
+        </ul>
+      </div>
+    </div>
+    <p class="viu-fecho">O cadeado não era erro. <strong>É exatamente o que a assinatura abre</strong>, junto com a plataforma inteira, pelo prazo do plano.</p>
+  </div>
+</section>
+
+<!-- ===== QUAL É A SUA PRÓXIMA PROVA =====
+     Mesma lista e mesma regra da assinatura.html#proximas-provas (fonte:
+     scripts/data/catalogo-editais.json + LPs do site). As duas listas andam juntas:
+     prova nova entra nas duas. Prova vencida some sozinha; sem nenhuma viva, a seção some. -->
+<section class="section prova-sec" id="proximas-provas" data-estado="aberta" hidden>
+  <div class="container">
+    <div class="center">
+      <div class="section-label">O relógio que importa</div>
+      <h2 class="section-title">Qual é a <span class="ouro">sua</span> próxima prova?</h2>
+      <p class="section-text">Toque na sua prova e a página indica o plano que cobre até o dia dela.</p>
+    </div>
+    <ul class="prova-lista">
+      <li class="prova-item" data-prova="2026-09-27" data-org="CFC">
+        <div class="prova-org"><strong>CFC · Exame de Suficiência</strong><span>Bacharel em Ciências Contábeis · FGV</span></div>
+        <div class="prova-dias"><b></b><span>dias</span></div>
+        <button type="button" class="prova-escolher">É a minha prova</button>
+      </li>
+      <li class="prova-item" data-prova="2026-10-18" data-org="TJ-PR">
+        <div class="prova-org"><strong>TJ-PR</strong><span>Contador · FUNDATEC</span></div>
+        <div class="prova-dias"><b></b><span>dias</span></div>
+        <button type="button" class="prova-escolher">É a minha prova</button>
+      </li>
+      <li class="prova-item" data-prova="2026-10-18" data-org="Santos/SP">
+        <div class="prova-org"><strong>Santos/SP</strong><span>Auditor Fiscal de Tributos Municipais · IBAM</span></div>
+        <div class="prova-dias"><b></b><span>dias</span></div>
+        <button type="button" class="prova-escolher">É a minha prova</button>
+      </li>
+      <li class="prova-item" data-prova="2026-11-01" data-org="Manaus (SEMEF)">
+        <div class="prova-org"><strong>Manaus (SEMEF)</strong><span>Auditor-Fiscal de Tributos Municipais · FCC</span></div>
+        <div class="prova-dias"><b></b><span>dias</span></div>
+        <button type="button" class="prova-escolher">É a minha prova</button>
+      </li>
+      <li class="prova-item" data-prova="2026-11-22" data-org="TCE/MA">
+        <div class="prova-org"><strong>TCE/MA</strong><span>Analista · Contabilidade · Cebraspe</span></div>
+        <div class="prova-dias"><b></b><span>dias</span></div>
+        <button type="button" class="prova-escolher">É a minha prova</button>
+      </li>
+      <li class="prova-item" data-prova="2026-11-22" data-org="SEFAZ SC">
+        <div class="prova-org"><strong>SEFAZ SC</strong><span>Auditor de Finanças Públicas · FCC</span></div>
+        <div class="prova-dias"><b></b><span>dias</span></div>
+        <button type="button" class="prova-escolher">É a minha prova</button>
+      </li>
+      <li class="prova-item" data-prova="2026-11-29" data-org="Transpetro">
+        <div class="prova-org"><strong>Transpetro</strong><span>Contabilidade · Cesgranrio</span></div>
+        <div class="prova-dias"><b></b><span>dias</span></div>
+        <button type="button" class="prova-escolher">É a minha prova</button>
+      </li>
+      <li class="prova-item" data-prova="2026-12-20" data-org="SEFAZ AL">
+        <div class="prova-org"><strong>SEFAZ AL</strong><span>Auditor Fiscal · Cebraspe</span></div>
+        <div class="prova-dias"><b></b><span>dias</span></div>
+        <button type="button" class="prova-escolher">É a minha prova</button>
+      </li>
+      <li class="prova-item" data-prova="2027-01-17" data-org="Rio Verde/GO">
+        <div class="prova-org"><strong>Rio Verde/GO</strong><span>Auditor Fiscal · UniRV</span></div>
+        <div class="prova-dias"><b></b><span>dias</span></div>
+        <button type="button" class="prova-escolher">É a minha prova</button>
+      </li>
+    </ul>
+    <p class="prova-indicacao" id="provaIndicacao" hidden></p>
+    <p class="prova-nota">Contabilidade cai em todas. Se a sua prova não está na lista, a conta é a mesma: 3 meses de acesso no trimestral, 6 no semestral, contados do dia da compra.</p>
+  </div>
+</section>
+
+<!-- ===== O QUE É SEU ===== -->
+<section class="section fica-sec" data-estado="aberta" hidden>
+  <div class="container">
+    <div class="fica-box">
+      <div class="section-label">O que não muda</div>
+      <h2 class="section-title">O Dicionário continua seu, assinando ou não.</h2>
+      <p>O Dicionário Contábil, com 125 páginas e mais de 400 verbetes, está no e-mail que você recebeu na compra. Não expira, não depende de login e não muda nada com o fim do acesso.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== GARANTIA ===== -->
+<section class="section garantia" data-estado="aberta" hidden>
+  <div class="container">
+    <div class="garantia-grid">
+      <div class="garantia-selo" aria-hidden="true">
+        <div class="n">7</div>
+        <div class="t">dias de garantia</div>
+      </div>
+      <div>
+        <div class="section-label">Risco zero</div>
+        <h2 class="section-title">7 dias de garantia incondicional.</h2>
+        <p class="section-text">Entre, assista às aulas, resolva questões, use a plataforma. Se dentro de 7 dias você achar que não é para você, devolvemos 100% do valor, pelo mesmo meio de pagamento, sem perguntas.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FECHO: OS DOIS BOTÕES ===== -->
+<section class="section fecho" data-estado="aberta" hidden>
+  <div class="container center">
+    <div class="section-label">Condição válida até <span data-campo="ultimo-dia"></span></div>
+    <h2 class="section-title">Se fez sentido o que você viu nos 3 dias, escolha o plano.</h2>
+    <p class="section-text">Se não for a hora, não precisa fazer nada. Depois do prazo a condição sai do ar, e o Dicionário continua seu.</p>
+    <div class="fecho-botoes">
+      <div class="fecho-opcao">
+        <a class="btn" data-checkout="tri" href="#planos">Assinar o trimestral</a>
+        <small data-campo="tri-resumo"></small>
+      </div>
+      <div class="fecho-opcao">
+        <a class="btn" data-checkout="sem" href="#planos">Assinar o semestral</a>
+        <small data-campo="sem-resumo"></small>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ATENDIMENTO =====
+     Número 1:1 do site (Seção 13 do guia). O número de disparo em massa nunca vai em página pública,
+     nem neste comentário: o comprador pode responder por lá, mas não é convidado a escrever. -->
+<section class="ajuda-sec" aria-label="Atendimento">
+  <div class="container">
+    <div class="ajuda-box">
+      <div class="ajuda-txt">
+        <b>Dúvida sobre a condição ou sobre o acesso?</b>
+        <span>Fale com o atendimento pelo WhatsApp e informe o e-mail usado na compra. Segunda a sexta, das 9h às 18h.</span>
+      </div>
+      <a class="ajuda-btn" href="https://wa.me/5521959042832?text=Oi!%20Comprei%20o%20Dicion%C3%A1rio%20Cont%C3%A1bil%20e%20tenho%20uma%20d%C3%BAvida%20sobre%20a%20condi%C3%A7%C3%A3o%20para%20assinar." target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Falar no WhatsApp
+      </a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <p>Fluência Contábil · Contabilidade para quem quer ser fluente. &copy; 2026</p>
+  <p>Atendimento: <a href="https://wa.me/5521959042832" target="_blank" rel="noopener noreferrer">WhatsApp (21) 95904-2832</a> · <a href="mailto:contato@fluenciacontabil.com.br">contato@fluenciacontabil.com.br</a> · seg–sex, 9h às 18h</p>
+  <p class="legal">NEVES E BALHE EDUCAÇÃO LTDA. — CNPJ 55.373.571/0001-63 · Av. Paulista, 1106, Sala 01 — Andar 16, Bela Vista, São Paulo/SP<br>Este é um material preparatório. Não há garantia de aprovação em concurso público: o resultado depende do desempenho individual do candidato e das regras da banca.</p>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  /* Mesma regra do portal: só o domínio de produção fala com a API de produção.
+     Preview da Netlify, dev e localhost falam com o staging. */
+  var host = location.hostname;
+  var API = (host === 'fluenciacontabil.com.br' || host === 'www.fluenciacontabil.com.br')
+    ? 'https://api.fluenciacontabil.com.br'
+    : 'https://api-dev.fluenciacontabil.com.br';
+  var CHAVE = 'fc_continuar_c';
+
+  function todos(sel) { return Array.prototype.slice.call(document.querySelectorAll(sel)); }
+  function campo(nome, texto) {
+    todos('[data-campo="' + nome + '"]').forEach(function (el) { el.textContent = texto; });
+  }
+  function mostrar(estado) {
+    todos('[data-estado]').forEach(function (el) { el.hidden = el.getAttribute('data-estado') !== estado; });
+  }
+
+  /* ----- token: credencial. Sai da barra na hora e só vive na aba (sessionStorage). ----- */
+  function tokenValido(t) { return typeof t === 'string' && t.length >= 20 && t.length <= 200; }
+  function guardar(t) { try { sessionStorage.setItem(CHAVE, t); } catch (e) {} }
+  function esquecer() { try { sessionStorage.removeItem(CHAVE); } catch (e) {} }
+
+  function lerToken() {
+    var params = new URLSearchParams(location.search);
+    if (params.has('c')) {
+      var t = params.get('c');
+      params.delete('c');
+      var resto = params.toString();
+      try { history.replaceState(history.state, '', location.pathname + (resto ? '?' + resto : '') + location.hash); } catch (e) {}
+      if (tokenValido(t)) { guardar(t); return t; }
+      esquecer();
+      return null;
+    }
+    var salvo = null;
+    try { salvo = sessionStorage.getItem(CHAVE); } catch (e) {}
+    return tokenValido(salvo) ? salvo : null;
+  }
+
+  /* As páginas públicas carregam GTM na mesma origem. Quem sai daqui por um link
+     interno leva a aba junto, então o token é apagado antes. */
+  document.addEventListener('click', function (ev) {
+    var a = ev.target && ev.target.closest ? ev.target.closest('a[data-sai]') : null;
+    if (a) esquecer();
+  });
+
+  /* ----- dinheiro ----- */
+  function reais(v) {
+    return Math.round(v * 100) % 100 === 0 ? 'R$ ' + Math.round(v) : 'R$ ' + v.toFixed(2).replace('.', ',');
+  }
+  function centavos(c) {
+    var r = Math.floor(c / 100), s = c % 100;
+    return 'R$ ' + r + ',' + (s < 10 ? '0' : '') + s;
+  }
+  /* Parcela com os juros do gateway: por x 1,241 / 12, arredondada a centavos. É o fator
+     (24,1%) documentado na assinatura.html; 427 dá 12x 44,16 e 547 dá 12x 56,57, os
+     valores lidos no checkout. Em inteiros para não arrastar erro de ponto flutuante. */
+  function parcela(por) { return centavos(Math.round(por * 124100 / 12000)); }
+
+  function numero(v) { return typeof v === 'number' && isFinite(v) && v > 0; }
+  function inteiroPositivo(v) { return numero(v) && Math.round(v) === v; }
+  function planoOk(p) { return !!p && numero(p.de) && numero(p.por) && p.por <= p.de; }
+
+  /* ----- crédito: Dicionário + order bumps -----
+     O valor que vai para a tela sai SEMPRE do abatimento da oferta (de − por), nunca de
+     credito.total: assim o crédito anunciado jamais diverge do "de/por" logo abaixo dele.
+     O campo "credito" serve só para a composição, e só entra se a conta fechar dos dois
+     lados — a soma dos itens = credito.total = o abatimento (derivado). Resposta antiga,
+     sem o campo, cai em null aqui: a página segue com o total derivado e sem composição. */
+  function lerCredito(d, derivado) {
+    var c = d && d.credito;
+    if (!c || typeof c !== 'object') return null;
+    if (!inteiroPositivo(c.total) || c.total !== derivado) return null;
+    if (!Array.isArray(c.itens) || !c.itens.length || c.itens.length > 6) return null;
+    var soma = 0, itens = [];
+    for (var i = 0; i < c.itens.length; i++) {
+      var it = c.itens[i];
+      if (!it || typeof it !== 'object' || !inteiroPositivo(it.valor)) return null;
+      var nome = typeof it.nome === 'string' ? it.nome.trim().replace(/\s+/g, ' ').slice(0, 60) : '';
+      if (!nome) return null;
+      soma += it.valor;
+      itens.push(nome + ' ' + reais(it.valor));
+    }
+    return soma === c.total ? itens : null;
+  }
+  function diaOk(s) { return typeof s === 'string' && /^\d{2}\/\d{2}$/.test(s) ? s : ''; }
+  function nomeDe(d) { return typeof d.primeiroNome === 'string' ? d.primeiroNome.trim().slice(0, 60) : ''; }
+  function comNome(nome, frase) { return nome ? nome + ', ' + frase : frase.charAt(0).toUpperCase() + frase.slice(1); }
+
+  /* "25/09" chega sem ano: escolhe o ano que deixa a data a menos de meio ano de hoje. */
+  function diaJaPassou(dia) {
+    var m = /^(\d{2})\/(\d{2})$/.exec(dia);
+    if (!m) return false;
+    var hoje = new Date(); hoje.setHours(0, 0, 0, 0);
+    var alvo = new Date(hoje.getFullYear(), +m[2] - 1, +m[1]);
+    var meioAno = 183 * 86400000;
+    if (alvo - hoje > meioAno) alvo.setFullYear(alvo.getFullYear() - 1);
+    else if (hoje - alvo > meioAno) alvo.setFullYear(alvo.getFullYear() + 1);
+    return alvo < hoje;
+  }
+
+  /* ----- estados ----- */
+  function renderAberta(d, token, nome, dia) {
+    var tri = d.oferta.tri, sem = d.oferta.sem;
+    var creditoTri = tri.de - tri.por, creditoSem = sem.de - sem.por;
+    /* Só anuncia um valor de crédito se o abatimento for o mesmo nos dois planos. */
+    var vale = creditoTri > 0 && creditoTri === creditoSem;
+    var itens = vale ? lerCredito(d, creditoTri) : null;
+    var varios = !!itens && itens.length > 1;
+    var quanto = vale
+      ? 'os ' + reais(creditoTri) + ' que você pagou abatem'
+      : 'o valor que você pagou abate';
+
+    /* Com order bump, o crédito não é só o Dicionário — a primeira linha acompanha. */
+    campo('titulo-aberta', comNome(nome, varios
+      ? 'o que você comprou vale como entrada no plano.'
+      : 'o Dicionário que você comprou vale como entrada no plano.'));
+    campo('aberta-sub', (dia ? 'Até ' + dia + ', ' : 'Por um prazo curto, ') + quanto +
+      ' no valor da assinatura. É uma condição de quem comprou o Dicionário, não é o preço da página pública, e ela tem data para acabar.');
+
+    /* Nome de item vem da API: entra como texto, nunca como HTML. */
+    var linha = document.getElementById('creditoItens');
+    if (linha) {
+      linha.textContent = varios ? itens.join(' + ') + ' = ' + reais(creditoTri) + ' de crédito' : '';
+      linha.hidden = !varios;
+    }
+    campo('ultimo-dia', dia);
+    var n = d.diasRestantes;
+    campo('dias', n === 1 ? 'hoje é o último dia' : (typeof n === 'number' && n > 1 ? 'faltam ' + Math.floor(n) + ' dias' : ''));
+    document.getElementById('prazo').hidden = !dia;
+
+    [['tri', tri], ['sem', sem]].forEach(function (par) {
+      var k = par[0], p = par[1];
+      campo(k + '-parcela', parcela(p.por));
+      campo(k + '-de', reais(p.de));
+      campo(k + '-por', reais(p.por));
+      campo(k + '-resumo', '12× de ' + parcela(p.por) + ' ou ' + reais(p.por) + ' à vista');
+      todos('[data-campo="' + k + '-de"]').forEach(function (el) { el.hidden = p.de === p.por; });
+      todos('[data-checkout="' + k + '"]').forEach(function (a) {
+        a.href = API + '/continuar/' + encodeURIComponent(token) + '/checkout?plano=' + k;
+      });
+    });
+  }
+
+  function renderExpirada(nome, dia) {
+    var venceu = !!dia && diaJaPassou(dia);
+    /* A API também responde "expirada" quando a compra foi reembolsada ou contestada,
+       com a data-limite ainda no futuro. Aí "venceu em" seria falso. */
+    campo('titulo-expirada', venceu
+      ? comNome(nome, 'a condição do Dicionário venceu em ' + dia + '.')
+      : comNome(nome, 'a condição do Dicionário não está disponível neste link.'));
+    document.getElementById('expiradaPrazo').hidden = !venceu;
+    document.getElementById('expiradaEngano').hidden = venceu;
+  }
+
+  function renderizar(d, token) {
+    if (!d || typeof d !== 'object') throw new Error('resposta');
+    var nome = nomeDe(d), dia = diaOk(d.ultimoDia);
+    if (d.estado === 'aberta' && d.oferta && planoOk(d.oferta.tri) && planoOk(d.oferta.sem)) {
+      renderAberta(d, token, nome, dia);
+      mostrar('aberta');
+      iniciarProvas();
+      return;
+    }
+    if (d.estado === 'expirada') { renderExpirada(nome, dia); mostrar('expirada'); return; }
+    if (d.estado === 'ja_assinante') { campo('titulo-assinante', comNome(nome, 'você já está dentro.')); mostrar('ja_assinante'); return; }
+    throw new Error('estado');
+  }
+
+  var token = lerToken();
+  var botao = document.getElementById('tentarDeNovo');
+
+  function carregar() {
+    if (!token) { mostrar('publica'); return; }
+    mostrar('carregando');
+    var ctrl = typeof AbortController === 'function' ? new AbortController() : null;
+    var timer = ctrl ? setTimeout(function () { ctrl.abort(); }, 12000) : null;
+    var pedido = token;
+    /* 400 e 429 saem da API sem cabeçalho CORS: no navegador viram TypeError e caem
+       em "falha", que oferece tentar de novo e nunca diz que a condição acabou. */
+    fetch(API + '/continuar/' + encodeURIComponent(pedido), {
+      method: 'GET',
+      mode: 'cors',
+      credentials: 'omit',
+      cache: 'no-store',
+      referrerPolicy: 'no-referrer',
+      signal: ctrl ? ctrl.signal : undefined
+    }).then(function (r) {
+      if (r.status === 404) return { naoExiste: true };
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    }).then(function (d) {
+      if (d && d.naoExiste) { esquecer(); token = null; mostrar('publica'); return; }
+      renderizar(d, pedido);
+    }).catch(function () {
+      mostrar('falha');
+    }).then(function () {
+      if (timer) clearTimeout(timer);
+      if (botao) botao.disabled = false;
+    });
+  }
+
+  if (botao) botao.addEventListener('click', function () { botao.disabled = true; carregar(); });
+
+  /* ----- próximas provas: a mesma regra da assinatura.html ----- */
+  var provasProntas = false;
+  function iniciarProvas() {
+    if (provasProntas) return;
+    provasProntas = true;
+    var sec = document.getElementById('proximas-provas');
+    if (!sec) return;
+    var hoje = new Date(); hoje.setHours(0, 0, 0, 0);
+    var vivas = 0;
+
+    function fmt(dt) { return ('0' + dt.getDate()).slice(-2) + '/' + ('0' + (dt.getMonth() + 1)).slice(-2); }
+
+    todos('#proximas-provas .prova-item').forEach(function (li) {
+      var p = (li.getAttribute('data-prova') || '').split('-');
+      if (p.length !== 3) { li.hidden = true; return; }
+      /* construtor com componentes: 'YYYY-MM-DD' em string seria lido em UTC e cairia no dia anterior no Brasil */
+      var prova = new Date(+p[0], +p[1] - 1, +p[2]);
+      var dias = Math.ceil((prova - hoje) / 86400000);
+      if (dias < 0) { li.hidden = true; return; }
+      var b = li.querySelector('.prova-dias b');
+      var rot = li.querySelector('.prova-dias span');
+      if (dias === 0) {
+        if (b) { b.textContent = 'hoje'; b.style.fontSize = '20px'; }
+        if (rot) { rot.textContent = 'é a prova'; }
+      } else {
+        if (b) { b.textContent = dias; }
+        if (rot) { rot.textContent = dias === 1 ? 'dia' : 'dias'; }
+      }
+      li.__dias = dias; li.__prova = prova;
+      vivas++;
+    });
+    if (vivas === 0) { sec.hidden = true; return; }
+
+    /* <= 92 dias: o trimestral (3 meses) cobre até a prova. <= 184: o semestral cobre.
+       Acima disso nenhum dos dois alcança, e a página diz isso em vez de fingir. */
+    var indProva = document.getElementById('provaIndicacao');
+    var indOferta = document.getElementById('ofertaIndicacao');
+    var cards = todos('.plano-card[data-plano]');
+    todos('#proximas-provas .prova-escolher').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var li = btn.closest('.prova-item');
+        if (!li || li.__dias == null) return;
+        var dias = li.__dias, semanas = Math.floor(dias / 7);
+        var org = li.getAttribute('data-org') || 'a sua prova';
+        var data = fmt(li.__prova);
+        /* "1 semanas" saía na assinatura.html; aqui a unidade concorda com o número. */
+        var falta = dias === 0 ? 'é <strong>hoje</strong>'
+          : dias < 7 ? (dias === 1 ? 'falta <strong>1 dia</strong>' : 'faltam <strong>' + dias + ' dias</strong>')
+          : (semanas === 1 ? 'falta <strong>1 semana</strong>' : 'faltam <strong>' + semanas + ' semanas</strong>');
+        var plano, txt;
+        if (dias <= 92) {
+          plano = 'trimestral';
+          txt = 'Para <strong>' + org + '</strong>, em ' + data + ', ' + falta + '. O <strong>trimestral</strong> (3 meses) cobre até o dia da prova.';
+        } else if (dias <= 184) {
+          plano = 'semestral';
+          txt = 'Para <strong>' + org + '</strong>, em ' + data + ', ' + falta + '. O trimestral não chega até lá; o <strong>semestral</strong> (6 meses) cobre até o dia da prova.';
+        } else {
+          plano = 'semestral';
+          txt = 'Para <strong>' + org + '</strong>, em ' + data + ', ' + falta + ', mais que os 6 meses do semestral. Ele cobre a base inteira e a maior parte do caminho; a reta final você decide depois, sem renovação automática.';
+        }
+        todos('#proximas-provas .prova-item').forEach(function (x) { x.classList.remove('escolhida'); });
+        li.classList.add('escolhida');
+        if (indProva) { indProva.innerHTML = txt + ' <a href="#planos">Ver o plano</a>'; indProva.hidden = false; }
+        if (indOferta) { indOferta.innerHTML = txt; indOferta.hidden = false; }
+        cards.forEach(function (c) { c.classList.toggle('plano-card--indicado', c.getAttribute('data-plano') === plano); });
+      });
+    });
+  }
+
+  carregar();
+})();
+</script>
+</body>
+</html>
