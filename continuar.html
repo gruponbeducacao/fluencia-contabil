@@ -673,8 +673,11 @@
     }
     var nomes = itens.map(function (it) { return it.nome; });
     ficaTitulo.textContent = 'O que você comprou continua seu, assinando ou não.';
+    /* Não pode prometer um e-mail único: o Dicionário é entregue por e-mail da
+       plataforma e os order bumps pelo e-mail do próprio checkout — remetentes
+       diferentes, e mandar procurar um só faria a pessoa procurar no lugar errado. */
     ficaTexto.textContent = 'O que você levou na compra — ' + enumerar(nomes) +
-      ' — está no e-mail que você recebeu. Não expira, não depende de login e não muda nada com o fim do acesso.';
+      ' — chegou por e-mail. Não expira, não depende de login e não muda nada com o fim do acesso.';
   }
 
   /* ----- estados ----- */

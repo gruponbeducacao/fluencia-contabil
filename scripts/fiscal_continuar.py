@@ -115,6 +115,13 @@ check("ficaTitulo.textContent" in limpo and "ficaTexto.textContent" in limpo,
       "os textos da seção «o que continua seu» não entram como texto")
 check("ficaTitulo.innerHTML" not in limpo and "ficaTexto.innerHTML" not in limpo,
       "seção «o que continua seu» por innerHTML: o nome do item vem da API")
+# A frase de quem levou order bump não pode prometer UM e-mail: o Dicionário é entregue
+# por e-mail da plataforma e os bumps por e-mail da própria Kiwify — remetentes
+# diferentes. O texto padrão (um item só) segue podendo falar do e-mail da compra,
+# porque ali é um só mesmo.
+frase = re.search(r"ficaTexto\.textContent = 'O que você levou na compra.*?';", limpo, re.S)
+check(bool(frase) and "e-mail que você recebeu" not in frase.group(0),
+      "a frase com order bump promete um único e-mail (as entregas vêm de remetentes diferentes)")
 
 # ── 4. API e token ───────────────────────────────────────────────────────
 check("'https://api.fluenciacontabil.com.br'" in limpo and "'https://api-dev.fluenciacontabil.com.br'" in limpo,
