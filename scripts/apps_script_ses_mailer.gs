@@ -43,6 +43,7 @@
  *   4. testSendMarketingEmail() — envia A1 pro seu email
  *   5. importMailerLiteContacts() / importMailerLiteUnsubs() — migração
  *   6. cutoverDisableMailerLite() — desliga o trigger do MailerLite
+ *   7. Métricas de abertura: arquivo metricas_broadcasts.gs (desde 15/09/2026)
  * ═══════════════════════════════════════════════════════════════════════
  */
 
@@ -55,7 +56,16 @@ const MAILER_TABS = [
   { sheet: 'Lista de Espera',          topic: 'lista-espera', sequencia: 'B',      hasNamePhone: true  },
   { sheet: 'Lead Magnet - Dicionário', topic: 'dicionario',   sequencia: 'C',      hasNamePhone: true  },
   { sheet: 'Lives',                    topic: 'lives',        sequencia: 'D',      hasNamePhone: true  },
-  { sheet: 'Bolsão',                   topic: 'bolsao',       sequencia: 'BOLSAO', hasNamePhone: true  }
+  { sheet: 'Bolsão',                   topic: 'bolsao',       sequencia: 'BOLSAO', hasNamePhone: true  },
+
+  // Aulas ao Vivo é a ÚNICA aba com mais de um tópico: uma linha por campanha,
+  // distinguidas pela coluna Campanha. Por isso `topicCol` no lugar de `topic` —
+  // o tópico é resolvido POR LINHA (topicOfRow_), não por aba.
+  //
+  // É o que permite acrescentar campanha sem tocar em código: basta uma linha
+  // na aba "Config Aulas". `sequencia: null` = nenhuma sequência automática;
+  // os disparos desta turma saem por broadcast agendado, com template próprio.
+  { sheet: 'Aulas ao Vivo',            topicCol: 'Campanha',  sequencia: null,     hasNamePhone: true  }
 ];
 
 const SES_TOPICS = [
@@ -66,12 +76,100 @@ const SES_TOPICS = [
   { TopicName: 'bolsao',       DisplayName: 'Bolsão da Fluência — prova 28/06',      DefaultSubscriptionStatus: 'OPT_IN' }
 ];
 
+/**
+ * Tópicos que a contact list do SES deve ter: os fixos acima + um por campanha
+ * de aula ao vivo declarada na aba "Config Aulas".
+ *
+ * Use SEMPRE esta função no lugar de SES_TOPICS ao falar com o SES — o
+ * UpdateContactList SUBSTITUI o conjunto inteiro, então mandar só os fixos
+ * APAGA os tópicos das campanhas e derruba o disparo delas.
+ */
+function sesTopics_() {
+  var extras = loadAulasConfig_().map(function(c) {
+    return {
+      TopicName: c.topico,
+      DisplayName: 'Aula ao vivo — ' + c.campanha,
+      DefaultSubscriptionStatus: 'OPT_IN'
+    };
+  });
+  var vistos = {};
+  return SES_TOPICS.concat(extras).filter(function(t) {
+    if (vistos[t.TopicName]) return false;
+    vistos[t.TopicName] = true;
+    return true;
+  });
+}
+
+/**
+ * Lê a aba "Config Aulas" — a fonte única das campanhas de aula ao vivo.
+ * Colunas: Origem | Campanha | Tópico SES | Data da aula | Ativa
+ *
+ * Campanha nova = uma linha aqui e uma origem nova na página. Nada de código.
+ *
+ * `Ativa = não` tira a campanha dos disparos (o tópico continua no SES), mas NÃO
+ * quebra a captura: o handler continua reconhecendo a origem (senão o lead que
+ * chega atrasado viraria órfão).
+ */
+function loadAulasConfig_() {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MAILER_SHEETS.CONFIG_AULAS);
+  if (!sheet || sheet.getLastRow() < 2) return [];
+  var rows = sheet.getRange(2, 1, sheet.getLastRow() - 1, 5).getValues();
+  var out = [];
+  rows.forEach(function(r) {
+    var origem = String(r[0] || '').trim().toLowerCase();
+    var campanha = String(r[1] || '').trim();
+    var topico = String(r[2] || '').trim().toLowerCase();
+    if (!origem || !campanha || !topico) return;
+    var ativa = String(r[4] || 'sim').trim().toLowerCase();
+    out.push({
+      origem: origem,
+      campanha: campanha,
+      topico: topico,
+      data: r[3],
+      ativa: (ativa !== 'nao' && ativa !== 'não' && ativa !== 'no')
+    });
+  });
+  return out;
+}
+
+/**
+ * Campanha (rótulo da coluna) → tópico do SES. Só campanhas ativas.
+ *
+ * Lida UMA vez por execução: topicOfRow_ chama isto a cada linha, e reler a aba
+ * a cada linha multiplicava as chamadas ao Sheets pelo tamanho da Aulas ao Vivo.
+ * Cada execução do Apps Script (trigger ou editor) começa com o cache vazio.
+ */
+var AULAS_TOPICO_CACHE_ = null;
+function aulasTopicoPorCampanha_() {
+  if (AULAS_TOPICO_CACHE_) return AULAS_TOPICO_CACHE_;
+  var map = {};
+  loadAulasConfig_().forEach(function(c) {
+    if (c.ativa) map[c.campanha] = c.topico;
+  });
+  AULAS_TOPICO_CACHE_ = map;
+  return map;
+}
+
+/**
+ * O tópico do SES de UMA linha. Aba com `topic` fixo devolve ele; aba com
+ * `topicCol` resolve pelo valor daquela coluna, via Config Aulas.
+ * Devolve null quando não dá pra resolver — quem chama decide o que fazer.
+ */
+function topicOfRow_(cfg, row, cols) {
+  if (cfg.topic) return cfg.topic;
+  if (!cfg.topicCol || !cols[cfg.topicCol]) return null;
+  var valor = String(row[cols[cfg.topicCol] - 1] || '').trim();
+  return aulasTopicoPorCampanha_()[valor] || null;
+}
+
 // Colunas novas adicionadas a cada aba de leads (sem tocar nas ML Sync)
 const MAILER_COLS = ['SES Sync', 'SES Sync At', 'Seq Passo', 'Seq Próximo Em'];
 
 const MAILER_SHEETS = {
   CONFIG_SEQ: 'Config Sequencias',
+  CONFIG_AULAS: 'Config Aulas',
   BROADCASTS: 'Broadcasts',
+  SEGMENTOS:  'Segmentos',
   IMPORT_ML:  'Import ML',
   UNSUBS_ML:  'Unsubs ML'
 };
@@ -227,8 +325,13 @@ function safeParse_(text) {
 /**
  * Envia 1 email de marketing via SES com list management (unsubscribe
  * automático + supressão de quem já saiu do tópico).
+ *
+ * campanha (opcional): rótulo que vira message tag e, no CloudWatch, a
+ * dimensão que separa as métricas por envio (ex.: 'L2', 'B-3'). Sem ele os
+ * eventos caem todos no balde 'sem-campanha' e não dá pra medir um envio
+ * isolado. As etiquetas vêm de fcMetricasEmailTags_ (metricas_broadcasts.gs).
  */
-function sesSendMarketing_(toEmail, subject, html, topicName) {
+function sesSendMarketing_(toEmail, subject, html, topicName, campanha) {
   var props = PropertiesService.getScriptProperties();
   if (props.getProperty('MAILER_ENABLED') !== 'true') {
     throw new Error('MAILER_ENABLED != true — envio bloqueado (kill switch)');
@@ -250,7 +353,11 @@ function sesSendMarketing_(toEmail, subject, html, topicName) {
       Body: { Html: { Data: html, Charset: 'UTF-8' } }
     } }
   };
-
+  // O módulo de métricas só etiqueta após sua ativação; a fila continua a mesma.
+  if (campanha && typeof fcMetricasEmailTags_ === 'function') {
+    var tagsMetricas = fcMetricasEmailTags_(campanha);
+    if (tagsMetricas.length) payload.EmailTags = tagsMetricas;
+  }
   var res = sesRequest_('POST', ['v2', 'email', 'outbound-emails'], payload);
   if (!res.ok) throw new Error('SES SendEmail HTTP ' + res.code + ': ' + String(res.raw).substring(0, 300));
   return res.body && res.body.MessageId;
@@ -405,8 +512,17 @@ function syncPendingToSES() {
           processed++;
           continue;
         }
+        var topic = topicOfRow_(cfg, row, cols);
+        if (!topic) {
+          // Campanha fora da Config Aulas (ou inativa). Marca e segue — o lead
+          // fica na planilha, e limpar a célula faz o worker reprocessar.
+          markCell_(sheet, rowNum, cols, 'SES Sync',
+            'err:sem topico para a campanha desta linha (ver aba Config Aulas)');
+          processed++;
+          continue;
+        }
         try {
-          sesUpsertContact_(email, cfg.topic, buildContactAttributes_(row, cols, cfg));
+          sesUpsertContact_(email, topic, buildContactAttributes_(row, cols, cfg));
           markCell_(sheet, rowNum, cols, 'SES Sync', 'ok');
         } catch (err) {
           if (String(err).indexOf('RATE_LIMIT') >= 0) {
@@ -622,7 +738,18 @@ function processBroadcasts() {
     if (!sheet || sheet.getLastRow() < 2) return;
 
     var now = new Date();
-    var rows = sheet.getRange(2, 1, sheet.getLastRow() - 1, 9).getValues();
+
+    // A coluna do segmento é achada pelo CABEÇALHO, nunca por posição.
+    //
+    // `setupTrackingAberturas()` acrescentou Entregues/Aberturas/Índice/Bounces/
+    // Métricas Em em getLastColumn()+1, e elas ocupam J..N desde 28/07/2026.
+    // Um índice fixo aqui leria o número de entregues como código de segmento —
+    // e `lerSegmento_` abortaria TODO disparo que já tivesse métrica.
+    var largura = Math.max(sheet.getLastColumn(), 9);
+    var cabecalhoBc = sheet.getRange(1, 1, 1, largura).getValues()[0]
+                           .map(function(c) { return String(c || '').trim(); });
+    var colSegmento = cabecalhoBc.indexOf('Segmento'); // 0-based; -1 = não existe
+    var rows = sheet.getRange(2, 1, sheet.getLastRow() - 1, largura).getValues();
     var cols = headerIndexes_(sheet); // "Etiqueta" é opcional (setupEtiquetaBroadcasts)
 
     for (var r = 0; r < rows.length; r++) {
@@ -632,6 +759,7 @@ function processBroadcasts() {
       if (!(agendado instanceof Date) || agendado > now) continue;
 
       var rowNum = r + 2;
+      var bcastId = String(rows[r][0] || '');
       var assunto = String(rows[r][1] || '');
       var template = String(rows[r][2] || '');
       var topicos = String(rows[r][3] || '').split(',').map(function(s) { return s.trim(); }).filter(Boolean);
@@ -640,7 +768,21 @@ function processBroadcasts() {
         continue;
       }
 
-      var recipients = collectRecipients_(topicos);
+      // Coluna ausente ou célula vazia = comportamento de sempre: a aba
+      // inteira dos tópicos.
+      var segmentoCodigo = colSegmento === -1
+        ? ''
+        : String(rows[r][colSegmento] || '').trim();
+
+      var recipients;
+      try {
+        recipients = collectRecipients_(topicos, segmentoCodigo);
+      } catch (err) {
+        // Segmento que não resolve vira `err:` na linha, e o disparo NÃO
+        // acontece. Cair na base inteira aqui seria o pior desfecho possível.
+        sheet.getRange(rowNum, 6).setValue('err:' + String(err).substring(0, 200));
+        continue;
+      }
       var cursor = parseInt(rows[r][6], 10) || 0;
       sheet.getRange(rowNum, 8).setValue(recipients.length);
       var utm = utmDoBroadcast_(sheet, rowNum, cols, rows[r][0]);
@@ -651,7 +793,7 @@ function processBroadcasts() {
         var rec = recipients[cursor];
         try {
           var html = injetarUtm_(renderTemplate_(template, rec.nome), utm);
-          sesSendMarketing_(rec.email, assunto, html, rec.topic);
+          sesSendMarketing_(rec.email, assunto, html, rec.topic, String(rows[r][0] || ''));
         } catch (err) {
           errors++;
           logError('Broadcast linha ' + rowNum + ': ' + err, { parameter: { email: rec.email } });
@@ -674,27 +816,82 @@ function processBroadcasts() {
   }
 }
 
-/** Coleta destinatários únicos das abas cujos tópicos foram pedidos (1º registro ganha o nome/tópico). */
-function collectRecipients_(topicos) {
+/**
+ * Os e-mails de um segmento, como conjunto.
+ *
+ * ⚠️ ESTA É A GUARDA MAIS IMPORTANTE DO ARQUIVO. Código de segmento presente e
+ * lista vazia é ERRO, nunca passagem livre: uma aba renomeada, uma escrita que
+ * falhou pela metade ou um código digitado errado fariam o disparo alcançar a
+ * BASE INTEIRA — exatamente o dano que o segmento existe para evitar.
+ *
+ * Quem monta a lista é o Gestão, que tem o que esta planilha não tem: as vendas
+ * da Kiwify e o DDD de cada pessoa. Aqui só se intersecta.
+ */
+function lerSegmento_(codigo) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MAILER_SHEETS.SEGMENTOS);
+  if (!sheet || sheet.getLastRow() < 2) {
+    throw new Error('Aba "' + MAILER_SHEETS.SEGMENTOS + '" ausente ou vazia — o segmento "' +
+                    codigo + '" nao pode ser resolvido. Disparo ABORTADO.');
+  }
+
+  var dados = sheet.getRange(2, 1, sheet.getLastRow() - 1, 2).getValues();
+  var conjunto = {};
+  var n = 0;
+  for (var i = 0; i < dados.length; i++) {
+    if (String(dados[i][0] || '').trim() !== codigo) continue;
+    var email = String(dados[i][1] || '').trim().toLowerCase();
+    if (!email || conjunto[email]) continue;
+    conjunto[email] = true;
+    n++;
+  }
+
+  if (n === 0) {
+    throw new Error('Segmento "' + codigo + '" nao tem nenhum e-mail na aba ' +
+                    MAILER_SHEETS.SEGMENTOS + '. Disparo ABORTADO — sem esta guarda ' +
+                    'ele iria para a base inteira.');
+  }
+  return conjunto;
+}
+
+/**
+ * Coleta destinatários únicos das abas cujos tópicos foram pedidos (1º registro
+ * ganha o nome/tópico).
+ *
+ * `segmentoCodigo` (opcional) só RESTRINGE: o público continua sendo
+ * tópico ∩ SES Sync ok, e o segmento corta dentro dele. O motor não sabe o que é
+ * UF nem o que é "não comprou" — quem resolveu isso foi o Gestão, com os dados
+ * que só ele tem.
+ */
+function collectRecipients_(topicos, segmentoCodigo) {
+  var permitidos = segmentoCodigo ? lerSegmento_(segmentoCodigo) : null;
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var seen = {};
   var out = [];
   MAILER_TABS.forEach(function(cfg) {
-    if (topicos.indexOf(cfg.topic) === -1) return;
+    // Aba de tópico fixo que ninguém pediu: pula inteira (economia). Aba de
+    // tópico por linha não dá pra descartar aqui — o filtro é linha a linha.
+    if (cfg.topic && topicos.indexOf(cfg.topic) === -1) return;
     var sheet = ss.getSheetByName(cfg.sheet);
     if (!sheet || sheet.getLastRow() < 2) return;
     var cols = headerIndexes_(sheet);
     var data = sheet.getRange(2, 1, sheet.getLastRow() - 1, sheet.getLastColumn()).getValues();
     data.forEach(function(row) {
+      // ⚠️ O tópico é da LINHA, não da aba. Sem isto, um broadcast para a
+      // campanha X levaria junto todo mundo da campanha Y, que mora na mesma
+      // aba "Aulas ao Vivo".
+      var topic = topicOfRow_(cfg, row, cols);
+      if (!topic || topicos.indexOf(topic) === -1) return;
       var email = String(row[cols['E-mail'] - 1] || '').trim().toLowerCase();
       if (!isValidEmail(email) || seen[email]) return;
       // Só envia broadcast pra quem já está na contact list (SES Sync ok)
       if (String(row[cols['SES Sync'] - 1] || '') !== 'ok') return;
+      // E, quando há recorte, só pra quem o Gestão selecionou.
+      if (permitidos && !permitidos[email]) return;
       seen[email] = true;
       out.push({
         email: email,
         nome: cols['Nome'] ? String(row[cols['Nome'] - 1] || '') : '',
-        topic: cfg.topic
+        topic: topic
       });
     });
   });
@@ -839,7 +1036,7 @@ function setupSesInfra() {
   var r1 = sesRequest_('POST', ['v2', 'email', 'contact-lists'], {
     ContactListName: list,
     Description: 'Leads Fluência Contábil (newsletter, lista de espera, dicionário, lives)',
-    Topics: SES_TOPICS
+    Topics: sesTopics_()
   });
   Logger.log(r1.ok ? '✅ Contact list "' + list + '" criada'
     : (/AlreadyExists/i.test(r1.raw) ? 'ℹ️ Contact list já existia' : '❌ Contact list: HTTP ' + r1.code + ' ' + r1.raw));
@@ -851,6 +1048,9 @@ function setupSesInfra() {
   Logger.log('Lembrete: a IDENTIDADE (news.fluenciacontabil.com.br) se verifica no console SES — ver runbook.');
 }
 
+
+// ═════════════ MÉTRICAS DE ABERTURA (SES → CloudWatch → planilha) ═════════════
+
 /** 1× — colunas novas nas 4 abas + abas de config pré-preenchidas + triggers. Idempotente. */
 function setupMailerAfterDeploy() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -860,7 +1060,13 @@ function setupMailerAfterDeploy() {
     var sheet = ss.getSheetByName(cfg.sheet);
     if (!sheet) return;
     var headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0].map(String);
-    MAILER_COLS.forEach(function(col) {
+    // Aba sem sequência automática não ganha "Seq Passo"/"Seq Próximo Em": a aba
+    // Aulas ao Vivo tem contrato de 17 colunas com o Gestão, e coluna a mais no
+    // fim desloca quem casa por posição.
+    var colsDaAba = cfg.sequencia
+      ? MAILER_COLS
+      : MAILER_COLS.filter(function(c) { return c.indexOf('Seq ') !== 0; });
+    colsDaAba.forEach(function(col) {
       if (headers.indexOf(col) === -1) {
         var c = sheet.getLastColumn() + 1;
         sheet.getRange(1, c).setValue(col).setFontWeight('bold')
@@ -914,8 +1120,42 @@ function setupMailerAfterDeploy() {
       'Status', 'Enviados', 'Total', 'Última execução'
     ]]).setFontWeight('bold').setBackground('#1B2A4A').setFontColor('#FFFFFF');
     bc.setFrozenRows(1);
-    bc.getRange('K1').setValue('Tópicos válidos: newsletter, lista-espera, dicionario, lives. Status: vazio=aguardando · enviando · ok (n/total) · err:... · "pausado" (manual) interrompe.');
+    bc.getRange('K1').setValue('Tópicos válidos: newsletter, lista-espera, dicionario, lives, bolsao. Status: vazio=aguardando · enviando · ok (n/total) · err:... · "pausado" (manual) interrompe.');
     Logger.log('✅ Aba "Broadcasts" criada');
+  }
+
+  // 3b. A coluna "Segmento", SEMPRE no fim — nunca numa posição fixa.
+  //
+  // `setupTrackingAberturas()` já acrescentou as cinco colunas de métrica em
+  // getLastColumn()+1. Forçar o Segmento na décima posição sobrescreveria
+  // "Entregues", e a partir daí o motor leria o número de entregues como código
+  // de segmento e abortaria todo disparo com métrica. Mesmo idioma das métricas:
+  // procura pelo nome, e só acrescenta se faltar.
+  var bcSeg = ss.getSheetByName(MAILER_SHEETS.BROADCASTS);
+  if (bcSeg) {
+    var headersBc = bcSeg.getRange(1, 1, 1, bcSeg.getLastColumn()).getValues()[0]
+                         .map(function(c) { return String(c || '').trim(); });
+    if (headersBc.indexOf('Segmento') === -1) {
+      var cSeg = bcSeg.getLastColumn() + 1;
+      bcSeg.getRange(1, cSeg).setValue('Segmento')
+        .setFontWeight('bold').setBackground('#1B2A4A').setFontColor('#FFFFFF');
+      Logger.log('✅ Coluna "Segmento" acrescentada à aba Broadcasts (coluna ' + cSeg + ')');
+    } else {
+      Logger.log('· Coluna "Segmento" já existe na aba Broadcasts');
+    }
+  }
+
+  // 3b. Aba Segmentos — as listas de destinatários que o Gestão materializa.
+  //
+  // Uma linha por pessoa. Não cabe numa célula da aba Broadcasts: o Sheets para
+  // em 50.000 caracteres e um recorte comum já passa de 52KB.
+  if (!ss.getSheetByName(MAILER_SHEETS.SEGMENTOS)) {
+    var sg = ss.insertSheet(MAILER_SHEETS.SEGMENTOS);
+    sg.getRange(1, 1, 1, 2).setValues([['Código', 'E-mail']])
+      .setFontWeight('bold').setBackground('#1B2A4A').setFontColor('#FFFFFF');
+    sg.setFrozenRows(1);
+    sg.getRange('D1').setValue('Escrita pelo Fluência Gestão ao agendar disparo com recorte. NÃO editar à mão: o motor ABORTA o disparo se o código da coluna J de Broadcasts não achar nenhum e-mail aqui.');
+    Logger.log('✅ Aba "Segmentos" criada');
   }
 
   // 4. Abas de migração
@@ -962,7 +1202,7 @@ function setupBolsao() {
   // (a) tópico na contact list (UpdateContactList substitui o conjunto — manda TODOS)
   var upd = sesRequest_('PUT', ['v2', 'email', 'contact-lists', list], {
     Description: 'Leads Fluência Contábil (newsletter, lista de espera, dicionário, lives, bolsão)',
-    Topics: SES_TOPICS
+    Topics: sesTopics_()
   });
   Logger.log(upd.ok ? '✅ Tópico "bolsao" adicionado à contact list'
     : '❌ UpdateContactList HTTP ' + upd.code + ': ' + String(upd.raw).substring(0, 250) +
@@ -1333,6 +1573,215 @@ function ensaioBroadcastBolsao() {
   }
 }
 
+
+/**
+ * Apaga as linhas de segmento de disparos já concluídos.
+ *
+ * A aba cresce com o uso: 50 campanhas de ~2.000 pessoas são 100 mil linhas.
+ * Não está no caminho de envio de propósito — é manutenção, rodada à mão, e um
+ * bug aqui não pode atrapalhar um disparo.
+ *
+ * Só remove segmento de linha com status `ok`: enquanto o disparo está
+ * `enviando`, o motor ainda vai reler a lista a cada rodada.
+ */
+function limparSegmentosAntigos() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var bc = ss.getSheetByName(MAILER_SHEETS.BROADCASTS);
+  var seg = ss.getSheetByName(MAILER_SHEETS.SEGMENTOS);
+  if (!bc || !seg || seg.getLastRow() < 2) { Logger.log('Nada a limpar.'); return; }
+
+  var larguraBc = Math.max(bc.getLastColumn(), 9);
+  var cabBc = bc.getRange(1, 1, 1, larguraBc).getValues()[0]
+                .map(function(c) { return String(c || '').trim(); });
+  var iSeg = cabBc.indexOf('Segmento');
+  if (iSeg === -1) { Logger.log('Aba Broadcasts sem coluna Segmento — nada a limpar.'); return; }
+
+  var concluidos = {};
+  var linhas = bc.getRange(2, 1, bc.getLastRow() - 1, larguraBc).getValues();
+  for (var i = 0; i < linhas.length; i++) {
+    var cod = String(linhas[i][iSeg] || '').trim();
+    // Só disparo CONCLUÍDO. Enquanto o status é "enviando", o motor ainda relê
+    // a lista a cada rodada, e apagá-la abortaria o disparo no meio.
+    if (cod && String(linhas[i][5] || '').indexOf('ok') === 0) concluidos[cod] = true;
+  }
+
+  var dados = seg.getRange(2, 1, seg.getLastRow() - 1, 2).getValues();
+  var mantidas = dados.filter(function(l) { return !concluidos[String(l[0] || '').trim()]; });
+  var removidas = dados.length - mantidas.length;
+  if (removidas === 0) { Logger.log('Nada a limpar.'); return; }
+
+  seg.getRange(2, 1, dados.length, 2).clearContent();
+  if (mantidas.length > 0) seg.getRange(2, 1, mantidas.length, 2).setValues(mantidas);
+  Logger.log('🧹 ' + removidas + ' linha(s) de segmento removida(s); ' +
+             mantidas.length + ' mantida(s).');
+}
+
+/**
+ * Confere um segmento SEM ENVIAR NADA — molde de `simularPublicoBroadcast`.
+ *
+ * Responde à PRIMEIRA pergunta do ensaio: "é este o público?". Rodar antes de
+ * qualquer agendamento com recorte novo.
+ *
+ * Mostra também quanta gente sairia SEM o recorte, que é o número que dá a
+ * dimensão do que se está evitando.
+ */
+function simularPublicoSegmento(codigo, topicos) {
+  var alvo = codigo || 'seg-TROQUE-AQUI';
+  var quais = topicos || sesTopics_().map(function(t) { return t.TopicName; });
+
+  var comSegmento = collectRecipients_(quais, alvo);
+  var semSegmento = collectRecipients_(quais, null);
+
+  var porGrupo = {};
+  comSegmento.forEach(function(r) { porGrupo[r.topic] = (porGrupo[r.topic] || 0) + 1; });
+
+  Logger.log('📊 SIMULAÇÃO do segmento "' + alvo + '" (nenhum e-mail enviado):');
+  quais.forEach(function(t) { Logger.log('   ' + t + ': ' + (porGrupo[t] || 0)); });
+  Logger.log('   ─────────────────────────');
+  Logger.log('   COM segmento:  ' + comSegmento.length);
+  Logger.log('   SEM segmento:  ' + semSegmento.length + '  <- é o que sairia sem o recorte');
+  Logger.log('   Poupados:      ' + (semSegmento.length - comSegmento.length));
+  Logger.log('');
+  Logger.log('Primeiros 10 destinatários, para conferir a olho:');
+  comSegmento.slice(0, 10).forEach(function(r) {
+    Logger.log('   ' + r.email + '  (' + r.topic + ')');
+  });
+  Logger.log('');
+  Logger.log('⏱️ A ' + BCAST_SEND_BATCH + '/rodada de 5min: ~' +
+    Math.ceil(comSegmento.length / BCAST_SEND_BATCH) * 5 + ' minuto(s) de envio.');
+}
+
+/**
+ * ENSAIO DO SEGMENTO — 1 clique, 1 e-mail, caminho REAL de produção.
+ *
+ * Molde de `ensaioBroadcastBolsao`. Responde à SEGUNDA pergunta: "a coluna 10 é
+ * honrada?". O que prova, e que nada mais prova: que o motor lê o segmento, que
+ * a interseção acontece, e que quem está fora do segmento NÃO recebe.
+ *
+ * ⚠️ Rodar DEPOIS de subir esta versão do script e ANTES do primeiro disparo
+ * real com recorte.
+ */
+function ensaioBroadcastSegmento() {
+  var EMAIL_ENSAIO = PropertiesService.getScriptProperties().getProperty('ENSAIO_EMAIL') || '';
+  if (EMAIL_ENSAIO.indexOf('@') === -1) {
+    Logger.log('❌ Configure ENSAIO_EMAIL em Script Properties antes de rodar o ensaio.');
+    return;
+  }
+  var CODIGO = 'ENSAIO-SEG';
+  var SEGMENTO = 'seg-' + CODIGO;
+
+  if (PropertiesService.getScriptProperties().getProperty('MAILER_ENABLED') !== 'true') {
+    Logger.log('❌ MAILER_ENABLED != true — habilite antes do ensaio.');
+    return;
+  }
+
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var email = EMAIL_ENSAIO.toLowerCase();
+
+  // 1. Lead de ensaio na aba Bolsão, sincronizado com o SES
+  var bolsao = ss.getSheetByName('Bolsão');
+  if (!bolsao) { Logger.log('❌ Aba Bolsão não existe — rode setupMailerAfterDeploy().'); return; }
+  var cols = headerIndexes_(bolsao);
+  var linha = [];
+  Object.keys(cols).forEach(function(h) { linha[cols[h] - 1] = ''; });
+  linha[cols['Data'] - 1] = new Date();
+  if (cols['Nome']) linha[cols['Nome'] - 1] = 'ENSAIO SEG (apagar)';
+  linha[cols['E-mail'] - 1] = email;
+  if (cols['Origem']) linha[cols['Origem'] - 1] = 'ensaio_segmento';
+  if (cols['Seq Passo']) linha[cols['Seq Passo'] - 1] = 'pre-cutover';
+  bolsao.appendRow(linha);
+  try {
+    sesUpsertContact_(email, 'bolsao', { name: 'ENSAIO', origem: 'ensaio_segmento' });
+    bolsao.getRange(bolsao.getLastRow(), cols['SES Sync']).setValue('ok');
+    if (cols['SES Sync At']) bolsao.getRange(bolsao.getLastRow(), cols['SES Sync At']).setValue(new Date());
+    Logger.log('1/5 ✅ Lead de ensaio criado e sincronizado');
+  } catch (err) {
+    Logger.log('1/5 ❌ Sync falhou: ' + err);
+    return;
+  }
+
+  // 2. O segmento, com UM e-mail só
+  var seg = ss.getSheetByName(MAILER_SHEETS.SEGMENTOS);
+  if (!seg) { Logger.log('❌ Aba Segmentos não existe — rode setupMailerAfterDeploy().'); return; }
+  seg.appendRow([SEGMENTO, email]);
+  Logger.log('2/5 ✅ Segmento "' + SEGMENTO + '" com 1 e-mail');
+
+  // 3. A prova do recorte, ANTES de qualquer envio: o segmento tem de deixar
+  //    passar 1 pessoa onde o tópico inteiro deixaria passar centenas.
+  var comSeg = collectRecipients_(['bolsao'], SEGMENTO);
+  var semSeg = collectRecipients_(['bolsao'], null);
+  Logger.log('3/5 -> COM segmento: ' + comSeg.length + ' · SEM segmento: ' + semSeg.length);
+  if (comSeg.length !== 1 || comSeg[0].email !== email) {
+    Logger.log('❌ O segmento NÃO restringiu como deveria. NÃO prossiga com disparo real.');
+    return;
+  }
+
+  // 4. A linha de disparo. As nove primeiras por posição; o segmento na coluna
+  //    achada pelo CABEÇALHO — ela fica depois das cinco de métrica.
+  var bc = ss.getSheetByName(MAILER_SHEETS.BROADCASTS);
+  var larguraEnsaio = Math.max(bc.getLastColumn(), 9);
+  var cabEnsaio = bc.getRange(1, 1, 1, larguraEnsaio).getValues()[0]
+                    .map(function(c) { return String(c || '').trim(); });
+  var iSegEnsaio = cabEnsaio.indexOf('Segmento');
+  if (iSegEnsaio === -1) {
+    Logger.log('❌ Aba Broadcasts sem coluna "Segmento" — rode setupMailerAfterDeploy().');
+    return;
+  }
+  bc.appendRow([CODIGO, '[ENSAIO] Segmento — pode apagar', 'bolsao/vespera.html',
+                'bolsao', new Date(), '', '', '', '']);
+  bc.getRange(bc.getLastRow(), iSegEnsaio + 1).setValue(SEGMENTO);
+  Logger.log('4/5 ✅ Disparo [ENSAIO] agendado pra agora, com segmento na coluna ' +
+             (iSegEnsaio + 1));
+
+  // `processBroadcasts` sai CALADO em duas situações que não são falha: se o
+  // gatilho de 5 min estiver rodando, o `tryLock(1000)` nega e ele volta; e ele
+  // processa UMA linha por rodada, então outra pendente consome a vez. Afirmar o
+  // resultado depois de UMA chamada foi o que fez este ensaio reprovar um motor
+  // que estava certo, em 01/09/2026.
+  //
+  // Então: tenta até trêsvezes, com pausa, e só desiste depois disso.
+  var ultima;
+  for (var tentativa = 1; tentativa <= 3; tentativa++) {
+    processBroadcasts();
+    Utilities.sleep(2000);
+    ultima = bc.getRange(bc.getLastRow(), 1, 1, larguraEnsaio).getValues()[0];
+    if (String(ultima[5] || '') !== '') break;
+    Logger.log('   (tentativa ' + tentativa + ': o motor não pegou a linha — trinco ou outra pendente)');
+  }
+
+  // 5. Resultado
+  Logger.log('5/5 -> Status: "' + ultima[5] + '" · Enviados: ' + ultima[6] + '/' + ultima[7]);
+  Logger.log('');
+  if (String(ultima[5]).indexOf('ok') === 0 && Number(ultima[7]) === 1) {
+    Logger.log('🎖️ SEGMENTO PROVADO — 1 destinatário, e não a aba inteira. Confira o inbox ' + email);
+    Logger.log('Limpeza: apague a linha ' + CODIGO + ' de Broadcasts, a de ' + SEGMENTO +
+               ' em Segmentos, e "ENSAIO SEG (apagar)" da aba Bolsão.');
+  } else {
+    Logger.log('⚠️ Total esperado era 1, e veio "' + ultima[5] + '".');
+    Logger.log('   Se o status estiver VAZIO, o motor só não chegou nesta linha — espere');
+    Logger.log('   o gatilho de 5 min e confira a linha de novo. Se estiver "err:", aí sim');
+    Logger.log('   me mande o log ANTES de qualquer disparo real.');
+  }
+}
+
+/**
+ * Prova a GUARDA: segmento que não existe tem de ABORTAR, não passar livre.
+ *
+ * É o teste do caminho de falha, e o que mais importa: se esta função devolver
+ * uma lista em vez de lançar, o motor cairia na base inteira quando a aba fosse
+ * renomeada ou uma escrita falhasse pela metade.
+ */
+function ensaioGuardaDeSegmento() {
+  try {
+    var r = collectRecipients_(['bolsao'], 'seg-NAO-EXISTE-' + Date.now());
+    Logger.log('❌ REPROVADO: a guarda não disparou. Devolveu ' + r.length + ' destinatário(s).');
+    Logger.log('   NÃO agende disparo com recorte até isto ser corrigido.');
+  } catch (err) {
+    Logger.log('✅ GUARDA PROVADA — o motor abortou como deveria:');
+    Logger.log('   ' + err);
+  }
+}
+
 /** Envia o email A1 pra um endereço de teste (edite o destino antes de rodar). */
 /**
  * 1× — garante a coluna "Etiqueta" na aba Broadcasts (no fim, sem mexer nas
@@ -1378,7 +1827,7 @@ function testInjetarUtm() {
 function testSendMarketingEmail() {
   var to = 'vinicius.ferraz@gruponbeducacao.com'; // ← edite se quiser testar outro inbox
   var html = renderTemplate_('sequencia-a/A1-bem-vindo.html', 'Vinícius Teste');
-  var id = sesSendMarketing_(to, '[TESTE SES] Bem-vindo(a) à Fluência Contábil', html, 'newsletter');
+  var id = sesSendMarketing_(to, '[TESTE SES] Bem-vindo(a) à Fluência Contábil', html, 'newsletter', 'teste');
   Logger.log('✅ Enviado. MessageId=' + id + ' → confira o inbox ' + to +
              ' (inclusive o link de descadastro no rodapé).');
 }
@@ -1490,7 +1939,7 @@ function reinscreverContato() {
   var EMAIL = 'vinicius.ferraz@gruponbeducacao.com'; // ← edite
   var email = EMAIL.trim().toLowerCase();
   var list = PropertiesService.getScriptProperties().getProperty('SES_CONTACT_LIST') || 'fluencia';
-  var prefs = SES_TOPICS.map(function(t) {
+  var prefs = sesTopics_().map(function(t) {
     return { TopicName: t.TopicName, SubscriptionStatus: 'OPT_IN' };
   });
   var res = sesRequest_('PUT', ['v2', 'email', 'contact-lists', list, 'contacts', email], {
@@ -1659,7 +2108,13 @@ function dedupePlanilha() {
     for (var r = 0; r < data.length; r++) {
       var email = String(data[r][cols['E-mail'] - 1] || '').trim().toLowerCase();
       if (!isValidEmail(email)) continue;
-      if (!seen[email]) { seen[email] = true; continue; }
+      // Na aba de tópico por linha (Aulas ao Vivo), o mesmo e-mail em OUTRA
+      // campanha é inscrição legítima — marcar como duplicata apagaria a
+      // inscrição na segunda turma. A chave inclui a campanha.
+      var chave = cfg.topicCol && cols[cfg.topicCol]
+        ? email + '|' + String(data[r][cols[cfg.topicCol] - 1] || '').trim()
+        : email;
+      if (!seen[chave]) { seen[chave] = true; continue; }
 
       var rowNum = r + 2;
 
@@ -1744,4 +2199,95 @@ function arquivarDuplicatas() {
 function dedupeDiario() {
   dedupePlanilha();
   arquivarDuplicatas();
+}
+
+
+// ═════════════ AULAS AO VIVO — SETUP (rodar 1× por campanha nova) ═════════════
+
+/**
+ * Cria a aba "Config Aulas" (se faltar) e sincroniza os tópicos dela com a
+ * contact list do SES. Idempotente — pode rodar quantas vezes quiser.
+ *
+ * Fluxo de campanha nova, depois deste setup:
+ *   1. acrescentar UMA linha na aba "Config Aulas"
+ *   2. rodar esta função (cria o tópico no SES)
+ *   3. publicar a página de inscrição com a origem declarada na linha
+ * Nenhuma dessas etapas mexe em código.
+ *
+ * Exige ses:UpdateContactList na policy IAM (a mesma do setupBolsao). 403 aqui
+ * é falta de permissão, não erro de configuração.
+ */
+function setupAulasAoVivo() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getSheetByName(MAILER_SHEETS.CONFIG_AULAS);
+
+  if (!sheet) {
+    sheet = ss.insertSheet(MAILER_SHEETS.CONFIG_AULAS);
+    sheet.getRange(1, 1, 1, 5)
+      .setValues([['Origem', 'Campanha', 'Tópico SES', 'Data da aula', 'Ativa']])
+      .setFontWeight('bold').setBackground('#1B2A4A').setFontColor('#FFFFFF');
+    sheet.setFrozenRows(1);
+    sheet.getRange(2, 1, 2, 5).setValues([
+      ['aula_transpetro', 'Transpetro 2026', 'aula-transpetro', new Date(2026, 8, 10, 20, 0), 'sim'],
+      ['aula_sefaz_sc',   'SEFAZ SC 2026',   'aula-sefaz-sc',   new Date(2026, 8, 17, 20, 0), 'sim']
+    ]);
+    sheet.getRange(1, 1, 1, 5).setNotes([[
+      'Valor de `origem` que a página de inscrição manda. Sempre começa com aula_',
+      'Rótulo que vai na coluna Campanha da aba Aulas ao Vivo. É por ele que o Gestão filtra.',
+      'Tópico do SES. É por ele que o broadcast segmenta. Sem espaço e sem acento.',
+      'Data e hora da aula (informativo).',
+      'nao = fora dos disparos. A captura continua funcionando normalmente.'
+    ]]);
+    sheet.setColumnWidth(1, 160); sheet.setColumnWidth(2, 170);
+    sheet.setColumnWidth(3, 160); sheet.setColumnWidth(4, 150);
+    Logger.log('✅ Aba "' + MAILER_SHEETS.CONFIG_AULAS + '" criada com as 2 campanhas.');
+  } else {
+    Logger.log('ℹ️ Aba "' + MAILER_SHEETS.CONFIG_AULAS + '" já existia — mantida como está.');
+  }
+
+  var cfgs = loadAulasConfig_();
+  if (!cfgs.length) {
+    Logger.log('⚠️ Nenhuma campanha válida na Config Aulas. Nada enviado ao SES.');
+    return;
+  }
+
+  var list = PropertiesService.getScriptProperties().getProperty('SES_CONTACT_LIST') || 'fluencia';
+  var topics = sesTopics_();
+  var upd = sesRequest_('PUT', ['v2', 'email', 'contact-lists', list], {
+    Description: 'Leads Fluência Contábil (newsletter, lista de espera, dicionário, lives, bolsão, aulas ao vivo)',
+    Topics: topics
+  });
+
+  if (upd.ok) {
+    Logger.log('✅ Contact list "' + list + '" com ' + topics.length + ' tópicos:');
+    topics.forEach(function(t) { Logger.log('   • ' + t.TopicName); });
+    Logger.log('');
+    Logger.log('Agora limpe as células "SES Sync" que estiverem err: na aba Aulas ao Vivo');
+    Logger.log('(ou rode reprocessarErros) — o worker de 1min refaz o upsert sozinho.');
+  } else {
+    Logger.log('❌ UpdateContactList HTTP ' + upd.code + ': ' + String(upd.raw).substring(0, 250) +
+      (upd.code === 403 ? '  → falta ses:UpdateContactList na policy IAM fluencia-mailer' : ''));
+  }
+}
+
+/**
+ * Dry-run: mostra quem receberia o broadcast de cada campanha de aula ao vivo.
+ * NÃO envia nada. É a prova de que a segmentação por campanha funciona — se as
+ * duas campanhas mostrarem o mesmo número, o filtro por linha não pegou.
+ */
+function simularPublicoAulas() {
+  var cfgs = loadAulasConfig_();
+  if (!cfgs.length) { Logger.log('Nenhuma campanha na aba Config Aulas.'); return; }
+  Logger.log('📊 Público por campanha (nenhum e-mail enviado):');
+  var total = 0;
+  cfgs.forEach(function(c) {
+    var n = collectRecipients_([c.topico], null).length;
+    total += n;
+    Logger.log('   ' + c.campanha + '  (' + c.topico + '): ' + n + (c.ativa ? '' : '   [INATIVA]'));
+  });
+  Logger.log('   ─────────────────────');
+  Logger.log('   soma: ' + total);
+  Logger.log('');
+  Logger.log('Se os números forem IGUAIS entre campanhas, o filtro por linha falhou');
+  Logger.log('e o disparo levaria a turma errada junto. Investigar antes de agendar.');
 }
