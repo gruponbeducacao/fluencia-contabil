@@ -1,0 +1,37 @@
+{
+  "versao": 1,
+  "gerado_em": "2026-09-15T10:35",
+  "gerado_por": "_LIVES/_semanal/publicar_semana_lp.py",
+  "aulas": [
+    {
+      "data": "2026-09-16",
+      "origem": "aula_ao_vivo_2026_09_16",
+      "campanha": "Live Semanal 16/09 — ISS Guarulhos",
+      "tema": "ISS Guarulhos 2026 — correção de Contabilidade Fiscal",
+      "ancora": "Auditor(a) Fiscal VI · IBAM · prova de 13/09",
+      "titulo": "ISS Guarulhos 2026: a correção ao vivo das <em>15 questões de Contabilidade Fiscal</em>.",
+      "sub": "Quarta, 16/09, às 20h, eu resolvo uma a uma as questões de Contabilidade Fiscal da prova de Auditor(a) Fiscal aplicada pelo IBAM em 13/09. <strong>Pegue a folha de questões, resolva antes e receba as resoluções por e-mail depois da aula.</strong>",
+      "questoes": 15,
+      "paginas": null,
+      "pdf": null,
+      "capa_jpg": "assets/aulas/live-2026-09-16-capa.jpg",
+      "capa_webp": "assets/aulas/live-2026-09-16-capa.webp",
+      "youtube": "https://www.youtube.com/live/I5ZIb31odvI"
+    },
+    {
+      "data": "2026-09-23",
+      "origem": "aula_ao_vivo_2026_09_23",
+      "campanha": "Live Semanal 23/09 — Impairment",
+      "tema": "Impairment — Redução ao Valor Recuperável de Ativos (CPC 01)",
+      "ancora": "Transpetro 2026 · Cesgranrio",
+      "titulo": "Impairment: as <em>3 regras</em> que resolvem quase toda questão.",
+      "sub": "Quarta, 23/09, às 20h, eu resolvo 20 questões de Redução ao Valor Recuperável de Ativos e abro o texto do CPC 01 que sustenta cada gabarito. <strong>Pegue a folha de questões, resolva antes e receba as resoluções por e-mail depois da aula.</strong>",
+      "questoes": 20,
+      "paginas": 22,
+      "pdf": "assets/aulas/folha-2026-09-23.pdf",
+      "capa_jpg": "assets/aulas/live-2026-09-23-capa.jpg",
+      "capa_webp": "assets/aulas/live-2026-09-23-capa.webp",
+      "youtube": null
+    }
+  ]
+}
