@@ -33,6 +33,7 @@ pela URL; não há compartilhamento de `sessionStorage`.
 
 ```sh
 node --test scripts/origem.test.mjs
+node --test scripts/origem-captura.test.mjs
 ```
 
 Os testes usam dados sintéticos e APIs nativas do Node. Verificam navegação,
@@ -52,3 +53,32 @@ e servidor precisam de homologação separada; não são comprovadas por estes t
 Referências: [dataLayer do Google](https://developers.google.com/tag-platform/tag-manager/datalayer),
 [tratamento oficial de click ID da Meta](https://github.com/facebook/capi-param-builder/blob/main/client_js/shared/utils/cookieUtil.js)
 e [eventos do pixel na Kiwify](https://ajuda.kiwify.com.br/pt-br/article/como-configurar-o-pixel-do-facebook-1rb2xtr/).
+
+## Captura após navegação interna — 16/09/2026
+
+No site principal, `email-capture.js` usa o mesmo snapshot `FC_ORIGEM.origem`
+para os seis parâmetros já aceitos pelo formulário: `utm_source`, `utm_medium`,
+`utm_campaign`, `utm_content`, `utm_term` e `src`. Assim, entrar pelo anúncio,
+navegar para outra página e preencher um widget conserva campanha e anúncio.
+Uma nova campanha substitui o conjunto anterior; campos ausentes não são
+completados com IDs de outra visita. Sem o asset, continua valendo a URL atual.
+
+Não há novos campos pessoais, cookies, persistência ou chamadas de rede.
+O teste reproduz a perda no código anterior, percorre a inicialização real de
+`origem.js` entre páginas e inspeciona o corpo produzido pela função real dos
+formulários com `fetch` simulado. Não inscreve leads nem envia eventos externos.
+O transporte `no-cors` já existente continua sem confirmação legível de gravação;
+o evento de captura no `dataLayer` não foi convertido em comprovante de servidor.
+
+Ensaio no Google Chrome isolado: entrada com campanha, navegação para um post
+sem parâmetros e envio pelo formulário real da newsletter preservaram os seis
+campos. POST interceptado, sem cadastrar lead real. Também foram conferidos o
+decorador entre domínios com âncora sintética e o CTA real do rodapé do Dicionário:
+campanha/ID de anúncio, `s1` e `s2` chegaram à URL de checkout; um clique gerou
+uma intenção `checkout_click`. GTM, Panda e chamadas externas foram bloqueados.
+Isso não homologa o CTA interno do iframe Panda nem a entrega nativa de eventos.
+
+Os dois `origem.js` publicados em 16/09 foram comparados com os arquivos
+auditados: conteúdo idêntico, normalizando apenas finais de linha. O
+`email-capture.js` publicado também correspondia ao código anterior que perde
+as UTMs após navegação. A correção requer merge/publicação deste PR.
