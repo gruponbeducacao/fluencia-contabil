@@ -73,14 +73,16 @@
       var urlParams = new URLSearchParams(window.location.search);
       data.append('pagina', window.location.pathname + window.location.search);
       data.append('referrer', document.referrer || '');
-      data.append('utm_source',   urlParams.get('utm_source')   || '');
-      data.append('utm_medium',   urlParams.get('utm_medium')   || '');
-      data.append('utm_campaign', urlParams.get('utm_campaign') || '');
-      // Criativo, id do anúncio e src: sem eles a captura sabe a campanha mas
-      // não sabe qual peça trouxe a pessoa. O Apps Script já lê os três.
-      data.append('utm_content',  urlParams.get('utm_content')  || '');
-      data.append('utm_term',     urlParams.get('utm_term')     || '');
-      data.append('src',          urlParams.get('src')          || '');
+      // A URL interna pode não ter mais UTMs. Usa a mesma origem da sessão
+      // que prepara os checkouts, como um conjunto: misturar campos da URL
+      // nova com a campanha antiga atribuiria o lead ao anúncio errado.
+      // Sem origem.js, preserva a leitura da URL atual. Nenhum cookie é enviado.
+      var salva = window.FC_ORIGEM && window.FC_ORIGEM.instalada && window.FC_ORIGEM.origem;
+      var usarSalva = salva && typeof salva === 'object' && !Array.isArray(salva);
+      ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'src'].forEach(function (chave) {
+        var valor = usarSalva ? salva[chave] : urlParams.get(chave);
+        data.append(chave, typeof valor === 'string' ? valor : '');
+      });
       data.append('dispositivo',
         window.matchMedia('(max-width: 720px)').matches ? 'Mobile' : 'Desktop');
     } catch (e) {}
