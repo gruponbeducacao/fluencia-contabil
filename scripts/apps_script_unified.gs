@@ -117,20 +117,20 @@ function routeByOrigin(p) {
 
 function handleNewsletter(p) {
   var sheet = ensureSheet(SHEETS.NEWSLETTER, NEWSLETTER_HEADERS, NEWSLETTER_NOTES);
-  sheet.appendRow([
+  appendLeadWithTracking_(sheet, NEWSLETTER_HEADERS, [
     new Date(), p.email,
     String(p.origem || ''), String(p.ref || ''),
     String(p.pagina || ''), String(p.referrer || ''),
     String(p.utm_source || ''), String(p.utm_medium || ''), String(p.utm_campaign || ''),
     String(p.dispositivo || ''),
     '', ''  // ML Sync, ML Sync At
-  ]);
+  ], p);
   return jsonResponse({ ok: true, aba: SHEETS.NEWSLETTER });
 }
 
 function handleLista(p) {
   var sheet = ensureSheet(SHEETS.LISTA, LISTA_HEADERS, LISTA_NOTES);
-  sheet.appendRow([
+  appendLeadWithTracking_(sheet, LISTA_HEADERS, [
     new Date(), String(p.nome || '').trim(), p.email,
     normalizePhone(p.telefone_digits || p.telefone || p.whatsapp || ''),
     String(p.origem || ''), String(p.ref || ''),
@@ -138,13 +138,13 @@ function handleLista(p) {
     String(p.utm_source || ''), String(p.utm_medium || ''), String(p.utm_campaign || ''),
     String(p.dispositivo || ''),
     '', ''
-  ]);
+  ], p);
   return jsonResponse({ ok: true, aba: SHEETS.LISTA });
 }
 
 function handleDicionario(p) {
   var sheet = ensureSheet(SHEETS.DICIONARIO, DICIONARIO_HEADERS, DICIONARIO_NOTES);
-  sheet.appendRow([
+  appendLeadWithTracking_(sheet, DICIONARIO_HEADERS, [
     new Date(), String(p.nome || '').trim(), p.email,
     normalizePhone(p.telefone_digits || p.telefone || ''),
     String(p.origem || ''),
@@ -152,28 +152,27 @@ function handleDicionario(p) {
     String(p.utm_source || ''), String(p.utm_medium || ''), String(p.utm_campaign || ''),
     String(p.dispositivo || ''),
     '', ''
-  ]);
+  ], p);
   return jsonResponse({ ok: true, aba: SHEETS.DICIONARIO });
 }
 
 function handleBolsao(p) {
   // Aba pós-MailerLite: sem colunas ML Sync (SES/Seq/CRM são adicionadas pelo setupBolsao do ses_mailer.gs)
   var sheet = ensureSheet(SHEETS.BOLSAO, BOLSAO_HEADERS, BOLSAO_NOTES);
-  sheet.appendRow([
+  appendLeadWithTracking_(sheet, BOLSAO_HEADERS, [
     new Date(), String(p.nome || '').trim(), p.email,
     normalizePhone(p.telefone_digits || p.telefone || p.whatsapp || ''),
     String(p.origem || ''), String(p.ref || ''),
     String(p.pagina || ''), String(p.referrer || ''),
     String(p.utm_source || ''), String(p.utm_medium || ''), String(p.utm_campaign || ''),
     String(p.dispositivo || '')
-  ]);
+  ], p);
   return jsonResponse({ ok: true, aba: SHEETS.BOLSAO });
 }
 
 function handleLives(p) {
   var sheet = ensureSheet(SHEETS.LIVES, LIVES_HEADERS, LIVES_NOTES);
-  var rowNum = sheet.getLastRow() + 1;
-  sheet.appendRow([
+  var rowNum = appendLeadWithTracking_(sheet, LIVES_HEADERS, [
     new Date(), String(p.nome || '').trim(), p.email,
     normalizePhone(p.telefone_digits || p.telefone || p.whatsapp || ''),
     String(p.origem || ''), String(p.ref || ''),
@@ -181,9 +180,61 @@ function handleLives(p) {
     String(p.utm_source || ''), String(p.utm_medium || ''), String(p.utm_campaign || ''),
     String(p.dispositivo || ''),
     '', '', '', ''
-  ]);
+  ], p);
   dispatchLiveLeadImmediately_(p, sheet, rowNum);
   return jsonResponse({ ok: true, aba: SHEETS.LIVES });
+}
+
+
+/**
+ * Parâmetros por cabeçalho, depois das colunas já usadas por SES/CRM.
+ * O trinco protege a criação das colunas e o número da linha entre submits.
+ * O histórico fica intacto; os IDs novos são texto, nunca números do Sheets.
+ */
+function appendLeadWithTracking_(sheet, baseHeaders, baseValues, p) {
+  var lock = LockService.getScriptLock();
+  lock.waitLock(10000);
+  try {
+    var headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0].map(String);
+    var normalize = function (h) { return String(h).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]/g, ''); };
+    var keys = headers.map(normalize);
+    var tracking = [ ['Src', 'src'], ['UTM Content', 'utm_content'], ['UTM Term', 'utm_term'] ];
+    var managed = baseHeaders.concat(tracking.map(function (t) { return t[0]; }));
+    managed.forEach(function (h) {
+      var key = normalize(h);
+      if (keys.indexOf(key) !== keys.lastIndexOf(key)) throw new Error('Cabeçalho ambíguo de captura: ' + h);
+    });
+    baseHeaders.forEach(function (h) {
+      if (keys.indexOf(normalize(h)) < 0) throw new Error('Cabeçalho de captura ausente: ' + h);
+    });
+    var missing = tracking.filter(function (t) { return keys.indexOf(normalize(t[0])) < 0; });
+    if (missing.length) {
+      var first = headers.length + 1;
+      var needed = headers.length + missing.length;
+      if (needed > sheet.getMaxColumns()) sheet.insertColumnsAfter(sheet.getMaxColumns(), needed - sheet.getMaxColumns());
+      sheet.getRange(1, first, 1, missing.length).setValues([missing.map(function (t) { return t[0]; })])
+        .setFontWeight('bold').setBackground('#1B2A4A').setFontColor('#FFFFFF');
+      headers = headers.concat(missing.map(function (t) { return t[0]; }));
+      keys = headers.map(normalize);
+    }
+    var rowNum = sheet.getLastRow() + 1;
+    if (rowNum > sheet.getMaxRows()) sheet.insertRowsAfter(sheet.getMaxRows(), 1);
+    var values = headers.map(function () { return ''; });
+    baseHeaders.forEach(function (h, i) { values[keys.indexOf(normalize(h))] = baseValues[i] == null ? '' : baseValues[i]; });
+    tracking.forEach(function (t) {
+      var col = keys.indexOf(normalize(t[0]));
+      var value = typeof p[t[1]] === 'string' ? p[t[1]].trim() : '';
+      // setValues interpreta '=' como fórmula mesmo em entrada externa.
+      if (/^[=+@-]/.test(value)) value = "'" + value;
+      sheet.getRange(rowNum, col + 1).setNumberFormat('@');
+      values[col] = value;
+    });
+    sheet.getRange(rowNum, 1, 1, values.length).setValues([values]);
+    SpreadsheetApp.flush();
+    return rowNum;
+  } finally {
+    lock.releaseLock();
+  }
 }
 
 /**
