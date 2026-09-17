@@ -16,4 +16,4 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: node --test scripts/origem.test.mjs scripts/origem-captura.test.mjs scripts/vsl.test.mjs
+      - run: node --test scripts/apps-script-rastreamento.test.mjs scripts/origem.test.mjs scripts/origem-captura.test.mjs scripts/vsl.test.mjs
