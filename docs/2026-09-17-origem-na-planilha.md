@@ -10,6 +10,8 @@ O handler de Lives recebe a linha efetivamente gravada para atualizar o status d
 
 ## Publicação Google necessária
 
+A conferência no projeto ativo encontrou uma versão posterior deste escritor, com appendCells e filas preservadas. Para esse projeto, usar o [patch compatível com o escritor ativo](2026-09-17-origem-escritor-ativo.md). Não substituir os handlers ativos pelo bloco histórico abaixo.
+
 O merge deste repositório **não publica o Apps Script**. Conferir a versão atualmente implantada no projeto que recebe os formulários. Aplicar o diff em [apps_script_unified.gs](../scripts/apps_script_unified.gs): substituir as cinco funções `handleNewsletter`, `handleLista`, `handleDicionario`, `handleBolsao`, `handleLives` e adicionar `appendLeadWithTracking_`. Preservar os módulos e alterações existentes que não façam parte deste patch. Não adicionar uma segunda cópia dos handlers.
 
 Salvar e atualizar **a implantação Web App existente** para a nova versão, mantendo a URL usada pelas páginas. Não executar os helpers `test*Flow` na base real: eles disparam as integrações de contato. O teste automatizado abaixo não faz chamadas externas.
