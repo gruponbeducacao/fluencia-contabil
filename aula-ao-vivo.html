@@ -754,9 +754,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       posicao: deOnde
     });
     var veio = new URLSearchParams(location.search);
+    // A navegação interna pode remover a query; origem.js conserva a visita.
+    // Usa o conjunto inteiro para não misturar campanha nova com anúncio antigo.
+    var salva = window.FC_ORIGEM && window.FC_ORIGEM.instalada && window.FC_ORIGEM.origem;
+    var usarSalva = salva && typeof salva === 'object' && !Array.isArray(salva);
     ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','src'].forEach(function(k){
-      var v = veio.get(k);
-      if (v && v.length <= 180) corpo.set(k, v);
+      var v = usarSalva ? salva[k] : veio.get(k);
+      if (typeof v === 'string' && v && v.length <= 180) corpo.set(k, v);
     });
 
     /* `cors` de propósito: é preciso LER a resposta antes de liberar o material.
