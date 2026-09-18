@@ -15,7 +15,7 @@ function harness(kind='DICIONARIO',options={}){
  const sheet={getName:()=>kind,getSheetId:()=>17,getLastColumn:()=>labels.length};
  const ss={getId:()=> 'synthetic-sheet',getSheetByName:n=>n===kind?sheet:null,getSpreadsheetTimeZone:()=> 'America/Sao_Paulo'};
  const context=vm.createContext({Date,SpreadsheetApp:{getActiveSpreadsheet:()=>ss},
- LockService:{getScriptLock:()=>({waitLock(){assert.equal(state.locked,false);state.locked=true;},releaseLock(){state.locked=false;state.releases++;}})},
+ LockService:{getScriptLock:()=>({waitLock(){if(options.lockBusy)throw Error('WORKER_BUSY');assert.equal(state.locked,false);state.locked=true;},releaseLock(){state.locked=false;state.releases++;}})},
  Utilities:{formatDate:date=>date.toISOString().slice(0,-1)},
  ContentService:{MimeType:{TEXT:'text'},createTextOutput:text=>({setMimeType:()=>({text})})},
  Sheets:{Spreadsheets:{
@@ -77,3 +77,5 @@ test('appendCells preserva uma linha concorrente e não calcula número de linha
 test('chamada legada ao escritor sem quarto argumento continua válida',()=>{const h=harness('NEWSLETTER');h.context.appendLeadByHeader_('NEWSLETTER',h.context.NEWSLETTER_HEADERS,new Array(h.base.length).fill(''));assert.equal(h.state.appends,1);assert.equal(h.state.schemaWrites,0);});
 test('linha incompatível é rejeitada sem criar colunas',()=>{const h=harness();assert.throws(()=>h.context.appendLeadByHeader_('DICIONARIO',h.context.DICIONARIO_HEADERS,[],input),/LINHA_INVALIDA/);assert.equal(h.state.schemaWrites,0);assert.equal(h.state.appends,0);});
 test('GET expõe revisão sem criar contato',()=>{const h=harness();assert.match(h.context.doGet({}).text,/origem-v1-20260917/);assert.equal(h.state.appends,0);});
+test('captura com colunas prontas não disputa lock dos trabalhadores',()=>{const h=harness('DICIONARIO',{extra:['Src','UTM Content','UTM Term'],lockBusy:true});h.context.handleDicionario({...input});assert.equal(h.state.appends,1);assert.equal(h.state.releases,0);assert.equal(h.read('UTM Term').stringValue,input.utm_term);});
+test('schema ausente com lock ocupado falha sem gravar contato ou coluna',()=>{const h=harness('DICIONARIO',{lockBusy:true});assert.throws(()=>h.context.handleDicionario({...input}),/WORKER_BUSY/);assert.equal(h.state.appends,0);assert.equal(h.state.schemaWrites,0);});
