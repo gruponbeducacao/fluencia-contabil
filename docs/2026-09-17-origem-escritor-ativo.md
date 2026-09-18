@@ -18,4 +18,12 @@ A função `diagnosticarOrigemTracking` só lê cabeçalhos e registra quantidad
 
 60 testes passaram, incluindo 22 do escritor ativo, com schemas/funções reais sem dados pessoais e uma planilha simulada. Eles cobrem filas, seis capturas, entrada antiga, string numérica, fórmulas, idempotência do schema, cabeçalho fora de ordem, conflitos, falha da API e preservação de uma linha concorrente e captura com o lock ocupado pelos trabalhadores. Nenhum teste disparou contatos reais.
 
-A versão publicada e a conferência da primeira captura real devem ser registradas após a implantação. Teste local não comprova publicação nem atribuição de anúncios pela Meta.
+## Ativação em 18/09/2026
+
+A implantação existente foi atualizada para a **versão 19 às 09:05 (São Paulo)**, mantendo endereço, executor e acesso. O GET público respondeu às 09:06 com `origem-v1-20260917`. Antes de publicar, os hashes dos sete módulos foram conferidos: somente Código.gs e captura_correcao.gs diferem do código original observado na versão 18.
+
+`prepararColunasOrigemTracking` foi executada às 08:58 e criou apenas os três cabeçalhos ausentes em cada aba. O diagnóstico seguinte, às 08:59, confirmou zero campos ausentes nas seis abas: Dicionário ficou com 31 colunas alocadas e as outras cinco com 29. Não foram enviados formulários de teste nem acionadas integrações com contatos.
+
+O Gestão de desenvolvimento já recebeu a migration dos campos de captura; API, banco e os três rótulos no detalhe do lead foram conferidos em sessão autenticada. A validação de ponta a ponta com valores reais continua dependente de uma nova captura que traga esses parâmetros e da sua sincronização. Capturas antigas podem permanecer vazias; não há reconstrução artificial de origem.
+
+Publicação e cabeçalhos confirmam a ativação do capturador. Eles não comprovam atribuição de anúncios, correspondência ou deduplicação de eventos na Meta.
