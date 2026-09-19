@@ -1,6 +1,6 @@
 {
-  "geradoEm": "2026-09-18T12:14:39.800Z",
-  "total": 24,
+  "geradoEm": "2026-09-19T11:56:26.462Z",
+  "total": 25,
   "editais": [
     {
       "concursoSlug": "secretaria-da-fazenda-do-estado-do-ceara-sefaz-ce",
@@ -49,6 +49,23 @@
         {
           "rotulo": "Contabilidade Geral",
           "pct": 100
+        }
+      ]
+    },
+    {
+      "concursoSlug": "policia-civil-da-bahia-pc-secretaria-da-administracao-do-estado-da-bahia-saeb",
+      "orgao": "Polícia Civil da Bahia – PC (Secretaria da Administração do Estado da Bahia – SAEB)",
+      "cargo": "Investigador de Polícia Civil (Cód. 403)",
+      "banca": "Instituto AOCP",
+      "esfera": "ESTADUAL",
+      "uf": "BA",
+      "area": "POLICIAL",
+      "dataProva": "2026-12-06",
+      "linkOficial": "https://www.institutoaocp.org.br/concursos/706",
+      "disciplinas": [
+        {
+          "rotulo": "NOÇÕES DE CONTABILIDADE",
+          "pct": 64
         }
       ]
     },
@@ -322,6 +339,23 @@
     {
       "concursoSlug": "governo-do-estado-da-bahia-secretaria-da-administracao-do-estado-da-bahia-saeb-s",
       "orgao": "Governo do Estado da Bahia — Secretaria da Administração do Estado da Bahia (SAEB) / Secretaria da Fazenda do Estado da Bahia (SEFAZ)",
+      "cargo": "Auditor Fiscal — Administração, Finanças e Controle Interno (A01)",
+      "banca": "FCC",
+      "esfera": "ESTADUAL",
+      "uf": "BA",
+      "area": "FISCAL",
+      "dataProva": "2019-05-26",
+      "linkOficial": "https://www.concursosfcc.com.br",
+      "disciplinas": [
+        {
+          "rotulo": "Contabilidade Geral",
+          "pct": 70
+        }
+      ]
+    },
+    {
+      "concursoSlug": "governo-do-estado-da-bahia-secretaria-da-administracao-do-estado-da-bahia-saeb-s",
+      "orgao": "Governo do Estado da Bahia — Secretaria da Administração do Estado da Bahia (SAEB) / Secretaria da Fazenda do Estado da Bahia (SEFAZ)",
       "cargo": "Auditor Fiscal — Administração Tributária (C03)",
       "banca": "FCC",
       "esfera": "ESTADUAL",
@@ -340,23 +374,6 @@
       "concursoSlug": "governo-do-estado-da-bahia-secretaria-da-administracao-do-estado-da-bahia-saeb-s",
       "orgao": "Governo do Estado da Bahia — Secretaria da Administração do Estado da Bahia (SAEB) / Secretaria da Fazenda do Estado da Bahia (SEFAZ)",
       "cargo": "Auditor Fiscal — Tecnologia da Informação (B02)",
-      "banca": "FCC",
-      "esfera": "ESTADUAL",
-      "uf": "BA",
-      "area": "FISCAL",
-      "dataProva": "2019-05-26",
-      "linkOficial": "https://www.concursosfcc.com.br",
-      "disciplinas": [
-        {
-          "rotulo": "Contabilidade Geral",
-          "pct": 70
-        }
-      ]
-    },
-    {
-      "concursoSlug": "governo-do-estado-da-bahia-secretaria-da-administracao-do-estado-da-bahia-saeb-s",
-      "orgao": "Governo do Estado da Bahia — Secretaria da Administração do Estado da Bahia (SAEB) / Secretaria da Fazenda do Estado da Bahia (SEFAZ)",
-      "cargo": "Auditor Fiscal — Administração, Finanças e Controle Interno (A01)",
       "banca": "FCC",
       "esfera": "ESTADUAL",
       "uf": "BA",
@@ -394,6 +411,27 @@
     {
       "concursoSlug": "secretaria-de-estado-da-fazenda-de-santa-catarina-sef-sc-diretoria-de-administra",
       "orgao": "Secretaria de Estado da Fazenda de Santa Catarina (SEF/SC) — Diretoria de Administração Tributária",
+      "cargo": "Auditor-Fiscal da Receita Estadual, Nível I — Auditoria e Fiscalização (A01)",
+      "banca": "FCC",
+      "esfera": "ESTADUAL",
+      "uf": "SC",
+      "area": "FISCAL",
+      "dataProva": "2018-11-18",
+      "linkOficial": "https://www.concursosfcc.com.br/concursos/sefsc118/index.html",
+      "disciplinas": [
+        {
+          "rotulo": "Contabilidade Geral",
+          "pct": 100
+        },
+        {
+          "rotulo": "Contabilidade Avançada",
+          "pct": 95
+        }
+      ]
+    },
+    {
+      "concursoSlug": "secretaria-de-estado-da-fazenda-de-santa-catarina-sef-sc-diretoria-de-administra",
+      "orgao": "Secretaria de Estado da Fazenda de Santa Catarina (SEF/SC) — Diretoria de Administração Tributária",
       "cargo": "Auditor-Fiscal da Receita Estadual, Nível I — Gestão Tributária (B02)",
       "banca": "FCC",
       "esfera": "ESTADUAL",
@@ -422,27 +460,6 @@
         {
           "rotulo": "Contabilidade Geral",
           "pct": 100
-        }
-      ]
-    },
-    {
-      "concursoSlug": "secretaria-de-estado-da-fazenda-de-santa-catarina-sef-sc-diretoria-de-administra",
-      "orgao": "Secretaria de Estado da Fazenda de Santa Catarina (SEF/SC) — Diretoria de Administração Tributária",
-      "cargo": "Auditor-Fiscal da Receita Estadual, Nível I — Auditoria e Fiscalização (A01)",
-      "banca": "FCC",
-      "esfera": "ESTADUAL",
-      "uf": "SC",
-      "area": "FISCAL",
-      "dataProva": "2018-11-18",
-      "linkOficial": "https://www.concursosfcc.com.br/concursos/sefsc118/index.html",
-      "disciplinas": [
-        {
-          "rotulo": "Contabilidade Geral",
-          "pct": 100
-        },
-        {
-          "rotulo": "Contabilidade Avançada",
-          "pct": 95
         }
       ]
     }
