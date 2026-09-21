@@ -39,8 +39,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
      pela ORIGEM na aba "Config Aulas" — o campo `campanha` daqui é ignorado.
      Sem a linha da semana na Config Aulas, o lead entra como "DESCONHECIDA".
 
-  2. O container GTM-MGQFHR5J **não escuta dataLayer**. O Lead da Meta sai por
-     `fbq('track','Lead')` na mão, no `confirmado()` — não apagar.
+  2. O container GTM-MGQFHR5J ESCUTA `lead_capturado` (conferido no gtm.js
+     publicado em 21/09/2026). O `confirmado()` empurra esse evento e é o
+     container que fala com a Meta — e, quando existirem, com o Google. NÃO
+     chamar `fbq('track','Lead')` aqui: com o push, o Lead contaria duas vezes.
 
   3. EMAIL_AUTOMATICO só vira `true` depois que `processAulasEmails` estiver
      colado, configurado e TESTADO no Apps Script. Antes disso, prometer
@@ -724,9 +726,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     if (!novo) return;
     try { if (CHAVE_LOCAL) localStorage.setItem(CHAVE_LOCAL, '1'); } catch(e){}
-    /* O container GTM-MGQFHR5J NÃO escuta dataLayer. O evento que a Meta usa
-       para otimizar campanha sai daqui, na mão. Não apagar. */
-    try { if (window.fbq) window.fbq('track','Lead',{content_name:'folha_aula_ao_vivo'}); } catch(e){}
+    /* O Lead sai pelo container: o gatilho `lead_capturado` aciona a tag
+       `Meta — Lead`, com `origem` virando o content_name — o mesmo valor que o
+       fbq manual mandava. Sem o snippet do GTM no <head>, este push some sem
+       erro nenhum e a campanha para de otimizar por inscrição. */
+    try { if (window.dataLayer) window.dataLayer.push({event:'lead_capturado', origem:'folha_aula_ao_vivo'}); } catch(e){}
   }
 
   form.addEventListener('submit', function(ev){
