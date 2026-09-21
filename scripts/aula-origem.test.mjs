@@ -29,9 +29,11 @@ function pagina(url = base, storage = new Map(), opcoes = {}) {
     });
     return nodes.get(id);
   }
+  const dataLayer = [];
   const window = {
     location: new URL(url), matchMedia: () => ({ matches: false }),
     fbq: (...args) => events.push(args),
+    dataLayer,
   };
   const ctx = vm.createContext({
     window, location: window.location, URL, URLSearchParams, AbortController,
@@ -58,7 +60,7 @@ function pagina(url = base, storage = new Map(), opcoes = {}) {
   if (opcoes.carregarOrigem !== false) vm.runInContext(origem, ctx);
   vm.runInContext(scripts[0], ctx);
   return {
-    window, requests, events,
+    window, requests, events, dataLayer,
     async enviar({ duplo = false } = {}) {
       await esperar();
       el('cap-email').value = 'Ensaio@example.invalid';
@@ -139,14 +141,33 @@ test('a origem persistida continua sujeita ao limite de tamanho e ao tipo textua
   assert.equal(body.get('src'), 'a'.repeat(180));
 });
 
+// O Lead sai pelo container: a página empurra `lead_capturado` e a tag
+// `Meta — Lead` do GTM-MGQFHR5J fala com a Meta. Chamar `fbq('track','Lead')`
+// aqui TAMBÉM contaria o mesmo lead duas vezes.
+// Os objetos nascem dentro do contexto vm, com outro protótipo: copiar os campos
+// é o que permite compará-los com deepEqual estrito.
+const leads = (p) => p.dataLayer
+  .filter((e) => e.event === 'lead_capturado')
+  .map((e) => ({ ...e }));
+
 test('confirmação única mantém um Lead e nenhum Purchase mesmo com submit repetido', async () => {
   const p = pagina(marcada);
   await p.enviar({ duplo: true });
-  assert.deepEqual(p.events.map((e) => e.slice(0, 2)), [['track', 'Lead']]);
+  assert.deepEqual(leads(p), [{ event: 'lead_capturado', origem: 'folha_aula_ao_vivo' }]);
+  assert.deepEqual(p.dataLayer.filter((e) => /purchase/i.test(String(e.event))), []);
+  assert.deepEqual(p.events.filter((e) => /lead|purchase/i.test(String(e[1]))), []);
+});
+
+test('o Lead NÃO sai duas vezes: nem fbq manual, nem segundo push', async () => {
+  const p = pagina(marcada);
+  await p.enviar();
+  assert.equal(leads(p).length, 1);
+  assert.equal(p.events.some((e) => e[0] === 'track' && e[1] === 'Lead'), false);
 });
 
 test('resposta sem confirmação não libera evento Lead', async () => {
   const p = pagina(marcada, new Map(), { aceita: false });
   await p.enviar();
   assert.deepEqual(p.events, []);
+  assert.deepEqual(leads(p), []);
 });
