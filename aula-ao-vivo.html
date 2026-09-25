@@ -699,7 +699,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       baixar.href = proxima.pdf;
       baixar.setAttribute('download', proxima.pdf.split('/').pop());
       baixar.hidden = false;
-      texto('cap-ok-titulo', 'Pronto. Boa resolução!');
+      texto('cap-ok-titulo', novo ? 'Pronto! O download da folha começou.' : 'Pronto. Boa resolução!');
     } else if (proxima) {
       baixar.hidden = true;
       texto('cap-ok-titulo', EMAIL_AUTOMATICO ? 'Pronto! A folha chega no seu e-mail.' : 'Pronto! Você está na lista desta aula.');
@@ -726,6 +726,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     if (!novo) return;
     try { if (CHAVE_LOCAL) localStorage.setItem(CHAVE_LOCAL, '1'); } catch(e){}
+    /* Quem acabou de deixar o e-mail espera o PDF, não um segundo botão: em 25/09
+       o "Pronto" apareceu e a pessoa achou que o download não tinha acontecido.
+       O clique sai daqui, depois da confirmação; o link fica visível como
+       alternativa para o navegador que barrar o download automático. */
+    if (proxima && temFolha) {
+      try { if (window.fbq) window.fbq('trackCustom','BaixouFolha'); } catch(e){}
+      try { baixar.click(); } catch(e){}
+    }
     /* O Lead sai pelo container: o gatilho `lead_capturado` aciona a tag
        `Meta — Lead`, com `origem` virando o content_name — o mesmo valor que o
        fbq manual mandava. Sem o snippet do GTM no <head>, este push some sem
@@ -786,6 +794,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   baixar.addEventListener('click', function(ev){
     if (!capturado) { ev.preventDefault(); return; }
+    // O clique automático já contou; só o clique da pessoa conta de novo.
+    if (!ev.isTrusted) return;
     try { if (window.fbq) window.fbq('trackCustom','BaixouFolha'); } catch(e){}
   });
 })();
