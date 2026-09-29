@@ -8,6 +8,10 @@ a regra tem fiscal.
 
   1. noindex/nofollow e no-referrer, este antes de qualquer recurso;
   2. nenhum rastreador nem script externo (todo JS desta página é inline);
+  2b. vídeo (29/09/2026): só o player do Panda da nossa biblioteca, nascendo sem src,
+      oculto e só no estado «aberta», com referrer só de origem; a única exceção de
+      script é o assets/vsl-overlay.js, injetado depois de mostrar('aberta') e auditado
+      aqui (sem rede, sem storage, sem dataLayer);
   3. nenhum endereço de checkout, nenhum preço fixo (os valores vêm só da API) e nada
      do nosso vocabulário interno no arquivo servido (nome do gateway, "bump");
   3b. crédito dos order bumps: nada de valor fixo na tela, e composição só quando a
@@ -65,8 +69,46 @@ for proibido in ("googletagmanager", "gtag(", "fbq(", "facebook.net", "google-an
     check(proibido not in baixo, f"rastreador ou script proibido: {proibido}")
 check(not re.search(r"<script\b[^>]*\bsrc\s*=", limpo, re.I), "script externo: todo JS desta página é inline")
 externos = re.findall(r'<(?:link|img|source|iframe)\b[^>]*(?:href|src|srcset)="(https?://[^"]+)"', limpo)
-check(all(u.startswith(("https://fonts.googleapis.com", "https://fonts.gstatic.com")) for u in externos),
-      f"recurso externo fora das fontes: {externos}")
+PANDA = "https://player-vz-7867cfdb-be1.tv.pandavideo.com.br/embed/?v="
+check(all(u.startswith(("https://fonts.googleapis.com", "https://fonts.gstatic.com", PANDA)) for u in externos),
+      f"recurso externo fora das fontes e do player do Panda: {externos}")
+
+# ── 2b. Vídeo ────────────────────────────────────────────────────────────
+# O player é o único recurso de terceiro fora das fontes. Ele nasce sem requisição (data-src,
+# nunca src), dentro de um slot oculto que só o estado «aberta» mostra — o vídeo fala do
+# cashback, promessa que não vale nos outros estados — e manda ao Panda só a origem.
+slot = re.search(r'<section\b[^>]*\bid="heroVsl"[^>]*>', limpo)
+check(bool(slot) and 'data-estado="aberta"' in slot.group(0) and re.search(r"\shidden\b", slot.group(0)),
+      "slot do vídeo sem data-estado=\"aberta\" ou sem nascer oculto")
+iframes = re.findall(r"<iframe\b[^>]*>", limpo)
+check(len(iframes) <= 1, f"mais de um iframe na página: {len(iframes)}")
+for tag in iframes:
+    check(not re.search(r"\ssrc\s*=", tag), "iframe com src no HTML: tem de nascer com data-src (sem requisição)")
+    check(f'data-src="{PANDA}' in tag, "iframe fora do player do Panda da nossa biblioteca")
+    check('referrerpolicy="origin"' in tag, "iframe sem referrerpolicy=\"origin\" (o Panda recebe só o domínio)")
+    check("autoplay=" not in tag, "vídeo com autoplay na URL")
+if iframes:
+    # A CHAMADA, logo depois de mostrar('aberta'), numa linha própria — a declaração
+    # «function iniciarVsl()» contém a mesma string.
+    check(bool(re.search(r"^\s*mostrar\('aberta'\);\s*\n\s*iniciarVsl\(\);", limpo, re.M)),
+          "o player não é ligado logo depois de mostrar('aberta')")
+    check("indexOf('__PANDA_ID__') !== -1) { slot.hidden = true;" in limpo,
+          "slot com id __PANDA_ID__ não fica oculto")
+    check("'[data-estado]:not(.vsl-ov)'" in limpo, "mostrar() mexe no overlay do vídeo (data-estado do player)")
+# Exceção única de script: o overlay da assinatura, injetado pelo JS (não como <script> no HTML).
+injetados = re.findall(r"createElement\(\s*['\"]script['\"]\s*\)", limpo)
+check(len(injetados) <= 1, f"script injetado mais de uma vez: {len(injetados)}")
+if injetados:
+    check(bool(re.search(r"\.src = 'assets/vsl-overlay\.js\?v=\d{8}';", limpo)),
+          "script injetado que não é o assets/vsl-overlay.js")
+    # O arquivo é compartilhado com a assinatura.html: se um dia ganhar rede, storage ou
+    # dataLayer, esta página passaria a expor o token. Comentários fora, código auditado.
+    overlay = Path(__import__("os").environ.get("FISCAL_VSL_OVERLAY", RAIZ / "assets" / "vsl-overlay.js"))
+    codigo = re.sub(r"/\*.*?\*/", " ", overlay.read_text(encoding="utf-8"), flags=re.S)
+    codigo = re.sub(r"(^|\s)//.*$", " ", codigo, flags=re.M)
+    for proibido in ("fetch(", "XMLHttpRequest", "sendBeacon", "sessionStorage", "localStorage", "dataLayer",
+                     "document.cookie", "location.search", "new Image", "import(", "createElement", "WebSocket"):
+        check(proibido not in codigo, f"assets/vsl-overlay.js passou a usar {proibido}: a continuar não pode carregá-lo")
 
 # ── 3. Checkout e preço ──────────────────────────────────────────────────
 check("kiwify" not in html.lower(), "endereço do checkout no HTML (o clique tem de passar pela API)")
