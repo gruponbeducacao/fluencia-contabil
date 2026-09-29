@@ -1638,16 +1638,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
   </div>
 
-  <!-- ===== SLOT DE VSL (oculto ate haver video) =====
-       Para ativar: (1) apagar o atributo hidden do div abaixo; (2) trocar __PANDA_ID__
-       pelo id externo do video no data-src; (3) preencher data-vsl-version, data-vsl-duration
-       e data-vsl-pitch (segundos) depois da gravacao; homologar antes de anunciar. Biblioteca do Panda: vz-7867cfdb-be1 (a mesma das LPs).
+  <!-- ===== SLOT DE VSL (ativo desde 29/09/2026: VSL da assinatura v2, 13:07) =====
+       Trocar de video = trocar os quatro valores juntos: id externo no data-src, data-vsl-version,
+       data-vsl-duration e data-vsl-pitch (segundos; pitch = inicio de "Ao entrar, voce contrata...").
+       Esconder = recolocar hidden E voltar o id para __PANDA_ID__ (o fiscal exige os dois juntos). Biblioteca do Panda: vz-7867cfdb-be1 (a mesma das LPs).
        Sem src no HTML, o iframe oculto nao faz requisicao nenhuma; o JS copia data-src
        para src so' quando o slot esta' visivel e o id foi preenchido. -->
-  <div class="hero-vsl" id="heroVsl" hidden data-vsl-version="" data-vsl-duration="" data-vsl-pitch="">
+  <div class="hero-vsl" id="heroVsl" data-vsl-version="assinatura-v2-20260929" data-vsl-duration="787.3" data-vsl-pitch="699">
     <div class="vsl-moldura">
       <iframe class="vsl-frame" id="heroVslFrame" title="Vídeo de apresentação da Fluência Contábil"
-        data-src="https://player-vz-7867cfdb-be1.tv.pandavideo.com.br/embed/?v=__PANDA_ID__"
+        data-src="https://player-vz-7867cfdb-be1.tv.pandavideo.com.br/embed/?v=373b4407-d936-4434-8c7c-4102cd40cc48"
         allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture" allowfullscreen loading="lazy"></iframe>
     </div>
     <p style="text-align:center;margin-top:18px"><a href="#oferta" class="btn" data-fc-vsl-cta>Conhecer os planos da assinatura</a></p>
