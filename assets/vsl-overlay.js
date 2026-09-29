@@ -3,7 +3,10 @@
    Panda. Assim o play acontece dentro do iframe e o navegador libera o som (no iPhone,
    um play mandado da página por postMessage pode sair mudo ou nem começar). O overlay
    apenas reage aos avisos do player: some no play, volta na pausa e no fim.
-   Não envia comandos ao player nem eventos ao dataLayer — a medição é do vsl.js. */
+   Único comando: na tela inicial, se o clique cair no vídeo fora do botão do Panda
+   (que só inicia pelo botão) e o player não avisar o play em 600 ms, pede o play —
+   o gesto aconteceu dentro do iframe, então o som continua liberado.
+   Não envia eventos ao dataLayer — a medição é do vsl.js. */
 (function () {
   'use strict';
   if (window.FC_VSL_OVERLAY) return;
@@ -20,7 +23,7 @@
   var duration = Number(slot.getAttribute('data-vsl-duration'));
   var pitch = Number(slot.getAttribute('data-vsl-pitch'));
   var tempo = ov.querySelector('[data-vsl-ov-tempo]');
-  var timer = null, estado = '', tocando = false, ultimo = 0;
+  var timer = null, reforco = null, estado = '', tocando = false, ultimo = 0;
 
   function mmss(t) {
     t = Math.max(0, Math.floor(t || 0));
@@ -61,7 +64,7 @@
     var t = Number(data.currentTime);
     if (data.currentTime !== null && data.currentTime !== '' && Number.isFinite(t) && t >= 0) ultimo = t;
     switch (data.message) {
-      case 'panda_play': tocando = true; esconde(); break;
+      case 'panda_play': tocando = true; clearTimeout(reforco); esconde(); break;
       case 'panda_pause': tocando = false; pausa(); break;
       case 'panda_seeking': clearTimeout(timer); if (estado !== 'inicio') ov.hidden = true; break;
       case 'panda_seeked': if (!tocando && estado !== 'inicio') pausa(); break;
@@ -69,11 +72,16 @@
     }
   });
 
-  // Rede de segurança: se os avisos do player não chegarem, o primeiro clique no vídeo
-  // (que leva o foco para o iframe e tira da página) ainda retira o convite de cima.
+  // O primeiro clique no vídeo leva o foco para o iframe (a página perde o foco): retira o
+  // convite mesmo sem aviso do player e, se o play não vier, pede o play ao player.
   window.addEventListener('blur', function () {
     setTimeout(function () {
-      if (estado === 'inicio' && document.activeElement === frame) esconde();
+      if (estado !== 'inicio' || document.activeElement !== frame) return;
+      esconde();
+      reforco = setTimeout(function () {
+        if (tocando) return;
+        try { frame.contentWindow.postMessage({ type: 'play' }, url.origin); } catch (e) {}
+      }, 600);
     }, 0);
   });
 })();
