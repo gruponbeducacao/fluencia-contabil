@@ -1,5 +1,7 @@
 # Preparação da VSL e captura da amostra
 
+**Ativado em 29/09/2026:** VSL da assinatura v2 (13:07), Panda `373b4407-d936-4434-8c7c-4102cd40cc48`, `data-vsl-version="assinatura-v2-20260929"`, duração `787.3` s (HLS do Panda: 787,33), pitch `699` s (início de "Ao entrar, você contrata…"). O mapeamento dos eventos no GTM segue pendente.
+
 Estado verificado em 10/09/2026: preparação local, sem ativação do vídeo. O slot
 `heroVsl` continua com `hidden`, ID de vídeo pendente e metadados vazios. Preços,
 links de checkout, PDF e endpoint do Apps Script permanecem os existentes na

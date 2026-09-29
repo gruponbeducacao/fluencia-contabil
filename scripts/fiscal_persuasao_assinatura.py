@@ -144,7 +144,8 @@ ok("anatomia com 3 cards (mobile: custo antes da oferta)", s.count('class="anat-
 ok("cards da oferta têm data-plano", 'data-plano="trimestral"' in s and 'data-plano="semestral"' in s)
 
 # ------------------------------------------ H. slot de VSL
-ok("slot de VSL: hidden <-> __PANDA_ID__", ('id="heroVsl" hidden' in s) == ("__PANDA_ID__" in s))
+# o marcador vale no data-src do iframe; o carregador inline sempre cita __PANDA_ID__ e não conta
+ok("slot de VSL: hidden <-> __PANDA_ID__ no data-src", ('id="heroVsl" hidden' in s) == ("embed/?v=__PANDA_ID__" in s))
 ok("iframe do VSL sem src no HTML (só data-src)", not re.search(r'id="heroVslFrame"[^>]*\ssrc=', s))
 ok("slot fica dentro da hero e antes de O CURSO", s.index('id="heroVsl"') < i_curso and s.index('id="heroVsl"') > s.index('<section class="hero">'))
 
