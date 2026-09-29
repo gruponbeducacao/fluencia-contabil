@@ -339,15 +339,25 @@ function sesSendMarketing_(toEmail, subject, html, topicName, campanha) {
   var from = props.getProperty('SES_FROM_MARKETING');
   if (!from) throw new Error('SES_FROM_MARKETING não configurado');
 
+  // A chave `TopicName` só entra quando HÁ tópico. `TopicName: null` não
+  // serve: `JSON.stringify` preserva `null` (só `undefined` some), e a API v2
+  // do SES recusa com BadRequestException — cada envio falharia dentro do
+  // try do processBroadcasts e a linha fecharia `ok (0/n)`.
+  //
+  // Sem tópico, o descadastro é da LISTA INTEIRA (UnsubscribeAll) — decisão
+  // de 09/09/2026.
+  var listManagement = {
+    ContactListName: props.getProperty('SES_CONTACT_LIST') || 'fluencia'
+  };
+  if (topicName) listManagement.TopicName = topicName;
+  
   var payload = {
     FromEmailAddress: from,
     Destination: { ToAddresses: [toEmail] },
     ReplyToAddresses: [props.getProperty('SES_REPLY_TO') || 'contato@fluenciacontabil.com.br'],
     ConfigurationSetName: props.getProperty('SES_CONFIG_SET') || 'fluencia-marketing',
-    ListManagementOptions: {
-      ContactListName: props.getProperty('SES_CONTACT_LIST') || 'fluencia',
-      TopicName: topicName
-    },
+    ListManagementOptions: listManagement,
+
     Content: { Simple: {
       Subject: { Data: subject, Charset: 'UTF-8' },
       Body: { Html: { Data: html, Charset: 'UTF-8' } }
@@ -721,11 +731,6 @@ function loadSequenceConfig_() {
 
 // ══════════════════════ 3. BROADCASTS ══════════════════════
 
-/**
- * Trigger 5 min. Aba "Broadcasts": linhas agendadas com data vencida são
- * enviadas em lotes resumíveis (coluna Enviados = cursor de progresso).
- * Público = tópicos separados por vírgula; dedupe por email entre abas.
- */
 function processBroadcasts() {
   var lock = LockService.getScriptLock();
   if (!lock.tryLock(1000)) return;
@@ -749,6 +754,7 @@ function processBroadcasts() {
     var cabecalhoBc = sheet.getRange(1, 1, 1, largura).getValues()[0]
                            .map(function(c) { return String(c || '').trim(); });
     var colSegmento = cabecalhoBc.indexOf('Segmento'); // 0-based; -1 = não existe
+    var colModo = cabecalhoBc.indexOf('Modo');         // [NOVO] 0-based; -1 = não existe
     var rows = sheet.getRange(2, 1, sheet.getLastRow() - 1, largura).getValues();
     var cols = headerIndexes_(sheet); // "Etiqueta" é opcional (setupEtiquetaBroadcasts)
 
@@ -763,10 +769,6 @@ function processBroadcasts() {
       var assunto = String(rows[r][1] || '');
       var template = String(rows[r][2] || '');
       var topicos = String(rows[r][3] || '').split(',').map(function(s) { return s.trim(); }).filter(Boolean);
-      if (!assunto || !template || !topicos.length) {
-        sheet.getRange(rowNum, 6).setValue('err:config incompleta (assunto/template/tópicos)');
-        continue;
-      }
 
       // Coluna ausente ou célula vazia = comportamento de sempre: a aba
       // inteira dos tópicos.
@@ -774,9 +776,33 @@ function processBroadcasts() {
         ? ''
         : String(rows[r][colSegmento] || '').trim();
 
+      // [NOVO] O modo. Vazio, ausente ou qualquer outra coisa = por tópico.
+      var porRecorte = colModo !== -1 &&
+                       String(rows[r][colModo] || '').trim().toLowerCase() === 'recorte';
+
+      // [NOVO] No modo recorte a coluna `Tópicos (csv)` vem vazia DE PROPÓSITO —
+      // o público é a lista, não o tópico. Sem esta condição, todo disparo do
+      // modo novo morreria aqui como "config incompleta".
+      if (!assunto || !template || (!porRecorte && !topicos.length)) {
+        sheet.getRange(rowNum, 6).setValue('err:config incompleta (assunto/template/tópicos)');
+        continue;
+      }
+
+      // [NOVO] ⚠️ No modo recorte não há tópico para restringir: se o código do
+      // segmento também faltar, o disparo fica SEM CRITÉRIO NENHUM. Recusar
+      // aqui é a diferença entre uma linha com erro e um e-mail para todos.
+      if (porRecorte && !segmentoCodigo) {
+        sheet.getRange(rowNum, 6).setValue(
+          'err:modo recorte sem codigo de segmento — disparo ABORTADO');
+        continue;
+      }
+
       var recipients;
       try {
-        recipients = collectRecipients_(topicos, segmentoCodigo);
+        // [NOVO] A fonte do público depende do modo.
+        recipients = porRecorte
+          ? recipientsFromSegment_(segmentoCodigo)
+          : collectRecipients_(topicos, segmentoCodigo);
       } catch (err) {
         // Segmento que não resolve vira `err:` na linha, e o disparo NÃO
         // acontece. Cair na base inteira aqui seria o pior desfecho possível.
@@ -789,11 +815,20 @@ function processBroadcasts() {
 
       var sentThisRun = 0;
       var errors = 0;
+      var descadastrados = 0; // [NOVO]
       while (cursor < recipients.length && sentThisRun < BCAST_SEND_BATCH) {
         var rec = recipients[cursor];
         try {
-          var html = injetarUtm_(renderTemplate_(template, rec.nome), utm);
-          sesSendMarketing_(rec.email, assunto, html, rec.topic, String(rows[r][0] || ''));
+          // [NOVO] Sem tópico, o SES não barra quem saiu de UM tópico — quem
+          // barra é esta consulta. Ver `motivoParaNaoEnviar_`.
+          var motivo = rec.topic ? '' : motivoParaNaoEnviar_(rec.email);
+          if (motivo.indexOf('erro:') === 0) throw new Error(motivo);
+          if (motivo) {
+            descadastrados++;
+          } else {
+            var html = injetarUtm_(renderTemplate_(template, rec.nome), utm);
+            sesSendMarketing_(rec.email, assunto, html, rec.topic, String(rows[r][0] || ''));
+          }
         } catch (err) {
           errors++;
           logError('Broadcast linha ' + rowNum + ': ' + err, { parameter: { email: rec.email } });
@@ -802,9 +837,13 @@ function processBroadcasts() {
         sentThisRun++;
       }
 
+      if (descadastrados) {
+        Logger.log('Broadcast linha ' + rowNum + ': ' + descadastrados +
+                   ' pessoa(s) com descadastro pulada(s) nesta rodada');
+      }
       sheet.getRange(rowNum, 6).setValue(
         cursor >= recipients.length
-          ? 'ok (' + (recipients.length - errors) + '/' + recipients.length + ')'
+          ? 'ok (' + (recipients.length - errors - descadastrados) + '/' + recipients.length + ')'
           : 'enviando');
       sheet.getRange(rowNum, 7).setValue(cursor);
       sheet.getRange(rowNum, 9).setValue(new Date());
@@ -817,24 +856,28 @@ function processBroadcasts() {
 }
 
 /**
- * Os e-mails de um segmento, como conjunto.
+ * Os e-mails de um segmento — e, se pedido, o nome de cada um.
  *
- * ⚠️ ESTA É A GUARDA MAIS IMPORTANTE DO ARQUIVO. Código de segmento presente e
- * lista vazia é ERRO, nunca passagem livre: uma aba renomeada, uma escrita que
- * falhou pela metade ou um código digitado errado fariam o disparo alcançar a
- * BASE INTEIRA — exatamente o dano que o segmento existe para evitar.
+ * ⚠️ ESTA CONTINUA SENDO A GUARDA MAIS IMPORTANTE DO ARQUIVO. Código de
+ * segmento presente e lista vazia é ERRO, nunca passagem livre: uma aba
+ * renomeada, uma escrita que falhou pela metade ou um código digitado errado
+ * fariam o disparo alcançar a BASE INTEIRA.
  *
- * Quem monta a lista é o Gestão, que tem o que esta planilha não tem: as vendas
- * da Kiwify e o DDD de cada pessoa. Aqui só se intersecta.
+ * @param {string} codigo
+ * @param {Object=} nomesOut  se vier, recebe `email -> nome` (coluna C).
+ * @return {Object} conjunto `email -> true` — o MESMO retorno de sempre.
  */
-function lerSegmento_(codigo) {
+function lerSegmento_(codigo, nomesOut) {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MAILER_SHEETS.SEGMENTOS);
   if (!sheet || sheet.getLastRow() < 2) {
     throw new Error('Aba "' + MAILER_SHEETS.SEGMENTOS + '" ausente ou vazia — o segmento "' +
                     codigo + '" nao pode ser resolvido. Disparo ABORTADO.');
   }
 
-  var dados = sheet.getRange(2, 1, sheet.getLastRow() - 1, 2).getValues();
+  // Até três colunas (Código | E-mail | Nome). O `Math.min` com getMaxColumns()
+  // impede o getRange de estourar numa grade que ainda tenha só duas.
+  var larg = Math.min(3, sheet.getMaxColumns());
+  var dados = sheet.getRange(2, 1, sheet.getLastRow() - 1, larg).getValues();
   var conjunto = {};
   var n = 0;
   for (var i = 0; i < dados.length; i++) {
@@ -842,6 +885,7 @@ function lerSegmento_(codigo) {
     var email = String(dados[i][1] || '').trim().toLowerCase();
     if (!email || conjunto[email]) continue;
     conjunto[email] = true;
+    if (nomesOut) nomesOut[email] = larg >= 3 ? String(dados[i][2] || '') : '';
     n++;
   }
 
@@ -896,6 +940,66 @@ function collectRecipients_(topicos, segmentoCodigo) {
     });
   });
   return out;
+}
+
+/**
+ * Os destinatários de um disparo em modo RECORTE — aqui a lista É o público.
+ *
+ * A diferença para `collectRecipients_` é uma só, e é a razão de tudo: este
+ * caminho NÃO varre `MAILER_TABS`. Quem foi selecionado pelo Gestão recebe,
+ * mesmo que nunca tenha estado em aba nenhuma da planilha — o comprador do
+ * Dicionário que chegou direto pelo anúncio, o carrinho abandonado.
+ *
+ * O SES cria o contato que ainda não existe e não entrega a quem descadastrou
+ * (`ListManagementOptions` no `sesSendMarketing_`). Sem tópico, o descadastro
+ * é da lista inteira — decisão de 09/09/2026.
+ *
+ * Chama `lerSegmento_` em vez de reler a aba: herda a guarda de lista vazia, a
+ * dedupe por e-mail e um único ponto de leitura.
+ */
+function recipientsFromSegment_(codigo) {
+  var nomes = {};
+  var permitidos = lerSegmento_(codigo, nomes);
+  var out = [];
+  for (var email in permitidos) {
+    // A validação também AQUI, e não só do lado do Gestão: endereço inválido
+    // vira hard bounce, e hard bounce conta para a reputação da conta.
+    if (!isValidEmail(email)) continue;
+    out.push({ email: email, nome: nomes[email] || '', topic: null });
+  }
+  if (out.length === 0) {
+    throw new Error('Segmento "' + codigo + '" nao tem nenhum e-mail VALIDO. Disparo ABORTADO.');
+  }
+  return out;
+}
+
+/**
+ * Por que NÃO enviar a esta pessoa um e-mail SEM tópico — ou '' se pode.
+ *
+ * ⚠️ Sem `TopicName`, o SES só barra quem tem `UnsubscribeAll`. Mas todo
+ * descadastro feito até hoje saiu de e-mail COM tópico, e ficou gravado como
+ * `OPT_OUT` daquele tópico, com `UnsubscribeAll = false`. Sem esta consulta, quem
+ * pediu para sair da newsletter receberia o disparo do modo recorte.
+ *
+ * Regra: quem saiu de QUALQUER tópico, ou da lista inteira, não recebe.
+ * Contato inexistente (404) nunca pediu nada — recebe, e o SES o cria.
+ * Qualquer outra resposta é falha FECHADA: sem saber, não envia.
+ *
+ * Usa `ses:GetContact`, que o usuário `fluencia-mailer` já tem (o diagnóstico
+ * de entrega usa a mesma chamada).
+ */
+function motivoParaNaoEnviar_(email) {
+  var list = PropertiesService.getScriptProperties().getProperty('SES_CONTACT_LIST') || 'fluencia';
+  var c = sesRequest_('GET', ['v2', 'email', 'contact-lists', list, 'contacts', email], null);
+  if (c.code === 404) return '';
+  if (c.code !== 200) return 'erro:GetContact HTTP ' + c.code;
+  var b = c.body || {};
+  if (b.UnsubscribeAll === true) return 'descadastrou:tudo';
+  var prefs = b.TopicPreferences || [];
+  for (var i = 0; i < prefs.length; i++) {
+    if (prefs[i].SubscriptionStatus === 'OPT_OUT') return 'descadastrou:' + prefs[i].TopicName;
+  }
+  return '';
 }
 
 
@@ -1605,13 +1709,14 @@ function limparSegmentosAntigos() {
     if (cod && String(linhas[i][5] || '').indexOf('ok') === 0) concluidos[cod] = true;
   }
 
-  var dados = seg.getRange(2, 1, seg.getLastRow() - 1, 2).getValues();
+  var larg = Math.min(3, seg.getMaxColumns());
+  var dados = seg.getRange(2, 1, seg.getLastRow() - 1, larg).getValues();
   var mantidas = dados.filter(function(l) { return !concluidos[String(l[0] || '').trim()]; });
   var removidas = dados.length - mantidas.length;
   if (removidas === 0) { Logger.log('Nada a limpar.'); return; }
 
-  seg.getRange(2, 1, dados.length, 2).clearContent();
-  if (mantidas.length > 0) seg.getRange(2, 1, mantidas.length, 2).setValues(mantidas);
+  seg.getRange(2, 1, dados.length, larg).clearContent();
+  if (mantidas.length > 0) seg.getRange(2, 1, mantidas.length, larg).setValues(mantidas);
   Logger.log('🧹 ' + removidas + ' linha(s) de segmento removida(s); ' +
              mantidas.length + ' mantida(s).');
 }
@@ -2290,4 +2395,44 @@ function simularPublicoAulas() {
   Logger.log('');
   Logger.log('Se os números forem IGUAIS entre campanhas, o filtro por linha falhou');
   Logger.log('e o disparo levaria a turma errada junto. Investigar antes de agendar.');
+}
+
+function setupModoRecorte() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+
+  var seg = ss.getSheetByName(MAILER_SHEETS.SEGMENTOS);
+  if (!seg) {
+    Logger.log('❌ Aba "' + MAILER_SHEETS.SEGMENTOS + '" não existe. Rode setupMailerAfterDeploy() antes.');
+    return;
+  }
+  if (seg.getMaxColumns() < 3) seg.insertColumnsAfter(seg.getMaxColumns(), 3 - seg.getMaxColumns());
+  var cabSeg = seg.getRange(1, 1, 1, 3).getValues()[0]
+                  .map(function(c) { return String(c || '').trim(); });
+  if (cabSeg[2] === 'Nome') {
+    Logger.log('· Coluna "Nome" já existe na aba Segmentos');
+  } else if (cabSeg[2] === '') {
+    seg.getRange(1, 3).setValue('Nome')
+      .setFontWeight('bold').setBackground('#1B2A4A').setFontColor('#FFFFFF');
+    Logger.log('✅ Coluna "Nome" acrescentada à aba Segmentos (coluna C)');
+  } else {
+    Logger.log('❌ A coluna C da aba Segmentos tem "' + cabSeg[2] + '". Não sobrescrevi — avise.');
+    return;
+  }
+
+  var bc = ss.getSheetByName(MAILER_SHEETS.BROADCASTS);
+  if (!bc) { Logger.log('❌ Aba Broadcasts não existe.'); return; }
+  var cabBc = bc.getRange(1, 1, 1, bc.getLastColumn()).getValues()[0]
+                .map(function(c) { return String(c || '').trim(); });
+  if (cabBc.indexOf('Modo') === -1) {
+    var cModo = bc.getLastColumn() + 1;
+    bc.getRange(1, cModo).setValue('Modo')
+      .setFontWeight('bold').setBackground('#1B2A4A').setFontColor('#FFFFFF');
+    bc.getRange(1, cModo).setNote(
+      'Escrita pelo Fluência Gestão. Vazio = disparo por tópico (o de sempre). ' +
+      '"recorte" = o público é a lista da aba Segmentos, e a coluna Tópicos fica vazia. ' +
+      'NÃO editar à mão.');
+    Logger.log('✅ Coluna "Modo" acrescentada à aba Broadcasts (coluna ' + cModo + ')');
+  } else {
+    Logger.log('· Coluna "Modo" já existe na aba Broadcasts');
+  }
 }
