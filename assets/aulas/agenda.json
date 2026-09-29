@@ -1,6 +1,6 @@
 {
   "versao": 1,
-  "gerado_em": "2026-09-25T10:20",
+  "gerado_em": "2026-09-29T17:58",
   "gerado_por": "_LIVES/_semanal/publicar_semana_lp.py",
   "aulas": [
     {
@@ -20,18 +20,18 @@
     },
     {
       "data": "2026-09-30",
-      "origem": "aula_ao_vivo_2026_09_23",
-      "campanha": "Live Semanal 23/09 — Impairment",
-      "tema": "Impairment — Redução ao Valor Recuperável de Ativos (CPC 01)",
-      "ancora": "Transpetro 2026 + SEFAZ Bahia · Cesgranrio",
-      "titulo": "Impairment: as <em>3 regras</em> que resolvem quase toda questão.",
-      "sub": "Quarta, 30/09, às 20h, eu resolvo 20 questões de Redução ao Valor Recuperável de Ativos e abro o texto do CPC 01 que sustenta cada gabarito. <strong>Pegue a folha de questões, resolva antes e receba as resoluções por e-mail depois da aula.</strong>",
-      "questoes": 20,
-      "paginas": 22,
-      "pdf": "assets/aulas/folha-2026-09-30-0f6e1fd9.pdf",
-      "capa_jpg": "assets/aulas/live-2026-09-30-capa-2cbfe8e8.jpg",
-      "capa_webp": "assets/aulas/live-2026-09-30-capa-2cbfe8e8.webp",
-      "youtube": "https://www.youtube.com/live/kqShjmx5_z0"
+      "origem": "aula_ao_vivo_2026_09_30",
+      "campanha": "Live Semanal 30/09 — Correção CFC 2026.2",
+      "tema": "Exame de Suficiência CFC 2026.2 — correção de Contabilidade Geral e Avançada",
+      "ancora": "Exame de Suficiência CFC 2026.2 · FGV · prova de 27/09",
+      "titulo": "Exame de Suficiência CFC 2026.2: a correção ao vivo das <em>23 questões de Contabilidade Geral e Avançada</em>.",
+      "sub": "Quarta, 30/09, às 20h, eu resolvo uma a uma as questões de Contabilidade Geral e Avançada da prova aplicada pela FGV em 27/09. <strong>Pegue o caderno de questões, resolva antes e receba as resoluções por e-mail depois da aula.</strong>",
+      "questoes": 23,
+      "paginas": 15,
+      "pdf": "assets/aulas/folha-2026-09-30-009b1936.pdf",
+      "capa_jpg": "assets/aulas/live-2026-09-30-capa-8d6edef0.jpg",
+      "capa_webp": "assets/aulas/live-2026-09-30-capa-8d6edef0.webp",
+      "youtube": "https://www.youtube.com/live/VvfY0huSuL4"
     }
   ]
 }
