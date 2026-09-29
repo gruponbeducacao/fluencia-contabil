@@ -15,6 +15,10 @@
      checkout, e o abatimento soma o que a pessoa pagou. O número que vai para a tela é o
      abatimento da própria oferta (de − por); o campo "credito" da resposta só serve para
      mostrar a composição em itens, e só quando a conta fecha dos dois lados.
+     Vídeo (VSL do cashback): só no estado "aberta". O player do Panda e o overlay de play
+     (assets/vsl-overlay.js, o mesmo da assinatura.html, só visual) entram depois que a API
+     confirmou a condição, com o token já fora da barra. É o único script que não é inline,
+     e o fiscal audita o arquivo (sem rede, sem storage, sem dataLayer).
      Fiscal: scripts/fiscal_continuar.py -->
 <meta name="referrer" content="no-referrer">
 <meta name="robots" content="noindex, nofollow">
@@ -103,6 +107,47 @@
   .prazo span + span::before { content: '·'; margin-right: 10px; color: rgba(255,255,255,0.45); }
   .topo-acoes { margin-top: 26px; max-width: 440px; }
   .link-sec { display: inline-block; margin-top: 16px; font-size: 14.5px; font-weight: 700; color: var(--dourado); text-underline-offset: 3px; }
+
+  /* ===== VÍDEO (continua o fundo do topo; moldura e overlay espelhados da assinatura.html) ===== */
+  .vsl-sec { background: var(--azul-noite); padding: 0 0 48px; }
+  .vsl-moldura { position: relative; max-width: 900px; margin: 0 auto; border-radius: 14px; overflow: hidden;
+    border: 1px solid rgba(200,168,75,.32); box-shadow: 0 28px 60px rgba(0,0,0,.42); background: #0E1626; }
+  .vsl-moldura iframe.vsl-frame { display: block; width: 100%; aspect-ratio: 16/9; border: 0; }
+  .vsl-cta { text-align: center; margin-top: 22px; }
+  /* overlay de play/pausa: só visual (pointer-events: none), o clique atravessa e cai no player */
+  .vsl-ov { position: absolute; inset: 0; z-index: 3; text-align: center; color: var(--branco); pointer-events: none;
+    background: linear-gradient(180deg, rgba(14,22,38,.46) 0%, rgba(14,22,38,.72) 52%, rgba(14,22,38,.34) 84%, rgba(14,22,38,0) 100%); }
+  .vsl-ov[data-estado="inicio"], .vsl-ov[data-estado="fim"] {
+    background: radial-gradient(ellipse at center, rgba(14,22,38,.58) 0%, rgba(14,22,38,.84) 78%); }
+  /* grade 1fr/auto/1fr: o play (ou o botão do fim) fica no centro exato, em cima do botão do Panda */
+  .vsl-ov > div { display: none; position: absolute; inset: 0; grid-template-rows: 1fr auto 1fr; justify-items: center; padding: 12px 18px; }
+  .vsl-ov-cima { align-self: end; padding-bottom: clamp(8px, 1.6vw, 16px); }
+  .vsl-ov-baixo { align-self: start; padding-top: clamp(8px, 1.6vw, 16px); display: flex; flex-direction: column;
+    align-items: center; gap: clamp(4px, 1vw, 10px); max-width: 640px; }
+  .vsl-ov[data-estado="inicio"] .vsl-ov-inicio, .vsl-ov[data-estado="pausa"] .vsl-ov-pausa,
+  .vsl-ov[data-estado="fim"] .vsl-ov-fim { display: grid; }
+  .vsl-ov-kicker { font: 800 clamp(10px, 1.45vw, 13px)/1.25 'Montserrat', sans-serif; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--dourado); text-shadow: 0 1px 8px rgba(0,0,0,.55); }
+  .vsl-ov-titulo { font: 800 clamp(16px, 2.5vw, 26px)/1.22 'Montserrat', sans-serif; text-shadow: 0 2px 14px rgba(0,0,0,.6); }
+  .vsl-ov-sub { font: 600 clamp(11px, 1.5vw, 14px)/1.35 'Montserrat', sans-serif; color: var(--cream); text-shadow: 0 1px 8px rgba(0,0,0,.6); }
+  .vsl-ov-play { --p: clamp(60px, 10.5vw, 96px); position: relative; width: var(--p); height: var(--p); border-radius: 50%;
+    background: var(--dourado); box-shadow: 0 10px 30px rgba(0,0,0,.45), inset 0 -3px 0 rgba(0,0,0,.12); }
+  .vsl-ov-play::before { content: ""; position: absolute; left: 55%; top: 50%; transform: translate(-50%, -50%);
+    border-style: solid; border-color: transparent transparent transparent var(--azul-profundo);
+    border-width: calc(var(--p) * .17) 0 calc(var(--p) * .17) calc(var(--p) * .27); }
+  .vsl-ov-play::after { content: ""; position: absolute; inset: -2px; border-radius: 50%; border: 3px solid var(--dourado);
+    animation: vslOvPulso 1.8s ease-out infinite; }
+  @keyframes vslOvPulso { from { transform: scale(1); opacity: .85; } to { transform: scale(1.65); opacity: 0; } }
+  .vsl-ov-link, .vsl-ov-cta { pointer-events: auto; }
+  .vsl-ov-link { font: 700 clamp(11px, 1.45vw, 13px)/1.3 'Montserrat', sans-serif; color: var(--cream);
+    text-decoration: underline; text-underline-offset: 3px; }
+  .vsl-ov.vsl-ov-oferta .vsl-ov-link { text-decoration: none; background: var(--vermelho); color: var(--branco);
+    padding: 8px 16px; border-radius: 999px; box-shadow: 0 6px 18px rgba(0,0,0,.35); }
+  .vsl-ov .btn { width: auto; }
+  .vsl-ov-cta { box-shadow: 0 10px 26px rgba(0,0,0,.45); }
+  @media (max-width: 560px) { .vsl-ov > div { padding: 8px 12px; } .vsl-ov-titulo, .vsl-ov-desk { display: none; }
+    .vsl-ov-kicker { font-size: 9.5px; letter-spacing: .06em; } .vsl-ov-cta { padding: 10px 18px; font-size: 13px; } }
+  @media (prefers-reduced-motion: reduce) { .vsl-ov-play::after { animation: none; opacity: 0; } }
 
   /* ===== SEÇÕES ===== */
   .section { padding: 56px 0; }
@@ -256,6 +301,7 @@
     .topo h1 { font-size: 40px; }
     .topo p { font-size: 17.5px; }
     .section { padding: 80px 0; }
+    .vsl-sec { padding-bottom: 72px; }
     .section-title { font-size: 32px; }
     .section-text { font-size: 17px; }
     .planos-duo { grid-template-columns: 1fr 1fr; gap: 20px; }
@@ -336,6 +382,51 @@
 </header>
 
 <main>
+
+<!-- ===== VÍDEO: VSL do cashback (v5 de 29/09/2026, 5:10) =====
+     Só no estado "aberta": o vídeo fala do cashback de quem comprou o Dicionário; nos outros
+     estados seria promessa falsa (mostrar() já esconde). Sem src no HTML: o iframe não faz
+     requisição nenhuma até o JS (iniciarVsl) copiar data-src para src, depois de
+     mostrar('aberta'), com o token fora da barra. referrerpolicy="origin" só no iframe: o Panda
+     recebe o domínio (a biblioteca libera por domínio), nunca o caminho nem a query.
+     Trocar de vídeo = trocar juntos o id no data-src, data-vsl-duration e data-vsl-pitch
+     (segundos; pitch = "Portanto, dê uma chance, use seu cashback"). Id __PANDA_ID__ = o slot
+     fica oculto. Biblioteca do Panda: vz-7867cfdb-be1, a mesma da assinatura.html. -->
+<section class="vsl-sec" id="heroVsl" data-estado="aberta" hidden aria-label="Vídeo do professor Vinícius Ferraz"
+  data-vsl-duration="310.3" data-vsl-pitch="263">
+  <div class="container">
+    <div class="vsl-moldura">
+      <iframe class="vsl-frame" id="heroVslFrame" title="O que vem depois do Dicionário: vídeo do professor Vinícius Ferraz"
+        data-src="https://player-vz-7867cfdb-be1.tv.pandavideo.com.br/embed/?v=f8ce58c0-0cf4-405a-bffc-e19a632848f5"
+        allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture" allowfullscreen
+        referrerpolicy="origin"></iframe>
+      <div class="vsl-ov" id="heroVslOverlay" data-estado="inicio" hidden>
+        <div class="vsl-ov-inicio">
+          <p class="vsl-ov-kicker vsl-ov-cima">Assista antes de escolher o seu plano</p>
+          <span class="vsl-ov-play" aria-hidden="true"></span>
+          <div class="vsl-ov-baixo">
+            <p class="vsl-ov-titulo">O que vem depois do Dicionário</p>
+            <p class="vsl-ov-sub">5 min · com legendas<span class="vsl-ov-desk"> · clique para assistir com som</span></p>
+          </div>
+        </div>
+        <div class="vsl-ov-pausa">
+          <p class="vsl-ov-kicker vsl-ov-cima">Você parou em <span data-vsl-ov-tempo>0:00</span></p>
+          <span class="vsl-ov-play" aria-hidden="true"></span>
+          <div class="vsl-ov-baixo">
+            <p class="vsl-ov-sub">Clique para continuar de onde parou</p>
+            <a href="#planos" class="vsl-ov-link">ou vá direto para os planos</a>
+          </div>
+        </div>
+        <div class="vsl-ov-fim">
+          <p class="vsl-ov-kicker vsl-ov-cima">Agora é com você</p>
+          <a href="#planos" class="btn vsl-ov-cta">Escolher o meu plano</a>
+          <div class="vsl-ov-baixo"><p class="vsl-ov-sub">ou clique no vídeo para assistir de novo</p></div>
+        </div>
+      </div>
+    </div>
+    <p class="vsl-cta"><a class="btn" href="#planos">Ver os dois planos</a></p>
+  </div>
+</section>
 
 <!-- ===== PLANOS COM O CRÉDITO ===== -->
 <section class="section oferta" id="planos" data-estado="aberta" hidden>
@@ -561,8 +652,10 @@
   function campo(nome, texto) {
     todos('[data-campo="' + nome + '"]').forEach(function (el) { el.textContent = texto; });
   }
+  /* O overlay do vídeo também usa data-estado (inicio/pausa/fim), mas é do player, não da
+     página: fica fora daqui e quem o mostra é o assets/vsl-overlay.js. */
   function mostrar(estado) {
-    todos('[data-estado]').forEach(function (el) { el.hidden = el.getAttribute('data-estado') !== estado; });
+    todos('[data-estado]:not(.vsl-ov)').forEach(function (el) { el.hidden = el.getAttribute('data-estado') !== estado; });
   }
 
   /* ----- token: credencial. Sai da barra na hora e só vive na aba (sessionStorage). ----- */
@@ -739,12 +832,30 @@
     document.getElementById('expiradaEngano').hidden = venceu;
   }
 
+  /* ----- vídeo: só no estado "aberta" e só com o id do Panda preenchido ----- */
+  var vslPronto = false;
+  function iniciarVsl() {
+    var slot = document.getElementById('heroVsl'), f = document.getElementById('heroVslFrame');
+    if (vslPronto || !slot || !f) return;
+    var src = f.getAttribute('data-src') || '';
+    if (!src || src.indexOf('__PANDA_ID__') !== -1) { slot.hidden = true; return; }
+    vslPronto = true;
+    f.setAttribute('src', src);
+    /* Overlay de play/pausa: o mesmo arquivo da assinatura.html, só visual (não envia nada).
+       Ele se liga uma vez, ao carregar, e só se o slot já estiver visível: por isso entra
+       aqui, depois de mostrar('aberta'), e não como tag de script no HTML. */
+    var s = document.createElement('script');
+    s.src = 'assets/vsl-overlay.js?v=20260929';
+    document.body.appendChild(s);
+  }
+
   function renderizar(d, token) {
     if (!d || typeof d !== 'object') throw new Error('resposta');
     var nome = nomeDe(d), dia = diaOk(d.ultimoDia);
     if (d.estado === 'aberta' && d.oferta && planoOk(d.oferta.tri) && planoOk(d.oferta.sem)) {
       renderAberta(d, token, nome, dia);
       mostrar('aberta');
+      iniciarVsl();
       iniciarProvas();
       return;
     }
