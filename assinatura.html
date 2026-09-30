@@ -1800,6 +1800,35 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .stack-item { padding: 20px 0; font-size: 16.5px; }
   .naoe-lista li { font-size: 16.5px; }
 }
+/* ==========================================================================
+   REDESENHO — RODADA 2 (30/09/2026)
+   ========================================================================== */
+/* sem animação de entrada em cada bloco: o conteúdo já aparece pronto ao rolar */
+.reveal, .reveal.visible { opacity: 1; transform: none; transition: none; }
+
+/* plataforma: 12 recursos em lista aberta (a demo acima é a estrela; aqui é a ficha técnica) */
+.plat-grid { grid-template-columns: repeat(3, 1fr); column-gap: 48px; row-gap: 0; margin-top: 60px; }
+.plat-card { display: grid; grid-template-columns: 26px 1fr; column-gap: 14px; align-items: start; align-content: start;
+  background: none; border: 0; border-radius: 0; border-top: 1px solid rgba(255,255,255,0.12);
+  padding: 22px 0 26px; }
+.plat-card .pic { grid-row: 1; margin: 0; font-size: 24px; padding-top: 1px; }
+.plat-card h3 { grid-row: 1; align-self: center; margin: 0; font-size: 16.5px; }
+.plat-card p { grid-column: 2; margin-top: 8px; font-size: 16px; color: rgba(255,255,255,0.74); }
+
+/* por que é assim / depois da compra: colunas abertas, como a dor e o método */
+.anat-grid, .passo-grid { gap: 44px; margin-top: 48px; }
+.anat-card, .passo-card { background: none; border: 0; border-radius: 0; padding: 0; }
+.anat-card h3 { font-size: 19px; margin-bottom: 12px; }
+.passo-num { position: static; width: 36px; height: 36px; font-size: 15px; margin-bottom: 16px; }
+.passo-card h3 { margin: 0 0 10px; font-size: 19px; }
+
+@media (max-width: 1020px) {
+  .plat-grid { grid-template-columns: repeat(2, 1fr); column-gap: 36px; }
+}
+@media (max-width: 640px) {
+  .plat-grid { grid-template-columns: 1fr; }
+  .anat-grid, .passo-grid { gap: 36px; }
+}
 @media (max-width: 860px) {
   .anat-grid, .passo-grid, .contraste-grid { grid-template-columns: 1fr; }
   .selos-grid { grid-template-columns: 1fr 1fr; }
@@ -1922,13 +1951,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
     <div class="dep-grid">
       <div class="dep-card beta reveal">
-        <span class="dep-selo aluno">🎓 Aluno da 1ª turma</span>
+        <span class="dep-selo aluno">Aluno da 1ª turma</span>
         <div class="aspas" aria-hidden="true">“</div>
         <p>Contabilidade sempre foi a minha maior dificuldade na área fiscal, e a forma como o conteúdo é apresentado tem ajudado bastante. As aulas são objetivas, certeiras e vão direto ao ponto.</p>
         <div class="dep-autor">João Renan S. <span class="dep-fonte">· avaliação enviada pela plataforma</span></div>
       </div>
       <div class="dep-card beta reveal">
-        <span class="dep-selo">🧪 Testou a plataforma</span>
+        <span class="dep-selo">Testou a plataforma</span>
         <div class="aspas" aria-hidden="true">“</div>
         <p>Estou impressionada demais com esse seu trabalho, que está magnífico! Não há nada semelhante no mercado.</p>
         <div class="dep-autor">Aluna beta <span class="dep-fonte">· acesso antecipado à plataforma</span></div>
@@ -2592,13 +2621,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="dep-trilho">
       <div class="dep-grupo">
           <div class="dep-card beta">
-            <span class="dep-selo aluno">🎓 Aluno da 1ª turma</span>
+            <span class="dep-selo aluno">Aluno da 1ª turma</span>
             <div class="aspas" aria-hidden="true">“</div>
             <p>O sistema de ranking gamificado ficou ótimo! A ideia de utilizar a própria plataforma como simulador também foi excelente. Contabilidade sempre foi a minha maior dificuldade na área fiscal, e a forma como o conteúdo é apresentado tem ajudado bastante. As aulas são objetivas, certeiras e vão direto ao ponto.</p>
             <div class="dep-autor">João Renan S. <span class="dep-fonte">· avaliação enviada pela plataforma</span></div>
           </div>
           <figure class="dep-print">
-            <span class="dep-selo">🧪 Testou a plataforma</span>
+            <span class="dep-selo">Testou a plataforma</span>
             <picture><source srcset="assets/depoimentos/whatsapp-impressionada-mercado.webp" type="image/webp"><img src="assets/depoimentos/whatsapp-impressionada-mercado.png" alt="Print da conversa: aluna diz que o trabalho está magnífico e que não há nada semelhante no mercado" width="369" height="472" loading="lazy" decoding="async"></picture>
             <figcaption>Aluna beta · print do WhatsApp</figcaption>
           </figure>
@@ -2608,7 +2637,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <div class="dep-autor">@Mr4lessandro <span class="dep-fonte">· YouTube</span></div>
           </div>
           <figure class="dep-print">
-            <span class="dep-selo">🧪 Testou a plataforma</span>
+            <span class="dep-selo">Testou a plataforma</span>
             <picture><source srcset="assets/depoimentos/whatsapp-atencao-ao-detalhe.webp" type="image/webp"><img src="assets/depoimentos/whatsapp-atencao-ao-detalhe.png" alt="Print da conversa: aluna fala em atenção ao detalhe e no lado humano do professor" width="383" height="269" loading="lazy" decoding="async"></picture>
             <figcaption>Aluna beta · print do WhatsApp</figcaption>
           </figure>
@@ -2618,7 +2647,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <div class="dep-autor">@LuizMarconiluizmn <span class="dep-fonte">· YouTube</span></div>
           </div>
           <figure class="dep-print">
-            <span class="dep-selo">🧪 Testou a plataforma</span>
+            <span class="dep-selo">Testou a plataforma</span>
             <picture><source srcset="assets/depoimentos/whatsapp-plataforma-sensacional.webp" type="image/webp"><img src="assets/depoimentos/whatsapp-plataforma-sensacional.png" alt="Print da conversa: aluno elogia a plataforma e a didática que amarra o conteúdo" width="371" height="273" loading="lazy" decoding="async"></picture>
             <figcaption>Aluno beta · print do WhatsApp</figcaption>
           </figure>
@@ -2630,13 +2659,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
       <div class="dep-grupo" aria-hidden="true">
           <div class="dep-card beta">
-            <span class="dep-selo aluno">🎓 Aluno da 1ª turma</span>
+            <span class="dep-selo aluno">Aluno da 1ª turma</span>
             <div class="aspas" aria-hidden="true">“</div>
             <p>O sistema de ranking gamificado ficou ótimo! A ideia de utilizar a própria plataforma como simulador também foi excelente. Contabilidade sempre foi a minha maior dificuldade na área fiscal, e a forma como o conteúdo é apresentado tem ajudado bastante. As aulas são objetivas, certeiras e vão direto ao ponto.</p>
             <div class="dep-autor">João Renan S. <span class="dep-fonte">· avaliação enviada pela plataforma</span></div>
           </div>
           <figure class="dep-print">
-            <span class="dep-selo">🧪 Testou a plataforma</span>
+            <span class="dep-selo">Testou a plataforma</span>
             <picture><source srcset="assets/depoimentos/whatsapp-impressionada-mercado.webp" type="image/webp"><img src="assets/depoimentos/whatsapp-impressionada-mercado.png" alt="Print da conversa: aluna diz que o trabalho está magnífico e que não há nada semelhante no mercado" width="369" height="472" loading="lazy" decoding="async"></picture>
             <figcaption>Aluna beta · print do WhatsApp</figcaption>
           </figure>
@@ -2646,7 +2675,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <div class="dep-autor">@Mr4lessandro <span class="dep-fonte">· YouTube</span></div>
           </div>
           <figure class="dep-print">
-            <span class="dep-selo">🧪 Testou a plataforma</span>
+            <span class="dep-selo">Testou a plataforma</span>
             <picture><source srcset="assets/depoimentos/whatsapp-atencao-ao-detalhe.webp" type="image/webp"><img src="assets/depoimentos/whatsapp-atencao-ao-detalhe.png" alt="Print da conversa: aluna fala em atenção ao detalhe e no lado humano do professor" width="383" height="269" loading="lazy" decoding="async"></picture>
             <figcaption>Aluna beta · print do WhatsApp</figcaption>
           </figure>
@@ -2656,7 +2685,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <div class="dep-autor">@LuizMarconiluizmn <span class="dep-fonte">· YouTube</span></div>
           </div>
           <figure class="dep-print">
-            <span class="dep-selo">🧪 Testou a plataforma</span>
+            <span class="dep-selo">Testou a plataforma</span>
             <picture><source srcset="assets/depoimentos/whatsapp-plataforma-sensacional.webp" type="image/webp"><img src="assets/depoimentos/whatsapp-plataforma-sensacional.png" alt="Print da conversa: aluno elogia a plataforma e a didática que amarra o conteúdo" width="371" height="273" loading="lazy" decoding="async"></picture>
             <figcaption>Aluno beta · print do WhatsApp</figcaption>
           </figure>
