@@ -20,7 +20,8 @@
      confirmou a condição, com o token já fora da barra. É um dos dois únicos scripts que não
      são inline, e o fiscal audita o arquivo (sem rede, sem storage, sem dataLayer).
      Trava no vídeo (30/09/2026, decisão do Vinícius, para todos os compradores): o outro
-     script é o assets/vsl-trava.js, o mesmo da assinatura.html, injetado depois do overlay.
+     script é o assets/vsl-trava.js, o mesmo da assinatura.html, injetado junto com o overlay
+     (os dois são assíncronos e independentes; a ordem de execução não importa).
      Enquanto <html class="vsl-trava">, a página é só o palco (topo com crédito e prazo +
      vídeo, e o WhatsApp do atendimento): planos, seções e rodapé voltam quando a pessoa
      assiste até 4:23.
@@ -169,7 +170,8 @@
   html.vsl-trava body { min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column; justify-content: center; background: var(--azul-noite); }
   html.vsl-trava .vsl-sec { padding-bottom: 32px; }
   html.vsl-trava .ajuda-sec { background: transparent; padding-top: 0; }
-  /* no computador, vídeo e aviso cabem juntos numa tela */
+  /* em tela baixa, a moldura encolhe para o vídeo e o aviso caberem juntos na altura da tela
+     (o topo fica acima e pede rolagem; em telas comuns o limite de 900px vence e nada muda) */
   html.vsl-trava .vsl-moldura { max-width: min(900px, calc((100vh - 150px) * 16 / 9)); }
   .vsl-trava-aviso { max-width: 460px; margin: 16px auto 0; text-align: center; }
   /* o tempo que falta só aparece na pausa; invisível, o aviso segura o espaço e o vídeo não pula */
@@ -890,11 +892,18 @@
     s.src = 'assets/vsl-overlay.js?v=20260929';
     document.body.appendChild(s);
     /* Trava no vídeo: o mesmo assets/vsl-trava.js da assinatura.html (mesma versão), injetado
-       depois do overlay pelo mesmo motivo. A classe entra já, antes de o arquivo chegar, para os
-       planos não aparecerem e sumirem na tela; se o arquivo decidir não travar (já liberou,
-       ?semtrava=1, robô), não carregar ou não chegar em 15 s, a classe sai e a página abre. */
+       aqui pelo mesmo motivo do overlay. Os dois são assíncronos e independentes: a ordem em que
+       executam não importa. A classe entra já, antes de o arquivo chegar, para os planos não
+       aparecerem e sumirem na tela; se o arquivo decidir não travar (já liberou, ?semtrava=1,
+       robô), não carregar ou não chegar em 15 s, a classe sai e a página abre. Ao abrir, a
+       página marca FC_VSL_TRAVA = 'desistiu': um arquivo que chegue depois respeita a marca
+       (if (window.FC_VSL_TRAVA) return;) e não tranca por cima de quem já está vendo os planos. */
     var raiz = document.documentElement;
-    function soltaSeNaoTravou() { if (!window.FC_VSL_TRAVA) raiz.classList.remove('vsl-trava'); }
+    function soltaSeNaoTravou() {
+      if (window.FC_VSL_TRAVA) return;
+      window.FC_VSL_TRAVA = 'desistiu';
+      raiz.classList.remove('vsl-trava');
+    }
     raiz.classList.add('vsl-trava');
     var trava = document.createElement('script');
     trava.src = 'assets/vsl-trava.js?v=20260930e';
