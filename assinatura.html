@@ -28,7 +28,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&family=Instrument+Serif&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@500;600&family=Instrument+Serif&display=swap" rel="stylesheet">
 
 <style>
   :root {
@@ -50,6 +50,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     --vermelho-hover:#A93226;
     --azul-bg:       #E8EDF5;
     --verde-ok:      #1E7B45;
+    /* corpo de texto (manual da marca §4.1 e §3: Source Serif 4; Texto Corpo #222; Cinza Texto #555B6B p/ apoio) */
+    --serif:         'Source Serif 4', Georgia, 'Times New Roman', serif;
+    --texto-corpo:   #222222;
+    --cinza-texto:   #555B6B;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -360,7 +364,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     color: var(--azul-profundo);
     margin-bottom: 18px;
   }
-  .section-title .ouro { color: var(--dourado-escuro); }
+  .section-title .ouro { color: inherit; } /* 30/09/2026: título numa cor só (antes um trecho em dourado) */
   .section-text {
     font-size: 17px; color: var(--cinza-medio);
     line-height: 1.7; max-width: 680px;
@@ -381,12 +385,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     transition: all 0.3s ease;
   }
   .card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(27,42,74,0.10); }
-  .card-icon {
-    width: 54px; height: 54px; border-radius: 12px;
-    background: var(--azul-bg);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 26px; margin-bottom: 20px;
-  }
+  .card-icon { font-size: 30px; line-height: 0; color: var(--dourado-escuro); margin-bottom: 18px; }
   .card h3 {
     font-size: 18px; font-weight: 800;
     color: var(--azul-profundo); margin-bottom: 10px;
@@ -397,7 +396,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     font-size: 21px; font-weight: 700; color: var(--azul-profundo);
     max-width: 720px; margin-left: auto; margin-right: auto; line-height: 1.45;
   }
-  .dor-quote span { color: var(--dourado-escuro); }
+  .dor-quote span { color: inherit; }
 
   /* ===== TESE / MÉTODO ===== */
   .tese { background: var(--cream); }
@@ -1137,7 +1136,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     border: 1px solid rgba(255,255,255,0.10);
     border-radius: 12px; padding: 24px 20px;
   }
-  .plat-card .pic { font-size: 26px; display: block; margin-bottom: 14px; }
+  .plat-card .pic { font-size: 28px; line-height: 0; display: block; margin-bottom: 16px; color: var(--dourado); }
   .plat-card h3 { font-size: 15.5px; font-weight: 800; color: var(--branco); margin-bottom: 7px; line-height: 1.3; }
   .plat-card p { font-size: 13.5px; color: rgba(255,255,255,0.72); line-height: 1.55; }
   .badge-beta {
@@ -1153,7 +1152,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   }
 
   /* ===== CURRÍCULO ===== */
-  .curriculo { background: var(--cream-alt); }
+  .curriculo { background: var(--branco); }
   .acc-list { margin-top: 44px; max-width: 860px; }
   .acc-item {
     background: var(--branco); border: 1px solid var(--cinza-borda);
@@ -1191,7 +1190,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .acc-a li.bonus { color: var(--dourado-texto); font-weight: 600; }
 
   /* ===== PROFESSOR ===== */
-  .professor { background: var(--branco); }
+  .professor { background: var(--cream); }
   .prof-content { display: flex; gap: 48px; align-items: center; margin-top: 40px; }
   .prof-photo {
     flex-shrink: 0; width: 250px; height: 300px; border-radius: 16px;
@@ -1263,7 +1262,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   @media (max-width: 700px) { .planos-duo { grid-template-columns: 1fr; } }
 
   /* ===== GARANTIA ===== */
-  .garantia { background: var(--branco); }
+  .garantia { background: var(--cream); }
   .garantia-grid { display: flex; gap: 44px; align-items: center; max-width: 860px; margin: 0 auto; }
   .garantia-selo {
     flex-shrink: 0; width: 150px; height: 150px; border-radius: 50%;
@@ -1275,7 +1274,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .garantia-selo .t { font-size: 11px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: var(--dourado-texto); margin-top: 6px; padding: 0 14px; }
 
   /* ===== DEPOIMENTOS ===== */
-  .depoimentos { background: var(--cream-alt); }
+  .depoimentos { background: var(--cream); }
   .dep-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 48px; }
   .dep-card {
     background: var(--branco); border: 1px solid var(--cinza-borda);
@@ -1477,7 +1476,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
    ========================================================================== */
 
 /* -- 1. a dor na voz de quem sente ---------------------------------------- */
-.dor-sec { background: var(--cream-alt); }
+.dor-sec { background: var(--branco); }
 .dor-baloes { display: grid; gap: 14px; margin: 38px auto 30px; max-width: 760px; }
 .dor-balao { position: relative; margin: 0; background: var(--branco); border: 1px solid var(--cinza-borda);
   border-radius: 12px; padding: 18px 22px 18px 52px; font-size: 16.5px; line-height: 1.6; color: var(--quase-preto); }
@@ -1498,7 +1497,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   color: var(--quase-preto); background: var(--cream-alt); border-radius: 12px; padding: 20px 24px; }
 
 /* -- 3. anatomia do curso ------------------------------------------------- */
-.anat-sec { background: var(--cream); }
+.anat-sec { background: var(--branco); }
 .anat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 38px; }
 .anat-card { background: var(--branco); border: 1px solid var(--cinza-borda);
   border-radius: 12px; padding: 24px; }
@@ -1514,7 +1513,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 .naoe-fecho { max-width: 780px; margin: 0 auto; text-align: center; font-size: 16px; line-height: 1.7; color: var(--cinza-medio); }
 
 /* -- 5. depois da compra -------------------------------------------------- */
-.passo-sec { background: var(--cream-alt); }
+.passo-sec { background: var(--branco); }
 .passo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 38px; }
 .passo-card { position: relative; background: var(--branco); border: 1px solid var(--cinza-borda);
   border-radius: 12px; padding: 26px 22px 22px; }
@@ -1550,17 +1549,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 .contraste-nota { margin: 12px 0 0; font-size: 14px; color: #9FB0CE; }
 
 /* -- 7. selos de confianca + rodape juridico ------------------------------ */
-.selos-sec { background: var(--cream-alt); padding-top: 44px; padding-bottom: 44px; }
+.selos-sec { background: var(--cream); padding-top: 44px; padding-bottom: 44px; }
 .selos-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
 .selo { display: flex; gap: 12px; align-items: flex-start; font-size: 14.5px; line-height: 1.5; color: var(--cinza-medio); }
 .selo strong { color: var(--azul-profundo); }
-.selo-ico { font-size: 20px; line-height: 1; }
+.selo-ico { font-size: 22px; line-height: 0; margin-top: 1px; color: var(--dourado-escuro); }
 .selos-legal { text-align: center; font-size: 13px; line-height: 1.7; color: var(--cinza-medio);
   border-top: 1px solid var(--cinza-borda); padding-top: 22px; margin: 0; }
 .selos-legal span { display: inline-block; margin-top: 8px; font-size: 12.5px; color: #7C838C; max-width: 640px; }
 
 /* -- P. proximas provas + seletor de plano ------------------------------- */
-.prova-sec { background: var(--azul-medio); }
+.prova-sec { background: var(--azul-profundo); }
 .prova-sec[hidden] { display: none; }
 .prova-sec .section-label { color: var(--dourado); }
 .prova-sec .section-title { color: var(--branco); }
@@ -1709,6 +1708,98 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 .fc-cap-ok { display: none; font-size: 15px; color: var(--verde-ok); font-weight: 700; margin-top: 10px; }
 .fc-cap-ok.on { display: block; }
 
+/* ==========================================================================
+   REDESENHO — RODADA 1 (30/09/2026)
+   ========================================================================== */
+/* ícones de traço: Lucide (ISC), embutidos; o tamanho vem do font-size do contêiner */
+.ico { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 1.75;
+  stroke-linecap: round; stroke-linejoin: round; }
+
+/* corpo de texto em serifa; títulos, rótulos, números, botões, preços e a demo seguem em Montserrat */
+.section-text, .curso-painel-pub p, .plat-card p, .dep-card p, .dor-balao, .dor-fecho, .dor .card p, .dor-quote,
+.tese-card p, .tese-conclusao, .acc-a-desc, .prof-bio, .stack-item > div, .stack-ancora, .oferta-roi p,
+.anat-card p, .naoe-lista li, .naoe-fecho, .degrau-box p, .prova-nota, .dep-destaque .dep-cargo,
+.dep-destaque .dep-quote, .dep-destaque .dep-plat, .passo-card p, .faq-a p, .contraste-col li, .contraste-nota {
+  font-family: var(--serif);
+}
+/* a serifa tem olho menor que a Montserrat: +1 a 1,5 px no mesmo papel */
+.section-text { font-size: 18.5px; line-height: 1.65; color: var(--texto-corpo); }
+.curso-painel-pub p { font-size: 17px; }
+.plat-card p { font-size: 15px; line-height: 1.6; }
+.dep-card p { font-size: 17px; line-height: 1.6; color: var(--texto-corpo); }
+.prof-bio { font-size: 17.5px; color: var(--texto-corpo); }
+.oferta-roi p { font-size: 16.5px; }
+.anat-card p { font-size: 17px; color: var(--texto-corpo); }
+.degrau-box p { font-size: 17px; color: var(--texto-corpo); }
+.prova-nota { font-size: 16px; }
+.dep-destaque .dep-cargo, .dep-destaque .dep-plat { font-size: 16px; color: var(--cinza-texto); }
+.dep-destaque .dep-quote { font-size: 20px; font-weight: 600; }
+.passo-card p { font-size: 17px; color: var(--texto-corpo); }
+.faq-a p { font-size: 17px; color: var(--texto-corpo); }
+.contraste-col li { font-size: 17px; }
+.contraste-nota { font-size: 15.5px; }
+.acc-a-desc { font-size: 16px; color: var(--cinza-texto); }
+
+/* títulos: quebra equilibrada; no celular a quebra forçada (<br>) deixava meia frase sozinha */
+.section-title { text-wrap: balance; }
+.dep-card .aspas { font-family: var(--serif); font-weight: 600; font-size: 44px; line-height: 0.8; }
+
+/* pares da mesma conversa dividem o fundo: o 2º encosta no 1º */
+.dor-sec + .dor, .oferta + .garantia, .anat-sec + .naoe-sec, .passo-sec + .faq { padding-top: 8px; }
+
+/* a dor: frases soltas, sem caixa */
+.dor-baloes { gap: 26px; margin: 46px auto 38px; max-width: 720px; }
+.dor-balao { background: none; border: 0; border-radius: 0; padding: 0 0 0 46px;
+  font-style: italic; font-size: 21px; line-height: 1.5; color: var(--azul-profundo); }
+.dor-balao::before { left: 0; top: -2px; font-family: var(--serif); font-style: normal; font-size: 52px; }
+.dor-fecho { font-size: 18.5px; color: var(--texto-corpo); }
+.dor .card { background: none; border: 0; border-radius: 0; padding: 0; }
+.dor .card:hover { transform: none; box-shadow: none; }
+.dor .card p { font-size: 17px; line-height: 1.65; color: var(--texto-corpo); }
+.dor .cards-3 { gap: 44px; }
+.dor-quote { font-style: italic; font-weight: 400; font-size: 26px; line-height: 1.4; }
+
+/* o método como verbete de dicionário: a palavra em serifa grande, a função em itálico logo abaixo.
+   subgrid alinha as três colunas por linha (palavra / função / definição) mesmo quando a palavra quebra */
+.tese-grid { column-gap: 44px; row-gap: 0; margin-top: 56px; }
+.tese-card { display: grid; grid-row: span 3; grid-template-rows: subgrid; align-content: start;
+  background: none; border: 0; border-radius: 0; padding: 0; text-align: left; }
+.tese-card h3 { order: -1; align-self: end; font-family: var(--serif); font-weight: 600; font-size: 32px; line-height: 1.12;
+  letter-spacing: -0.01em; margin: 0 0 6px; }
+.tese-card .passo { display: block; background: none; padding: 0; border-radius: 0; margin: 0 0 14px;
+  font-family: var(--serif); font-style: italic; font-weight: 400; font-size: 18px; letter-spacing: 0;
+  text-transform: lowercase; color: var(--dourado-texto); }
+.tese-card p { font-size: 17px; line-height: 1.65; color: var(--texto-corpo); }
+.tese-conclusao { font-size: 20px; line-height: 1.6; color: var(--texto-corpo); margin-top: 52px; }
+
+/* o que você leva e o que não é: lista aberta, itens separados por linha fina (como o FAQ) */
+.stack-lista, .naoe-lista { gap: 0; }
+.stack-item { background: none; border: 0; border-top: 1px solid var(--cinza-borda); border-radius: 0;
+  padding: 24px 0; font-size: 17.5px; line-height: 1.6; color: var(--texto-corpo); }
+.stack-item:last-child { border-bottom: 1px solid var(--cinza-borda); }
+.stack-item strong, .naoe-lista strong { font-family: 'Montserrat', sans-serif; font-size: 0.92em; color: var(--azul-profundo); }
+.stack-item em { font-style: italic; font-size: 16.5px; color: var(--cinza-texto); margin-top: 8px; }
+.stack-ancora { font-size: 17px; background: var(--cream); }
+.naoe-lista li { background: none; border: 0; border-top: 1px solid var(--cinza-borda); border-radius: 0;
+  padding: 22px 0; font-size: 17.5px; line-height: 1.6; color: var(--texto-corpo); }
+.naoe-lista li:last-child { border-bottom: 1px solid var(--cinza-borda); }
+.naoe-fecho { font-size: 17px; color: var(--cinza-texto); }
+
+@media (max-width: 880px) {
+  .dor .cards-3 { gap: 36px; }
+  .tese-grid { row-gap: 36px; }
+  .tese-card { grid-row: auto; grid-template-rows: none; }
+}
+@media (max-width: 560px) {
+  .section-title br { display: none; }
+  .section-text { font-size: 17.5px; }
+  .dor-balao { font-size: 18.5px; padding-left: 36px; }
+  .dor-balao::before { font-size: 42px; }
+  .dor-quote { font-size: 21px; }
+  .tese-card h3 { font-size: 28px; }
+  .stack-item { padding: 20px 0; font-size: 16.5px; }
+  .naoe-lista li { font-size: 16.5px; }
+}
 @media (max-width: 860px) {
   .anat-grid, .passo-grid, .contraste-grid { grid-template-columns: 1fr; }
   .selos-grid { grid-template-columns: 1fr 1fr; }
@@ -1718,8 +1809,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 }
 @media (max-width: 560px) {
   .selos-grid { grid-template-columns: 1fr; }
-  .stack-item { grid-template-columns: 32px 1fr; gap: 12px; padding: 18px; }
-  .dor-balao { padding: 16px 18px 16px 46px; font-size: 15.5px; }
+  .stack-item { grid-template-columns: 32px 1fr; gap: 12px; }
   .prova-item { grid-template-columns: 1fr auto; }
   .prova-item .prova-escolher { grid-column: 1 / -1; justify-self: start; }
   .fc-cap-modal { padding: 26px 20px 20px; }
@@ -1890,7 +1980,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="container">
     <div class="reveal center">
       <div class="section-label">A plataforma</div>
-      <h2 class="section-title" style="max-width:760px;margin-left:auto;margin-right:auto;">Muito além de videoaula: uma plataforma construída pra você <span style="color:var(--dourado);">praticar até ficar fluente.</span></h2>
+      <h2 class="section-title" style="max-width:760px;margin-left:auto;margin-right:auto;">Muito além de videoaula: uma plataforma construída pra você <span>praticar até ficar fluente.</span></h2>
       <p class="section-text" style="margin-left:auto;margin-right:auto;">A Fluência Contábil tem plataforma própria, feita sob medida pro método — não é um repositório de vídeos. <strong style="color:var(--dourado);">Experimente agora:</strong> a demonstração abaixo é navegável — clique nas telas, use os filtros, resolva questões e jogue o Simulador.</p>
     </div>
 
@@ -2421,62 +2511,62 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <div class="plat-grid">
       <div class="plat-card reveal">
-        <span class="pic" aria-hidden="true">🎬</span>
+        <span class="pic"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3Z"/><path d="m6.2 5.3 3.1 3.9"/><path d="m12.4 3.4 3.1 4"/><path d="M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg></span>
         <h3>Aulas em vídeo + PDF</h3>
         <p>Videoaulas organizadas por módulo, com material de apoio em PDF baixável. Cada aula reúne material, questões, dúvidas e suas anotações em um só lugar.</p>
       </div>
       <div class="plat-card reveal">
-        <span class="pic" aria-hidden="true">📝</span>
+        <span class="pic"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></span>
         <h3>Questões comentadas de banca</h3>
         <p>Questões reais de prova, cada uma com comentário do professor. Filtre por assunto, banca, órgão, ano e dificuldade.</p>
       </div>
       <div class="plat-card reveal">
-        <span class="pic" aria-hidden="true">📚</span>
+        <span class="pic"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.4"/><path d="M2 6h4"/><path d="M2 10h4"/><path d="M2 14h4"/><path d="M2 18h4"/><path d="M21.378 5.626a1 1 0 1 0-3.004-3.004l-5.01 5.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z"/></svg></span>
         <h3>Cadernos de estudo</h3>
         <p>Monte cadernos com seus filtros, resolva no seu ritmo e refaça só os erros. Seu desempenho por assunto fica registrado.</p>
       </div>
       <div class="plat-card reveal">
-        <span class="pic" aria-hidden="true">🎮</span>
+        <span class="pic"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><line x1="6" x2="10" y1="11" y2="11"/><line x1="8" x2="8" y1="9" y2="13"/><line x1="15" x2="15.01" y1="12" y2="12"/><line x1="18" x2="18.01" y1="10" y2="10"/><path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"/></svg></span>
         <h3>Simulador de Lançamentos</h3>
         <p>Um jogo de débito e crédito: pratique lançamentos reais em 5 níveis de dificuldade, ganhe XP e treine a classificação de contas contra o relógio.</p>
       </div>
       <div class="plat-card reveal">
-        <span class="pic" aria-hidden="true">💬</span>
+        <span class="pic"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2z"/><path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"/></svg></span>
         <h3>Comunidade de dúvidas</h3>
         <p>Pergunte dentro da própria aula. As respostas — do professor e da comunidade — ficam organizadas e votadas pra todo mundo aproveitar.</p>
       </div>
       <div class="plat-card reveal">
-        <span class="pic" aria-hidden="true">🔥</span>
+        <span class="pic"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg></span>
         <h3>XP, sequência e ranking</h3>
         <p>Cada questão certa e aula concluída vale pontos. Mantenha sua sequência de dias de estudo e, se quiser, dispute o ranking com os outros alunos.</p>
       </div>
       <div class="plat-card reveal">
-        <span class="pic" aria-hidden="true">🎯</span>
+        <span class="pic"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span>
         <h3>Foco no seu concurso</h3>
         <p>Escolha seu concurso-alvo e receba dicas direcionadas no seu painel, com data da prova e links oficiais.</p>
       </div>
       <div class="plat-card reveal">
-        <span class="pic" aria-hidden="true">📜</span>
+        <span class="pic"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/></svg></span>
         <h3>Certificado verificável</h3>
         <p>Concluiu o curso? Emita o certificado em PDF com código de verificação — pra comprovar as horas de estudo.</p>
       </div>
       <div class="plat-card reveal">
-        <span class="pic" aria-hidden="true">📋</span>
+        <span class="pic"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg></span>
         <h3>Meu Edital<span class="badge-beta">Beta</span></h3>
         <p>O edital do seu concurso, verticalizado: veja item a item o que o curso cobre, qual aula estudar pra cada ponto e o que priorizar.</p>
       </div>
       <div class="plat-card reveal">
-        <span class="pic" aria-hidden="true">🗺️</span>
+        <span class="pic"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z"/><path d="M15 5.764v15"/><path d="M9 3.236v15"/></svg></span>
         <h3>Mapa de Incidência<span class="badge-beta">Beta</span></h3>
         <p>O raio-X do que a sua banca mais cobra: um mapa de calor, item por item da norma, construído com questões reais de prova.</p>
       </div>
       <div class="plat-card reveal">
-        <span class="pic" aria-hidden="true">🗓️</span>
+        <span class="pic"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="m9 16 2 2 4-4"/></svg></span>
         <h3>Plano de Estudos<span class="badge-beta">Beta</span></h3>
         <p>Uma agenda semanal montada pra sua rotina, com revisão espaçada — pra você revisar na hora certa e parar de esquecer o que estudou.</p>
       </div>
       <div class="plat-card reveal">
-        <span class="pic" aria-hidden="true">📱</span>
+        <span class="pic"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg></span>
         <h3>Estude de onde quiser</h3>
         <p>Plataforma responsiva no navegador — desktop, tablet ou celular. PDFs baixáveis pra estudar até sem internet.</p>
       </div>
@@ -2589,7 +2679,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="container">
     <div class="reveal center">
       <div class="section-label">O problema</div>
-      <h2 class="section-title">Se alguma dessas frases é sua,<br>o problema não é falta de estudo.</h2>
+      <h2 class="section-title">Se alguma dessas frases é sua, <br>o problema não é falta de estudo.</h2>
     </div>
     <div class="dor-baloes">
       <blockquote class="dor-balao reveal">Li o CPC, fiz resumo, decorei o lançamento. Na prova a banca trocou uma palavra e eu não reconheci o que ela estava pedindo.</blockquote>
@@ -2611,22 +2701,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
     <div class="cards-3">
       <div class="card reveal">
-        <div class="card-icon" aria-hidden="true">📚</div>
+        <div class="card-icon"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg></div>
         <h3>Você estudou a teoria</h3>
         <p>Leu o CPC, fez o resumo, marcou o mapa mental. Na hora da questão, a banca muda uma palavra — e a teoria decorada não responde.</p>
       </div>
       <div class="card reveal">
-        <div class="card-icon" aria-hidden="true">⚖️</div>
+        <div class="card-icon"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg></div>
         <h3>É a disciplina de maior peso</h3>
         <p>Nos concursos de Fiscal e de Contador, contabilidade é a matéria que mais pontua — e a que mais reprova quem depende de decoreba.</p>
       </div>
       <div class="card reveal">
-        <div class="card-icon" aria-hidden="true">🔁</div>
+        <div class="card-icon"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg></div>
         <h3>O ciclo se repete</h3>
         <p>Estuda, esquece, revisa, esquece de novo. Sem uma lógica interna que sustente o conteúdo, cada revisão é começar do zero.</p>
       </div>
     </div>
-    <p class="dor-quote reveal">"Sei a teoria, mas não consigo aplicar — <span>perco pontos onde mais cai.</span>"</p>
+    <p class="dor-quote reveal">“Sei a teoria, mas não consigo aplicar — <span>perco pontos onde mais cai.</span>”</p>
   </div>
 </section>
 
@@ -2920,7 +3010,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="container">
     <div class="reveal center">
       <div class="section-label">Por que é assim</div>
-      <h2 class="section-title">Não é uma pilha de videoaulas.<br>É um <span class="ouro">idioma ensinado em ordem</span>.</h2>
+      <h2 class="section-title">Não é uma pilha de videoaulas. <br>É um <span class="ouro">idioma ensinado em ordem</span>.</h2>
     </div>
     <div class="anat-grid">
       <div class="anat-card reveal">
@@ -3248,10 +3338,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <section class="section selos-sec">
   <div class="container">
     <div class="selos-grid">
-      <div class="selo reveal"><span class="selo-ico">🔒</span><div><strong>Compra segura</strong><br>Checkout processado pela Kiwify</div></div>
-      <div class="selo reveal"><span class="selo-ico">↩️</span><div><strong>7 dias de garantia</strong><br>Devolução integral, sem perguntas</div></div>
-      <div class="selo reveal"><span class="selo-ico">🎓</span><div><strong>3.000+ alunos</strong><br>ao longo de 40 turmas</div></div>
-      <div class="selo reveal"><span class="selo-ico">📅</span><div><strong>Pagamento único</strong><br>Sem renovação automática</div></div>
+      <div class="selo reveal"><span class="selo-ico"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span><div><strong>Compra segura</strong><br>Checkout processado pela Kiwify</div></div>
+      <div class="selo reveal"><span class="selo-ico"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg></span><div><strong>7 dias de garantia</strong><br>Devolução integral, sem perguntas</div></div>
+      <div class="selo reveal"><span class="selo-ico"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg></span><div><strong>3.000+ alunos</strong><br>ao longo de 40 turmas</div></div>
+      <div class="selo reveal"><span class="selo-ico"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 17.5v-11"/></svg></span><div><strong>Pagamento único</strong><br>Sem renovação automática</div></div>
     </div>
     <p class="selos-legal">NEVES E BALHE EDUCAÇÃO LTDA. — CNPJ 55.373.571/0001-63<br>
     Av. Paulista, 1106, Sala 01 — Andar 16, Bela Vista, São Paulo/SP<br>
