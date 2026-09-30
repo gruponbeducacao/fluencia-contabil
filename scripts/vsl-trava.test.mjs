@@ -4,7 +4,11 @@ import { readFileSync } from 'node:fs';
 import vm from 'node:vm';
 
 const ARQUIVO = process.env.VSL_TRAVA_ARQUIVO || new URL('../assets/vsl-trava.js', import.meta.url);
+const PAGINA = process.env.VSL_TRAVA_PAGINA || new URL('../assinatura.html', import.meta.url);
 const source = readFileSync(ARQUIVO, 'utf8');
+const html = readFileSync(PAGINA, 'utf8');
+// Trecho opcional das páginas: ouve o player desde antes do iframe e marca window.FC_VSL_PLAYER_OK.
+const TRECHO = (html.match(/<script data-vsl-trava-ouvinte>([\s\S]*?)<\/script>/) || [])[1];
 const ORIGEM = 'https://player-vz-test.tv.pandavideo.com.br';
 
 // Página falsa ESTRITA: getElementById e querySelector só respondem aos ids/seletores exatos (o resto
@@ -66,9 +70,9 @@ function pagina({ hash = '', search = '', ua = 'Mozilla/5.0 (iPhone)', liberada 
     }
     agora = fim;
   };
-  const msg = (message, currentTime, extra = {}, de = {}) => dispara('window', 'message', {
-    source: 'source' in de ? de.source : frame.contentWindow, origin: de.origin || ORIGEM,
-    data: { message, currentTime, ...extra } });
+  const posta = (data, de = {}) => dispara('window', 'message', {
+    source: 'source' in de ? de.source : frame.contentWindow, origin: de.origin || ORIGEM, data });
+  const msg = (message, currentTime, extra = {}, de = {}) => posta({ message, currentTime, ...extra }, de);
   // toca de `de` até `ate` segundos de vídeo, em passos de 1 s de relógio
   const toca = (de, ate) => { for (let t = de; t <= ate; t += 1) { msg('panda_timeupdate', t); anda(1); } };
   // a página perde o foco para `foco` (o iframe = clique no vídeo; outro = outra aba, outro app)
@@ -76,7 +80,7 @@ function pagina({ hash = '', search = '', ua = 'Mozilla/5.0 (iPhone)', liberada 
   const clica = () => perdeFoco(frame);
   const liberacoes = () => dataLayer.filter(e => e.event === 'vsl_pagina_liberada');
   return {
-    window, document, frame, body, classes, aviso, txt, barra, local, dataLayer, msg, toca, anda, clica, perdeFoco, liberacoes,
+    window, document, frame, body, classes, aviso, txt, barra, local, dataLayer, posta, msg, toca, anda, clica, perdeFoco, liberacoes,
     instala: () => vm.runInContext(source, context),
     roda: codigo => vm.runInContext(codigo, context),
     esconde: sim => { document.visibilityState = sim ? 'hidden' : 'visible'; dispara('document', 'visibilitychange', {}); },
@@ -334,12 +338,46 @@ test('não trava: link com âncora, quem já liberou, ?semtrava=1, robô de busc
   }
 });
 
+// ---------------------------------------------------------------------------------------------
+// O trecho da assinatura.html (<script data-vsl-trava-ouvinte>), o mesmo que as outras páginas copiam.
+
+test('assinatura.html: o trecho que ouve o player vem antes do iframe e do código que liga o src', () => {
+  assert.ok(TRECHO, 'sem <script data-vsl-trava-ouvinte> na página');
+  const i = html.indexOf('<script data-vsl-trava-ouvinte>');
+  assert.ok(i < html.indexOf('id="heroVslFrame"'), 'o trecho tem de vir antes do iframe');
+  assert.ok(i < html.indexOf("f.setAttribute('src', src)"), 'o trecho tem de vir antes de o player começar a carregar');
+});
+
+test('corrida A2 com o trecho da assinatura.html: o panda_ready chega antes do arquivo e a página continua travada', () => {
+  const p = pagina();
+  p.roda(TRECHO);                                              // inline, antes do iframe
+  p.anda(0.7); p.msg('PANDA_READY'); p.msg('panda_ready', 0); p.msg('panda_allData');
+  p.anda(1.8); p.instala();                                    // o vsl-trava.js chega depois (defer, injetado, rede lenta)
+  p.anda(19); p.msg('panda_canplay', 0); p.msg('panda_progress', 0);  // próximo aviso sem play: 14,7–21 s (medido)
+  p.anda(600);
+  assert.equal(p.window.FC_VSL_PLAYER_OK, true);
+  assert.equal(p.travada(), true);
+  assert.equal(p.liberacoes().length, 0);
+  p.msg('panda_play', 0); p.anda(20);                          // e a saída do A1 continua valendo
+  assert.equal(p.motivo(), 'player_travado');
+});
+
+test('trecho da assinatura.html não se engana: outra janela, outra origem ou aviso sem message não marcam o player', () => {
+  const p = pagina();
+  p.roda(TRECHO);
+  p.msg('panda_ready', 0, {}, { source: { quem: 'outro-iframe' } });
+  p.msg('panda_ready', 0, {}, { origin: 'https://evil.example' });
+  p.msg('panda_ready', 0, {}, { origin: 'https://player-vz-test.tv.pandavideo.com.br.evil.example' });
+  p.posta({ type: 'panda_ready' }); p.posta('panda_ready'); p.posta(null);
+  assert.equal(p.window.FC_VSL_PLAYER_OK, undefined);
+  p.instala(); p.anda(15);                                     // Panda bloqueado com o trecho: 15 s, como sem ele
+  assert.equal(p.motivo(), 'player_mudo');
+});
 
 test('assinatura.html: libera no fim da proposta da Fluência Contábil (6:41) e o texto sem JS bate com o do script', () => {
   // 30/09/2026: 3:00 era arbitrário e 11:39 (pitch) longo demais; 5:31 (fim da demonstração de débito e crédito)
   // durou um PR. O Vinícius fechou em 6:41: fim da proposta da Fluência Contábil — "É essa autonomia que eu quero
   // construir em você." termina em 6:40.55 da VSL v2
-  const html = readFileSync(new URL('../assinatura.html', import.meta.url), 'utf8');
   const trava = (html.match(/id="heroVsl" data-vsl-trava="(\d+)"/) || [])[1];
   assert.equal(trava, '401');
   const estatico = (html.match(/data-vsl-trava-txt>([^<]+)</) || [])[1];

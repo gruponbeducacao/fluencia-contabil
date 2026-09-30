@@ -1846,6 +1846,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <!-- ===== HERO ===== -->
 <section class="hero">
+  <!-- trava da VSL (assets/vsl-trava.js): este trecho ouve o player do Panda desde ANTES do iframe e marca
+       window.FC_VSL_PLAYER_OK na 1a mensagem dele. Sem ele, um panda_ready que chegue antes do vsl-trava.js (defer)
+       passa despercebido e a pagina pode abrir sozinha em 15 s com o player funcionando. Opcional: sem o trecho, a
+       trava funciona como antes. Tem de ficar antes do iframe (e do codigo que copia data-src para src). -->
+  <script data-vsl-trava-ouvinte>
+  (function () {
+    function ouve(e) {
+      var f = document.getElementById('heroVslFrame'), d = e.data;
+      if (!f || e.source !== f.contentWindow || !/^https:\/\/player-[a-z0-9-]+\.tv\.pandavideo\.com\.br$/.test(e.origin) ||
+          !d || typeof d !== 'object' || typeof d.message !== 'string') return;
+      window.FC_VSL_PLAYER_OK = true;
+      window.removeEventListener('message', ouve);
+    }
+    window.addEventListener('message', ouve);
+  })();
+  </script>
   <!-- ===== SLOT DE VSL (ativo desde 29/09/2026: VSL da assinatura v2, 13:07) =====
        Trocar de video = trocar os quatro valores juntos: id externo no data-src, data-vsl-version,
        data-vsl-duration e data-vsl-pitch (segundos; pitch = inicio de "Ao entrar, voce contrata...").
