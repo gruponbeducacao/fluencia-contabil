@@ -99,7 +99,8 @@ n_s = len(re.findall(r"<s\b", s))
 ok("nenhum preço riscado novo (<s> igual à baseline)",
    n_s == (len(re.findall(r"<s\b", antes)) if antes is not None else 2), f"{n_s} <s>")
 hd = re.findall(r'^ {6}<p class="hero-datas">', s, flags=re.M)
-ok("<p class=\"hero-datas\"> 1x com 6 espaços", len(hd) == 1, f"{len(hd)}x")
+# 30/09/2026: o Vinícius pediu o hero sem preço (antes a regra exigia a linha "A partir de…")
+ok("hero sem a linha de preço", len(hd) == 0, f"{len(hd)}x")
 
 # --------------------------------------------- F. honestidade da casa
 def visivel(t):
@@ -117,7 +118,8 @@ ok("sem urgência falsa", not re.search(r"(só hoje|últimas vagas|oferta expira
 ok("'vitalício' só aparece negado (na seção 'o que não é')",
    texto.count("vitalício") == 1 and "Não é assinatura recorrente nem acesso vitalício" in texto)
 ok("sem bordões proibidos", not re.search(r"Pensa comigo|Macete Fluência|Macete Vinícius", texto))
-ok("Beta sinalizado nas três ferramentas do stack", stack.count('class="stack-beta">Beta') == 3)
+# 30/09/2026: o Vinícius pediu o selo Beta fora da pilha de valor (antes a regra exigia os três selos)
+ok("sem selo Beta na pilha de valor", "stack-beta" not in stack)
 ok("sem 'método Chaves' em texto novo",
    texto.count("método Chaves") == (texto_antes.count("método Chaves") if antes is not None else 1))
 ok("questões: número lido do banco (3.800+)", "Mais de 3.800 questões" in s and "3.697" not in s)

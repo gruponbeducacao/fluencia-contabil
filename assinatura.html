@@ -215,15 +215,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
   /* ===== HERO QUE COMECA PELA VSL (30/09/2026, pedido do Vinicius) =====
      O video e' a primeira coisa do hero; abaixo dele, titulo + prova + preco + botao numa coluna da largura do video. */
-  .hero-vsl.hero-vsl--topo { padding: 40px 24px 0; }
+  /* video grande: ate' 1200px, limitado pela altura da janela para caber inteiro sem rolar */
+  .hero-vsl.hero-vsl--topo { max-width: 1320px; padding: 28px 24px 0; }
+  .hero-vsl--topo .vsl-moldura { max-width: min(1200px, calc((100vh - 96px) * 16 / 9)); }
   .hero-grid--vsl { grid-template-columns: 1fr; max-width: 948px; }
-  .hero-grid--vsl .hero-texto { padding: 36px 0 64px; }
-  .hero-prova {
-    font-size: 15px; line-height: 1.5; color: rgba(255,255,255,0.86);
-    margin: -6px 0 18px; max-width: 640px;
-    animation: fadeUp 0.7s ease-out 0.25s both;
+  .hero-grid--vsl .hero-texto { padding: 30px 0 60px; text-align: center; }
+  .hero-grid--vsl .hero-degusta-btn { margin-left: auto; margin-right: auto; }
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
   }
-  .hero-prova strong { color: var(--dourado); font-weight: 800; }
 
   /* ===== O CURSO — trilha dos modulos + painel de numeros (30/09/2026) ===== */
   .curso-topo { max-width: 780px; }
@@ -1386,7 +1387,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .hero-foto::after { display: none; }
     .hero-logo { width: 80px; margin-bottom: 18px; }
     /* hero que comeca pela VSL: video colado no topo, texto logo abaixo */
-    .hero-vsl.hero-vsl--topo { padding: 16px 16px 0; }
+    /* no celular o video ocupa a largura inteira da tela */
+    .hero-vsl.hero-vsl--topo { padding: 0; }
+    .hero-vsl--topo .vsl-moldura { max-width: none; border-radius: 0; border-width: 1px 0; }
     .hero-grid--vsl .hero-texto { margin-top: 0; padding: 24px 24px 44px; }
   }
   @media (max-width: 760px) {
@@ -1402,8 +1405,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .dep-print { width: 270px; }
   }
   @media (max-width: 560px) {
-    /* hero mais curto no celular: "35 aulas + 3 bonus" segue na faixa de prova logo abaixo */
-    .hero-grid--vsl .hero-sub.menor { display: none; }
     .prova-topo-nums { gap: 10px; }
     .prova-topo-num .n { font-size: 26px; }
     .prova-topo-num .l { font-size: 11.5px; }
@@ -1471,15 +1472,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 .stack-num { display: flex; align-items: center; justify-content: center; width: 34px; height: 34px;
   border-radius: 50%; background: var(--azul-profundo); color: var(--dourado); font-weight: 800; font-size: 15px; }
 .stack-item em { display: block; margin-top: 6px; font-style: normal; color: var(--cinza-medio); font-size: 15px; }
-.stack-beta { display: inline-block; margin-left: 6px; padding: 1px 7px; border-radius: 999px; font-size: 10.5px;
-  font-weight: 800; letter-spacing: .6px; text-transform: uppercase; background: var(--dourado); color: var(--azul-profundo); vertical-align: 2px; }
 .stack-ancora { max-width: 760px; margin: 0 auto; text-align: center; font-size: 16px; line-height: 1.7;
   color: var(--quase-preto); background: var(--cream-alt); border-radius: 12px; padding: 20px 24px; }
 
 /* -- 3. anatomia do curso ------------------------------------------------- */
 .anat-sec { background: var(--cream); }
 .anat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 38px; }
-.anat-card { background: var(--branco); border: 1px solid var(--cinza-borda); border-top: 3px solid var(--dourado);
+.anat-card { background: var(--branco); border: 1px solid var(--cinza-borda);
   border-radius: 12px; padding: 24px; }
 .anat-card h3 { margin: 0 0 10px; font-size: 17px; line-height: 1.35; color: var(--azul-profundo); }
 .anat-card p { margin: 0; font-size: 15.5px; line-height: 1.65; color: var(--cinza-medio); }
@@ -1488,7 +1487,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 /* -- 4. o que nao e ------------------------------------------------------- */
 .naoe-sec { background: var(--branco); }
 .naoe-lista { list-style: none; padding: 0; margin: 36px auto 26px; max-width: 780px; display: grid; gap: 12px; }
-.naoe-lista li { background: var(--branco); border: 1px solid var(--cinza-borda); border-left: 3px solid var(--vermelho);
+.naoe-lista li { background: var(--branco); border: 1px solid var(--cinza-borda);
   border-radius: 10px; padding: 16px 20px; font-size: 16px; line-height: 1.6; }
 .naoe-fecho { max-width: 780px; margin: 0 auto; text-align: center; font-size: 16px; line-height: 1.7; color: var(--cinza-medio); }
 
@@ -1764,16 +1763,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="hero-texto">
       <div class="hero-badge">🏛️ Edição 2026 · Matrículas abertas</div>
 
-      <h1>Transforme contabilidade na sua <span class="destaque">maior vantagem</span> para conquistar múltiplas aprovações.<span class="sub-risco" aria-hidden="true"></span></h1>
-
-      <!-- prova ja' na 1a tela (mesmos numeros da secao "Quem ensina") -->
-      <p class="hero-prova">Com o Prof. Vinícius Ferraz, Auditor Fiscal: <strong>4 aprovações</strong> em concursos de elite e <strong>mais de 3.000 alunos</strong> ao longo de 40 turmas.</p>
-
-      <p class="hero-sub">A Fluência Contábil ensina contabilidade <strong>como um idioma, pela lógica</strong> — pra você parar de perder pontos <span class="ouro-claro">onde mais cai</span> e interpretar qualquer questão sem decoreba.</p>
-
-      <p class="hero-sub menor">Edição 2026 completa: <strong>5 módulos, 35 aulas + 3 bônus</strong>, questões comentadas de banca real e a plataforma inteira, sem módulo avulso nem upsell.</p>
-
-      <p class="hero-datas">A partir de <strong>12× R$ 44,16</strong></p>
+      <!-- 30/09/2026 (pedido do Vinicius): titulo, prova e paragrafos sairam da vista — o video fala por eles.
+           O h1 continua no codigo, invisivel, para a busca e o leitor de tela. -->
+      <h1 class="sr-only">Transforme contabilidade na sua maior vantagem para conquistar múltiplas aprovações.</h1>
 
       <div class="hero-cta">
         <a href="#oferta" class="btn cta-compra" data-fc-vsl-cta>Ver os planos</a>
@@ -2786,17 +2778,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </li>
       <li class="stack-item reveal">
         <span class="stack-num">3</span>
-        <div><strong>Meu Edital</strong><span class="stack-beta">Beta</span> — cole o seu edital e ele vira uma lista verticalizada, cada item com a aula que o cobre.
+        <div><strong>Meu Edital</strong> — cole o seu edital e ele vira uma lista verticalizada, cada item com a aula que o cobre.
         <em>Resolve: acaba o garimpo no PDF do edital e a planilha feita à mão.</em></div>
       </li>
       <li class="stack-item reveal">
         <span class="stack-num">4</span>
-        <div><strong>Mapa de Incidência</strong><span class="stack-beta">Beta</span> — o item da norma cruzado com a banca: quanto mais azul, mais aquela banca cobra.
+        <div><strong>Mapa de Incidência</strong> — o item da norma cruzado com a banca: quanto mais azul, mais aquela banca cobra.
         <em>Resolve: você estuda primeiro o que a sua banca cobra de verdade, não o que parece importante.</em></div>
       </li>
       <li class="stack-item reveal">
         <span class="stack-num">5</span>
-        <div><strong>Plano de Estudos</strong><span class="stack-beta">Beta</span> — agenda semanal na sua rotina, com revisão espaçada em D+3, 7, 16 e 35 dias. Revisão é resolver questão, não reler.
+        <div><strong>Plano de Estudos</strong> — agenda semanal na sua rotina, com revisão espaçada em D+3, 7, 16 e 35 dias. Revisão é resolver questão, não reler.
         <em>Resolve: acaba o estuda-esquece. A revisão chega no dia certo, sozinha.</em></div>
       </li>
       <li class="stack-item reveal">
