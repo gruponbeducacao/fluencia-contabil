@@ -1161,7 +1161,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .acc-a li::before {
     content: '›'; position: absolute; left: 8px; color: var(--dourado-escuro); font-weight: 800;
   }
-  .acc-a li.bonus::before { content: '🎁'; left: 0; font-size: 12px; top: 8px; }
+  .acc-a li.bonus::before { content: '+'; left: 7px; }
   .acc-a li.bonus { color: var(--dourado-texto); font-weight: 600; }
 
   /* ===== PROFESSOR ===== */
@@ -1174,12 +1174,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     position: relative; overflow: hidden;
   }
   .prof-photo .prof-img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 12%; }
-  .prof-photo .photo-badge {
-    position: absolute; bottom: 0; left: 0; right: 0;
-    background: rgba(200,168,75,0.92); color: var(--azul-profundo);
-    font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase;
-    text-align: center; padding: 8px;
-  }
   .prof-info h3 { font-size: 24px; font-weight: 800; color: var(--azul-profundo); margin-bottom: 4px; }
   .prof-cargo { font-size: 15px; color: var(--dourado-texto); font-weight: 700; margin-bottom: 16px; }
   .prof-bio { font-size: 16px; color: var(--cinza-medio); line-height: 1.7; }
@@ -1785,6 +1779,39 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 @media (max-width: 640px) {
   .plat-grid { grid-template-columns: 1fr; }
   .anat-grid, .passo-grid { gap: 36px; }
+}
+/* ==========================================================================
+   REDESENHO — RODADA 3 (30/09/2026)
+   ========================================================================== */
+/* oferta: cartão = prazo, preço e botão; a lista comum vem uma vez, abaixo */
+.plano-equiv { margin-bottom: 26px; text-wrap: balance; }
+.planos-inclui { margin: 36px auto 0; max-width: 880px; }
+.planos-inclui-tit { text-align: center; font-size: 12px; font-weight: 800; letter-spacing: 2.5px;
+  text-transform: uppercase; color: var(--dourado-texto); margin: 0 0 14px; }
+.planos-inclui .plano-list { columns: 2; column-gap: 44px; margin: 0; }
+.planos-inclui .plano-list li { break-inside: avoid; font-family: var(--serif); font-size: 16.5px;
+  color: var(--texto-corpo); padding: 7px 0; }
+.planos-inclui .plano-list li strong { color: var(--azul-profundo); }
+.oferta-roi { background: none; border: 0; border-radius: 0; padding: 0; max-width: 640px; margin-top: 44px; }
+.oferta-roi p { font-size: 18px; line-height: 1.65; }
+
+/* professor: o <picture> ocupa a moldura inteira (antes a foto ficava com faixas azuis em cima e embaixo) */
+.prof-photo picture { display: block; width: 100%; height: 100%; }
+.professor .prova-cta { text-align: left; padding-left: 298px; margin-top: 30px; }
+
+/* currículo: módulos em linhas, como o FAQ */
+.acc-item { background: none; border: 0; border-top: 1px solid var(--cinza-borda); border-radius: 0; margin: 0; }
+.acc-item:last-child { border-bottom: 1px solid var(--cinza-borda); }
+.acc-q { padding: 22px 44px 22px 0; }
+.acc-q::after { right: 8px; }
+.acc-a-inner { padding: 0 0 24px; }
+.acc-a li { font-family: var(--serif); font-size: 16.5px; color: var(--texto-corpo); padding: 7px 0 7px 24px; }
+
+@media (max-width: 880px) {
+  .professor .prova-cta { text-align: center; padding-left: 0; }
+}
+@media (max-width: 640px) {
+  .planos-inclui .plano-list { columns: 1; }
 }
 @media (max-width: 860px) {
   .anat-grid, .passo-grid, .contraste-grid { grid-template-columns: 1fr; }
@@ -2818,7 +2845,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <source srcset="assets/foto-vinicius.webp" type="image/webp">
           <img class="prof-img" src="assets/foto-vinicius.jpg" alt="Foto do Prof. Vinícius Ferraz" width="1200" height="900" loading="lazy">
         </picture>
-        <div class="photo-badge">Auditor Fiscal</div>
       </div>
       <div class="prof-info">
         <p class="prof-cargo">Auditor Fiscal do Município do Rio de Janeiro</p>
@@ -2903,15 +2929,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <p class="plano-parcela">12× de <span class="x">R$ 44,16</span></p>
           <p class="plano-avista">ou <s class="plano-antes">R$ 547</s> <strong>R$ 427</strong> à vista</p>
           <p class="plano-equiv">3 meses de acesso · pagamento único<span class="plano-mes">equivale a <strong>R$ 142 por mês</strong> de acesso</span></p>
-          <ul class="plano-list">
-            <li><span>Curso completo: 5 módulos, 35 aulas + 3 bônus</span></li>
-            <li><span>Questões comentadas de banca real</span></li>
-            <li><span><strong>Meu Edital</strong>: seu edital verticalizado aula a aula</span></li>
-            <li><span><strong>Mapa de Incidência</strong>: o que mais cai na sua banca</span></li>
-            <li><span><strong>Plano de Estudos</strong> com revisão espaçada</span></li>
-            <li><span>Simulador de Lançamentos e plataforma inteira</span></li>
-            <li><span>PDFs baixáveis + certificado</span></li>
-          </ul>
           <a href="https://pay.kiwify.com.br/4Qx0g3O?src=lp-a&amp;utm_source=site&amp;utm_medium=lp&amp;utm_campaign=pos_janela_2026&amp;utm_content=trimestral" class="btn cta-compra" data-fc-local="trimestral">Assinar o trimestral</a>
         </div>
 
@@ -2922,17 +2939,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <p class="plano-parcela">12× de <span class="x">R$ 56,57</span></p>
           <p class="plano-avista">ou <s class="plano-antes">R$ 697</s> <strong>R$ 547</strong> à vista</p>
           <p class="plano-equiv">6 meses de acesso · sai <strong>36% mais barato por mês</strong> que o trimestral<span class="plano-mes">equivale a <strong>R$ 91 por mês</strong> de acesso</span></p>
-          <ul class="plano-list">
-            <li><span>Curso completo: 5 módulos, 35 aulas + 3 bônus</span></li>
-            <li><span>Questões comentadas de banca real</span></li>
-            <li><span><strong>Meu Edital</strong>: seu edital verticalizado aula a aula</span></li>
-            <li><span><strong>Mapa de Incidência</strong>: o que mais cai na sua banca</span></li>
-            <li><span><strong>Plano de Estudos</strong> com revisão espaçada</span></li>
-            <li><span>Simulador de Lançamentos e plataforma inteira</span></li>
-            <li><span>PDFs baixáveis + certificado</span></li>
-          </ul>
           <a href="https://pay.kiwify.com.br/DXvdSEu?src=lp-a&amp;utm_source=site&amp;utm_medium=lp&amp;utm_campaign=pos_janela_2026&amp;utm_content=semestral" class="btn cta-compra" data-fc-local="semestral">Assinar o semestral</a>
         </div>
+      </div>
+
+      <!-- 30/09/2026: a lista era idêntica nos dois cartões; aparece uma vez (o título já diz "o mesmo curso inteiro") -->
+      <div class="planos-inclui">
+        <p class="planos-inclui-tit">Nos dois planos</p>
+        <ul class="plano-list">
+          <li><span>Curso completo: 5 módulos, 35 aulas + 3 bônus</span></li>
+          <li><span>Questões comentadas de banca real</span></li>
+          <li><span><strong>Meu Edital</strong>: seu edital verticalizado aula a aula</span></li>
+          <li><span><strong>Mapa de Incidência</strong>: o que mais cai na sua banca</span></li>
+          <li><span><strong>Plano de Estudos</strong> com revisão espaçada</span></li>
+          <li><span>Simulador de Lançamentos e plataforma inteira</span></li>
+          <li><span>PDFs baixáveis + certificado</span></li>
+        </ul>
       </div>
 
       <p class="planos-nota">Pagamento único, sem renovação automática · 7 dias de garantia incondicional · Cartão em até 12×, Pix ou boleto.<br>No cartão as parcelas têm juros do gateway — por isso mostramos o valor à vista junto.</p>
