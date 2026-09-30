@@ -17,8 +17,15 @@
      mostrar a composição em itens, e só quando a conta fecha dos dois lados.
      Vídeo (VSL do cashback): só no estado "aberta". O player do Panda e o overlay de play
      (assets/vsl-overlay.js, o mesmo da assinatura.html, só visual) entram depois que a API
-     confirmou a condição, com o token já fora da barra. É o único script que não é inline,
-     e o fiscal audita o arquivo (sem rede, sem storage, sem dataLayer).
+     confirmou a condição, com o token já fora da barra. É um dos dois únicos scripts que não
+     são inline, e o fiscal audita o arquivo (sem rede, sem storage, sem dataLayer).
+     Trava no vídeo (30/09/2026, decisão do Vinícius, para todos os compradores): o outro
+     script é o assets/vsl-trava.js, o mesmo da assinatura.html, injetado depois do overlay.
+     Enquanto <html class="vsl-trava">, a página é só o palco (topo com crédito e prazo +
+     vídeo, e o WhatsApp do atendimento): planos, seções e rodapé voltam quando a pessoa
+     assiste até 4:23.
+     O fiscal audita esse arquivo também: sem rede e com storage só em chaves fc_vsl_. O
+     dataLayer que ele alimenta fica na memória da aba, porque esta página não tem GTM.
      Fiscal: scripts/fiscal_continuar.py -->
 <meta name="referrer" content="no-referrer">
 <meta name="robots" content="noindex, nofollow">
@@ -148,6 +155,30 @@
   @media (max-width: 560px) { .vsl-ov > div { padding: 8px 12px; } .vsl-ov-titulo, .vsl-ov-desk { display: none; }
     .vsl-ov-kicker { font-size: 9.5px; letter-spacing: .06em; } .vsl-ov-cta { padding: 10px 18px; font-size: 13px; } }
   @media (prefers-reduced-motion: reduce) { .vsl-ov-play::after { animation: none; opacity: 0; } }
+
+  /* ===== TRAVA NO VÍDEO (30/09/2026) — assets/vsl-trava.js, o mesmo da assinatura.html =====
+     Travada, a página é só o palco: o topo (nome, crédito e prazo) e o vídeo. Todo o resto some,
+     rodapé inclusive, e volta quando a classe sai do <html>. Como na assinatura, o WhatsApp do
+     atendimento fica (lá é o botão flutuante; aqui, a caixa de atendimento, logo abaixo do vídeo).
+     Os botões de compra e os links para os planos têm regra própria, além da seção. */
+  html.vsl-trava main > section:not(#heroVsl):not(.ajuda-sec), html.vsl-trava main ~ section, html.vsl-trava main ~ footer,
+  html.vsl-trava [data-checkout], html.vsl-trava a[href="#planos"],
+  html.vsl-trava .vsl-cta, html.vsl-trava .vsl-ov-link, html.vsl-trava .vsl-ov-cta { display: none !important; }
+  /* palco: topo + vídeo + aviso centralizados na altura da tela, sobre o azul do topo (sem faixa
+     branca embaixo). Quando o palco é mais alto que a tela, a rolagem é a de sempre. */
+  html.vsl-trava body { min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column; justify-content: center; background: var(--azul-noite); }
+  html.vsl-trava .vsl-sec { padding-bottom: 32px; }
+  html.vsl-trava .ajuda-sec { background: transparent; padding-top: 0; }
+  /* no computador, vídeo e aviso cabem juntos numa tela */
+  html.vsl-trava .vsl-moldura { max-width: min(900px, calc((100vh - 150px) * 16 / 9)); }
+  .vsl-trava-aviso { max-width: 460px; margin: 16px auto 0; text-align: center; }
+  /* o tempo que falta só aparece na pausa; invisível, o aviso segura o espaço e o vídeo não pula */
+  .vsl-trava-aviso { visibility: hidden; opacity: 0; transition: opacity 0.25s ease; }
+  .vsl-trava-aviso[data-pausa] { visibility: visible; opacity: 1; }
+  .vsl-trava-txt { font-size: 15px; font-weight: 600; color: rgba(255,255,255,0.88); text-wrap: balance; }
+  .vsl-trava-barra { height: 6px; margin-top: 12px; border-radius: 3px; overflow: hidden; background: rgba(255,255,255,0.14); }
+  .vsl-trava-barra span { display: block; width: 0; height: 100%; background: var(--dourado); transition: width 0.6s linear; }
+  @media (prefers-reduced-motion: reduce) { .vsl-trava-barra span, .vsl-trava-aviso { transition: none; } }
 
   /* ===== SEÇÕES ===== */
   .section { padding: 56px 0; }
@@ -389,11 +420,16 @@
      requisição nenhuma até o JS (iniciarVsl) copiar data-src para src, depois de
      mostrar('aberta'), com o token fora da barra. referrerpolicy="origin" só no iframe: o Panda
      recebe o domínio (a biblioteca libera por domínio), nunca o caminho nem a query.
-     Trocar de vídeo = trocar juntos o id no data-src, data-vsl-duration e data-vsl-pitch
-     (segundos; pitch = "Portanto, dê uma chance, use seu cashback"). Id __PANDA_ID__ = o slot
-     fica oculto. Biblioteca do Panda: vz-7867cfdb-be1, a mesma da assinatura.html. -->
+     Trocar de vídeo = trocar juntos o id no data-src, data-vsl-version, data-vsl-duration,
+     data-vsl-pitch e data-vsl-trava (segundos; pitch = "Portanto, dê uma chance, use seu
+     cashback"). Id __PANDA_ID__ = o slot fica oculto. Biblioteca do Panda: vz-7867cfdb-be1, a
+     mesma da assinatura.html.
+     Trava (assets/vsl-trava.js): data-vsl-trava = segundos de vídeo REALMENTE assistidos até
+     liberar a página. 263 s = 4:23, o pitch (decisão de 30/09/2026). A versão dá nome às chaves
+     do navegador (fc_vsl_liberada:<versão>): é própria desta página, então liberar a assinatura
+     não libera esta. Sem JS, com #âncora, ?semtrava=1, robô ou player mudo: não trava. -->
 <section class="vsl-sec" id="heroVsl" data-estado="aberta" hidden aria-label="Vídeo do professor Vinícius Ferraz"
-  data-vsl-duration="310.3" data-vsl-pitch="263">
+  data-vsl-trava="263" data-vsl-version="cashback-v5-20260929" data-vsl-duration="310.3" data-vsl-pitch="263">
   <div class="container">
     <div class="vsl-moldura">
       <iframe class="vsl-frame" id="heroVslFrame" title="O que vem depois do Dicionário: vídeo do professor Vinícius Ferraz"
@@ -423,6 +459,12 @@
           <div class="vsl-ov-baixo"><p class="vsl-ov-sub">ou clique no vídeo para assistir de novo</p></div>
         </div>
       </div>
+    </div>
+    <!-- Aviso da trava: o assets/vsl-trava.js o põe no layout e escreve o tempo que falta; o CSS
+         só o mostra na pausa ([data-pausa]). O texto estático é o mesmo que o script escreve. -->
+    <div class="vsl-trava-aviso" id="vslTrava" aria-live="polite" hidden>
+      <p class="vsl-trava-txt" data-vsl-trava-txt>Assista mais 4:23 para liberar a página</p>
+      <div class="vsl-trava-barra" aria-hidden="true"><span data-vsl-trava-barra></span></div>
     </div>
     <p class="vsl-cta"><a class="btn" href="#planos">Ver os dois planos</a></p>
   </div>
@@ -847,6 +889,19 @@
     var s = document.createElement('script');
     s.src = 'assets/vsl-overlay.js?v=20260929';
     document.body.appendChild(s);
+    /* Trava no vídeo: o mesmo assets/vsl-trava.js da assinatura.html (mesma versão), injetado
+       depois do overlay pelo mesmo motivo. A classe entra já, antes de o arquivo chegar, para os
+       planos não aparecerem e sumirem na tela; se o arquivo decidir não travar (já liberou,
+       ?semtrava=1, robô), não carregar ou não chegar em 15 s, a classe sai e a página abre. */
+    var raiz = document.documentElement;
+    function soltaSeNaoTravou() { if (!window.FC_VSL_TRAVA) raiz.classList.remove('vsl-trava'); }
+    raiz.classList.add('vsl-trava');
+    var trava = document.createElement('script');
+    trava.src = 'assets/vsl-trava.js?v=20260930e';
+    trava.onload = soltaSeNaoTravou;
+    trava.onerror = soltaSeNaoTravou;
+    setTimeout(soltaSeNaoTravou, 15000);
+    document.body.appendChild(trava);
   }
 
   function renderizar(d, token) {

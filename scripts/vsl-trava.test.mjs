@@ -384,3 +384,22 @@ test('assinatura.html: libera no fim da proposta da Fluência Contábil (6:41) e
   assert.equal(estatico, 'Assista mais 6:41 para liberar a página');
   assert.equal(run({ trava }).txt.textContent, estatico);
 });
+
+test('continuar.html: libera no pitch do vídeo do cashback (4:23), texto sem JS igual ao do script, arquivo da assinatura', () => {
+  // 30/09/2026, decisão do Vinícius: trava para todos os compradores do Dicionário; a oferta só
+  // aparece depois do pitch (263 s no vídeo já a 1,25x). A página injeta o mesmo arquivo, na mesma versão.
+  const html = readFileSync(new URL('../continuar.html', import.meta.url), 'utf8');
+  const slot = (html.match(/<section\b[^>]*\bid="heroVsl"[^>]*>/) || [''])[0];
+  const attr = nome => (slot.match(new RegExp(`\\s${nome}="([^"]*)"`)) || [])[1];
+  const trava = attr('data-vsl-trava');
+  assert.equal(trava, '263');
+  assert.equal(attr('data-vsl-pitch'), trava);
+  assert.ok(attr('data-vsl-version'), 'sem data-vsl-version o vsl-trava.js não trava');
+  const estatico = (html.match(/data-vsl-trava-txt>([^<]+)</) || [])[1];
+  assert.equal(estatico, 'Assista mais 4:23 para liberar a página');
+  assert.equal(run({ trava }).txt.textContent, estatico);
+  const assinatura = readFileSync(new URL('../assinatura.html', import.meta.url), 'utf8');
+  const versao = s => (s.match(/assets\/vsl-trava\.js\?v=(\w+)/) || [])[1];
+  assert.ok(versao(html));
+  assert.equal(versao(html), versao(assinatura));
+});
