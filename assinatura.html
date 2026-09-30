@@ -1444,7 +1444,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <style>
 /* ==========================================================================
    PERSUASAO — as sete secoes trazidas da LP do Dicionario (05/09/2026), mais
-   proximas provas com seletor de plano, degrau do Dicionario, prova social com
+   proximas provas com seletor de plano, prova social com
    comprovante, slot de VSL e captura de e-mail da Aula 01.
    Bloco proprio de proposito: so' insercao, nenhuma regra antiga tocada.
    ========================================================================== */
@@ -1572,16 +1572,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 .plano-mes { display: block; margin-top: 4px; font-size: 12.5px; color: var(--cinza-medio); }
 .plano-mes strong { color: var(--dourado-texto); }
 
-/* -- D. degrau: comecar pelo Dicionario ---------------------------------- */
-.degrau-sec { background: var(--cream); padding-top: 60px; padding-bottom: 60px; }
-.degrau-box { max-width: 860px; margin: 0 auto; display: grid; grid-template-columns: 1fr auto; gap: 26px; align-items: center;
-  background: var(--branco); border: 1px solid var(--cinza-borda); border-radius: 16px; padding: 28px 30px; }
-.degrau-box h3 { margin: 0 0 8px; font-size: 20px; line-height: 1.3; color: var(--azul-profundo); }
-.degrau-box p { margin: 0; font-size: 15.5px; line-height: 1.65; color: var(--cinza-medio); }
-.degrau-preco { text-align: center; }
-.degrau-preco b { display: block; font-size: 30px; font-weight: 800; color: var(--azul-profundo); line-height: 1; }
-.degrau-preco small { display: block; font-size: 12.5px; color: var(--cinza-medio); margin: 6px 0 12px; }
-.degrau-preco .btn { padding: 14px 22px; font-size: 14px; }
 
 /* -- R. resultado apurado (prova social com comprovante) ----------------- */
 .dep-destaque { margin-top: 44px; display: grid; grid-template-columns: auto 1fr; gap: 26px; align-items: start;
@@ -1692,7 +1682,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 /* corpo de texto em serifa; títulos, rótulos, números, botões, preços e a demo seguem em Montserrat */
 .section-text, .curso-painel-pub p, .plat-card p, .dep-card p, .dor-balao, .dor-fecho,
 .tese-card p, .tese-conclusao, .acc-a-desc, .prof-bio, .stack-item > div, .stack-ancora, .oferta-roi p,
-.anat-card p, .naoe-lista li, .naoe-fecho, .degrau-box p, .prova-nota, .dep-destaque .dep-cargo,
+.anat-card p, .naoe-lista li, .naoe-fecho, .prova-nota, .dep-destaque .dep-cargo,
 .dep-destaque .dep-quote, .dep-destaque .dep-plat, .passo-card p, .faq-a p, .contraste-col li, .contraste-nota {
   font-family: var(--serif);
 }
@@ -1704,7 +1694,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 .prof-bio { font-size: 17.5px; color: var(--texto-corpo); }
 .oferta-roi p { font-size: 16.5px; }
 .anat-card p { font-size: 17px; color: var(--texto-corpo); }
-.degrau-box p { font-size: 17px; color: var(--texto-corpo); }
 .prova-nota { font-size: 16px; }
 .dep-destaque .dep-cargo, .dep-destaque .dep-plat { font-size: 16px; color: var(--cinza-texto); }
 .dep-destaque .dep-quote { font-size: 20px; font-weight: 600; }
@@ -1800,7 +1789,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 @media (max-width: 860px) {
   .anat-grid, .passo-grid, .contraste-grid { grid-template-columns: 1fr; }
   .selos-grid { grid-template-columns: 1fr 1fr; }
-  .degrau-box { grid-template-columns: 1fr; text-align: center; }
   .dep-destaque { grid-template-columns: 1fr; }
   .dep-cifra { border-right: 0; border-bottom: 1px solid var(--cinza-borda); padding-bottom: 12px; }
 }
@@ -3007,27 +2995,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <li class="reveal"><strong>Não é garantia de aprovação.</strong> Nenhum curso é — e quem promete isso está vendendo outra coisa.</li>
     </ul>
     <p class="naoe-fecho reveal">Se o que você precisa é um pacote com todas as disciplinas do edital, este não é o produto — e preferimos dizer isso aqui do que você descobrir depois de pagar.</p>
-  </div>
-</section>
-
-<!-- ===== DEGRAU: COMECAR PELO DICIONARIO =====
-     Mesmo checkout e preco do cursos.html (pBSgGdf, R$ 47 / 11x R$ 5,22). A compra
-     abre 3 dias de degustacao na plataforma (KIWIFY_TRIAL_MAP). Nao promete credito
-     na assinatura: isso e' decisao comercial ainda nao tomada. -->
-<section class="section degrau-sec">
-  <div class="container">
-    <div class="degrau-box reveal">
-      <div>
-        <div class="section-label">Ainda em dúvida?</div>
-        <h3>Comece pequeno: o Dicionário Contábil abre 3 dias da plataforma.</h3>
-        <p>400+ termos em 125 páginas, cada um com <strong>o que é</strong>, <strong>o fundamento na norma</strong> e <strong>a dica de prova</strong>. A compra libera 3 dias de acesso à plataforma — você vê as aulas, as questões e o Simulador por dentro antes de decidir pela assinatura.</p>
-      </div>
-      <div class="degrau-preco">
-        <b>R$ 47</b>
-        <small>à vista · ou 11× de R$ 5,22 · 7 dias de garantia</small>
-        <a href="https://pay.kiwify.com.br/pBSgGdf?src=lp-a&amp;utm_source=site&amp;utm_medium=lp&amp;utm_campaign=pos_janela_2026&amp;utm_content=dicionario" class="btn cta-compra" data-fc-local="degrau">Começar pelo Dicionário</a>
-      </div>
-    </div>
   </div>
 </section>
 

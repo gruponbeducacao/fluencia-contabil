@@ -29,8 +29,9 @@ def ok(nome, cond, det=""):
     (oks if cond else erros).append(f"{nome}{(' -> ' + det) if det else ''}")
 
 
+# 30/09/2026: o degrau do Dicionário saiu a pedido do Vinícius ("retire essa possibilidade")
 SECOES = ["dor-sec", "stack-sec", "anat-sec", "naoe-sec", "passo-sec",
-          "contraste-sec", "selos-sec", "prova-sec", "degrau-sec"]
+          "contraste-sec", "selos-sec", "prova-sec"]
 
 # ---------------------------------------------- A. as secoes estao la', uma vez cada
 for c in SECOES:
@@ -52,7 +53,7 @@ for c in SECOES:
 ordem = ['class="section dor-sec"', 'class="section professor"',
          'class="section stack-sec"', 'id="oferta"', 'class="section garantia"',
          'class="section anat-sec"', 'class="section naoe-sec"',
-         'class="section degrau-sec"', 'class="section prova-sec"', 'class="section depoimentos"',
+         'class="section prova-sec"', 'class="section depoimentos"',
          'class="section passo-sec"', 'class="section faq"', 'class="section contraste-sec"',
          'class="section cta-final"', "</main>", 'class="section selos-sec"', "<footer"]
 pos = [s.find(x) for x in ordem]
@@ -60,7 +61,7 @@ ok("ordem das seções é a planejada", all(p >= 0 for p in pos) and pos == sort
    " < ".join(f"{o[:18]}@{p}" for o, p in zip(ordem, pos)))
 
 # ------------------------------------------------- D. CTA e tracking
-for slug, local in (("4Qx0g3O", "trimestral"), ("DXvdSEu", "semestral"), ("pBSgGdf", "degrau")):
+for slug, local in (("4Qx0g3O", "trimestral"), ("DXvdSEu", "semestral")):
     m = re.search(r'<a href="https://pay\.kiwify\.com\.br/' + slug + r'\?([^"]+)" class="btn cta-compra" data-fc-local="([^"]+)"', s)
     ok(f"checkout {slug} tem cta-compra + data-fc-local={local} + src=lp-a",
        bool(m) and m.group(2) == local and "src=lp-a" in m.group(1),
@@ -126,8 +127,8 @@ ok("sem 'método Chaves' em texto novo",
 ok("questões: número lido do banco (3.800+)", "Mais de 3.800 questões" in s and "3.697" not in s)
 ok("Ransley: aguarda convocação — sem 'nomeado'", not re.search(r"nomeado", texto, re.I))
 ok("Ransley atribuído como aluno do professor", "aluno do professor" in texto)
-ok("degrau não promete crédito na assinatura",
-   not re.search(r"vira crédito|crédito na assinatura", s[s.index('class="section degrau-sec"'):s.index('id="proximas-provas"')]))
+ok("sem o degrau do Dicionário (retirado a pedido do Vinícius em 30/09/2026)",
+   "degrau-sec" not in s and "pBSgGdf" not in s)
 
 # ------------------------------------------ G. proximas provas
 prov = s[s.index('id="proximas-provas"'):]
