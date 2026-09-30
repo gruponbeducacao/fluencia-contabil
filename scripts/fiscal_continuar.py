@@ -34,11 +34,16 @@ a regra tem fiscal.
       trava escondendo tudo de <main> fora o vídeo e o atendimento (planos inclusive; o
       atendimento, como o WhatsApp flutuante da assinatura, fica e só pode ter o WhatsApp
       1:1), os botões de compra, os links para os planos e o rodapé. O CSS é lido
-      inteiro, @media inclusive: sob a trava só «display: none !important» ou o arranjo do
-      palco (flex/min-height/fundo/padding/moldura) — nada que mostre de volta o que ela
-      esconde nem que some com o palco (topo, h1, [data-campo], crédito, prazo, vídeo,
-      aviso, atendimento) —, e fora dela nenhum display !important que não seja none. O
-      palco não tem controle de oferta (só o WhatsApp 1:1). Aviso só na pausa. Pré-trava
+      inteiro, @media inclusive: sob a trava só «display: none !important» ou o fundo e o
+      espaço abaixo do vídeo — nada que mostre de volta o que ela esconde nem que some com
+      o palco (faixa, topo, h1, [data-campo], crédito, prazo, vídeo, aviso, atendimento) —,
+      e fora dela nenhum display !important que não seja none. O
+      palco não tem controle de oferta (só o WhatsApp 1:1). Aviso só na pausa. Layout do
+      estado aberta (30/09/2026, «faixa curta + vídeo»): acima do vídeo só a faixa (nome ·
+      crédito; prazo), sem logo, título, preço ou link; o único h1 do estado vem logo abaixo
+      do vídeo e do aviso; a moldura desconta a faixa no computador; e nenhuma regra
+      só-da-trava mexe no que está acima do vídeo nem no tamanho dele (ao liberar, o vídeo
+      não pula). Pré-trava
       que devolve a página se o arquivo não travar (falha aberta), com prazo entre 5 e
       15 s, marcando FC_VSL_TRAVA ao desistir (arquivo atrasado não tranca de novo), e só
       depois de o vídeo estar ligado (depois dos return do vídeo desligado);
@@ -457,26 +462,26 @@ if iframes:
     for sel, oque in EXIGIDOS.items():
         check(sel in escondidos, f"a trava não esconde {oque}: falta «{sel} {{ display: none !important }}»")
     # Toda regra que depende da classe da trava — em qualquer @media — começa por
-    # «html.vsl-trava » e só faz duas coisas: ESCONDER (display: none !important) ou arrumar o
-    # palco (o flex/min-height/fundo do body, padding, fundo e a moldura). Nada que mostre de
-    # volta o que a trava esconde (display: block em #planos ou num botão de compra), nem
-    # opacity/altura/visibility que sumam com o vídeo por outro caminho.
+    # «html.vsl-trava » e só faz duas coisas: ESCONDER (display: none !important) ou mexer no
+    # que fica ABAIXO do vídeo (o fundo do body, o espaço de baixo da seção do vídeo e o
+    # atendimento). Nada que mostre de volta o que a trava esconde (display: block em #planos
+    # ou num botão de compra), nem opacity/altura/visibility que sumam com o vídeo por outro
+    # caminho, nem nada que mude o que está acima do vídeo ou o tamanho dele: o layout do
+    # estado aberta vale travado ou não, e ao liberar o vídeo fica onde estava (30/09/2026).
     TRAVA_CLASSE = re.compile(r"\.vsl-trava(?![\w-])|\[class\b")
-    MOLDURA = re.compile(r"min\(\d{3,4}px,(?:max\(\d{3,4}px,)?calc\(\(100s?vh-\d{1,3}px\)\*16/9\)\)?\)")
-    PERMITIDO = {
-        "display": lambda s, v: v == "none!important" or (s == "html.vsl-trava body" and v == "flex"),
-        "min-height": lambda s, v: s == "html.vsl-trava body" and v in ("100vh", "100svh"),
-        "flex-direction": lambda s, v: s == "html.vsl-trava body" and v == "column",
-        "justify-content": lambda s, v: s == "html.vsl-trava body",
-        "background": lambda s, v: True,
-        "background-color": lambda s, v: True,
-        "padding": lambda s, v: "-" not in v, "padding-top": lambda s, v: "-" not in v,
-        "padding-bottom": lambda s, v: "-" not in v,
-        "max-width": lambda s, v: bool(MOLDURA.fullmatch(v)),
-    }
-    # O palco nunca some: sem o topo não há o nome, o crédito e o prazo; sem o vídeo (ou o
-    # aviso) a página não destrava; o atendimento fica como o WhatsApp da assinatura.
-    PALCO = re.compile(r"(?:^|[\s>~+])(?:header|h1|iframe)(?![\w-])|\.topo\b|\[data-campo\b|\.credito-itens\b"
+    ABAIXO = {"html.vsl-trava body": {"background", "background-color"},
+              "html.vsl-trava .vsl-sec": {"padding-bottom"},
+              "html.vsl-trava .ajuda-sec": {"background", "background-color", "padding-top"}}
+
+    def permitido(s, prop, val):
+        if prop == "display":
+            return val == "none!important"
+        return prop in ABAIXO.get(s, set()) and not (prop.startswith("padding") and "-" in val)
+    # O palco nunca some: sem a faixa não há o nome, o crédito e o prazo; sem o vídeo (ou o
+    # aviso) a página não destrava; o título e o texto da condição ficam logo abaixo do
+    # vídeo; o atendimento fica como o WhatsApp da assinatura.
+    PALCO = re.compile(r"(?:^|[\s>~+])(?:header|h1|iframe)(?![\w-])|\.topo\b|\.faixa\b|#faixa\b|\.vsl-texto\b"
+                       r"|#tituloAberta\b|\[data-campo\b|\.credito-itens\b"
                        r"|#creditoItens\b|\.prazo\b|#prazo\b|#heroVsl\b|\.vsl-sec\b|\.container\b|\.vsl-moldura\b"
                        r"|\.vsl-frame\b|#heroVslFrame\b|\.vsl-ov(?![\w-])|#heroVslOverlay\b|#vslTrava\b|\.vsl-trava-"
                        r"|\.ajuda-")
@@ -498,7 +503,7 @@ if iframes:
                 fora_padrao.append(s + onde)
                 continue
             for prop, val in declaracoes(dec):
-                if not (PERMITIDO.get(prop) and PERMITIDO[prop](s, val)):
+                if not permitido(s, prop, val):
                     props_ruins.append(f"{s} {{ {prop}: {val} }}{onde}")
             if not any(p == "display" and v.startswith("none") for p, v in declaracoes(dec)) or (s in EXIGIDOS and not ctx):
                 continue
@@ -510,14 +515,50 @@ if iframes:
                 palco_escondido.append(s + onde)
     check(not aninhado, f"CSS aninhado: o fiscal não sabe auditar: {aninhado}")
     check(not fora_padrao, f"seletor que depende da trava fora do padrão «html.vsl-trava …»: {fora_padrao}")
-    check(not props_ruins, "sob a trava só esconder (display: none !important) ou arrumar o palco "
-                           f"(flex/min-height/fundo/padding/moldura): {props_ruins}")
+    check(not props_ruins, "sob a trava só esconder (display: none !important) ou mexer no que fica abaixo do "
+                           f"vídeo (fundo do body, espaço de baixo da seção do vídeo, atendimento): {props_ruins}")
     check(not palco_escondido, f"a trava esconde o palco (topo, vídeo, aviso ou atendimento): {palco_escondido}")
     check(not desfaz, f"display com !important que não é none: venceria o esconder da trava: {desfaz}")
     aviso_css = {s: dec for sels, dec, ctx in regras if not ctx for s in sels if s.startswith(".vsl-trava-aviso")}
     check(any("visibility:hidden" in d for s, d in aviso_css.items() if s == ".vsl-trava-aviso")
           and "visibility:visible" in aviso_css.get(".vsl-trava-aviso[data-pausa]", ""),
           "o aviso da trava não fica invisível fora da pausa (só [data-pausa] o mostra)")
+
+    # Layout do estado aberta (30/09/2026, «faixa curta + vídeo», regra do Vinícius: a página
+    # começa pelo vídeo). Acima dele só a faixa de duas linhas (nome · crédito; prazo), sem
+    # logo, título, preço ou controle; o h1 — único do estado aberta — e o texto da condição
+    # vêm logo abaixo do vídeo e do aviso. Vale travado ou não: nada acima do vídeo muda ao
+    # liberar (as regras só-da-trava acima já não podem mexer ali).
+    def aberta_do_topo(anc):
+        return any(t == "header" for t, _ in anc) and any(x.get("data-estado") == "aberta" for _, x in anc)
+
+    faixa_els = [(t, a) for t, a, anc in arvore.elementos if aberta_do_topo(anc)]
+    campos_faixa = {a.get("data-campo") for _, a in faixa_els if a.get("data-campo")}
+    check(any("faixa" in classes(a) for _, a in faixa_els) and "prazo" in {a.get("id") for _, a in faixa_els},
+          "estado aberta sem a faixa (com o prazo) acima do vídeo")
+    check(campos_faixa <= {"faixa-nome", "faixa-credito", "ultimo-dia", "dias"} and "faixa-credito" in campos_faixa,
+          f"a faixa acima do vídeo tem só nome, crédito e prazo (nada de preço nem título): {sorted(campos_faixa)}")
+    check(not [t for t, _ in faixa_els if t in ("h1", "h2", "h3", "img", "picture", "svg", "video", "a", "button", "form")],
+          "a faixa acima do vídeo tem título, imagem, link ou botão: é só nome · crédito e prazo")
+    posicao = {a.get("id"): i for i, (t, a, _) in enumerate(arvore.elementos) if a.get("id")}
+    h1_aberta = [(i, anc) for i, (t, a, anc) in enumerate(arvore.elementos)
+                 if t == "h1" and any(x.get("data-estado") == "aberta" for _, x in anc)]
+    check(len(h1_aberta) == 1 and "heroVsl" in ids(h1_aberta[0][1])
+          and h1_aberta[0][0] > max(posicao.get("heroVslFrame", 10 ** 9), posicao.get("vslTrava", 10 ** 9)),
+          "o estado aberta tem um único h1, logo abaixo do vídeo e do aviso (dentro do #heroVsl)")
+    antes_do_video = [t for i, (t, a, anc) in enumerate(arvore.elementos)
+                      if "heroVsl" in ids(anc) and i < posicao.get("heroVslFrame", 0) and t not in ("div",)]
+    check(not antes_do_video, f"no slot, algo antes do vídeo: {antes_do_video}")
+    corpo_mostrar = re.search(r"function mostrar\(estado\) \{(.*?)\n  \}\n", js, re.S)
+    check(bool(corpo_mostrar) and "document.body.setAttribute('data-pagina', estado);" in corpo_mostrar.group(1)
+          and any(not ctx and 'body[data-pagina="aberta"] .topo picture' in sels and dec.rstrip(";") == "display:none"
+                  for sels, dec, ctx in regras),
+          "o logo volta acima do vídeo no estado aberta (falta mostrar() marcar data-pagina no <body> "
+          "ou a regra body[data-pagina=\"aberta\"] .topo picture { display: none })")
+    check(any(not ctx and ".vsl-moldura" in sels
+              and re.search(r"max-width:min\(900px,max\(560px,calc\(\(100svh-\d{2,3}px\)\*16/9\)\)\)", dec)
+              for sels, dec, ctx in regras),
+          "a moldura do vídeo não desconta a faixa no computador (min(900px, max(560px, calc((100svh - Xpx) * 16 / 9))))")
 
     # Pré-trava: a classe entra antes do arquivo chegar (os planos não piscam) e sai se ele
     # não travar, não carregar ou não chegar a tempo. Só existe dentro de iniciarVsl(): fora
