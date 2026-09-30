@@ -48,7 +48,8 @@ for c in SECOES:
        not re.search(r'class="[^"]*\b(inner|lbl|body-t|bar)\b', bloco))
 
 # ---------------------------------------------- C. ordem das secoes
-ordem = ['class="section dor-sec"', 'class="section dor"', 'class="section professor"',
+# 30/09/2026: o bloco "dor" (3 pontos) saiu por repetir as frases da "dor-sec" — aprovado pelo Vinícius
+ordem = ['class="section dor-sec"', 'class="section professor"',
          'class="section stack-sec"', 'id="oferta"', 'class="section garantia"',
          'class="section anat-sec"', 'class="section naoe-sec"',
          'class="section degrau-sec"', 'class="section prova-sec"', 'class="section depoimentos"',
@@ -142,7 +143,8 @@ ok("ao menos uma prova no futuro", any(iso_ok(d) and date.fromisoformat(d) > dat
 ok("seção de provas nasce oculta (hidden)", 'id="proximas-provas" hidden' in s)
 ok("todo item tem data-org e botão de escolha",
    prov.count("data-org=") == len(datas) == prov.count('class="prova-escolher"'))
-ok("anatomia com 3 cards (mobile: custo antes da oferta)", s.count('class="anat-card') == 3)
+# 30/09/2026: "Por que 5 módulos" saiu da anatomia por repetir os verbetes do método — aprovado pelo Vinícius
+ok("anatomia com 2 cards", s.count('class="anat-card') == 2)
 ok("cards da oferta têm data-plano", 'data-plano="trimestral"' in s and 'data-plano="semestral"' in s)
 
 # ------------------------------------------ H. slot de VSL

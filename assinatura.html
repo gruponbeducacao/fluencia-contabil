@@ -315,8 +315,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   /* ===== PROVA NO TOPO (30/09/2026) — nas vencedoras, 18 de 22 mostram prova ate a 2a tela ===== */
   .prova-topo { background: var(--cream); padding: 48px 0 56px; }
   .prova-topo-nums {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
-    max-width: 860px; margin: 0 auto; text-align: center;
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;
+    max-width: 600px; margin: 0 auto; text-align: center;
   }
   .prova-topo-num .n { font-size: 34px; font-weight: 800; color: var(--azul-profundo); line-height: 1; }
   .prova-topo-num .l { font-size: 12.5px; color: var(--cinza-medio); margin-top: 8px; line-height: 1.4; }
@@ -372,31 +372,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .center { text-align: center; }
   .center .section-text { margin-left: auto; margin-right: auto; }
 
-  /* ===== DOR ===== */
-  .dor { background: var(--branco); }
-  .cards-3 {
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: 24px; margin-top: 48px;
-  }
-  .card {
-    background: var(--branco); border-radius: 14px;
-    padding: 34px 28px;
-    border: 1px solid var(--cinza-borda);
-    transition: all 0.3s ease;
-  }
-  .card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(27,42,74,0.10); }
-  .card-icon { font-size: 30px; line-height: 0; color: var(--dourado-escuro); margin-bottom: 18px; }
-  .card h3 {
-    font-size: 18px; font-weight: 800;
-    color: var(--azul-profundo); margin-bottom: 10px;
-  }
-  .card p { font-size: 15px; color: var(--cinza-medio); line-height: 1.6; }
-  .dor-quote {
-    margin-top: 44px; text-align: center;
-    font-size: 21px; font-weight: 700; color: var(--azul-profundo);
-    max-width: 720px; margin-left: auto; margin-right: auto; line-height: 1.45;
-  }
-  .dor-quote span { color: inherit; }
 
   /* ===== TESE / MÉTODO ===== */
   .tese { background: var(--cream); }
@@ -1431,7 +1406,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .prova-topo-num .l { font-size: 11.5px; }
   }
   @media (max-width: 880px) {
-    .cards-3, .tese-grid, .dep-grid { grid-template-columns: 1fr; }
+    .tese-grid, .dep-grid { grid-template-columns: 1fr; }
     .curso-grid { grid-template-columns: 1fr; gap: 32px; }
     .prof-content { flex-direction: column; text-align: center; }
     .prof-photo { margin: 0 auto; }
@@ -1464,7 +1439,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .section-title { font-size: 25px; }
     .btn { padding: 16px 26px; font-size: 14.5px; width: 100%; text-align: center; }
     .plat-grid { grid-template-columns: 1fr; }
-    .dor-quote { font-size: 18px; }
   }
 </style>
 <style>
@@ -1716,7 +1690,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   stroke-linecap: round; stroke-linejoin: round; }
 
 /* corpo de texto em serifa; títulos, rótulos, números, botões, preços e a demo seguem em Montserrat */
-.section-text, .curso-painel-pub p, .plat-card p, .dep-card p, .dor-balao, .dor-fecho, .dor .card p, .dor-quote,
+.section-text, .curso-painel-pub p, .plat-card p, .dep-card p, .dor-balao, .dor-fecho,
 .tese-card p, .tese-conclusao, .acc-a-desc, .prof-bio, .stack-item > div, .stack-ancora, .oferta-roi p,
 .anat-card p, .naoe-lista li, .naoe-fecho, .degrau-box p, .prova-nota, .dep-destaque .dep-cargo,
 .dep-destaque .dep-quote, .dep-destaque .dep-plat, .passo-card p, .faq-a p, .contraste-col li, .contraste-nota {
@@ -1745,19 +1719,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 .dep-card .aspas { font-family: var(--serif); font-weight: 600; font-size: 44px; line-height: 0.8; }
 
 /* pares da mesma conversa dividem o fundo: o 2º encosta no 1º */
-.dor-sec + .dor, .oferta + .garantia, .anat-sec + .naoe-sec, .passo-sec + .faq { padding-top: 8px; }
+.oferta + .garantia, .anat-sec + .naoe-sec, .passo-sec + .faq { padding-top: 8px; }
 
-/* a dor: frases soltas, sem caixa */
+/* a dor: frases soltas, sem caixa (30/09/2026: bloco único; o dos 3 pontos saiu por repetir as frases) */
 .dor-baloes { gap: 26px; margin: 46px auto 38px; max-width: 720px; }
 .dor-balao { background: none; border: 0; border-radius: 0; padding: 0 0 0 46px;
   font-style: italic; font-size: 21px; line-height: 1.5; color: var(--azul-profundo); }
 .dor-balao::before { left: 0; top: -2px; font-family: var(--serif); font-style: normal; font-size: 52px; }
 .dor-fecho { font-size: 18.5px; color: var(--texto-corpo); }
-.dor .card { background: none; border: 0; border-radius: 0; padding: 0; }
-.dor .card:hover { transform: none; box-shadow: none; }
-.dor .card p { font-size: 17px; line-height: 1.65; color: var(--texto-corpo); }
-.dor .cards-3 { gap: 44px; }
-.dor-quote { font-style: italic; font-weight: 400; font-size: 26px; line-height: 1.4; }
 
 /* o método como verbete de dicionário: a palavra em serifa grande, a função em itálico logo abaixo.
    subgrid alinha as três colunas por linha (palavra / função / definição) mesmo quando a palavra quebra */
@@ -1786,7 +1755,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 .naoe-fecho { font-size: 17px; color: var(--cinza-texto); }
 
 @media (max-width: 880px) {
-  .dor .cards-3 { gap: 36px; }
   .tese-grid { row-gap: 36px; }
   .tese-card { grid-row: auto; grid-template-rows: none; }
 }
@@ -1795,7 +1763,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .section-text { font-size: 17.5px; }
   .dor-balao { font-size: 18.5px; padding-left: 36px; }
   .dor-balao::before { font-size: 42px; }
-  .dor-quote { font-size: 21px; }
   .tese-card h3 { font-size: 28px; }
   .stack-item { padding: 20px 0; font-size: 16.5px; }
   .naoe-lista li { font-size: 16.5px; }
@@ -1817,6 +1784,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 /* por que é assim / depois da compra: colunas abertas, como a dor e o método */
 .anat-grid, .passo-grid { gap: 44px; margin-top: 48px; }
+.anat-grid { grid-template-columns: repeat(2, 1fr); max-width: 920px; margin-left: auto; margin-right: auto; }
 .anat-card, .passo-card { background: none; border: 0; border-radius: 0; padding: 0; }
 .anat-card h3 { font-size: 19px; margin-bottom: 12px; }
 .passo-num { position: static; width: 36px; height: 36px; font-size: 15px; margin-bottom: 16px; }
@@ -1947,7 +1915,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="prova-topo-nums reveal">
       <div class="prova-topo-num"><div class="n">4</div><div class="l">aprovações do professor em concursos de elite</div></div>
       <div class="prova-topo-num"><div class="n">3.000+</div><div class="l">alunos do professor ao longo de 40 turmas</div></div>
-      <div class="prova-topo-num"><div class="n">35 + 3</div><div class="l">aulas + bônus na Edição 2026</div></div>
     </div>
     <div class="dep-grid">
       <div class="dep-card beta reveal">
@@ -2721,34 +2688,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </section>
 
-<!-- ===== DOR ===== -->
-<section class="section dor">
-  <div class="container">
-    <div class="reveal center">
-      <div class="section-label">Se você estuda pra concurso, você conhece isso</div>
-      <h2 class="section-title">Contabilidade é onde a aprovação <span class="ouro">escapa.</span></h2>
-    </div>
-    <div class="cards-3">
-      <div class="card reveal">
-        <div class="card-icon"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg></div>
-        <h3>Você estudou a teoria</h3>
-        <p>Leu o CPC, fez o resumo, marcou o mapa mental. Na hora da questão, a banca muda uma palavra — e a teoria decorada não responde.</p>
-      </div>
-      <div class="card reveal">
-        <div class="card-icon"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg></div>
-        <h3>É a disciplina de maior peso</h3>
-        <p>Nos concursos de Fiscal e de Contador, contabilidade é a matéria que mais pontua — e a que mais reprova quem depende de decoreba.</p>
-      </div>
-      <div class="card reveal">
-        <div class="card-icon"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg></div>
-        <h3>O ciclo se repete</h3>
-        <p>Estuda, esquece, revisa, esquece de novo. Sem uma lógica interna que sustente o conteúdo, cada revisão é começar do zero.</p>
-      </div>
-    </div>
-    <p class="dor-quote reveal">“Sei a teoria, mas não consigo aplicar — <span>perco pontos onde mais cai.</span>”</p>
-  </div>
-</section>
-
 <!-- ===== TESE / MÉTODO ===== -->
 <section class="section tese">
   <div class="container">
@@ -2785,7 +2724,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="reveal">
       <div class="section-label">O caminho completo</div>
       <h2 class="section-title">Currículo da edição 2026</h2>
-      <p class="section-text">35 aulas numeradas (00 a 34) + 3 bônus estratégicos, mais as correções de prova. Toque em cada módulo pra ver as aulas.</p>
+      <p class="section-text">Toque em cada módulo pra ver as aulas, os bônus e as correções de prova.</p>
     </div>
     <!-- ===== GRADE — espelha as tabelas Module/Lesson da plataforma. Fonte unica:
          o banco de producao (curso 'contabilidade-concursos'). O cursos.html tem a
@@ -2917,7 +2856,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <ol class="stack-lista">
       <li class="stack-item reveal">
         <span class="stack-num">1</span>
-        <div><strong>35 aulas numeradas + 3 bônus, em 5 módulos</strong> — do zero à Contabilidade Avançada, em vídeo e PDF, mais 5 aulas de provas resolvidas.
+        <div><strong>O curso inteiro, em 5 módulos</strong> — do zero à Contabilidade Avançada, em vídeo e PDF, mais 5 aulas de provas resolvidas.
         <em>Resolve: você não monta o caminho. Ele já vem em ordem, da base aos textos difíceis.</em></div>
       </li>
       <li class="stack-item reveal">
@@ -3042,10 +2981,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <h2 class="section-title">Não é uma pilha de videoaulas. <br>É um <span class="ouro">idioma ensinado em ordem</span>.</h2>
     </div>
     <div class="anat-grid">
-      <div class="anat-card reveal">
-        <h3>Por que 5 módulos, e nessa ordem</h3>
-        <p>Fundamentos → Demonstrações Contábeis → Intermediária → Avançada, e um 5º módulo só de provas resolvidas. É a ordem de um idioma: primeiro os códigos (débito e crédito), depois a gramática (partidas dobradas), depois os textos (as demonstrações) — e só então os capítulos que a banca usa pra separar candidatos. Pular etapa é o que faz a Avançada parecer impossível.</p>
-      </div>
       <div class="anat-card reveal">
         <h3>Por que questão de banca real em toda aula</h3>
         <p>Nenhuma questão inventada: enunciado, alternativas e gabarito vêm da prova original, com órgão, banca e ano. O comentário do professor aponta o item da norma que resolve e explica por que cada alternativa errada está errada — é ali que você aprende a ler como a banca escreve.</p>
@@ -3329,7 +3264,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="contraste-col contraste-col--com reveal">
         <div class="contraste-topo">Com a assinatura</div>
         <ul>
-          <li>A lógica antes da regra, em 35 aulas em ordem</li>
+          <li>A lógica antes da regra, com as aulas em ordem</li>
           <li>Mais de 3.800 questões comentadas, filtradas pela sua banca</li>
           <li>Revisão agendada em D+3, 7, 16 e 35 — sempre com questão</li>
           <li>Saber, antes da prova, o que já está fechado</li>
