@@ -114,13 +114,14 @@ test('não trava: link com âncora, quem já liberou, ?semtrava=1, robô de busc
 });
 
 
-test('assinatura.html: libera no fim da demonstração de débito e crédito (5:31) e o texto sem JS bate com o do script', () => {
-  // 30/09/2026: o Vinícius achou 11:39 (pitch) longo demais e pediu para ir até um argumento importante —
-  // a demonstração de débito e crédito, que o gancho promete, fecha em 5:31 da VSL v2 ("Ufa!" começa em 5:31.41)
+test('assinatura.html: libera no fim da proposta da Fluência Contábil (6:41) e o texto sem JS bate com o do script', () => {
+  // 30/09/2026: 3:00 era arbitrário e 11:39 (pitch) longo demais; 5:31 (fim da demonstração de débito e crédito)
+  // durou um PR. O Vinícius fechou em 6:41: fim da proposta da Fluência Contábil — "É essa autonomia que eu quero
+  // construir em você." termina em 6:40.55 da VSL v2
   const html = readFileSync(new URL('../assinatura.html', import.meta.url), 'utf8');
   const trava = (html.match(/id="heroVsl" data-vsl-trava="(\d+)"/) || [])[1];
-  assert.equal(trava, '331');
+  assert.equal(trava, '401');
   const estatico = (html.match(/data-vsl-trava-txt>([^<]+)</) || [])[1];
-  assert.equal(estatico, 'Dê o play: a página libera depois de 5:31 de vídeo');
+  assert.equal(estatico, 'Dê o play: a página libera depois de 6:41 de vídeo');
   assert.equal(run({ trava }).txt.textContent, estatico);
 });
