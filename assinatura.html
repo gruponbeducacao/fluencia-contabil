@@ -213,22 +213,78 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 linear-gradient(180deg, var(--azul-noite) 0%, rgba(19,31,56,0) 16%);
   }
 
-  /* ===== HERO COM A PLATAFORMA (30/09/2026) =====
-     Comparativo com 22 paginas de venda vencedoras (anuncio no ar ha 92-884 dias): nelas, a 1a tela do celular traz
-     titulo + prova + botao, e o produto aparece logo. Aqui a arte institucional (livro) saiu do hero e entrou a tela
-     inicial da plataforma, tirada da propria demonstracao da pagina (assets/hero-plataforma.*). */
+  /* ===== HERO QUE COMECA PELA VSL (30/09/2026, pedido do Vinicius) =====
+     O video e' a primeira coisa do hero; abaixo dele, titulo + prova + preco + botao numa coluna da largura do video. */
+  .hero-vsl.hero-vsl--topo { padding: 40px 24px 0; }
+  .hero-grid--vsl { grid-template-columns: 1fr; max-width: 948px; }
+  .hero-grid--vsl .hero-texto { padding: 36px 0 64px; }
   .hero-prova {
     font-size: 15px; line-height: 1.5; color: rgba(255,255,255,0.86);
-    margin: -6px 0 18px; max-width: 560px;
+    margin: -6px 0 18px; max-width: 640px;
     animation: fadeUp 0.7s ease-out 0.25s both;
   }
   .hero-prova strong { color: var(--dourado); font-weight: 800; }
-  .hero-foto.hero-plat { display: flex; align-items: center; min-height: 0; padding: 52px 0 64px; }
-  .hero-foto.hero-plat::before, .hero-foto.hero-plat::after { display: none; }
-  .hero-foto.hero-plat img {
-    position: static; width: 100%; height: auto; object-fit: contain;
-    border-radius: 14px; border: 1px solid rgba(200,168,75,0.28);
-    box-shadow: 0 24px 60px rgba(0,0,0,0.45);
+
+  /* ===== O CURSO — trilha dos modulos + painel de numeros (30/09/2026) ===== */
+  .curso-topo { max-width: 780px; }
+  .curso-trilha {
+    list-style: none; margin: 40px 0 0; padding: 0;
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; position: relative;
+  }
+  .curso-trilha::before {
+    content: ''; position: absolute; top: 23px; left: 10%; right: 10%; height: 2px;
+    background: linear-gradient(90deg, rgba(200,168,75,0.25), var(--dourado), rgba(200,168,75,0.25));
+  }
+  .curso-trilha li { position: relative; text-align: center; }
+  .ct-num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 48px; height: 48px; border-radius: 50%;
+    background: var(--azul-noite); color: var(--dourado);
+    font-size: 18px; font-weight: 800; border: 2px solid var(--dourado);
+    box-shadow: 0 6px 18px rgba(19,31,56,0.18);
+  }
+  .ct-nome { display: block; margin-top: 12px; font-size: 14px; font-weight: 700; color: var(--azul-profundo); line-height: 1.35; }
+  .ct-provas .ct-num { background: var(--dourado); color: var(--azul-noite); }
+  .curso-painel {
+    margin-top: 44px; background: var(--azul-noite); border-radius: 18px;
+    padding: 34px 36px; color: var(--branco);
+    box-shadow: 0 22px 50px rgba(19,31,56,0.22);
+  }
+  .curso-painel-nums { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .cp-num { text-align: center; }
+  .cp-num .n { font-size: 36px; font-weight: 800; color: var(--dourado); line-height: 1; }
+  .cp-num .l { font-size: 13px; color: rgba(255,255,255,0.72); margin-top: 8px; text-transform: uppercase; letter-spacing: 1px; }
+  .curso-painel-pub {
+    margin-top: 28px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.12);
+    display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap;
+  }
+  .curso-painel-pub p { font-size: 15.5px; line-height: 1.6; color: rgba(255,255,255,0.84); max-width: 620px; margin: 0; }
+  .curso-painel-pub p strong { color: var(--branco); }
+  .curso-painel .bancas { margin-top: 0; }
+  .curso-painel .banca-chip { background: transparent; border-color: rgba(200,168,75,0.55); color: var(--dourado); }
+
+  /* ===== DEPOIMENTOS GIRANDO (30/09/2026) ===== */
+  .dep-carrossel {
+    overflow: hidden; margin-top: 44px; padding: 6px 0 10px; outline: none;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 5%, #000 95%, transparent 100%);
+            mask-image: linear-gradient(90deg, transparent 0, #000 5%, #000 95%, transparent 100%);
+  }
+  .dep-trilho { display: flex; width: max-content; animation: depGira 80s linear infinite; }
+  .dep-carrossel:hover .dep-trilho, .dep-carrossel:focus-within .dep-trilho, .dep-carrossel:active .dep-trilho { animation-play-state: paused; }
+  .dep-grupo { display: flex; align-items: flex-start; gap: 20px; padding-right: 20px; }
+  .dep-grupo > .dep-card { width: 330px; flex: 0 0 auto; }
+  .dep-print {
+    width: 300px; flex: 0 0 auto; margin: 0;
+    background: var(--branco); border: 1px solid rgba(200,168,75,0.5); border-radius: 14px;
+    padding: 18px 16px 14px; box-shadow: 0 8px 24px rgba(200,168,75,0.1);
+  }
+  .dep-print img { display: block; width: 100%; height: auto; border-radius: 8px; }
+  .dep-print figcaption { margin-top: 10px; font-size: 12.5px; color: var(--cinza-medio); text-align: center; }
+  @keyframes depGira { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce) {
+    .dep-carrossel { overflow-x: auto; -webkit-mask-image: none; mask-image: none; }
+    .dep-trilho { animation: none; }
+    .dep-grupo[aria-hidden="true"] { display: none; }
   }
 
   /* ===== PROVA NO TOPO (30/09/2026) — nas vencedoras, 18 de 22 mostram prova ate a 2a tela ===== */
@@ -268,13 +324,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   /* Se o bloco de preco sair, o CTA fica sozinho no flex: o space-between de
      <=600px o jogaria para a esquerda. */
   .sticky-cta > :only-child { margin-left: auto; }
-  .sticky-oferta { display: flex; flex-direction: column; line-height: 1.15; text-align: right; }
-  .sticky-oferta b { font-size: 13px; font-weight: 800; color: #fff; white-space: nowrap; }
-  .sticky-oferta b .destaque { color: var(--dourado); }
-  .sticky-oferta i { font-size: 10.5px; font-style: normal; color: rgba(255,255,255,0.6); white-space: nowrap; }
-  /* Os dois precos em nowrap dao ~238px a 12.5px; somados ao botao nao cabem em
-     360px de tela. Mesmo par full/short do CTA ao lado. */
-  .sticky-oferta .oferta-short { display: none; }
   .btn-sm .cta-short { display: none; }
 
   /* ===== SEÇÕES BASE ===== */
@@ -1336,14 +1385,25 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .hero-foto::before { background: linear-gradient(180deg, rgba(19,31,56,0) 55%, var(--azul-noite) 100%); }
     .hero-foto::after { display: none; }
     .hero-logo { width: 80px; margin-bottom: 18px; }
-    /* hero com a plataforma: texto primeiro (titulo + prova + botao na 1a tela), imagem do produto logo abaixo */
-    .hero-grid--plat .hero-texto { margin-top: 0; padding-top: 28px; padding-bottom: 28px; }
-    .hero-grid--plat .hero-logo { width: 52px; margin-bottom: 14px; }
-    .hero-foto.hero-plat { order: 0; height: auto; padding: 0 24px 44px; }
+    /* hero que comeca pela VSL: video colado no topo, texto logo abaixo */
+    .hero-vsl.hero-vsl--topo { padding: 16px 16px 0; }
+    .hero-grid--vsl .hero-texto { margin-top: 0; padding: 24px 24px 44px; }
+  }
+  @media (max-width: 760px) {
+    .curso-trilha { grid-template-columns: 1fr; gap: 10px; margin-top: 28px; }
+    .curso-trilha::before { display: none; }
+    .curso-trilha li { display: flex; align-items: center; gap: 14px; text-align: left; }
+    .ct-num { width: 40px; height: 40px; font-size: 16px; flex: 0 0 auto; }
+    .ct-nome { margin-top: 0; font-size: 15px; }
+    .curso-painel { padding: 26px 20px; margin-top: 32px; }
+    .curso-painel-nums { grid-template-columns: 1fr 1fr; gap: 22px 12px; }
+    .cp-num .n { font-size: 30px; }
+    .dep-grupo > .dep-card { width: 280px; }
+    .dep-print { width: 270px; }
   }
   @media (max-width: 560px) {
-    /* no celular o botao do hero precisa caber na 1a tela; "35 aulas + 3 bonus" segue na faixa de prova logo abaixo */
-    .hero-grid--plat .hero-sub.menor { display: none; }
+    /* hero mais curto no celular: "35 aulas + 3 bonus" segue na faixa de prova logo abaixo */
+    .hero-grid--vsl .hero-sub.menor { display: none; }
     .prova-topo-nums { gap: 10px; }
     .prova-topo-num .n { font-size: 26px; }
     .prova-topo-num .l { font-size: 11.5px; }
@@ -1363,13 +1423,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .faq-ajuda { padding: 20px 18px; gap: 16px; }
     .faq-ajuda-btn { width: 100%; justify-content: center; }
     .sticky-header { padding: 9px 12px; gap: 10px; }
-    .sticky-brand { display: none; }
     .sticky-cta { gap: 10px; flex: 1; justify-content: space-between; }
-    .sticky-oferta { text-align: left; }
-    .sticky-oferta b { font-size: 12.5px; }
-    .sticky-oferta i { display: none; }
-    .sticky-oferta .oferta-full { display: none; }
-    .sticky-oferta .oferta-short { display: inline; }
     .btn-sm { font-size: 11px; padding: 10px 14px; }
     .btn-sm .cta-full { display: none; }
     .btn-sm .cta-short { display: inline; }
@@ -1661,10 +1715,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <header class="sticky-header" id="stickyHeader">
   <span class="sticky-brand">Fluência <span>Contábil</span></span>
   <div class="sticky-cta">
-    <span class="sticky-oferta">
-      <b><span class="oferta-full">Trimestral <span class="destaque">R$ 427</span> · Semestral <span class="destaque">R$ 547</span></span><span class="oferta-short">A partir de <span class="destaque">R$ 427</span></span></b>
-      <i>pagamento único · 7 dias de garantia</i>
-    </span>
     <a href="#oferta" class="btn-sm cta-compra"><span class="cta-full">Ver os planos</span><span class="cta-short">Ver planos</span></a>
   </div>
 </header>
@@ -1673,60 +1723,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <!-- ===== HERO ===== -->
 <section class="hero">
-  <div class="hero-grid hero-grid--plat">
-    <div class="hero-texto">
-      <picture>
-        <source srcset="assets/FC_Simbolo_BrancoDourado_FUNDO_AZUL.webp" type="image/webp">
-        <img class="hero-logo" src="assets/FC_Simbolo_BrancoDourado_FUNDO_AZUL.png" alt="Fluência Contábil" width="480" height="480">
-      </picture>
-
-      <div class="hero-badge">🏛️ Edição 2026 · Matrículas abertas</div>
-
-      <h1>Transforme contabilidade na sua <span class="destaque">maior vantagem</span> para conquistar múltiplas aprovações.<span class="sub-risco" aria-hidden="true"></span></h1>
-
-      <!-- prova ja' na 1a tela (mesmos numeros da secao "Quem ensina") -->
-      <p class="hero-prova">Com o Prof. Vinícius Ferraz, Auditor Fiscal: <strong>4 aprovações</strong> em concursos de elite e <strong>mais de 3.000 alunos</strong> ao longo de 40 turmas.</p>
-
-      <p class="hero-sub">A Fluência Contábil ensina contabilidade <strong>como um idioma, pela lógica</strong> — pra você parar de perder pontos <span class="ouro-claro">onde mais cai</span> e interpretar qualquer questão sem decoreba.</p>
-
-      <p class="hero-sub menor">Edição 2026 completa: <strong>5 módulos, 35 aulas + 3 bônus</strong>, questões comentadas de banca real e a plataforma inteira, sem módulo avulso nem upsell.</p>
-
-      <p class="hero-datas">A partir de <strong>12× R$ 44,16</strong></p>
-
-      <div class="hero-cta">
-        <a href="#oferta" class="btn cta-compra">Ver os planos</a>
-        <p class="hero-note">7 dias de garantia incondicional · Pix, boleto ou cartão em até 12×</p>
-        <div class="hero-degusta">
-          <button class="hero-degusta-btn" id="btnAmostraAula01" type="button"
-             data-fc-pdf="aulas/aula-01-partidas-dobradas.pdf?v=20260813"
-             data-fc-download="Fluencia-Contabil-Aula-01-Partidas-Dobradas.pdf"
-             data-fc-cta="amostra-aula01" data-fc-local="hero" data-fc-lp="a" data-fc-capture="aula01">
-            <span class="hd-ico" aria-hidden="true">📄</span>
-            <span class="hd-txt">
-              <b>Baixar grátis a Aula 01 completa</b>
-              <i><span class="hd-full">PDF · 73 páginas · teoria + 30 questões comentadas · 4,7 MB</span><span class="hd-short">PDF · 73 páginas · 4,7 MB</span></i>
-            </span>
-            <span class="hd-seta" aria-hidden="true">↓</span>
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <div class="hero-foto hero-plat">
-      <picture>
-        <source srcset="assets/hero-plataforma.webp" type="image/webp">
-        <img src="assets/hero-plataforma.jpg" alt="Tela inicial da plataforma Fluência Contábil: continuar a aula, dias seguidos de estudo, plano e progresso do curso" width="1400" height="860" fetchpriority="high">
-      </picture>
-    </div>
-  </div>
-
   <!-- ===== SLOT DE VSL (ativo desde 29/09/2026: VSL da assinatura v2, 13:07) =====
        Trocar de video = trocar os quatro valores juntos: id externo no data-src, data-vsl-version,
        data-vsl-duration e data-vsl-pitch (segundos; pitch = inicio de "Ao entrar, voce contrata...").
        Esconder = recolocar hidden E voltar o id para __PANDA_ID__ (o fiscal exige os dois juntos). Biblioteca do Panda: vz-7867cfdb-be1 (a mesma das LPs).
        Sem src no HTML, o iframe oculto nao faz requisicao nenhuma; o JS copia data-src
        para src so' quando o slot esta' visivel e o id foi preenchido. -->
-  <div class="hero-vsl" id="heroVsl" data-vsl-version="assinatura-v2-20260929" data-vsl-duration="787.3" data-vsl-pitch="699">
+  <div class="hero-vsl hero-vsl--topo" id="heroVsl" data-vsl-version="assinatura-v2-20260929" data-vsl-duration="787.3" data-vsl-pitch="699">
     <div class="vsl-moldura">
       <iframe class="vsl-frame" id="heroVslFrame" title="Vídeo de apresentação da Fluência Contábil"
         data-src="https://player-vz-7867cfdb-be1.tv.pandavideo.com.br/embed/?v=373b4407-d936-4434-8c7c-4102cd40cc48"
@@ -1756,8 +1759,42 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
       </div>
     </div>
-    <p style="text-align:center;margin-top:18px"><a href="#oferta" class="btn" data-fc-vsl-cta>Conhecer os planos da assinatura</a></p>
   </div>
+  <div class="hero-grid hero-grid--vsl">
+    <div class="hero-texto">
+      <div class="hero-badge">🏛️ Edição 2026 · Matrículas abertas</div>
+
+      <h1>Transforme contabilidade na sua <span class="destaque">maior vantagem</span> para conquistar múltiplas aprovações.<span class="sub-risco" aria-hidden="true"></span></h1>
+
+      <!-- prova ja' na 1a tela (mesmos numeros da secao "Quem ensina") -->
+      <p class="hero-prova">Com o Prof. Vinícius Ferraz, Auditor Fiscal: <strong>4 aprovações</strong> em concursos de elite e <strong>mais de 3.000 alunos</strong> ao longo de 40 turmas.</p>
+
+      <p class="hero-sub">A Fluência Contábil ensina contabilidade <strong>como um idioma, pela lógica</strong> — pra você parar de perder pontos <span class="ouro-claro">onde mais cai</span> e interpretar qualquer questão sem decoreba.</p>
+
+      <p class="hero-sub menor">Edição 2026 completa: <strong>5 módulos, 35 aulas + 3 bônus</strong>, questões comentadas de banca real e a plataforma inteira, sem módulo avulso nem upsell.</p>
+
+      <p class="hero-datas">A partir de <strong>12× R$ 44,16</strong></p>
+
+      <div class="hero-cta">
+        <a href="#oferta" class="btn cta-compra" data-fc-vsl-cta>Ver os planos</a>
+        <p class="hero-note">7 dias de garantia incondicional · Pix, boleto ou cartão em até 12×</p>
+        <div class="hero-degusta">
+          <button class="hero-degusta-btn" id="btnAmostraAula01" type="button"
+             data-fc-pdf="aulas/aula-01-partidas-dobradas.pdf?v=20260813"
+             data-fc-download="Fluencia-Contabil-Aula-01-Partidas-Dobradas.pdf"
+             data-fc-cta="amostra-aula01" data-fc-local="hero" data-fc-lp="a" data-fc-capture="aula01">
+            <span class="hd-ico" aria-hidden="true">📄</span>
+            <span class="hd-txt">
+              <b>Baixar grátis a Aula 01 completa</b>
+              <i><span class="hd-full">PDF · 73 páginas · teoria + 30 questões comentadas · 4,7 MB</span><span class="hd-short">PDF · 73 páginas · 4,7 MB</span></i>
+            </span>
+            <span class="hd-seta" aria-hidden="true">↓</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </section>
 
 <!-- ===== PROVA NO TOPO (30/09/2026) =====
@@ -1792,24 +1829,35 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- ===== O CURSO ===== -->
 <section class="section curso">
   <div class="container">
-    <div class="curso-grid">
-      <div class="reveal">
-        <div class="section-label">O curso</div>
-        <h2 class="section-title">Do zero ao nível dos concursos de elite.</h2>
-        <p class="section-text">Um caminho progressivo em <strong>4 módulos</strong>: Fundamentos → Demonstrações Contábeis → Contabilidade Intermediária → Contabilidade Avançada, mais um <strong>5º módulo de provas resolvidas</strong>. São <strong>35 aulas numeradas + 3 bônus</strong>, em videoaulas com PDF de apoio baixável e <strong>questões comentadas de banca real</strong> em cada aula.</p>
-        <p class="section-text" style="margin-top:14px;">Feito pra concurseiro das áreas <strong>Fiscal</strong> (SEFAZ, RFB, ISS), <strong>Contador</strong> (Senado, MPU, TCU), controle e Tribunais de Contas — e pra qualquer edital que cobre contabilidade geral e avançada.</p>
+    <div class="curso-topo reveal">
+      <div class="section-label">O curso</div>
+      <h2 class="section-title">Do zero ao nível dos concursos de elite.</h2>
+      <p class="section-text">Um caminho progressivo em <strong>4 módulos</strong>, mais um <strong>5º módulo de provas resolvidas</strong>. São <strong>35 aulas numeradas + 3 bônus</strong>, em videoaulas com PDF de apoio baixável e <strong>questões comentadas de banca real</strong> em cada aula.</p>
+    </div>
+
+    <ol class="curso-trilha reveal" aria-label="Os módulos do curso, em ordem">
+      <li><span class="ct-num">1</span><span class="ct-nome">Fundamentos</span></li>
+      <li><span class="ct-num">2</span><span class="ct-nome">Demonstrações Contábeis</span></li>
+      <li><span class="ct-num">3</span><span class="ct-nome">Contabilidade Intermediária</span></li>
+      <li><span class="ct-num">4</span><span class="ct-nome">Contabilidade Avançada</span></li>
+      <li class="ct-provas"><span class="ct-num">5</span><span class="ct-nome">Provas resolvidas</span></li>
+    </ol>
+
+    <div class="curso-painel reveal">
+      <div class="curso-painel-nums">
+        <div class="cp-num"><div class="n">5</div><div class="l">módulos</div></div>
+        <div class="cp-num"><div class="n">35 + 3</div><div class="l">aulas + bônus</div></div>
+        <div class="cp-num"><div class="n">400h+</div><div class="l">de conteúdo</div></div>
+        <div class="cp-num"><div class="n">3 ou 6</div><div class="l">meses de acesso</div></div>
+      </div>
+      <div class="curso-painel-pub">
+        <p>Feito pra concurseiro das áreas <strong>Fiscal</strong> (SEFAZ, RFB, ISS), <strong>Contador</strong> (Senado, MPU, TCU), controle e Tribunais de Contas — e pra qualquer edital que cobre contabilidade geral e avançada.</p>
         <div class="bancas">
           <span class="banca-chip">CEBRASPE</span>
           <span class="banca-chip">FGV</span>
           <span class="banca-chip">FCC</span>
           <span class="banca-chip">VUNESP</span>
         </div>
-      </div>
-      <div class="curso-stats reveal">
-        <div class="curso-stat"><div class="num">5</div><div class="lbl">Módulos</div></div>
-        <div class="curso-stat"><div class="num">35 + 3</div><div class="lbl">Aulas + bônus</div></div>
-        <div class="curso-stat"><div class="num">400h+</div><div class="lbl">De conteúdo</div></div>
-        <div class="curso-stat"><div class="num">3 ou 6</div><div class="lbl">Meses de acesso</div></div>
       </div>
     </div>
   </div>
@@ -2423,41 +2471,92 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <h2 class="section-title">Os primeiros alunos entraram na plataforma — e <span class="ouro">ela impressionou.</span></h2>
       <p class="section-text" style="margin-left:auto;margin-right:auto;">Alunos beta que experimentaram a plataforma por dentro — e quem já estuda com o Prof. Vinícius há anos.</p>
     </div>
-    <div class="dep-grid">
-      <div class="dep-card beta reveal">
-        <span class="dep-selo aluno">🎓 Aluno da 1ª turma</span>
-        <div class="aspas" aria-hidden="true">“</div>
-        <p>O sistema de ranking gamificado ficou ótimo! A ideia de utilizar a própria plataforma como simulador também foi excelente. Contabilidade sempre foi a minha maior dificuldade na área fiscal, e a forma como o conteúdo é apresentado tem ajudado bastante. As aulas são objetivas, certeiras e vão direto ao ponto.</p>
-        <div class="dep-autor">João Renan S. <span class="dep-fonte">· avaliação enviada pela plataforma</span></div>
+    <!-- 30/09/2026 (pedido do Vinicius): depoimentos girando, com os prints reais. Os prints sao os 4 ja' aprovados
+         para depoimentos.html (sem nome nem foto de quem escreveu); os da aluna beta substituem a versao em texto.
+         O grupo aparece duas vezes para o giro nao ter emenda; a copia e' aria-hidden. Pausa ao passar o mouse/tocar;
+         com "reduzir movimento" nao gira e vira rolagem lateral. -->
+  </div>
+  <div class="dep-carrossel" tabindex="0" aria-label="Depoimentos de alunos (passe o mouse para pausar)">
+    <div class="dep-trilho">
+      <div class="dep-grupo">
+          <div class="dep-card beta">
+            <span class="dep-selo aluno">🎓 Aluno da 1ª turma</span>
+            <div class="aspas" aria-hidden="true">“</div>
+            <p>O sistema de ranking gamificado ficou ótimo! A ideia de utilizar a própria plataforma como simulador também foi excelente. Contabilidade sempre foi a minha maior dificuldade na área fiscal, e a forma como o conteúdo é apresentado tem ajudado bastante. As aulas são objetivas, certeiras e vão direto ao ponto.</p>
+            <div class="dep-autor">João Renan S. <span class="dep-fonte">· avaliação enviada pela plataforma</span></div>
+          </div>
+          <figure class="dep-print">
+            <span class="dep-selo">🧪 Testou a plataforma</span>
+            <picture><source srcset="assets/depoimentos/whatsapp-impressionada-mercado.webp" type="image/webp"><img src="assets/depoimentos/whatsapp-impressionada-mercado.png" alt="Print da conversa: aluna diz que o trabalho está magnífico e que não há nada semelhante no mercado" width="369" height="472" loading="lazy" decoding="async"></picture>
+            <figcaption>Aluna beta · print do WhatsApp</figcaption>
+          </figure>
+          <div class="dep-card">
+            <div class="aspas" aria-hidden="true">“</div>
+            <p>De altíssimo nível seu conteúdo e aprofundamento de um CPC tão complexo. Você tem uma boa didática, mantenha-se firme, logo seu trabalho vai bombar! Parabéns!</p>
+            <div class="dep-autor">@Mr4lessandro <span class="dep-fonte">· YouTube</span></div>
+          </div>
+          <figure class="dep-print">
+            <span class="dep-selo">🧪 Testou a plataforma</span>
+            <picture><source srcset="assets/depoimentos/whatsapp-atencao-ao-detalhe.webp" type="image/webp"><img src="assets/depoimentos/whatsapp-atencao-ao-detalhe.png" alt="Print da conversa: aluna fala em atenção ao detalhe e no lado humano do professor" width="383" height="269" loading="lazy" decoding="async"></picture>
+            <figcaption>Aluna beta · print do WhatsApp</figcaption>
+          </figure>
+          <div class="dep-card">
+            <div class="aspas" aria-hidden="true">“</div>
+            <p>Aula excelente, professor. Estou estudando para certificações do mercado financeiro através dos seus vídeos. Muito obrigado!</p>
+            <div class="dep-autor">@LuizMarconiluizmn <span class="dep-fonte">· YouTube</span></div>
+          </div>
+          <figure class="dep-print">
+            <span class="dep-selo">🧪 Testou a plataforma</span>
+            <picture><source srcset="assets/depoimentos/whatsapp-plataforma-sensacional.webp" type="image/webp"><img src="assets/depoimentos/whatsapp-plataforma-sensacional.png" alt="Print da conversa: aluno elogia a plataforma e a didática que amarra o conteúdo" width="371" height="273" loading="lazy" decoding="async"></picture>
+            <figcaption>Aluno beta · print do WhatsApp</figcaption>
+          </figure>
+          <div class="dep-card">
+            <div class="aspas" aria-hidden="true">“</div>
+            <p>Muito top a aula!!!!</p>
+            <div class="dep-autor">Aline EA Rj <span class="dep-fonte">· WhatsApp, Turma ISS-RJ</span></div>
+          </div>
       </div>
-      <div class="dep-card beta reveal">
-        <span class="dep-selo">🧪 Testou a plataforma</span>
-        <div class="aspas" aria-hidden="true">“</div>
-        <p>Estou impressionada demais com esse seu trabalho, que está magnífico! Não há nada semelhante no mercado. Nada! Parabéns demais por idealizar e construir tudo isso que está gigante.</p>
-        <div class="dep-autor">Aluna beta <span class="dep-fonte">· acesso antecipado à plataforma</span></div>
-      </div>
-      <div class="dep-card beta reveal">
-        <span class="dep-selo">🧪 Testou a plataforma</span>
-        <div class="aspas" aria-hidden="true">“</div>
-        <p>Eu também tô muito impressionada. É de uma atenção ao detalhe. Realmente fora da curva.</p>
-        <div class="dep-autor">Aluna beta <span class="dep-fonte">· acesso antecipado à plataforma</span></div>
-      </div>
-      <div class="dep-card reveal">
-        <div class="aspas" aria-hidden="true">“</div>
-        <p>De altíssimo nível seu conteúdo e aprofundamento de um CPC tão complexo. Você tem uma boa didática, mantenha-se firme, logo seu trabalho vai bombar! Parabéns!</p>
-        <div class="dep-autor">@Mr4lessandro <span class="dep-fonte">· YouTube</span></div>
-      </div>
-      <div class="dep-card reveal">
-        <div class="aspas" aria-hidden="true">“</div>
-        <p>Aula excelente, professor. Estou estudando para certificações do mercado financeiro através dos seus vídeos. Muito obrigado!</p>
-        <div class="dep-autor">@LuizMarconiluizmn <span class="dep-fonte">· YouTube</span></div>
-      </div>
-      <div class="dep-card reveal">
-        <div class="aspas" aria-hidden="true">“</div>
-        <p>Muito top a aula!!!!</p>
-        <div class="dep-autor">Aline EA Rj <span class="dep-fonte">· WhatsApp, Turma ISS-RJ</span></div>
+      <div class="dep-grupo" aria-hidden="true">
+          <div class="dep-card beta">
+            <span class="dep-selo aluno">🎓 Aluno da 1ª turma</span>
+            <div class="aspas" aria-hidden="true">“</div>
+            <p>O sistema de ranking gamificado ficou ótimo! A ideia de utilizar a própria plataforma como simulador também foi excelente. Contabilidade sempre foi a minha maior dificuldade na área fiscal, e a forma como o conteúdo é apresentado tem ajudado bastante. As aulas são objetivas, certeiras e vão direto ao ponto.</p>
+            <div class="dep-autor">João Renan S. <span class="dep-fonte">· avaliação enviada pela plataforma</span></div>
+          </div>
+          <figure class="dep-print">
+            <span class="dep-selo">🧪 Testou a plataforma</span>
+            <picture><source srcset="assets/depoimentos/whatsapp-impressionada-mercado.webp" type="image/webp"><img src="assets/depoimentos/whatsapp-impressionada-mercado.png" alt="Print da conversa: aluna diz que o trabalho está magnífico e que não há nada semelhante no mercado" width="369" height="472" loading="lazy" decoding="async"></picture>
+            <figcaption>Aluna beta · print do WhatsApp</figcaption>
+          </figure>
+          <div class="dep-card">
+            <div class="aspas" aria-hidden="true">“</div>
+            <p>De altíssimo nível seu conteúdo e aprofundamento de um CPC tão complexo. Você tem uma boa didática, mantenha-se firme, logo seu trabalho vai bombar! Parabéns!</p>
+            <div class="dep-autor">@Mr4lessandro <span class="dep-fonte">· YouTube</span></div>
+          </div>
+          <figure class="dep-print">
+            <span class="dep-selo">🧪 Testou a plataforma</span>
+            <picture><source srcset="assets/depoimentos/whatsapp-atencao-ao-detalhe.webp" type="image/webp"><img src="assets/depoimentos/whatsapp-atencao-ao-detalhe.png" alt="Print da conversa: aluna fala em atenção ao detalhe e no lado humano do professor" width="383" height="269" loading="lazy" decoding="async"></picture>
+            <figcaption>Aluna beta · print do WhatsApp</figcaption>
+          </figure>
+          <div class="dep-card">
+            <div class="aspas" aria-hidden="true">“</div>
+            <p>Aula excelente, professor. Estou estudando para certificações do mercado financeiro através dos seus vídeos. Muito obrigado!</p>
+            <div class="dep-autor">@LuizMarconiluizmn <span class="dep-fonte">· YouTube</span></div>
+          </div>
+          <figure class="dep-print">
+            <span class="dep-selo">🧪 Testou a plataforma</span>
+            <picture><source srcset="assets/depoimentos/whatsapp-plataforma-sensacional.webp" type="image/webp"><img src="assets/depoimentos/whatsapp-plataforma-sensacional.png" alt="Print da conversa: aluno elogia a plataforma e a didática que amarra o conteúdo" width="371" height="273" loading="lazy" decoding="async"></picture>
+            <figcaption>Aluno beta · print do WhatsApp</figcaption>
+          </figure>
+          <div class="dep-card">
+            <div class="aspas" aria-hidden="true">“</div>
+            <p>Muito top a aula!!!!</p>
+            <div class="dep-autor">Aline EA Rj <span class="dep-fonte">· WhatsApp, Turma ISS-RJ</span></div>
+          </div>
       </div>
     </div>
+  </div>
+  <div class="container">
     <!-- 30/09/2026: botoes no corpo entre a demonstracao e a oferta (antes, nenhum entre a tela 5 e a 22) -->
     <div class="prova-cta reveal"><a href="#oferta" class="btn cta-compra" data-fc-local="apos-depoimentos">Ver os planos</a></div>
   </div>
