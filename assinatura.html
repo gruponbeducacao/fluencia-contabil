@@ -213,6 +213,34 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 linear-gradient(180deg, var(--azul-noite) 0%, rgba(19,31,56,0) 16%);
   }
 
+  /* ===== HERO COM A PLATAFORMA (30/09/2026) =====
+     Comparativo com 22 paginas de venda vencedoras (anuncio no ar ha 92-884 dias): nelas, a 1a tela do celular traz
+     titulo + prova + botao, e o produto aparece logo. Aqui a arte institucional (livro) saiu do hero e entrou a tela
+     inicial da plataforma, tirada da propria demonstracao da pagina (assets/hero-plataforma.*). */
+  .hero-prova {
+    font-size: 15px; line-height: 1.5; color: rgba(255,255,255,0.86);
+    margin: -6px 0 18px; max-width: 560px;
+    animation: fadeUp 0.7s ease-out 0.25s both;
+  }
+  .hero-prova strong { color: var(--dourado); font-weight: 800; }
+  .hero-foto.hero-plat { display: flex; align-items: center; min-height: 0; padding: 52px 0 64px; }
+  .hero-foto.hero-plat::before, .hero-foto.hero-plat::after { display: none; }
+  .hero-foto.hero-plat img {
+    position: static; width: 100%; height: auto; object-fit: contain;
+    border-radius: 14px; border: 1px solid rgba(200,168,75,0.28);
+    box-shadow: 0 24px 60px rgba(0,0,0,0.45);
+  }
+
+  /* ===== PROVA NO TOPO (30/09/2026) — nas vencedoras, 18 de 22 mostram prova ate a 2a tela ===== */
+  .prova-topo { background: var(--cream); padding: 48px 0 56px; }
+  .prova-topo-nums {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+    max-width: 860px; margin: 0 auto; text-align: center;
+  }
+  .prova-topo-num .n { font-size: 34px; font-weight: 800; color: var(--azul-profundo); line-height: 1; }
+  .prova-topo-num .l { font-size: 12.5px; color: var(--cinza-medio); margin-top: 8px; line-height: 1.4; }
+  .prova-topo .dep-grid { margin-top: 32px; }
+
   /* ===== HEADER STICKY ===== */
   .sticky-header {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
@@ -1308,6 +1336,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .hero-foto::before { background: linear-gradient(180deg, rgba(19,31,56,0) 55%, var(--azul-noite) 100%); }
     .hero-foto::after { display: none; }
     .hero-logo { width: 80px; margin-bottom: 18px; }
+    /* hero com a plataforma: texto primeiro (titulo + prova + botao na 1a tela), imagem do produto logo abaixo */
+    .hero-grid--plat .hero-texto { margin-top: 0; padding-top: 28px; padding-bottom: 28px; }
+    .hero-grid--plat .hero-logo { width: 52px; margin-bottom: 14px; }
+    .hero-foto.hero-plat { order: 0; height: auto; padding: 0 24px 44px; }
+  }
+  @media (max-width: 560px) {
+    /* no celular o botao do hero precisa caber na 1a tela; "35 aulas + 3 bonus" segue na faixa de prova logo abaixo */
+    .hero-grid--plat .hero-sub.menor { display: none; }
+    .prova-topo-nums { gap: 10px; }
+    .prova-topo-num .n { font-size: 26px; }
+    .prova-topo-num .l { font-size: 11.5px; }
   }
   @media (max-width: 880px) {
     .cards-3, .tese-grid, .dep-grid { grid-template-columns: 1fr; }
@@ -1634,7 +1673,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <!-- ===== HERO ===== -->
 <section class="hero">
-  <div class="hero-grid">
+  <div class="hero-grid hero-grid--plat">
     <div class="hero-texto">
       <picture>
         <source srcset="assets/FC_Simbolo_BrancoDourado_FUNDO_AZUL.webp" type="image/webp">
@@ -1644,6 +1683,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="hero-badge">🏛️ Edição 2026 · Matrículas abertas</div>
 
       <h1>Transforme contabilidade na sua <span class="destaque">maior vantagem</span> para conquistar múltiplas aprovações.<span class="sub-risco" aria-hidden="true"></span></h1>
+
+      <!-- prova ja' na 1a tela (mesmos numeros da secao "Quem ensina") -->
+      <p class="hero-prova">Com o Prof. Vinícius Ferraz, Auditor Fiscal: <strong>4 aprovações</strong> em concursos de elite e <strong>mais de 3.000 alunos</strong> ao longo de 40 turmas.</p>
 
       <p class="hero-sub">A Fluência Contábil ensina contabilidade <strong>como um idioma, pela lógica</strong> — pra você parar de perder pontos <span class="ouro-claro">onde mais cai</span> e interpretar qualquer questão sem decoreba.</p>
 
@@ -1670,10 +1712,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
     </div>
 
-    <div class="hero-foto">
+    <div class="hero-foto hero-plat">
       <picture>
-        <source srcset="assets/hero-institucional.webp" type="image/webp">
-        <img src="assets/hero-institucional.jpg" alt="Livro da Fluência Contábil sobre mesa de escritório, com plano de contas, balancete e calculadora" width="1400" height="932" fetchpriority="high">
+        <source srcset="assets/hero-plataforma.webp" type="image/webp">
+        <img src="assets/hero-plataforma.jpg" alt="Tela inicial da plataforma Fluência Contábil: continuar a aula, dias seguidos de estudo, plano e progresso do curso" width="1400" height="860" fetchpriority="high">
       </picture>
     </div>
   </div>
@@ -1715,6 +1757,35 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
     </div>
     <p style="text-align:center;margin-top:18px"><a href="#oferta" class="btn" data-fc-vsl-cta>Conhecer os planos da assinatura</a></p>
+  </div>
+</section>
+
+<!-- ===== PROVA NO TOPO (30/09/2026) =====
+     Nas 22 paginas vencedoras do comparativo, 18 mostram prova ate a 2a tela; aqui ela so' aparecia na tela 9
+     (depoimentos) e na 18 (numeros do professor). Numeros = secao "Quem ensina"; depoimentos = trechos literais da
+     secao "Quem ja' esta' por dentro", com a mesma atribuicao. -->
+<section class="section prova-topo">
+  <div class="container">
+    <div class="prova-topo-nums reveal">
+      <div class="prova-topo-num"><div class="n">4</div><div class="l">aprovações do professor em concursos de elite</div></div>
+      <div class="prova-topo-num"><div class="n">3.000+</div><div class="l">alunos do professor ao longo de 40 turmas</div></div>
+      <div class="prova-topo-num"><div class="n">35 + 3</div><div class="l">aulas + bônus na Edição 2026</div></div>
+    </div>
+    <div class="dep-grid">
+      <div class="dep-card beta reveal">
+        <span class="dep-selo aluno">🎓 Aluno da 1ª turma</span>
+        <div class="aspas" aria-hidden="true">“</div>
+        <p>Contabilidade sempre foi a minha maior dificuldade na área fiscal, e a forma como o conteúdo é apresentado tem ajudado bastante. As aulas são objetivas, certeiras e vão direto ao ponto.</p>
+        <div class="dep-autor">João Renan S. <span class="dep-fonte">· avaliação enviada pela plataforma</span></div>
+      </div>
+      <div class="dep-card beta reveal">
+        <span class="dep-selo">🧪 Testou a plataforma</span>
+        <div class="aspas" aria-hidden="true">“</div>
+        <p>Estou impressionada demais com esse seu trabalho, que está magnífico! Não há nada semelhante no mercado.</p>
+        <div class="dep-autor">Aluna beta <span class="dep-fonte">· acesso antecipado à plataforma</span></div>
+      </div>
+    </div>
+    <div class="prova-cta reveal"><a href="#oferta" class="btn cta-compra" data-fc-local="prova-topo">Ver os planos</a></div>
   </div>
 </section>
 
@@ -2387,6 +2458,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="dep-autor">Aline EA Rj <span class="dep-fonte">· WhatsApp, Turma ISS-RJ</span></div>
       </div>
     </div>
+    <!-- 30/09/2026: botoes no corpo entre a demonstracao e a oferta (antes, nenhum entre a tela 5 e a 22) -->
+    <div class="prova-cta reveal"><a href="#oferta" class="btn cta-compra" data-fc-local="apos-depoimentos">Ver os planos</a></div>
   </div>
 </section>
 
@@ -2462,6 +2535,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
     </div>
     <p class="tese-conclusao reveal"><strong>Fluência contábil</strong> é desenvolver essa lógica interna pra interpretar questões complexas sem decoreba. Não é o curso que cobre o edital mais rápido — é o curso que faz você <strong>entender</strong> contabilidade.</p>
+    <div class="prova-cta reveal"><a href="#oferta" class="btn cta-compra" data-fc-local="apos-metodo">Ver os planos</a></div>
   </div>
 </section>
 
@@ -2589,6 +2663,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
       </div>
     </div>
+    <div class="prova-cta reveal"><a href="#oferta" class="btn cta-compra" data-fc-local="apos-professor">Ver os planos</a></div>
   </div>
 </section>
 
