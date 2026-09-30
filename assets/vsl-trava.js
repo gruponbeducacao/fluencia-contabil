@@ -54,7 +54,7 @@
     if (txt) {
       txt.textContent = assistido > 0
         ? 'Assista mais ' + mmss(limite - assistido) + ' para liberar a página'
-        : 'Dê o play: a página libera depois de ' + Math.round(limite / 60) + ' minutos de vídeo';
+        : 'Dê o play: a página libera depois de ' + mmss(limite) + ' de vídeo';
     }
     if (barra) barra.style.width = Math.min(100, assistido / limite * 100).toFixed(1) + '%';
   }

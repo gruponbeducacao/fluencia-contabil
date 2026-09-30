@@ -7,14 +7,14 @@ const ARQUIVO = process.env.VSL_TRAVA_ARQUIVO || new URL('../assets/vsl-trava.js
 const source = readFileSync(ARQUIVO, 'utf8');
 const ORIGEM = 'https://player-vz-test.tv.pandavideo.com.br';
 
-function run({ hash = '', search = '', ua = 'Mozilla/5.0 (iPhone)', liberada = false, hidden = false, id = 'video-test' } = {}) {
+function run({ hash = '', search = '', ua = 'Mozilla/5.0 (iPhone)', liberada = false, hidden = false, id = 'video-test', trava = '180' } = {}) {
   const listeners = {}, docListeners = {}, timers = [];
   const local = new Map(liberada ? [['fc_vsl_liberada:v1', '1']] : []), sessao = new Map();
   const classes = new Set();
   const txt = { textContent: '' }, barra = { style: { width: '' } };
   const aviso = { hidden: true, querySelector: s => (s === '[data-vsl-trava-txt]' ? txt : barra) };
   const frame = { contentWindow: {}, getAttribute: k => (k === 'data-src' ? `${ORIGEM}/embed/?v=${id}` : null) };
-  const slot = { hidden, getAttribute: k => ({ 'data-vsl-trava': '180', 'data-vsl-version': 'v1' })[k] };
+  const slot = { hidden, getAttribute: k => ({ 'data-vsl-trava': trava, 'data-vsl-version': 'v1' })[k] };
   let agora = 1_000_000;
   const dataLayer = [];
   const window = {
@@ -49,7 +49,7 @@ test('trava a página ao abrir e convida a dar o play', () => {
   const r = run();
   assert.equal(r.travada(), true);
   assert.equal(r.aviso.hidden, false);
-  assert.match(r.txt.textContent, /Dê o play: a página libera depois de 3 minutos de vídeo/);
+  assert.equal(r.txt.textContent, 'Dê o play: a página libera depois de 3:00 de vídeo');
   assert.equal(r.dataLayer.at(-1).event, 'vsl_trava_inicio');
 });
 
@@ -111,4 +111,16 @@ test('não trava: link com âncora, quem já liberou, ?semtrava=1, robô de busc
     assert.equal(r.travada(), false, JSON.stringify(opts));
     assert.equal(r.aviso.hidden, true, JSON.stringify(opts));
   }
+});
+
+
+test('assinatura.html: libera no fim da demonstração de débito e crédito (5:31) e o texto sem JS bate com o do script', () => {
+  // 30/09/2026: o Vinícius achou 11:39 (pitch) longo demais e pediu para ir até um argumento importante —
+  // a demonstração de débito e crédito, que o gancho promete, fecha em 5:31 da VSL v2 ("Ufa!" começa em 5:31.41)
+  const html = readFileSync(new URL('../assinatura.html', import.meta.url), 'utf8');
+  const trava = (html.match(/id="heroVsl" data-vsl-trava="(\d+)"/) || [])[1];
+  assert.equal(trava, '331');
+  const estatico = (html.match(/data-vsl-trava-txt>([^<]+)</) || [])[1];
+  assert.equal(estatico, 'Dê o play: a página libera depois de 5:31 de vídeo');
+  assert.equal(run({ trava }).txt.textContent, estatico);
 });
