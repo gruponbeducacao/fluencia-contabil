@@ -12,7 +12,9 @@ function run({ hash = '', search = '', ua = 'Mozilla/5.0 (iPhone)', liberada = f
   const local = new Map(liberada ? [['fc_vsl_liberada:v1', '1']] : []), sessao = new Map();
   const classes = new Set();
   const txt = { textContent: '' }, barra = { style: { width: '' } };
-  const aviso = { hidden: true, querySelector: s => (s === '[data-vsl-trava-txt]' ? txt : barra) };
+  const attrs = new Set();
+  const aviso = { hidden: true, querySelector: s => (s === '[data-vsl-trava-txt]' ? txt : barra),
+    setAttribute: k => attrs.add(k), removeAttribute: k => attrs.delete(k), hasAttribute: k => attrs.has(k) };
   const frame = { contentWindow: {}, getAttribute: k => (k === 'data-src' ? `${ORIGEM}/embed/?v=${id}` : null) };
   const slot = { hidden, getAttribute: k => ({ 'data-vsl-trava': trava, 'data-vsl-version': 'v1' })[k] };
   let agora = 1_000_000;
@@ -42,14 +44,16 @@ function run({ hash = '', search = '', ua = 'Mozilla/5.0 (iPhone)', liberada = f
   const toca = (de, ate) => { for (let t = de; t <= ate; t += 1) { msg('panda_timeupdate', t); agora += 1000; } };
   const vence = () => timers.splice(0).forEach(t => t.fn());
   return { classes, aviso, txt, barra, local, dataLayer, msg, toca, vence,
-    anda: s => { agora += s * 1000; }, travada: () => classes.has('vsl-trava') };
+    anda: s => { agora += s * 1000; }, travada: () => classes.has('vsl-trava'),
+    avisoVisivel: () => !aviso.hidden && attrs.has('data-pausa') };
 }
 
-test('trava a página ao abrir e convida a dar o play', () => {
+test('trava a página ao abrir, com o aviso de tempo ainda invisível', () => {
   const r = run();
   assert.equal(r.travada(), true);
-  assert.equal(r.aviso.hidden, false);
-  assert.equal(r.txt.textContent, 'Dê o play: a página libera depois de 3:00 de vídeo');
+  assert.equal(r.aviso.hidden, false);  // no layout (reserva o espaço), mas sem data-pausa
+  assert.equal(r.avisoVisivel(), false);
+  assert.equal(r.txt.textContent, 'Assista mais 3:00 para liberar a página');
   assert.equal(r.dataLayer.at(-1).event, 'vsl_trava_inicio');
 });
 
@@ -78,6 +82,18 @@ test('arrastar a barra não conta como assistido', () => {
   r.toca(170, 175);
   assert.equal(r.travada(), true);
   assert.match(r.txt.textContent, /Assista mais 2:4\d/);
+});
+
+test('o tempo que falta só aparece na pausa e some quando o vídeo volta a tocar', () => {
+  // 30/09/2026, pedido do Vinícius: "só mostre o tempo que falta quando a pessoa clicar em pause"
+  const r = run();
+  r.msg('panda_play', 0); r.toca(0, 60);
+  assert.equal(r.avisoVisivel(), false);
+  r.msg('panda_pause', 60);
+  assert.equal(r.avisoVisivel(), true);
+  assert.equal(r.txt.textContent, 'Assista mais 2:00 para liberar a página');
+  r.msg('panda_play', 60);
+  assert.equal(r.avisoVisivel(), false);
 });
 
 test('pausa congela a contagem', () => {
@@ -122,6 +138,6 @@ test('assinatura.html: libera no fim da proposta da Fluência Contábil (6:41) e
   const trava = (html.match(/id="heroVsl" data-vsl-trava="(\d+)"/) || [])[1];
   assert.equal(trava, '401');
   const estatico = (html.match(/data-vsl-trava-txt>([^<]+)</) || [])[1];
-  assert.equal(estatico, 'Dê o play: a página libera depois de 6:41 de vídeo');
+  assert.equal(estatico, 'Assista mais 6:41 para liberar a página');
   assert.equal(run({ trava }).txt.textContent, estatico);
 });

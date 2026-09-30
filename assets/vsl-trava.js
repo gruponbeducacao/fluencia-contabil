@@ -5,7 +5,9 @@
    reprodução repetida não contam.
    Não trava: link com âncora (ex.: #oferta, usado em e-mails e botões), quem já liberou antes
    (localStorage), ?semtrava=1 (equipe) e robôs de busca. Falha sempre abre: sem aviso do player
-   em 15 s ou com panda_error, a página libera sozinha — vídeo quebrado não tranca venda. */
+   em 15 s ou com panda_error, a página libera sozinha — vídeo quebrado não tranca venda.
+   O aviso com o tempo que falta só aparece na pausa (pedido do Vinícius, 30/09/2026): fica no layout
+   o tempo todo (reserva o espaço, o vídeo não pula) e o CSS só o mostra com [data-pausa]. */
 (function () {
   'use strict';
   if (window.FC_VSL_TRAVA) return;
@@ -52,11 +54,12 @@
   }
   function desenha() {
     if (txt) {
-      txt.textContent = assistido > 0
-        ? 'Assista mais ' + mmss(limite - assistido) + ' para liberar a página'
-        : 'Dê o play: a página libera depois de ' + mmss(limite) + ' de vídeo';
+      txt.textContent = 'Assista mais ' + mmss(limite - assistido) + ' para liberar a página';
     }
     if (barra) barra.style.width = Math.min(100, assistido / limite * 100).toFixed(1) + '%';
+  }
+  function naPausa(sim) {
+    if (sim) aviso.setAttribute('data-pausa', ''); else aviso.removeAttribute('data-pausa');
   }
   function libera(motivo) {
     if (!travada) return;
@@ -97,9 +100,9 @@
     if (data.isMutedIndicator === true) { tocando = false; zera(); return; }
     var t = Number(data.currentTime);
     switch (data.message) {
-      case 'panda_play': tocando = true; pulando = false; zera(); amostra(t); break;
+      case 'panda_play': tocando = true; pulando = false; naPausa(false); zera(); amostra(t); break;
       case 'panda_timeupdate': amostra(t); break;
-      case 'panda_pause': amostra(t); tocando = false; zera(); break;
+      case 'panda_pause': amostra(t); tocando = false; zera(); desenha(); naPausa(true); break;
       case 'panda_seeking': pulando = true; zera(); break;
       case 'panda_seeked': pulando = false; zera(); break;
       case 'panda_ended': amostra(t); tocando = false; zera(); libera('assistiu'); break;
