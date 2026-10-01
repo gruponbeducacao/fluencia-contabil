@@ -495,7 +495,8 @@
      do navegador (fc_vsl_liberada:<versão>): é própria desta página, então liberar a assinatura
      não libera esta. Sem JS, com #âncora, ?semtrava=1, robô ou player mudo: não trava. -->
 <section class="vsl-sec" id="heroVsl" data-estado="aberta" hidden aria-labelledby="tituloAberta"
-  data-vsl-trava="263" data-vsl-version="cashback-v5-20260929" data-vsl-duration="310.3" data-vsl-pitch="263">
+  data-vsl-trava="263" data-vsl-trava-texto="Assista mais {tempo} para liberar seu cashback"
+  data-vsl-version="cashback-v5-20260929" data-vsl-duration="310.3" data-vsl-pitch="263">
   <!-- trava da VSL (assets/vsl-trava.js): o mesmo trecho da assinatura.html. Ouve o player do Panda desde ANTES de o
        iframe ganhar src (iniciarVsl) e marca window.FC_VSL_PLAYER_OK na 1ª mensagem dele. Sem ele, um panda_ready
        que chegue antes do vsl-trava.js (injetado) passa despercebido e a página pode abrir sozinha aos 15 s com o
@@ -545,7 +546,7 @@
     <!-- Aviso da trava: o assets/vsl-trava.js o põe no layout e escreve o tempo que falta; o CSS
          só o mostra na pausa ([data-pausa]). O texto estático é o mesmo que o script escreve. -->
     <div class="vsl-trava-aviso" id="vslTrava" aria-live="polite" hidden>
-      <p class="vsl-trava-txt" data-vsl-trava-txt>Assista mais 4:23 para liberar a página</p>
+      <p class="vsl-trava-txt" data-vsl-trava-txt>Assista mais 4:23 para liberar seu cashback</p>
       <div class="vsl-trava-barra" aria-hidden="true"><span data-vsl-trava-barra></span></div>
     </div>
     <!-- Título e texto da condição, logo abaixo do vídeo (e do aviso): o único h1 do estado aberta. -->
@@ -1002,7 +1003,7 @@
     }
     raiz.classList.add('vsl-trava');
     var trava = document.createElement('script');
-    trava.src = 'assets/vsl-trava.js?v=20260930f';
+    trava.src = 'assets/vsl-trava.js?v=20261001a';
     trava.onload = soltaSeNaoTravou;
     trava.onerror = soltaSeNaoTravou;
     setTimeout(soltaSeNaoTravou, 15000);
