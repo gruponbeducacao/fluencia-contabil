@@ -4126,6 +4126,8 @@ document.querySelectorAll('.dep-anexo-btn[aria-controls]').forEach(function (btn
   var oferta = document.getElementById('oferta');
   function push(o) { try { window.dataLayer = window.dataLayer || []; dataLayer.push(o); } catch (e) {} }
   function tick() {
+    // travada, a página tem a altura da tela e a conta abaixo daria 100% sem ninguém rolar (01/10/2026)
+    if (document.documentElement.classList.contains('vsl-trava')) return;
     var h = document.documentElement.scrollHeight - window.innerHeight;
     var pct = h > 0 ? Math.round((window.scrollY / h) * 100) : 100;
     marcas.forEach(function (m) { if (!feitas[m] && pct >= m) { feitas[m] = true; push({ event: 'rolagem', profundidade: m }); } });
