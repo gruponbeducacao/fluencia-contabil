@@ -17,7 +17,11 @@ a regra tem fiscal.
       de ordem de execução: são assíncronos e independentes —, cada um com o caminho
       exato e ?v=AAAAMMDD[letra]; createElement('script') contado sem diferenciar
       maiúsculas, e o único setAttribute('src') é o do iframe; o overlay é auditado aqui
-      (sem rede, sem storage, sem dataLayer);
+      (sem rede, sem storage, sem dataLayer). O trecho inline <script data-vsl-trava-ouvinte>
+      (o mesmo da assinatura.html, PR #111) vem antes do iframe e do código que liga o src,
+      confere a janela e a origem do Panda e só marca window.FC_VSL_PLAYER_OK = true. O
+      overlay tem o modo de player baixo (container query; escurecimento que some antes da
+      faixa de controles do Panda), para nenhum texto cair na barra de progresso;
   2c. trava no vídeo (30/09/2026, para todos os compradores): o assets/vsl-trava.js tem
       auditoria PRÓPRIA — sem rede (nem postMessage ao player de terceiro) e com
       localStorage/sessionStorage só em chaves provadamente fc_vsl_ (toda chave nasce de
@@ -188,6 +192,33 @@ if iframes:
 if set(fontes) == {"overlay", "trava"}:
     pos = {k: re.search(rf"(?<![\w$.]){re.escape(v)}\.src\s*=", corpo) for k, v in fontes.items()}
     check(all(pos.values()) and pos["overlay"].start() < pos["trava"].start(), "a trava é injetada antes do overlay")
+# Trecho que ouve o player (o mesmo da assinatura.html, PR #111): inline, antes do iframe e do
+# código que liga o src, fecha a corrida da trava (um panda_ready que chegue antes do
+# vsl-trava.js). Só pode marcar window.FC_VSL_PLAYER_OK, e só com mensagem da janela do player e
+# da origem do Panda: nada de rede, storage, dataLayer ou URL.
+ouvintes = re.findall(r"<script data-vsl-trava-ouvinte>(.*?)</script>", limpo, flags=re.S)
+if iframes or ouvintes:
+    check(len(ouvintes) == 1 and len(re.findall(r"data-vsl-trava-ouvinte", limpo)) == 1,
+          "a página tem de ter exatamente um <script data-vsl-trava-ouvinte> inline (o trecho da assinatura.html)")
+if ouvintes:
+    pos_ouvinte = limpo.find("<script data-vsl-trava-ouvinte>")
+    check(0 <= pos_ouvinte < limpo.find('id="heroVslFrame"') and pos_ouvinte < limpo.find("f.setAttribute('src', src);"),
+          "o trecho que ouve o player vem depois do iframe ou do código que liga o src: a corrida volta")
+    ouv = sem_comentarios_js(ouvintes[0])
+    check("document.getElementById('heroVslFrame')" in ouv and "e.source !== f.contentWindow" in ouv
+          and r"!/^https:\/\/player-[a-z0-9-]+\.tv\.pandavideo\.com\.br$/.test(e.origin)" in ouv
+          and "typeof d.message !== 'string'" in ouv and "window.addEventListener('message', ouve);" in ouv,
+          "o trecho que ouve o player não confere a janela (e.source) e a origem do Panda antes de marcar")
+    # Tirando a declaração das variáveis locais, a única atribuição é window.FC_VSL_PLAYER_OK = true.
+    sem_decl = ouv.replace("var f = document.getElementById('heroVslFrame'), d = e.data;", "")
+    atribuicoes = re.findall(r"(?<![=!<>])=(?![=>])|\+\+|--(?!\])|[+\-*/%&|^]=", sem_decl)
+    check(len(atribuicoes) == 1 and "window.FC_VSL_PLAYER_OK = true;" in sem_decl,
+          "o trecho que ouve o player grava algo além de window.FC_VSL_PLAYER_OK = true")
+    for proibido in ("fetch(", "XMLHttpRequest", "sendBeacon", "WebSocket", "EventSource", "new Image", "import(",
+                     "createElement", "setAttribute", "postMessage", "document.cookie", "localStorage",
+                     "sessionStorage", "dataLayer", "location", "innerHTML", "eval(", ".src"):
+        check(proibido not in ouv, f"o trecho que ouve o player usa {proibido}: ele só marca FC_VSL_PLAYER_OK")
+
 if injetados:
     # O arquivo é compartilhado com a assinatura.html: se um dia ganhar rede, storage ou
     # dataLayer, esta página passaria a expor o token. Comentários fora, código auditado.
@@ -524,6 +555,16 @@ if iframes:
           and "visibility:visible" in aviso_css.get(".vsl-trava-aviso[data-pausa]", ""),
           "o aviso da trava não fica invisível fora da pausa (só [data-pausa] o mostra)")
 
+    # Overlay em player baixo (correção da assinatura.html no PR #111, portada em 01/10/2026): o
+    # overlay é um container de tamanho; abaixo de 480 px de altura os textos sobem para cima do
+    # play, e o escurecimento do início/fim some antes da faixa de controles do Panda. Sem isso, o
+    # «5 min · com legendas» cai na barra de progresso e o toque nele pula o vídeo.
+    ov_css = {s: dec for sels, dec, ctx in regras if not ctx for s in sels}
+    check("container:vslov/size" in ov_css.get(".vsl-ov", "")
+          and any(ctx == "@container vslov (max-height: 479.98px)" for _, _, ctx in regras)
+          and "mask-image" in ov_css.get('.vsl-ov[data-estado="inicio"]::before', ""),
+          "overlay sem o modo de player baixo (container query + escurecimento que some antes da faixa do Panda)")
+
     # Layout do estado aberta (30/09/2026, «faixa curta + vídeo», regra do Vinícius: a página
     # começa pelo vídeo). Acima dele só a faixa de duas linhas (nome · crédito; prazo), sem
     # logo, título, preço ou controle; o h1 — único do estado aberta — e o texto da condição
@@ -547,7 +588,8 @@ if iframes:
           and h1_aberta[0][0] > max(posicao.get("heroVslFrame", 10 ** 9), posicao.get("vslTrava", 10 ** 9)),
           "o estado aberta tem um único h1, logo abaixo do vídeo e do aviso (dentro do #heroVsl)")
     antes_do_video = [t for i, (t, a, anc) in enumerate(arvore.elementos)
-                      if "heroVsl" in ids(anc) and i < posicao.get("heroVslFrame", 0) and t not in ("div",)]
+                      if "heroVsl" in ids(anc) and i < posicao.get("heroVslFrame", 0) and t not in ("div",)
+                      and not (t == "script" and "data-vsl-trava-ouvinte" in a)]
     check(not antes_do_video, f"no slot, algo antes do vídeo: {antes_do_video}")
     corpo_mostrar = re.search(r"function mostrar\(estado\) \{(.*?)\n  \}\n", js, re.S)
     check(bool(corpo_mostrar) and "document.body.setAttribute('data-pagina', estado);" in corpo_mostrar.group(1)
