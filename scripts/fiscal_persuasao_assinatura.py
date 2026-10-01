@@ -124,7 +124,10 @@ ok("sem bordões proibidos", not re.search(r"Pensa comigo|Macete Fluência|Macet
 ok("sem selo Beta na pilha de valor", "stack-beta" not in stack)
 ok("sem 'método Chaves' em texto novo",
    texto.count("método Chaves") == (texto_antes.count("método Chaves") if antes is not None else 1))
-ok("questões: número lido do banco (3.800+)", "Mais de 3.800 questões" in s and "3.697" not in s)
+# 01/10/2026: o Vinícius fixou "mais de 5.800". O banco de produção tinha 5.588 publicadas + 240
+# arquivadas (5.828); ele decidiu o número sabendo da conta.
+ok("questões: mais de 5.800 (decisão do Vinícius, 01/10/2026)",
+   "Mais de 5.800 questões" in s and "3.800" not in s and "3.697" not in s)
 ok("Ransley: aguarda convocação — sem 'nomeado'", not re.search(r"nomeado", texto, re.I))
 ok("Ransley atribuído como aluno do professor", "aluno do professor" in texto)
 ok("sem o degrau do Dicionário (retirado a pedido do Vinícius em 30/09/2026)",
