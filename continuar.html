@@ -17,8 +17,20 @@
      mostrar a composição em itens, e só quando a conta fecha dos dois lados.
      Vídeo (VSL do cashback): só no estado "aberta". O player do Panda e o overlay de play
      (assets/vsl-overlay.js, o mesmo da assinatura.html, só visual) entram depois que a API
-     confirmou a condição, com o token já fora da barra. É o único script que não é inline,
-     e o fiscal audita o arquivo (sem rede, sem storage, sem dataLayer).
+     confirmou a condição, com o token já fora da barra. É um dos dois únicos scripts que não
+     são inline, e o fiscal audita o arquivo (sem rede, sem storage, sem dataLayer).
+     Trava no vídeo (30/09/2026, decisão do Vinícius, para todos os compradores): o outro
+     script é o assets/vsl-trava.js, o mesmo da assinatura.html, injetado junto com o overlay
+     (os dois são assíncronos e independentes; a ordem de execução não importa).
+     Enquanto <html class="vsl-trava">, a página é só o palco (a faixa com nome, crédito e
+     prazo, o vídeo, o título e o texto da condição logo abaixo dele, e o WhatsApp do
+     atendimento): planos, seções e rodapé voltam quando a pessoa assiste até 4:23.
+     No estado aberta a página começa pelo vídeo (30/09/2026): acima dele, só a faixa curta,
+     sem logo, travada ou não — ao liberar, o vídeo não sai do lugar.
+     O fiscal audita esse arquivo também: sem rede e com storage só em chaves fc_vsl_. O
+     dataLayer que ele alimenta fica na memória da aba, porque esta página não tem GTM.
+     Um trecho inline (o script data-vsl-trava-ouvinte, o mesmo da assinatura.html) ouve o
+     player desde antes de o iframe ganhar src e só marca window.FC_VSL_PLAYER_OK.
      Fiscal: scripts/fiscal_continuar.py -->
 <meta name="referrer" content="no-referrer">
 <meta name="robots" content="noindex, nofollow">
@@ -116,9 +128,16 @@
   .vsl-cta { text-align: center; margin-top: 22px; }
   /* overlay de play/pausa: só visual (pointer-events: none), o clique atravessa e cai no player */
   .vsl-ov { position: absolute; inset: 0; z-index: 3; text-align: center; color: var(--branco); pointer-events: none;
+    container: vslov / size; --vsl-faixa: 80px;
     background: linear-gradient(180deg, rgba(14,22,38,.46) 0%, rgba(14,22,38,.72) 52%, rgba(14,22,38,.34) 84%, rgba(14,22,38,0) 100%); }
-  .vsl-ov[data-estado="inicio"], .vsl-ov[data-estado="fim"] {
-    background: radial-gradient(ellipse at center, rgba(14,22,38,.58) 0%, rgba(14,22,38,.84) 78%); }
+  /* início e fim: fundo escurecido por igual, MENOS a faixa de baixo, que é do Panda (correção da assinatura.html,
+     30/09/2026): a barra de progresso começa a 68 px da base do vídeo no celular, com os botões embaixo dela. O
+     escuro fica num ::before com máscara (não apaga texto) e some antes da faixa. Na pausa a base já fica clara. */
+  .vsl-ov[data-estado="inicio"], .vsl-ov[data-estado="fim"] { background: none; }
+  .vsl-ov[data-estado="inicio"]::before, .vsl-ov[data-estado="fim"]::before { content: ""; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at center, rgba(14,22,38,.58) 0%, rgba(14,22,38,.84) 78%);
+    -webkit-mask-image: linear-gradient(180deg, #000 calc(100% - var(--vsl-faixa) - 24px), transparent calc(100% - var(--vsl-faixa)));
+    mask-image: linear-gradient(180deg, #000 calc(100% - var(--vsl-faixa) - 24px), transparent calc(100% - var(--vsl-faixa))); }
   /* grade 1fr/auto/1fr: o play (ou o botão do fim) fica no centro exato, em cima do botão do Panda */
   .vsl-ov > div { display: none; position: absolute; inset: 0; grid-template-rows: 1fr auto 1fr; justify-items: center; padding: 12px 18px; }
   .vsl-ov-cima { align-self: end; padding-bottom: clamp(8px, 1.6vw, 16px); }
@@ -147,7 +166,82 @@
   .vsl-ov-cta { box-shadow: 0 10px 26px rgba(0,0,0,.45); }
   @media (max-width: 560px) { .vsl-ov > div { padding: 8px 12px; } .vsl-ov-titulo, .vsl-ov-desk { display: none; }
     .vsl-ov-kicker { font-size: 9.5px; letter-spacing: .06em; } .vsl-ov-cta { padding: 10px 18px; font-size: 13px; } }
+  /* player baixo (celular, notebook de tela curta, celular deitado): o que vem abaixo do play cairia na faixa do
+     Panda — o toque no "5 min · com legendas" pulava o vídeo (correção da assinatura.html, 30/09/2026). Aí os
+     textos do início e da pausa sobem para cima do play, que continua no centro exato do vídeo; o texto longo
+     sai, e o título só fica se o vídeo tiver 380 px de altura ou mais. Em player alto, nada muda. Sem suporte a
+     container query, fica como antes. */
+  @container vslov (max-height: 479.98px) {
+    .vsl-ov[data-estado="inicio"] .vsl-ov-inicio, .vsl-ov[data-estado="pausa"] .vsl-ov-pausa {
+      --p: min(clamp(60px, 10.5vw, 96px), 32cqh); bottom: 50%; padding-bottom: calc(var(--p) / 2 + 8px);
+      display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 3px; }
+    .vsl-ov-inicio > .vsl-ov-cima, .vsl-ov-inicio > .vsl-ov-baixo, .vsl-ov-pausa > .vsl-ov-cima, .vsl-ov-pausa > .vsl-ov-baixo {
+      align-self: center; padding: 0; gap: 3px; }
+    .vsl-ov-inicio > .vsl-ov-play, .vsl-ov-pausa > .vsl-ov-play { --p: inherit; position: absolute; top: 100%; left: 50%;
+      margin: calc(var(--p) / -2) 0 0 calc(var(--p) / -2); }
+    .vsl-ov-inicio .vsl-ov-titulo, .vsl-ov-desk, .vsl-ov-fim > .vsl-ov-baixo { display: none; }
+    /* na pausa depois do pitch (aqui, depois de liberar: pitch = trava = 4:23), o link de oferta vira botão
+       e a pilha acima do play não cabe no vídeo de 196 px: o «Você parou em…» saía pelo topo (medido com o
+       player real, 01/10/2026). A frase de apoio sai; o play continua dizendo «continue». */
+    .vsl-ov.vsl-ov-oferta .vsl-ov-pausa .vsl-ov-sub { display: none; }
+  }
+  @container vslov (min-height: 380px) and (max-height: 479.98px) { .vsl-ov-inicio .vsl-ov-titulo { display: block; } }
   @media (prefers-reduced-motion: reduce) { .vsl-ov-play::after { animation: none; opacity: 0; } }
+
+  /* ===== ESTADO «ABERTA»: A PÁGINA COMEÇA PELO VÍDEO (30/09/2026, pedido do Vinícius) =====
+     Acima do vídeo, só uma faixa curta de duas linhas (nome · crédito; prazo), sem logo; o
+     título e o texto da condição descem para logo abaixo do vídeo. Vale SEMPRE no estado aberta,
+     travada ou não — nada acima do vídeo muda quando a trava sai, então o vídeo não pula. O
+     mostrar() marca o estado no <body> (data-pagina); os outros estados ficam como eram. */
+  body[data-pagina="aberta"] .topo { padding: 12px 0 14px; }
+  body[data-pagina="aberta"] .topo picture { display: none; }
+  .faixa { text-align: center; }
+  /* .topo .faixa-linha, e não só .faixa-linha: o .topo p (largura de 660px, fonte e cor do
+     parágrafo) venceria e a linha sairia fora do centro */
+  .topo .faixa-linha { max-width: none; font-size: 15.5px; font-weight: 800; line-height: 1.35; color: var(--branco); }
+  .faixa-linha span:empty { display: none; }
+  .faixa-linha span + span::before { content: '·'; margin: 0 8px; color: rgba(255,255,255,0.45); font-weight: 600; }
+  .faixa-linha [data-campo="faixa-credito"] { color: var(--dourado); }
+  .faixa .prazo { display: flex; justify-content: center; margin: 3px 0 0; padding: 0; border: 0; border-radius: 0;
+    background: none; font-size: 13.5px; line-height: 1.4; color: rgba(255,255,255,0.72); }
+  /* no computador, a moldura desconta a faixa e o aviso: vídeo, play e aviso na 1ª tela; piso de
+     560px para o vídeo não virar selo em janela muito baixa */
+  .vsl-moldura { max-width: min(900px, max(560px, calc((100vh - 150px) * 16 / 9)));
+    max-width: min(900px, max(560px, calc((100svh - 150px) * 16 / 9))); }
+  .vsl-texto { max-width: 760px; margin: 26px auto 0; text-align: center; color: var(--branco); }
+  .vsl-texto h1 { font-size: 24px; line-height: 1.22; font-weight: 800; letter-spacing: -0.3px; margin-bottom: 12px; }
+  .vsl-texto p { font-size: 16px; line-height: 1.7; color: rgba(255,255,255,0.78); }
+  .vsl-texto p + p { margin-top: 10px; }
+  .vsl-texto .credito-itens { font-size: 14px; line-height: 1.65; color: rgba(255,255,255,0.6); }
+  @media (min-width: 700px) {
+    .topo .faixa-linha { font-size: 17px; }
+    .faixa .prazo { font-size: 14.5px; }
+    .vsl-texto h1 { font-size: 32px; }
+    .vsl-texto p { font-size: 17px; }
+  }
+
+  /* ===== TRAVA NO VÍDEO (30/09/2026) — assets/vsl-trava.js, o mesmo da assinatura.html =====
+     Travada, a página é só o palco: a faixa (nome, crédito e prazo), o vídeo e, logo abaixo, o
+     título e o texto da condição. Todo o resto some, rodapé inclusive, e volta quando a classe
+     sai do <html>. Como na assinatura, o WhatsApp do atendimento fica (lá é o botão flutuante;
+     aqui, a caixa de atendimento, abaixo do texto). Os botões de compra e os links para os
+     planos têm regra própria, além da seção. Nenhuma regra só-da-trava mexe no que está acima
+     do vídeo nem no tamanho dele: ao liberar, o vídeo fica exatamente onde estava. */
+  html.vsl-trava main > section:not(#heroVsl):not(.ajuda-sec), html.vsl-trava main ~ section, html.vsl-trava main ~ footer,
+  html.vsl-trava [data-checkout], html.vsl-trava a[href="#planos"],
+  html.vsl-trava .vsl-cta, html.vsl-trava .vsl-ov-link, html.vsl-trava .vsl-ov-cta { display: none !important; }
+  /* o azul do topo até o fim da tela (sem faixa branca embaixo do palco) */
+  html.vsl-trava body { background: var(--azul-noite); }
+  html.vsl-trava .vsl-sec { padding-bottom: 32px; }
+  html.vsl-trava .ajuda-sec { background: transparent; padding-top: 0; }
+  .vsl-trava-aviso { max-width: 460px; margin: 16px auto 0; text-align: center; }
+  /* o tempo que falta só aparece na pausa; invisível, o aviso segura o espaço e o vídeo não pula */
+  .vsl-trava-aviso { visibility: hidden; opacity: 0; transition: opacity 0.25s ease; }
+  .vsl-trava-aviso[data-pausa] { visibility: visible; opacity: 1; }
+  .vsl-trava-txt { font-size: 15px; font-weight: 600; color: rgba(255,255,255,0.88); text-wrap: balance; }
+  .vsl-trava-barra { height: 6px; margin-top: 12px; border-radius: 3px; overflow: hidden; background: rgba(255,255,255,0.14); }
+  .vsl-trava-barra span { display: block; width: 0; height: 100%; background: var(--dourado); transition: width 0.6s linear; }
+  @media (prefers-reduced-motion: reduce) { .vsl-trava-barra span, .vsl-trava-aviso { transition: none; } }
 
   /* ===== SEÇÕES ===== */
   .section { padding: 56px 0; }
@@ -335,14 +429,15 @@
       <p>Sem ele, os planos da assinatura estão na <a href="assinatura.html#oferta">página pública</a>. Dúvida? Atendimento pelo WhatsApp (21) 95904-2832, de segunda a sexta, das 9h às 18h.</p>
     </noscript>
 
+    <!-- Estado «aberta»: a página começa pelo vídeo (30/09/2026). Acima dele, só esta faixa de
+         duas linhas, com os mesmos dados que a página já recebe (nome · crédito; prazo). O título
+         e o texto da condição ficam logo abaixo do vídeo, no #heroVsl. Nada de preço, botão ou
+         link aqui: é o que a trava deixa à vista. -->
     <div data-estado="aberta" hidden>
-      <div class="topo-rotulo">Condição de quem comprou o Dicionário</div>
-      <h1 data-campo="titulo-aberta"></h1>
-      <p data-campo="aberta-sub"></p>
-      <!-- Composição do crédito (Dicionário + extras da compra). Preenchida pelo JS só
-           quando há mais de um item E a conta fecha contra o abatimento da oferta. -->
-      <p class="credito-itens" id="creditoItens" hidden></p>
-      <p class="prazo" id="prazo"><span>Válida até <b data-campo="ultimo-dia"></b></span><span data-campo="dias"></span></p>
+      <div class="faixa" id="faixa">
+        <p class="faixa-linha"><span data-campo="faixa-nome"></span><span data-campo="faixa-credito"></span></p>
+        <p class="prazo" id="prazo"><span>Válida até <b data-campo="ultimo-dia"></b></span><span data-campo="dias"></span></p>
+      </div>
     </div>
 
     <div data-estado="expirada" hidden>
@@ -384,16 +479,39 @@
 <main>
 
 <!-- ===== VÍDEO: VSL do cashback (v5 de 29/09/2026, 5:10) =====
+     A primeira coisa do estado aberta (só a faixa curta acima); logo abaixo, o aviso da trava e
+     o título com o texto da condição (o h1 do estado aberta).
      Só no estado "aberta": o vídeo fala do cashback de quem comprou o Dicionário; nos outros
      estados seria promessa falsa (mostrar() já esconde). Sem src no HTML: o iframe não faz
      requisição nenhuma até o JS (iniciarVsl) copiar data-src para src, depois de
      mostrar('aberta'), com o token fora da barra. referrerpolicy="origin" só no iframe: o Panda
      recebe o domínio (a biblioteca libera por domínio), nunca o caminho nem a query.
-     Trocar de vídeo = trocar juntos o id no data-src, data-vsl-duration e data-vsl-pitch
-     (segundos; pitch = "Portanto, dê uma chance, use seu cashback"). Id __PANDA_ID__ = o slot
-     fica oculto. Biblioteca do Panda: vz-7867cfdb-be1, a mesma da assinatura.html. -->
-<section class="vsl-sec" id="heroVsl" data-estado="aberta" hidden aria-label="Vídeo do professor Vinícius Ferraz"
-  data-vsl-duration="310.3" data-vsl-pitch="263">
+     Trocar de vídeo = trocar juntos o id no data-src, data-vsl-version, data-vsl-duration,
+     data-vsl-pitch e data-vsl-trava (segundos; pitch = "Portanto, dê uma chance, use seu
+     cashback"). Id __PANDA_ID__ = o slot fica oculto. Biblioteca do Panda: vz-7867cfdb-be1, a
+     mesma da assinatura.html.
+     Trava (assets/vsl-trava.js): data-vsl-trava = segundos de vídeo REALMENTE assistidos até
+     liberar a página. 263 s = 4:23, o pitch (decisão de 30/09/2026). A versão dá nome às chaves
+     do navegador (fc_vsl_liberada:<versão>): é própria desta página, então liberar a assinatura
+     não libera esta. Sem JS, com #âncora, ?semtrava=1, robô ou player mudo: não trava. -->
+<section class="vsl-sec" id="heroVsl" data-estado="aberta" hidden aria-labelledby="tituloAberta"
+  data-vsl-trava="263" data-vsl-version="cashback-v5-20260929" data-vsl-duration="310.3" data-vsl-pitch="263">
+  <!-- trava da VSL (assets/vsl-trava.js): o mesmo trecho da assinatura.html. Ouve o player do Panda desde ANTES de o
+       iframe ganhar src (iniciarVsl) e marca window.FC_VSL_PLAYER_OK na 1ª mensagem dele. Sem ele, um panda_ready
+       que chegue antes do vsl-trava.js (injetado) passa despercebido e a página pode abrir sozinha aos 15 s com o
+       player funcionando. Não faz rede nem guarda nada: só marca a variável. Fica aqui, antes do iframe. -->
+  <script data-vsl-trava-ouvinte>
+  (function () {
+    function ouve(e) {
+      var f = document.getElementById('heroVslFrame'), d = e.data;
+      if (!f || e.source !== f.contentWindow || !/^https:\/\/player-[a-z0-9-]+\.tv\.pandavideo\.com\.br$/.test(e.origin) ||
+          !d || typeof d !== 'object' || typeof d.message !== 'string') return;
+      window.FC_VSL_PLAYER_OK = true;
+      window.removeEventListener('message', ouve);
+    }
+    window.addEventListener('message', ouve);
+  })();
+  </script>
   <div class="container">
     <div class="vsl-moldura">
       <iframe class="vsl-frame" id="heroVslFrame" title="O que vem depois do Dicionário: vídeo do professor Vinícius Ferraz"
@@ -423,6 +541,21 @@
           <div class="vsl-ov-baixo"><p class="vsl-ov-sub">ou clique no vídeo para assistir de novo</p></div>
         </div>
       </div>
+    </div>
+    <!-- Aviso da trava: o assets/vsl-trava.js o põe no layout e escreve o tempo que falta; o CSS
+         só o mostra na pausa ([data-pausa]). O texto estático é o mesmo que o script escreve. -->
+    <div class="vsl-trava-aviso" id="vslTrava" aria-live="polite" hidden>
+      <p class="vsl-trava-txt" data-vsl-trava-txt>Assista mais 4:23 para liberar a página</p>
+      <div class="vsl-trava-barra" aria-hidden="true"><span data-vsl-trava-barra></span></div>
+    </div>
+    <!-- Título e texto da condição, logo abaixo do vídeo (e do aviso): o único h1 do estado aberta. -->
+    <div class="vsl-texto">
+      <div class="topo-rotulo">Condição de quem comprou o Dicionário</div>
+      <h1 id="tituloAberta" data-campo="titulo-aberta"></h1>
+      <p data-campo="aberta-sub"></p>
+      <!-- Composição do crédito (Dicionário + extras da compra). Preenchida pelo JS só
+           quando há mais de um item E a conta fecha contra o abatimento da oferta. -->
+      <p class="credito-itens" id="creditoItens" hidden></p>
     </div>
     <p class="vsl-cta"><a class="btn" href="#planos">Ver os dois planos</a></p>
   </div>
@@ -656,6 +789,8 @@
      página: fica fora daqui e quem o mostra é o assets/vsl-overlay.js. */
   function mostrar(estado) {
     todos('[data-estado]:not(.vsl-ov)').forEach(function (el) { el.hidden = el.getAttribute('data-estado') !== estado; });
+    /* O CSS do estado aberta (faixa curta, sem logo acima do vídeo) lê esta marca. */
+    document.body.setAttribute('data-pagina', estado);
   }
 
   /* ----- token: credencial. Sai da barra na hora e só vive na aba (sessionStorage). ----- */
@@ -785,6 +920,11 @@
       ? 'os ' + reais(creditoTri) + ' que você pagou abatem'
       : 'o valor que você pagou abate';
 
+    /* Faixa acima do vídeo: «Nome · R$ X de crédito». Sem o mesmo abatimento nos dois planos
+       não há um valor para anunciar, e a linha fica com o rótulo da condição. */
+    campo('faixa-nome', nome);
+    campo('faixa-credito', vale ? reais(creditoTri) + ' de crédito' : 'Condição de quem comprou o Dicionário');
+
     /* Com extras na compra, o crédito não é só o Dicionário — a primeira linha acompanha. */
     campo('titulo-aberta', comNome(nome, varios
       ? 'o que você comprou vale como entrada no plano.'
@@ -847,6 +987,26 @@
     var s = document.createElement('script');
     s.src = 'assets/vsl-overlay.js?v=20260929';
     document.body.appendChild(s);
+    /* Trava no vídeo: o mesmo assets/vsl-trava.js da assinatura.html (mesma versão), injetado
+       aqui pelo mesmo motivo do overlay. Os dois são assíncronos e independentes: a ordem em que
+       executam não importa. A classe entra já, antes de o arquivo chegar, para os planos não
+       aparecerem e sumirem na tela; se o arquivo decidir não travar (já liberou, ?semtrava=1,
+       robô), não carregar ou não chegar em 15 s, a classe sai e a página abre. Ao abrir, a
+       página marca FC_VSL_TRAVA = 'desistiu': um arquivo que chegue depois respeita a marca
+       (if (window.FC_VSL_TRAVA) return;) e não tranca por cima de quem já está vendo os planos. */
+    var raiz = document.documentElement;
+    function soltaSeNaoTravou() {
+      if (window.FC_VSL_TRAVA) return;
+      window.FC_VSL_TRAVA = 'desistiu';
+      raiz.classList.remove('vsl-trava');
+    }
+    raiz.classList.add('vsl-trava');
+    var trava = document.createElement('script');
+    trava.src = 'assets/vsl-trava.js?v=20260930f';
+    trava.onload = soltaSeNaoTravou;
+    trava.onerror = soltaSeNaoTravou;
+    setTimeout(soltaSeNaoTravou, 15000);
+    document.body.appendChild(trava);
   }
 
   function renderizar(d, token) {

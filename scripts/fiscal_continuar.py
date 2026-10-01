@@ -7,11 +7,50 @@ clonar o cabeçalho padrão para cá vazaria o token sem erro nenhum na tela. Po
 a regra tem fiscal.
 
   1. noindex/nofollow e no-referrer, este antes de qualquer recurso;
-  2. nenhum rastreador nem script externo (todo JS desta página é inline);
+  2. nenhum rastreador nem script externo (todo JS desta página é inline); nada de
+     import(), eval, new Function, Worker ou document.write; nada de estilo inline ou
+     por JS (.style.display, className, atributo class) que desfaça a trava;
   2b. vídeo (29/09/2026): só o player do Panda da nossa biblioteca, nascendo sem src,
-      oculto e só no estado «aberta», com referrer só de origem; a única exceção de
-      script é o assets/vsl-overlay.js, injetado depois de mostrar('aberta') e auditado
-      aqui (sem rede, sem storage, sem dataLayer);
+      oculto e só no estado «aberta», com referrer só de origem; as duas únicas exceções
+      de script são o assets/vsl-overlay.js e o assets/vsl-trava.js, injetados dentro de
+      iniciarVsl() (depois de mostrar('aberta')), o overlay escrito antes — sem promessa
+      de ordem de execução: são assíncronos e independentes —, cada um com o caminho
+      exato e ?v=AAAAMMDD[letra]; createElement('script') contado sem diferenciar
+      maiúsculas, e o único setAttribute('src') é o do iframe; o overlay é auditado aqui
+      (sem rede, sem storage, sem dataLayer). O trecho inline <script data-vsl-trava-ouvinte>
+      (o mesmo da assinatura.html, PR #111) vem antes do iframe e do código que liga o src,
+      confere a janela e a origem do Panda e só marca window.FC_VSL_PLAYER_OK = true. O
+      overlay tem o modo de player baixo (container query; escurecimento que some antes da
+      faixa de controles do Panda), para nenhum texto cair na barra de progresso;
+  2c. trava no vídeo (30/09/2026, para todos os compradores): o assets/vsl-trava.js tem
+      auditoria PRÓPRIA — sem rede (nem postMessage ao player de terceiro) e com
+      localStorage/sessionStorage só em chaves provadamente fc_vsl_ (toda chave nasce de
+      um literal 'fc_vsl_…' declarado uma vez, direto ou pelo parâmetro de um embrulho
+      cujas chamadas todas passam essas chaves: ler o fc_continuar_c do token reprova) e
+      com valor gravado literal ou numérico; sem ler a página além do slot, do player e
+      do aviso (nada de .href, document.URL, querySelector fora de [data-vsl-trava-…]: o
+      href dos botões de compra carrega o token). O dataLayer é permitido nesse arquivo
+      porque esta página não carrega GTM (o item 2 proíbe googletagmanager, gtag e
+      dataLayer no HTML): o que ele empurra fica só na memória da aba. Ler location.search
+      também (é o ?semtrava=1, e sem rede não sai daqui). Na página: #heroVsl com
+      data-vsl-trava numérico em (0, duração] e data-vsl-version própria (a chave de
+      "liberado" não é a da assinatura), aviso #vslTrava oculto dentro do slot, CSS da
+      trava escondendo tudo de <main> fora o vídeo e o atendimento (planos inclusive; o
+      atendimento, como o WhatsApp flutuante da assinatura, fica e só pode ter o WhatsApp
+      1:1), os botões de compra, os links para os planos e o rodapé. O CSS é lido
+      inteiro, @media inclusive: sob a trava só «display: none !important» ou o fundo e o
+      espaço abaixo do vídeo — nada que mostre de volta o que ela esconde nem que some com
+      o palco (faixa, topo, h1, [data-campo], crédito, prazo, vídeo, aviso, atendimento) —,
+      e fora dela nenhum display !important que não seja none. O
+      palco não tem controle de oferta (só o WhatsApp 1:1). Aviso só na pausa. Layout do
+      estado aberta (30/09/2026, «faixa curta + vídeo»): acima do vídeo só a faixa (nome ·
+      crédito; prazo), sem logo, título, preço ou link; o único h1 do estado vem logo abaixo
+      do vídeo e do aviso; a moldura desconta a faixa no computador; e nenhuma regra
+      só-da-trava mexe no que está acima do vídeo nem no tamanho dele (ao liberar, o vídeo
+      não pula). Pré-trava
+      que devolve a página se o arquivo não travar (falha aberta), com prazo entre 5 e
+      15 s, marcando FC_VSL_TRAVA ao desistir (arquivo atrasado não tranca de novo), e só
+      depois de o vídeo estar ligado (depois dos return do vídeo desligado);
   3. nenhum endereço de checkout, nenhum preço fixo (os valores vêm só da API) e nada
      do nosso vocabulário interno no arquivo servido (nome do gateway, "bump");
   3b. crédito dos order bumps: nada de valor fixo na tela, e composição só quando a
@@ -29,10 +68,13 @@ Uso:
   PY="C:/Users/vfnev/AppData/Local/Programs/Python/Python314/python.exe"
   "$PY" scripts/fiscal_continuar.py             # continuar.html do repo
   "$PY" scripts/fiscal_continuar.py <arquivo>   # outro arquivo (ex.: baixado do preview)
-Sai com código 1 se qualquer checagem reprovar.
+Sai com código 1 se qualquer checagem reprovar. Roda no CI (.github/workflows/origem.yml),
+com o python3 do ubuntu-latest: só biblioteca padrão, sem rede, só arquivos do repo.
 """
+import os
 import re
 import sys
+from html.parser import HTMLParser
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
@@ -95,20 +137,536 @@ if iframes:
     check("indexOf('__PANDA_ID__') !== -1) { slot.hidden = true;" in limpo,
           "slot com id __PANDA_ID__ não fica oculto")
     check("'[data-estado]:not(.vsl-ov)'" in limpo, "mostrar() mexe no overlay do vídeo (data-estado do player)")
-# Exceção única de script: o overlay da assinatura, injetado pelo JS (não como <script> no HTML).
-injetados = re.findall(r"createElement\(\s*['\"]script['\"]\s*\)", limpo)
-check(len(injetados) <= 1, f"script injetado mais de uma vez: {len(injetados)}")
+# Exceções de script: o overlay e a trava da assinatura, injetados pelo JS (não como <script>
+# no HTML), dentro de iniciarVsl() — que só roda depois de mostrar('aberta'). A regra exige o
+# overlay escrito antes da trava no código, mas não promete ordem de execução: scripts
+# injetados são assíncronos, e os dois são independentes. Cada um com o caminho exato e
+# ?v=AAAAMMDD[letra]; nenhum outro .src nem setAttribute('src') em lugar nenhum (o do iframe
+# é o único, a partir do data-src).
+
+
+def sem_comentarios_js(texto):
+    texto = re.sub(r"/\*.*?\*/", lambda m: re.sub(r"[^\n]", " ", m.group(0)), texto, flags=re.S)
+    return re.sub(r"(^|\s)//.*$", r"\1", texto, flags=re.M)
+
+
+js = sem_comentarios_js("\n".join(re.findall(r"<script\b[^>]*>(.*?)</script>", limpo, flags=re.S)))
+# Carregar código por outro caminho que não o <script> injetado e auditado.
+for rx, oque in ((r"\bimport\s*\(", "import() dinâmico"), (r"\beval\s*\(", "eval"), (r"\bnew\s+Function\b", "new Function"),
+                 (r"\b(?:Shared)?Worker\s*\(", "Worker"), (r"document\.write", "document.write")):
+    check(not re.search(rx, js), f"{oque} no JS da página: todo código daqui é inline ou um dos dois arquivos auditados")
+# Desfazer a trava pelo estilo: estilo inline e mexidas de estilo por JS que sobrepõem a regra.
+check(not re.search(r"\sstyle\s*=\s*\"[^\"]*(?:display|visibility|opacity|!important)", limpo, re.I),
+      "estilo inline com display/visibility/opacity/!important: sobrepõe o CSS da trava")
+check(not re.search(r"\.style\.(?:display|visibility|opacity|cssText|setProperty|height|maxHeight)\b", js),
+      "JS mexe em display/visibility/opacity/altura por .style: sobrepõe o CSS da trava")
+check(not re.search(r"\.className\s*=(?!=)|(?:set|remove|toggle)Attribute\(\s*['\"]class['\"]", js),
+      "JS reescreve o atributo class: a classe da trava só entra e sai por classList")
+INJETAVEIS = {"overlay": r"'assets/vsl-overlay\.js\?v=\d{8}[a-z]?'",
+              "trava": r"'assets/vsl-trava\.js\?v=\d{8}[a-z]?'"}
+injetados = re.findall(r"createElement\(\s*['\"]script['\"]\s*\)", limpo, re.I)
+check(len(injetados) <= 2, f"mais de dois scripts injetados (só o overlay e a trava): {len(injetados)}")
+declarados = re.findall(r"\bvar\s+([\w$]+)\s*=\s*document\.createElement\(\s*'script'\s*\);", js)
+check(len(declarados) == len(injetados), "script injetado fora do padrão «var x = document.createElement('script');»")
+fontes = {}  # overlay/trava -> nome da variável
+for nome in declarados:
+    srcs = [s.strip() for s in re.findall(rf"(?<![\w$.]){re.escape(nome)}\.src\s*=(?!=)\s*([^;\n]*);", js)]
+    qual = next((k for k, rx in INJETAVEIS.items() if len(srcs) == 1 and re.fullmatch(rx, srcs[0])), None)
+    check(qual is not None and not re.search(rf"(?<![\w$.]){re.escape(nome)}\.setAttribute\(", js),
+          f"script injetado «{nome}» não é o overlay nem a trava (caminho exato, ?v=AAAAMMDD[letra], um .src literal): {srcs}")
+    if qual:
+        check(qual not in fontes, f"assets/vsl-{qual}.js injetado duas vezes")
+        fontes.setdefault(qual, nome)
+check(len(re.findall(r"\.src\s*=(?!=)", js)) == len(declarados),
+      ".src atribuído fora dos scripts injetados (o iframe usa setAttribute a partir do data-src)")
+m_corpo = re.search(r"function iniciarVsl\(\)\s*\{(.*?)\n  \}\n", js, re.S)
+corpo = m_corpo.group(1) if m_corpo else ""
+check(len(re.findall(r"createElement\(\s*['\"]script['\"]\s*\)", corpo, re.I)) == len(injetados),
+      "script injetado fora de iniciarVsl() (tem de ser depois de mostrar('aberta'), com o slot visível)")
+check(len(re.findall(r"setAttribute\(\s*['\"]src(?:set)?['\"]", js, re.I)) == 1
+      and bool(re.search(r"(?<![\w$.])f\.setAttribute\('src', src\);", corpo))
+      and "f = document.getElementById('heroVslFrame');" in corpo,
+      "setAttribute('src') fora do único permitido: o do iframe do player, a partir do data-src, em iniciarVsl()")
+if iframes:
+    check(set(fontes) == {"overlay", "trava"}, f"com o vídeo no ar, a página injeta o overlay e a trava: {sorted(fontes)}")
+if set(fontes) == {"overlay", "trava"}:
+    pos = {k: re.search(rf"(?<![\w$.]){re.escape(v)}\.src\s*=", corpo) for k, v in fontes.items()}
+    check(all(pos.values()) and pos["overlay"].start() < pos["trava"].start(), "a trava é injetada antes do overlay")
+# Trecho que ouve o player (o mesmo da assinatura.html, PR #111): inline, antes do iframe e do
+# código que liga o src, fecha a corrida da trava (um panda_ready que chegue antes do
+# vsl-trava.js). Só pode marcar window.FC_VSL_PLAYER_OK, e só com mensagem da janela do player e
+# da origem do Panda: nada de rede, storage, dataLayer ou URL.
+ouvintes = re.findall(r"<script data-vsl-trava-ouvinte>(.*?)</script>", limpo, flags=re.S)
+if iframes or ouvintes:
+    check(len(ouvintes) == 1 and len(re.findall(r"data-vsl-trava-ouvinte", limpo)) == 1,
+          "a página tem de ter exatamente um <script data-vsl-trava-ouvinte> inline (o trecho da assinatura.html)")
+if ouvintes:
+    pos_ouvinte = limpo.find("<script data-vsl-trava-ouvinte>")
+    check(0 <= pos_ouvinte < limpo.find('id="heroVslFrame"') and pos_ouvinte < limpo.find("f.setAttribute('src', src);"),
+          "o trecho que ouve o player vem depois do iframe ou do código que liga o src: a corrida volta")
+    ouv = sem_comentarios_js(ouvintes[0])
+    check("document.getElementById('heroVslFrame')" in ouv and "e.source !== f.contentWindow" in ouv
+          and r"!/^https:\/\/player-[a-z0-9-]+\.tv\.pandavideo\.com\.br$/.test(e.origin)" in ouv
+          and "typeof d.message !== 'string'" in ouv and "window.addEventListener('message', ouve);" in ouv,
+          "o trecho que ouve o player não confere a janela (e.source) e a origem do Panda antes de marcar")
+    # Tirando a declaração das variáveis locais, a única atribuição é window.FC_VSL_PLAYER_OK = true.
+    sem_decl = ouv.replace("var f = document.getElementById('heroVslFrame'), d = e.data;", "")
+    atribuicoes = re.findall(r"(?<![=!<>])=(?![=>])|\+\+|--(?!\])|[+\-*/%&|^]=", sem_decl)
+    check(len(atribuicoes) == 1 and "window.FC_VSL_PLAYER_OK = true;" in sem_decl,
+          "o trecho que ouve o player grava algo além de window.FC_VSL_PLAYER_OK = true")
+    for proibido in ("fetch(", "XMLHttpRequest", "sendBeacon", "WebSocket", "EventSource", "new Image", "import(",
+                     "createElement", "setAttribute", "postMessage", "document.cookie", "localStorage",
+                     "sessionStorage", "dataLayer", "location", "innerHTML", "eval(", ".src"):
+        check(proibido not in ouv, f"o trecho que ouve o player usa {proibido}: ele só marca FC_VSL_PLAYER_OK")
+
 if injetados:
-    check(bool(re.search(r"\.src = 'assets/vsl-overlay\.js\?v=\d{8}';", limpo)),
-          "script injetado que não é o assets/vsl-overlay.js")
     # O arquivo é compartilhado com a assinatura.html: se um dia ganhar rede, storage ou
     # dataLayer, esta página passaria a expor o token. Comentários fora, código auditado.
-    overlay = Path(__import__("os").environ.get("FISCAL_VSL_OVERLAY", RAIZ / "assets" / "vsl-overlay.js"))
+    overlay = Path(os.environ.get("FISCAL_VSL_OVERLAY", RAIZ / "assets" / "vsl-overlay.js"))
     codigo = re.sub(r"/\*.*?\*/", " ", overlay.read_text(encoding="utf-8"), flags=re.S)
     codigo = re.sub(r"(^|\s)//.*$", " ", codigo, flags=re.M)
     for proibido in ("fetch(", "XMLHttpRequest", "sendBeacon", "sessionStorage", "localStorage", "dataLayer",
                      "document.cookie", "location.search", "new Image", "import(", "createElement", "WebSocket"):
         check(proibido not in codigo, f"assets/vsl-overlay.js passou a usar {proibido}: a continuar não pode carregá-lo")
+
+# ── 2c. Trava no vídeo (assets/vsl-trava.js) ─────────────────────────────
+# Decisão do Vinícius (30/09/2026): trava para TODOS os compradores; a oferta só aparece
+# depois de a pessoa assistir até o pitch. O componente é o da assinatura.html, e o
+# arquivo é auditado por conta própria — regras diferentes das do overlay:
+#  - rede: nada. Nem postMessage (o player é de terceiro), nem navegar, nem criar
+#    elemento que faça requisição;
+#  - storage: permitido, mas SÓ em chaves fc_vsl_. A prova é estática: toda chave de
+#    getItem/setItem/removeItem é um literal 'fc_vsl_…', uma variável declarada uma única
+#    vez a partir de um literal 'fc_vsl_…' (chaveLiberada, chaveTempo), ou o parâmetro de
+#    um embrulho (ler/gravar) cujas chamadas TODAS passam uma dessas. Nenhum outro acesso
+#    a localStorage/sessionStorage/window[…]. Ler o fc_continuar_c (o token) reprova;
+#  - dataLayer: permitido. Esta página não carrega GTM — o item 2 proíbe googletagmanager,
+#    gtag e dataLayer no próprio HTML —, então o que o arquivo empurra fica na memória da
+#    aba e não sai dela. location.search também: é o ?semtrava=1, e sem rede não vai longe.
+
+
+def args_de(codigo, i):
+    """Argumentos (texto) da chamada cujo '(' termina em codigo[i]; None se não fechar."""
+    args, prof, ini, j, aspas = [], 0, i, i, None
+    while j < len(codigo):
+        c = codigo[j]
+        if aspas:
+            if c == "\\":
+                j += 2
+                continue
+            if c == aspas:
+                aspas = None
+        elif c in "'\"`":
+            aspas = c
+        elif c in "([{":
+            prof += 1
+        elif c in ")]}":
+            if prof == 0:
+                args.append(codigo[ini:j].strip())
+                return [] if args == [""] else args
+            prof -= 1
+        elif c == "," and prof == 0:
+            args.append(codigo[ini:j].strip())
+            ini = j + 1
+        j += 1
+    return None
+
+
+def auditar_storage(codigo):
+    """Falhas de storage no vsl-trava.js: toda chave tem de ser provadamente fc_vsl_."""
+    falhas = []
+    literal_ok = re.compile(r"'fc_vsl_[^'\\]*'")
+    chaves = set()
+    for m in re.finditer(r"\b(?:var|let|const)\s+([\w$]+)\s*=\s*('[^'\\]*')\s*(?:\+[^;,]*)?;", codigo):
+        atribuicoes = re.findall(rf"(?<![\w$.]){re.escape(m.group(1))}\s*(?:=(?!=)|\+=|\+\+|--)", codigo)
+        if literal_ok.fullmatch(m.group(2)) and len(atribuicoes) == 1:
+            chaves.add(m.group(1))
+
+    def chave_ok(expr):
+        return bool(literal_ok.fullmatch(expr)) or expr in chaves
+
+    def armazem_ok(expr):
+        return expr in ("'localStorage'", "'sessionStorage'")
+
+    def funcao_de(pos):
+        defs = [m for m in re.finditer(r"\bfunction\s+([\w$]+)\s*\(([^)]*)\)", codigo) if m.start() < pos]
+        if not defs:
+            return None, []
+        return defs[-1].group(1), [p.strip() for p in defs[-1].group(2).split(",") if p.strip()]
+
+    def chamadas(nome):
+        """Argumentos de cada chamada de nome(); None se o nome é usado de outro jeito (alias)."""
+        lista = []
+        for m in re.finditer(rf"(?<![\w$.]){re.escape(nome)}\b", codigo):
+            if re.search(r"\bfunction\s+$", codigo[max(0, m.start() - 20):m.start()]):
+                continue
+            abre = re.match(r"\s*\(", codigo[m.end():])
+            args = args_de(codigo, m.end() + abre.end()) if abre else None
+            if args is None:
+                return None
+            lista.append(args)
+        return lista
+
+    def resolve(expr, pos, valida):
+        if valida(expr):
+            return True
+        if not re.fullmatch(r"[\w$]+", expr):
+            return False
+        nome, params = funcao_de(pos)
+        if not nome or expr not in params:
+            return False
+        k, lista = params.index(expr), chamadas(nome)
+        return bool(lista) and all(len(a) > k and valida(a[k]) for a in lista)
+
+    def valor_ok(expr):
+        # O que se grava é um literal, um número ou String(Math.round(x)): nada de texto
+        # tirado da página (o href do botão de compra leva o token).
+        return bool(re.fullmatch(r"'[^'\\]*'|\d+(?:\.\d+)?|String\(Math\.round\([\w$]+\)\)", expr))
+
+    usos = 0
+    for m in re.finditer(r"\.\s*(getItem|setItem|removeItem)\s*\(", codigo):
+        usos += 1
+        args = args_de(codigo, m.end())
+        if not args or not resolve(args[0], m.start(), chave_ok):
+            falhas.append(f"{m.group(1)}({args[0] if args else '?'}) com chave que não é provadamente fc_vsl_")
+        if m.group(1) == "setItem" and (not args or len(args) < 2 or not resolve(args[1], m.start(), valor_ok)):
+            falhas.append(f"setItem com valor que não é literal nem número: {args[1] if args and len(args) > 1 else '?'}")
+    sem_literal = re.sub(r"'(?:localStorage|sessionStorage)'", "''", codigo)
+    for m in re.finditer(r"\b(localStorage|sessionStorage)\b", sem_literal):
+        if not re.match(r"\s*\.\s*(?:getItem|setItem|removeItem)\s*\(", sem_literal[m.end():]):
+            falhas.append(f"{m.group(1)} usado fora de getItem/setItem/removeItem")
+    for m in re.finditer(r"\b(?:window|self|globalThis|top|parent|frames)\s*\[", codigo):
+        alvo = re.match(r"\s*([\w$]+)\s*\]\s*\.\s*(?:getItem|setItem|removeItem)\s*\(", codigo[m.end():])
+        if not alvo or not resolve(alvo.group(1), m.start(), armazem_ok):
+            falhas.append("window[…] que não é localStorage/sessionStorage com getItem/setItem/removeItem")
+    if re.search(r"\bStorage\b", codigo):
+        falhas.append("Storage (protótipo) usado direto")
+    if not usos:
+        falhas.append("nenhum getItem/setItem: a auditoria de storage não achou o que auditar")
+    return falhas
+
+
+class Arvore(HTMLParser):
+    """Cada elemento com os ancestrais (tag, atributos), e os filhos diretos de <main>."""
+    VAZIOS = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "source", "track", "wbr"}
+
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.pilha, self.elementos, self.filhos_main = [], [], []
+
+    def handle_starttag(self, tag, attrs):
+        a = dict(attrs)
+        if self.pilha and self.pilha[-1][0] == "main":
+            self.filhos_main.append((tag, a))
+        self.elementos.append((tag, a, list(self.pilha)))
+        if tag not in self.VAZIOS:
+            self.pilha.append((tag, a))
+
+    def handle_startendtag(self, tag, attrs):
+        self.elementos.append((tag, dict(attrs), list(self.pilha)))
+
+    def handle_endtag(self, tag):
+        for i in range(len(self.pilha) - 1, -1, -1):
+            if self.pilha[i][0] == tag:
+                del self.pilha[i:]
+                break
+
+
+def ids(ancestrais):
+    return [a.get("id") for _, a in ancestrais]
+
+
+def classes(a):
+    return set((a.get("class") or "").split())
+
+
+def regras_css(css, contexto=""):
+    """(seletores normalizados, declarações sem espaço, contexto @) de TODAS as regras de
+    seletor, inclusive as de dentro de @media/@supports/@container/@layer — a trava pode ser
+    desfeita (ou o palco escondido) só no celular. @keyframes e @font-face ficam de fora. CSS
+    aninhado sai com o seletor '<aninhado>': o fiscal não sabe auditar e reprova."""
+    css = re.sub(r"/\*.*?\*/", " ", css, flags=re.S)
+    regras, i = [], 0
+    while True:
+        abre = css.find("{", i)
+        if abre < 0:
+            break
+        prof, j = 1, abre + 1
+        while prof and j < len(css):
+            prof += {"{": 1, "}": -1}.get(css[j], 0)
+            j += 1
+        cabeca, corpo_css = css[i:abre].split(";")[-1].strip(), css[abre + 1:j - 1]
+        i = j
+        if cabeca.startswith("@"):
+            if re.match(r"@(?:media|supports|container|layer|document)\b", cabeca, re.I):
+                regras += regras_css(corpo_css, (contexto + " " + re.sub(r"\s+", " ", cabeca)).strip())
+            continue
+        seletores = [re.sub(r"\s*([>~+])\s*", r" \1 ", re.sub(r"\s+", " ", s)).strip() for s in cabeca.split(",")]
+        regras.append((["<aninhado>"] if "{" in corpo_css else seletores, re.sub(r"\s+", "", corpo_css), contexto))
+    return regras
+
+
+def declaracoes(dec):
+    return [tuple(d.split(":", 1)) for d in dec.split(";") if ":" in d]
+
+
+if iframes:
+    tag_slot = slot.group(0) if slot else ""
+
+    def attr(nome):
+        m = re.search(rf'\s{nome}="([^"]*)"', tag_slot)
+        return m.group(1) if m else ""
+
+    trava_s, dur_s, versao = attr("data-vsl-trava"), attr("data-vsl-duration"), attr("data-vsl-version")
+    num = re.fullmatch(r"\d+(?:\.\d+)?", trava_s) and re.fullmatch(r"\d+(?:\.\d+)?", dur_s)
+    check(bool(num) and 0 < float(trava_s) <= float(dur_s),
+          f"#heroVsl sem data-vsl-trava numérico em (0, data-vsl-duration]: trava={trava_s!r} duração={dur_s!r}")
+    check(bool(re.fullmatch(r"[\w.-]+", versao)),
+          "#heroVsl sem data-vsl-version: sem ela o vsl-trava.js não trava (e a chave de «liberado» fica sem nome)")
+    assinatura = RAIZ / "assinatura.html"
+    if assinatura.exists():
+        txt_ass = assinatura.read_text(encoding="utf-8")
+        v_ass = re.search(r'<[^>]*\bid="heroVsl"[^>]*\bdata-vsl-version="([^"]*)"', txt_ass)
+        check(not v_ass or v_ass.group(1) != versao,
+              "data-vsl-version igual à da assinatura.html: liberar uma página liberaria a outra")
+        c_ass = re.search(r"assets/vsl-trava\.js\?v=(\w+)", txt_ass)
+        c_cont = re.search(r"assets/vsl-trava\.js\?v=(\w+)", js)
+        check(not c_ass or (c_cont and c_ass.group(1) == c_cont.group(1)),
+              "assets/vsl-trava.js com ?v= diferente do da assinatura.html (o arquivo é um só)")
+
+    arvore = Arvore()
+    arvore.feed(limpo)
+    avisos = [(a, anc) for t, a, anc in arvore.elementos if a.get("id") == "vslTrava"]
+    check(len(avisos) == 1 and "hidden" in avisos[0][0] and "heroVsl" in ids(avisos[0][1]),
+          "aviso #vslTrava ausente, fora do slot do vídeo ou sem nascer hidden")
+    for marca in ("data-vsl-trava-txt", "data-vsl-trava-barra"):
+        check(any(marca in a and "vslTrava" in ids(anc) for _, a, anc in arvore.elementos),
+              f"aviso #vslTrava sem [{marca}]")
+    # O que fica visível na trava (o topo do estado «aberta», o slot do vídeo e o atendimento)
+    # não tem controle de oferta: todo link/botão ali é o WhatsApp 1:1 ou algo que a trava
+    # esconde por regra própria (compra, link para #planos, CTAs do vídeo).
+    ESCONDIDOS_NA_TRAVA = {"vsl-cta", "vsl-ov-link", "vsl-ov-cta"}
+
+    def no_palco(anc):
+        topo_aberta = any(t == "header" for t, _ in anc) and any(x.get("data-estado") == "aberta" for _, x in anc)
+        return topo_aberta or "heroVsl" in ids(anc) or any("ajuda-sec" in classes(x) for _, x in anc)
+
+    def escondido_na_trava(tag, a, anc):
+        return any(classes(x) & ESCONDIDOS_NA_TRAVA or "data-checkout" in x or (t == "a" and x.get("href") == "#planos")
+                   for t, x in [(tag, a)] + list(anc))
+
+    soltos = [f"<{t} {a.get('href') or a.get('class') or ''}>" for t, a, anc in arvore.elementos
+              if t in ("a", "button", "form", "input", "select", "textarea", "iframe", "object", "embed") and no_palco(anc)
+              and not (t == "iframe" and a.get("id") == "heroVslFrame")
+              and not (t == "a" and (a.get("href") or "").startswith("https://wa.me/5521959042832"))
+              and not escondido_na_trava(t, a, anc)]
+    check(not soltos, f"controle visível na trava que não é o WhatsApp 1:1 (o palco não tem link de oferta): {soltos}")
+    # Tudo o que é filho direto de <main> é <section>: a regra genérica da trava esconde
+    # cada um, #planos inclusive, e só o vídeo fica.
+    filhos = arvore.filhos_main
+    check(bool(filhos) and all(t == "section" for t, _ in filhos),
+          f"filho de <main> que não é <section> escapa da trava: {[t for t, _ in filhos if t != 'section']}")
+    check(any(a.get("id") == "planos" for _, a in filhos) and any(a.get("id") == "heroVsl" for _, a in filhos),
+          "#planos e #heroVsl têm de ser seções filhas diretas de <main> (é o que a trava esconde / preserva)")
+
+    regras = [r for bloco in re.findall(r"<style\b[^>]*>(.*?)</style>", limpo, flags=re.S) for r in regras_css(bloco)]
+    # As exigidas valem no nível de cima (dentro de um @media valeriam só às vezes).
+    escondidos = {s for sels, dec, ctx in regras if not ctx and dec.rstrip(";") == "display:none!important" for s in sels}
+    # A única seção de <main> que fica além do vídeo é o atendimento (como o WhatsApp
+    # flutuante da assinatura): só com o link do WhatsApp 1:1, nada de compra nem de plano.
+    ajuda = re.findall(r'<section\b[^>]*\bclass="ajuda-sec"[^>]*>(.*?)</section>', limpo, flags=re.S)
+    links_ajuda = re.findall(r'<a\b[^>]*\bhref="([^"]*)"', ajuda[0]) if len(ajuda) == 1 else []
+    check(len(ajuda) == 1 and links_ajuda and all(h.startswith("https://wa.me/5521959042832") for h in links_ajuda)
+          and "data-checkout" not in ajuda[0],
+          "a seção de atendimento, que fica visível na trava, tem de ter só o WhatsApp 1:1")
+    EXIGIDOS = {
+        "html.vsl-trava main > section:not(#heroVsl):not(.ajuda-sec)":
+            "as seções de <main> fora o vídeo e o atendimento (planos inclusive)",
+        "html.vsl-trava main ~ section": "seção depois de <main>",
+        "html.vsl-trava main ~ footer": "o rodapé",
+        "html.vsl-trava [data-checkout]": "os botões de compra",
+        'html.vsl-trava a[href="#planos"]': "os links para os planos",
+        "html.vsl-trava .vsl-cta": "o «Ver os dois planos» debaixo do vídeo",
+        "html.vsl-trava .vsl-ov-link": "o link do overlay para os planos",
+        "html.vsl-trava .vsl-ov-cta": "o botão do overlay no fim do vídeo",
+    }
+    for sel, oque in EXIGIDOS.items():
+        check(sel in escondidos, f"a trava não esconde {oque}: falta «{sel} {{ display: none !important }}»")
+    # Toda regra que depende da classe da trava — em qualquer @media — começa por
+    # «html.vsl-trava » e só faz duas coisas: ESCONDER (display: none !important) ou mexer no
+    # que fica ABAIXO do vídeo (o fundo do body, o espaço de baixo da seção do vídeo e o
+    # atendimento). Nada que mostre de volta o que a trava esconde (display: block em #planos
+    # ou num botão de compra), nem opacity/altura/visibility que sumam com o vídeo por outro
+    # caminho, nem nada que mude o que está acima do vídeo ou o tamanho dele: o layout do
+    # estado aberta vale travado ou não, e ao liberar o vídeo fica onde estava (30/09/2026).
+    TRAVA_CLASSE = re.compile(r"\.vsl-trava(?![\w-])|\[class\b")
+    ABAIXO = {"html.vsl-trava body": {"background", "background-color"},
+              "html.vsl-trava .vsl-sec": {"padding-bottom"},
+              "html.vsl-trava .ajuda-sec": {"background", "background-color", "padding-top"}}
+
+    def permitido(s, prop, val):
+        if prop == "display":
+            return val == "none!important"
+        return prop in ABAIXO.get(s, set()) and not (prop.startswith("padding") and "-" in val)
+    # O palco nunca some: sem a faixa não há o nome, o crédito e o prazo; sem o vídeo (ou o
+    # aviso) a página não destrava; o título e o texto da condição ficam logo abaixo do
+    # vídeo; o atendimento fica como o WhatsApp da assinatura.
+    PALCO = re.compile(r"(?:^|[\s>~+])(?:header|h1|iframe)(?![\w-])|\.topo\b|\.faixa\b|#faixa\b|\.vsl-texto\b"
+                       r"|#tituloAberta\b|\[data-campo\b|\.credito-itens\b"
+                       r"|#creditoItens\b|\.prazo\b|#prazo\b|#heroVsl\b|\.vsl-sec\b|\.container\b|\.vsl-moldura\b"
+                       r"|\.vsl-frame\b|#heroVslFrame\b|\.vsl-ov(?![\w-])|#heroVslOverlay\b|#vslTrava\b|\.vsl-trava-"
+                       r"|\.ajuda-")
+    ESCONDIVEL = re.compile(r'\.vsl-cta|\.vsl-ov-link|\.vsl-ov-cta|\[data-checkout(?:=[^\]]*)?\]|a\[href="#planos"\]')
+    fora_padrao, props_ruins, palco_escondido, desfaz, aninhado = [], [], [], [], []
+    for sels, dec, ctx in regras:
+        onde = f" (em {ctx})" if ctx else ""
+        for s in sels:
+            if s == "<aninhado>":
+                aninhado.append(dec[:60])
+                continue
+            if not TRAVA_CLASSE.search(s):
+                # Fora da trava, display com !important só para esconder: um «display: block
+                # !important» num seletor mais específico venceria a regra da trava.
+                if any(p == "display" and v.endswith("!important") and v != "none!important" for p, v in declaracoes(dec)):
+                    desfaz.append(s + onde)
+                continue
+            if not s.startswith("html.vsl-trava "):
+                fora_padrao.append(s + onde)
+                continue
+            for prop, val in declaracoes(dec):
+                if not permitido(s, prop, val):
+                    props_ruins.append(f"{s} {{ {prop}: {val} }}{onde}")
+            if not any(p == "display" and v.startswith("none") for p, v in declaracoes(dec)) or (s in EXIGIDOS and not ctx):
+                continue
+            resto = re.sub(r":not\([^)]*\)", "", s[len("html.vsl-trava"):]).strip()
+            alvo = re.split(r" [>~+] | ", resto)[-1]
+            if re.fullmatch(r"[a-zA-Z*][\w-]*|\*|", alvo):
+                palco_escondido.append(f"{s}{onde} (seletor largo demais: esconde qualquer «{alvo or '*'}»)")
+            elif not ESCONDIVEL.fullmatch(alvo) and PALCO.search(resto):
+                palco_escondido.append(s + onde)
+    check(not aninhado, f"CSS aninhado: o fiscal não sabe auditar: {aninhado}")
+    check(not fora_padrao, f"seletor que depende da trava fora do padrão «html.vsl-trava …»: {fora_padrao}")
+    check(not props_ruins, "sob a trava só esconder (display: none !important) ou mexer no que fica abaixo do "
+                           f"vídeo (fundo do body, espaço de baixo da seção do vídeo, atendimento): {props_ruins}")
+    check(not palco_escondido, f"a trava esconde o palco (topo, vídeo, aviso ou atendimento): {palco_escondido}")
+    check(not desfaz, f"display com !important que não é none: venceria o esconder da trava: {desfaz}")
+    aviso_css = {s: dec for sels, dec, ctx in regras if not ctx for s in sels if s.startswith(".vsl-trava-aviso")}
+    check(any("visibility:hidden" in d for s, d in aviso_css.items() if s == ".vsl-trava-aviso")
+          and "visibility:visible" in aviso_css.get(".vsl-trava-aviso[data-pausa]", ""),
+          "o aviso da trava não fica invisível fora da pausa (só [data-pausa] o mostra)")
+
+    # Overlay em player baixo (correção da assinatura.html no PR #111, portada em 01/10/2026): o
+    # overlay é um container de tamanho; abaixo de 480 px de altura os textos sobem para cima do
+    # play, e o escurecimento do início/fim some antes da faixa de controles do Panda. Sem isso, o
+    # «5 min · com legendas» cai na barra de progresso e o toque nele pula o vídeo.
+    ov_css = {s: dec for sels, dec, ctx in regras if not ctx for s in sels}
+    check("container:vslov/size" in ov_css.get(".vsl-ov", "")
+          and any(ctx == "@container vslov (max-height: 479.98px)" for _, _, ctx in regras)
+          and "mask-image" in ov_css.get('.vsl-ov[data-estado="inicio"]::before', ""),
+          "overlay sem o modo de player baixo (container query + escurecimento que some antes da faixa do Panda)")
+
+    # Layout do estado aberta (30/09/2026, «faixa curta + vídeo», regra do Vinícius: a página
+    # começa pelo vídeo). Acima dele só a faixa de duas linhas (nome · crédito; prazo), sem
+    # logo, título, preço ou controle; o h1 — único do estado aberta — e o texto da condição
+    # vêm logo abaixo do vídeo e do aviso. Vale travado ou não: nada acima do vídeo muda ao
+    # liberar (as regras só-da-trava acima já não podem mexer ali).
+    def aberta_do_topo(anc):
+        return any(t == "header" for t, _ in anc) and any(x.get("data-estado") == "aberta" for _, x in anc)
+
+    faixa_els = [(t, a) for t, a, anc in arvore.elementos if aberta_do_topo(anc)]
+    campos_faixa = {a.get("data-campo") for _, a in faixa_els if a.get("data-campo")}
+    check(any("faixa" in classes(a) for _, a in faixa_els) and "prazo" in {a.get("id") for _, a in faixa_els},
+          "estado aberta sem a faixa (com o prazo) acima do vídeo")
+    check(campos_faixa <= {"faixa-nome", "faixa-credito", "ultimo-dia", "dias"} and "faixa-credito" in campos_faixa,
+          f"a faixa acima do vídeo tem só nome, crédito e prazo (nada de preço nem título): {sorted(campos_faixa)}")
+    check(not [t for t, _ in faixa_els if t in ("h1", "h2", "h3", "img", "picture", "svg", "video", "a", "button", "form")],
+          "a faixa acima do vídeo tem título, imagem, link ou botão: é só nome · crédito e prazo")
+    posicao = {a.get("id"): i for i, (t, a, _) in enumerate(arvore.elementos) if a.get("id")}
+    h1_aberta = [(i, anc) for i, (t, a, anc) in enumerate(arvore.elementos)
+                 if t == "h1" and any(x.get("data-estado") == "aberta" for _, x in anc)]
+    check(len(h1_aberta) == 1 and "heroVsl" in ids(h1_aberta[0][1])
+          and h1_aberta[0][0] > max(posicao.get("heroVslFrame", 10 ** 9), posicao.get("vslTrava", 10 ** 9)),
+          "o estado aberta tem um único h1, logo abaixo do vídeo e do aviso (dentro do #heroVsl)")
+    antes_do_video = [t for i, (t, a, anc) in enumerate(arvore.elementos)
+                      if "heroVsl" in ids(anc) and i < posicao.get("heroVslFrame", 0) and t not in ("div",)
+                      and not (t == "script" and "data-vsl-trava-ouvinte" in a)]
+    check(not antes_do_video, f"no slot, algo antes do vídeo: {antes_do_video}")
+    corpo_mostrar = re.search(r"function mostrar\(estado\) \{(.*?)\n  \}\n", js, re.S)
+    check(bool(corpo_mostrar) and "document.body.setAttribute('data-pagina', estado);" in corpo_mostrar.group(1)
+          and any(not ctx and 'body[data-pagina="aberta"] .topo picture' in sels and dec.rstrip(";") == "display:none"
+                  for sels, dec, ctx in regras),
+          "o logo volta acima do vídeo no estado aberta (falta mostrar() marcar data-pagina no <body> "
+          "ou a regra body[data-pagina=\"aberta\"] .topo picture { display: none })")
+    check(any(not ctx and ".vsl-moldura" in sels
+              and re.search(r"max-width:min\(900px,max\(560px,calc\(\(100svh-\d{2,3}px\)\*16/9\)\)\)", dec)
+              for sels, dec, ctx in regras),
+          "a moldura do vídeo não desconta a faixa no computador (min(900px, max(560px, calc((100svh - Xpx) * 16 / 9))))")
+
+    # Pré-trava: a classe entra antes do arquivo chegar (os planos não piscam) e sai se ele
+    # não travar, não carregar ou não chegar a tempo. Só existe dentro de iniciarVsl(): fora
+    # dali trancaria um estado sem vídeo, sem ter como destravar.
+    check(len(re.findall(r"['\"]vsl-trava['\"]", js)) == len(re.findall(r"['\"]vsl-trava['\"]", corpo)) == 2,
+          "a classe vsl-trava é mexida pela página fora da pré-trava de iniciarVsl()")
+    if "trava" in fontes:
+        tv = re.escape(fontes["trava"])
+        # Ao desistir, a página marca FC_VSL_TRAVA: o vsl-trava.js começa por «if
+        # (window.FC_VSL_TRAVA) return;», então um arquivo que chegue depois do prazo não
+        # tranca por cima de quem já está vendo os planos.
+        solta = re.search(r"function ([\w$]+)\(\)\s*\{\s*if \(window\.FC_VSL_TRAVA\) return;\s*"
+                          r"window\.FC_VSL_TRAVA = '[\w-]+';\s*([\w$]+)\.classList\.remove\('vsl-trava'\);\s*\}", corpo)
+        check(bool(solta) and bool(re.search(rf"var {re.escape(solta.group(2))} = document\.documentElement;", corpo)),
+              "sem a função que devolve a página quando o vsl-trava.js não trava (e marca FC_VSL_TRAVA para ele não trancar depois)")
+        f = re.escape(solta.group(1)) if solta else "#"
+        check(bool(re.search(rf"(?<![\w$.]){tv}\.onload = {f};", corpo))
+              and bool(re.search(rf"(?<![\w$.]){tv}\.onerror = {f};", corpo)),
+              "a pré-trava não sai quando o vsl-trava.js carrega sem travar ou falha ao carregar")
+        # Piso: com prazo curto os planos aparecem e somem (a pré-trava perde o sentido).
+        prazo = re.search(rf"setTimeout\({f},\s*(\d+)\);", corpo)
+        check(bool(prazo) and 5000 <= int(prazo.group(1)) <= 15000,
+              "a pré-trava não tem prazo entre 5 e 15 s para abrir a página")
+        # Só depois de o vídeo estar ligado: acima do setAttribute('src') ficam os return do
+        # vídeo desligado (__PANDA_ID__), e a classe ali trancaria a página sem vídeo, para sempre.
+        entra = re.search(r"\.classList\.add\('vsl-trava'\);", corpo)
+        injeta = re.search(rf"appendChild\({tv}\);", corpo)
+        liga = re.search(r"(?<![\w$.])f\.setAttribute\('src', src\);", corpo)
+        check(bool(entra and injeta) and entra.start() < injeta.start(),
+              "a pré-trava não entra antes de o vsl-trava.js ser injetado")
+        sem_solta = corpo.replace(solta.group(0), "") if solta else corpo
+        entra2 = re.search(r"\.classList\.add\('vsl-trava'\);", sem_solta)
+        check(bool(entra2 and liga) and entra.start() > liga.start()
+              and not re.search(r"\breturn\b", sem_solta[entra2.start():]),
+              "a pré-trava entra antes de o vídeo estar ligado (f.setAttribute('src', src)) ou antes de um return de iniciarVsl()")
+
+if injetados:
+    trava_arq = Path(os.environ.get("FISCAL_VSL_TRAVA", RAIZ / "assets" / "vsl-trava.js"))
+    codigo = sem_comentarios_js(trava_arq.read_text(encoding="utf-8").replace("\r\n", "\n"))
+    for proibido in ("fetch(", "XMLHttpRequest", "sendBeacon", "WebSocket", "EventSource", "new Image", "import(",
+                     "importScripts", "createElement", "document.cookie", "postMessage", "window.open",
+                     "innerHTML", "outerHTML", "insertAdjacentHTML", "document.write"):
+        check(proibido not in codigo, f"assets/vsl-trava.js passou a usar {proibido}: a continuar não pode carregá-lo")
+    for rx, oque in ((r"\.(?:src|href|action|location)\s*=(?!=)", "atribui src/href/action/location (requisição ou navegação)"),
+                     (r"setAttribute\(\s*['\"](?:src|srcset|href|action)['\"]", "setAttribute de src/href/action"),
+                     (r"\.assign\(", "location.assign (navegação)")):
+        check(not re.search(rx, codigo), f"assets/vsl-trava.js {oque}: a continuar não pode carregá-lo")
+    # O arquivo não lê a página além do slot, do player e do aviso: o href dos botões de
+    # compra (e a URL) carregam o token. A única leitura de URL permitida é a base para
+    # resolver o endereço do player: new URL(src, window.location.href).
+    le = codigo.replace("new URL(src, window.location.href)", "new URL(src, BASE)")
+    for rx, oque in ((r"\.href\b", ".href"), (r"document\.(?:URL|baseURI|referrer|documentURI|body|links|forms|anchors|all)\b",
+                                                "document.URL/baseURI/referrer/body/links/forms"),
+                     (r"location\.toString|String\(\s*(?:window\.)?location\s*\)", "a URL inteira"),
+                     (r"getElementsBy|\.closest\(|\.children\b|\.parentNode\b|\.parentElement\b|\.nextElementSibling\b",
+                      "caminhos pela página (getElementsBy/closest/parent/children)"),
+                     (r"\.(?:innerText|outerText)\b|\.textContent\b(?!\s*=[^=])", "leitura de texto da página")):
+        check(not re.search(rx, le), f"assets/vsl-trava.js lê {oque}: a continuar não pode carregá-lo (o token mora na página)")
+    seletores_js = re.findall(r"\.querySelector(?:All)?\(\s*([^)]*)\)", le)
+    check(all(re.fullmatch(r"'\[data-vsl-trava-[\w-]+\]'", s.strip()) for s in seletores_js),
+          f"assets/vsl-trava.js consulta a página fora do aviso ([data-vsl-trava-…]): {seletores_js}")
+    ids_js = re.findall(r"getElementById\(\s*([^)]*)\)", le)
+    check(bool(ids_js) and all(i.strip() in ("'heroVsl'", "'heroVslFrame'", "'vslTrava'") for i in ids_js),
+          f"assets/vsl-trava.js pega elemento fora do slot, do player e do aviso: {ids_js}")
+    falhas_storage = auditar_storage(codigo)
+    check(not falhas_storage, "assets/vsl-trava.js: " + "; ".join(falhas_storage))
 
 # ── 3. Checkout e preço ──────────────────────────────────────────────────
 check("kiwify" not in html.lower(), "endereço do checkout no HTML (o clique tem de passar pela API)")
