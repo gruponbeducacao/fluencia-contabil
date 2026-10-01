@@ -320,7 +320,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   }
   .prova-topo-num .n { font-size: 34px; font-weight: 800; color: var(--azul-profundo); line-height: 1; }
   .prova-topo-num .l { font-size: 12.5px; color: var(--cinza-medio); margin-top: 8px; line-height: 1.4; }
-  .prova-topo .dep-grid { margin-top: 32px; }
 
   /* ===== HEADER STICKY ===== */
   .sticky-header {
@@ -1727,6 +1726,36 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 .depoimentos .dep-grid { grid-template-columns: repeat(3, 1fr); }
 @media (max-width: 880px) { .depoimentos .dep-grid { grid-template-columns: 1fr; } }
 
+/* bloco logo depois do vídeo (01/10/2026): números com a legenda ao lado; depoimentos como citação, sem caixa */
+.prova-topo { padding: 64px 0 72px; }
+.prova-topo-nums { display: flex; justify-content: center; align-items: center; gap: 72px; max-width: none; text-align: left; }
+.prova-topo-num { display: flex; align-items: center; gap: 16px; }
+.prova-topo-num .n { font-size: 54px; letter-spacing: -0.02em; }
+.prova-topo-num .l { font-family: var(--serif); font-size: 17px; line-height: 1.35; color: var(--texto-corpo);
+  margin: 0; max-width: 210px; }
+.pt-citas { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; max-width: 1000px; margin: 60px auto 0; }
+.pt-cita { position: relative; margin: 0; padding-top: 40px; }
+.pt-cita::before { content: "\201C"; position: absolute; top: -6px; left: -3px; font-family: var(--serif);
+  font-weight: 600; font-size: 76px; line-height: 1; color: var(--dourado); }
+.pt-cita blockquote { margin: 0; }
+.pt-cita p { font-family: var(--serif); font-style: italic; font-size: 22px; line-height: 1.5; color: var(--azul-profundo); }
+.pt-cita figcaption { margin-top: 18px; font-family: var(--serif); font-size: 15.5px; line-height: 1.5; color: var(--cinza-texto); }
+.pt-cita figcaption strong { font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 700; color: var(--azul-profundo); }
+.prova-topo .prova-cta { margin-top: 52px; }
+@media (max-width: 760px) {
+  .prova-topo { padding: 44px 0 52px; }
+  /* celular: os dois números lado a lado, legenda embaixo de cada um */
+  .prova-topo-nums { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; text-align: center; }
+  .prova-topo-num { flex-direction: column; gap: 8px; }
+  .prova-topo-num .n { font-size: 40px; }
+  .prova-topo-num .l { font-size: 15px; max-width: none; }
+  .pt-citas { grid-template-columns: 1fr; gap: 40px; margin-top: 44px; }
+  .pt-cita { padding-top: 34px; }
+  .pt-cita::before { font-size: 64px; }
+  .pt-cita p { font-size: 19.5px; }
+  .prova-topo .prova-cta { margin-top: 40px; }
+}
+
 /* pares da mesma conversa dividem o fundo: o 2º encosta no 1º */
 .oferta + .garantia, .anat-sec + .naoe-sec, .passo-sec + .faq { padding-top: 8px; }
 
@@ -1985,19 +2014,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="prova-topo-num"><div class="n">4</div><div class="l">aprovações do professor em concursos de elite</div></div>
       <div class="prova-topo-num"><div class="n">3.000+</div><div class="l">alunos do professor ao longo de 40 turmas</div></div>
     </div>
-    <div class="dep-grid">
-      <div class="dep-card beta reveal">
-        <span class="dep-selo aluno">Aluno da 1ª turma</span>
-        <div class="aspas" aria-hidden="true">“</div>
-        <p>Contabilidade sempre foi a minha maior dificuldade na área fiscal, e a forma como o conteúdo é apresentado tem ajudado bastante. As aulas são objetivas, certeiras e vão direto ao ponto.</p>
-        <div class="dep-autor">João Renan S. <span class="dep-fonte">· avaliação enviada pela plataforma</span></div>
-      </div>
-      <div class="dep-card beta reveal">
-        <span class="dep-selo">Testou a plataforma</span>
-        <div class="aspas" aria-hidden="true">“</div>
-        <p>Estou impressionada demais com esse seu trabalho, que está magnífico! Não há nada semelhante no mercado.</p>
-        <div class="dep-autor">Aluna beta <span class="dep-fonte">· acesso antecipado à plataforma</span></div>
-      </div>
+    <!-- 01/10/2026: citações sem caixa; o selo (1ª turma / acesso antecipado) entra na atribuição -->
+    <div class="pt-citas">
+      <figure class="pt-cita reveal">
+        <blockquote><p>Contabilidade sempre foi a minha maior dificuldade na área fiscal, e a forma como o conteúdo é apresentado tem ajudado bastante. As aulas são objetivas, certeiras e vão direto ao ponto.</p></blockquote>
+        <figcaption><strong>João Renan S.</strong> · aluno da 1ª turma · avaliação enviada pela plataforma</figcaption>
+      </figure>
+      <figure class="pt-cita reveal">
+        <blockquote><p>Estou impressionada demais com esse seu trabalho, que está magnífico! Não há nada semelhante no mercado.</p></blockquote>
+        <figcaption><strong>Aluna beta</strong> · testou a plataforma no acesso antecipado</figcaption>
+      </figure>
     </div>
     <div class="prova-cta reveal"><a href="#oferta" class="btn cta-compra" data-fc-local="prova-topo">Ver os planos</a></div>
   </div>
