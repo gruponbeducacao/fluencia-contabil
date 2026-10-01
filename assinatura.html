@@ -1723,6 +1723,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 .section-title { text-wrap: balance; }
 .dep-card .aspas { font-family: var(--serif); font-weight: 600; font-size: 44px; line-height: 0.8; }
 
+/* depoimentos: 3 cartões (sem a repetição do Ransley, 01/10/2026) em 3 colunas */
+.depoimentos .dep-grid { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 880px) { .depoimentos .dep-grid { grid-template-columns: 1fr; } }
+
 /* pares da mesma conversa dividem o fundo: o 2º encosta no 1º */
 .oferta + .garantia, .anat-sec + .naoe-sec, .passo-sec + .faq { padding-top: 8px; }
 
@@ -2634,23 +2638,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
     <!-- 30/09/2026 (pedido do Vinicius): depoimentos girando, com os prints reais. Os prints sao os 4 ja' aprovados
          para depoimentos.html (sem nome nem foto de quem escreveu); os da aluna beta substituem a versao em texto.
-         O grupo aparece duas vezes para o giro nao ter emenda; a copia e' aria-hidden. Pausa ao passar o mouse/tocar;
+         O grupo aparece duas vezes para o giro nao ter emenda; a copia e' aria-hidden.
+         01/10/2026: Joao Renan e o print da aluna impressionada sairam daqui -- ja' estao no topo da pagina. Pausa ao passar o mouse/tocar;
          com "reduzir movimento" nao gira e vira rolagem lateral. -->
   </div>
   <div class="dep-carrossel" tabindex="0" aria-label="Depoimentos de alunos (passe o mouse para pausar)">
     <div class="dep-trilho">
       <div class="dep-grupo">
-          <div class="dep-card beta">
-            <span class="dep-selo aluno">Aluno da 1ª turma</span>
-            <div class="aspas" aria-hidden="true">“</div>
-            <p>O sistema de ranking gamificado ficou ótimo! A ideia de utilizar a própria plataforma como simulador também foi excelente. Contabilidade sempre foi a minha maior dificuldade na área fiscal, e a forma como o conteúdo é apresentado tem ajudado bastante. As aulas são objetivas, certeiras e vão direto ao ponto.</p>
-            <div class="dep-autor">João Renan S. <span class="dep-fonte">· avaliação enviada pela plataforma</span></div>
-          </div>
-          <figure class="dep-print">
-            <span class="dep-selo">Testou a plataforma</span>
-            <picture><source srcset="assets/depoimentos/whatsapp-impressionada-mercado.webp" type="image/webp"><img src="assets/depoimentos/whatsapp-impressionada-mercado.png" alt="Print da conversa: aluna diz que o trabalho está magnífico e que não há nada semelhante no mercado" width="369" height="472" loading="lazy" decoding="async"></picture>
-            <figcaption>Aluna beta · print do WhatsApp</figcaption>
-          </figure>
           <div class="dep-card">
             <div class="aspas" aria-hidden="true">“</div>
             <p>De altíssimo nível seu conteúdo e aprofundamento de um CPC tão complexo. Você tem uma boa didática, mantenha-se firme, logo seu trabalho vai bombar! Parabéns!</p>
@@ -2678,17 +2672,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           </div>
       </div>
       <div class="dep-grupo" aria-hidden="true">
-          <div class="dep-card beta">
-            <span class="dep-selo aluno">Aluno da 1ª turma</span>
-            <div class="aspas" aria-hidden="true">“</div>
-            <p>O sistema de ranking gamificado ficou ótimo! A ideia de utilizar a própria plataforma como simulador também foi excelente. Contabilidade sempre foi a minha maior dificuldade na área fiscal, e a forma como o conteúdo é apresentado tem ajudado bastante. As aulas são objetivas, certeiras e vão direto ao ponto.</p>
-            <div class="dep-autor">João Renan S. <span class="dep-fonte">· avaliação enviada pela plataforma</span></div>
-          </div>
-          <figure class="dep-print">
-            <span class="dep-selo">Testou a plataforma</span>
-            <picture><source srcset="assets/depoimentos/whatsapp-impressionada-mercado.webp" type="image/webp"><img src="assets/depoimentos/whatsapp-impressionada-mercado.png" alt="Print da conversa: aluna diz que o trabalho está magnífico e que não há nada semelhante no mercado" width="369" height="472" loading="lazy" decoding="async"></picture>
-            <figcaption>Aluna beta · print do WhatsApp</figcaption>
-          </figure>
           <div class="dep-card">
             <div class="aspas" aria-hidden="true">“</div>
             <p>De altíssimo nível seu conteúdo e aprofundamento de um CPC tão complexo. Você tem uma boa didática, mantenha-se firme, logo seu trabalho vai bombar! Parabéns!</p>
@@ -3170,11 +3153,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="aspas" aria-hidden="true">“</div>
         <p>Esse estudo me fez gostar, novamente, de estudar. Querer mais a cada dia. Ter mais conhecimento hoje do que ontem.</p>
         <div class="dep-autor">Érica Freitas <span class="dep-fonte">· WhatsApp, Turma ISS-RJ</span></div>
-      </div>
-      <div class="dep-card reveal">
-        <div class="aspas" aria-hidden="true">“</div>
-        <p>Excelente didática, a contabilidade é trabalhada com profundidade desde a primeira aula.</p>
-        <div class="dep-autor">Ransley Moreira Alves <span class="dep-fonte">· Aluno beta da plataforma</span></div>
       </div>
     </div>
   </div>
