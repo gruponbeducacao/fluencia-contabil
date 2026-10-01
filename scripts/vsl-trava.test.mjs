@@ -15,7 +15,7 @@ const ORIGEM = 'https://player-vz-test.tv.pandavideo.com.br';
 // é null), cada evento guarda todos os ouvintes e o relógio é virtual — setTimeout/clearTimeout de
 // verdade, disparados na ordem do prazo quando o tempo anda. Nada passa "por acaso".
 function pagina({ hash = '', search = '', ua = 'Mozilla/5.0 (iPhone)', liberada = false, hidden = false,
-  id = 'video-test', trava = '180', conteudo = null, sem = [], segundos = null } = {}) {
+  id = 'video-test', trava = '180', conteudo = null, sem = [], segundos = null, texto = null } = {}) {
   let agora = 1_000_000, proximo = 1;
   const timers = [], ouvintes = { window: {}, document: {} };
   const liga = alvo => (nome, fn) => { (ouvintes[alvo][nome] ||= []).push(fn); };
@@ -35,6 +35,7 @@ function pagina({ hash = '', search = '', ua = 'Mozilla/5.0 (iPhone)', liberada 
     getAttribute: k => (k === 'data-src' ? `${ORIGEM}/embed/?v=${id}` : null) };
   const slotAttrs = { 'data-vsl-trava': trava, 'data-vsl-version': 'v1' };
   if (conteudo !== null) slotAttrs['data-vsl-content'] = conteudo;
+  if (texto !== null) slotAttrs['data-vsl-trava-texto'] = texto;
   const slot = { hidden, getAttribute: k => (k in slotAttrs ? slotAttrs[k] : null) };
   const elementos = { heroVsl: slot, heroVslFrame: frame, vslTrava: aviso };
   for (const k of sem) delete elementos[k];
@@ -116,6 +117,18 @@ test('libera ao completar o tempo, lembra para a próxima visita e avisa o dataL
   assert.equal(r.local.get('fc_vsl_liberada:v1'), '1');
   assert.equal(r.liberacoes().length, 1);
   assert.equal(r.motivo(), 'assistiu');
+});
+
+test('o texto do aviso pode vir da página (data-vsl-trava-texto) e segue o tempo que falta', () => {
+  const r = run({ texto: 'Assista mais {tempo} para liberar seu cashback' });
+  assert.equal(r.txt.textContent, 'Assista mais 3:00 para liberar seu cashback');
+  r.msg('panda_play', 0); r.toca(0, 60);
+  assert.equal(r.txt.textContent, 'Assista mais 2:00 para liberar seu cashback');
+});
+
+test('texto da página sem {tempo}, ou vazio, volta ao texto de sempre', () => {
+  assert.equal(run({ texto: 'Assista para liberar' }).txt.textContent, 'Assista mais 3:00 para liberar a página');
+  assert.equal(run({ texto: '' }).txt.textContent, 'Assista mais 3:00 para liberar a página');
 });
 
 test('arrastar a barra não conta como assistido', () => {
@@ -395,9 +408,12 @@ test('continuar.html: libera no pitch do vídeo do cashback (4:23), texto sem JS
   assert.equal(trava, '263');
   assert.equal(attr('data-vsl-pitch'), trava);
   assert.ok(attr('data-vsl-version'), 'sem data-vsl-version o vsl-trava.js não trava');
+  // 01/10/2026, pedido do Vinícius: no cashback, "Assista mais m:ss para liberar seu cashback".
+  const texto = attr('data-vsl-trava-texto');
+  assert.equal(texto, 'Assista mais {tempo} para liberar seu cashback');
   const estatico = (html.match(/data-vsl-trava-txt>([^<]+)</) || [])[1];
-  assert.equal(estatico, 'Assista mais 4:23 para liberar a página');
-  assert.equal(run({ trava }).txt.textContent, estatico);
+  assert.equal(estatico, 'Assista mais 4:23 para liberar seu cashback');
+  assert.equal(run({ trava, texto }).txt.textContent, estatico);
   const assinatura = readFileSync(new URL('../assinatura.html', import.meta.url), 'utf8');
   const versao = s => (s.match(/assets\/vsl-trava\.js\?v=(\w+)/) || [])[1];
   assert.ok(versao(html));

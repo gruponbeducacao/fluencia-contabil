@@ -20,7 +20,8 @@
    - panda_ended libera sempre (protege quem volta pelo "continuar de onde parou" do Panda); o
      motivo é fim_do_video se a pessoa ainda não tinha assistido o limite, assistiu se já tinha.
    O aviso com o tempo que falta só aparece na pausa (pedido do Vinícius, 30/09/2026): fica no layout
-   o tempo todo (reserva o espaço, o vídeo não pula) e o CSS só o mostra com [data-pausa]. */
+   o tempo todo (reserva o espaço, o vídeo não pula) e o CSS só o mostra com [data-pausa]. O texto
+   dele pode vir da página: data-vsl-trava-texto no slot, com {tempo} no lugar do m:ss. */
 (function () {
   'use strict';
   if (window.FC_VSL_TRAVA) return;
@@ -32,6 +33,10 @@
   var limite = Number(slot.getAttribute('data-vsl-trava'));
   var versao = slot.getAttribute('data-vsl-version') || '';
   var conteudo = slot.getAttribute('data-vsl-content') || '';
+  // Texto do aviso, opcional por página (01/10/2026: no cashback, "para liberar seu cashback").
+  // Sem o atributo, ou sem o {tempo}, vale o texto de sempre.
+  var modelo = slot.getAttribute('data-vsl-trava-texto') || '';
+  if (modelo.indexOf('{tempo}') === -1) modelo = 'Assista mais {tempo} para liberar a página';
   if (!Number.isFinite(limite) || limite <= 0 || !versao) return;
   var src = frame.getAttribute('src') || frame.getAttribute('data-src') || '';
   if (!src || src.indexOf('__PANDA_ID__') !== -1) return;
@@ -71,7 +76,7 @@
   }
   function desenha() {
     if (txt) {
-      txt.textContent = 'Assista mais ' + mmss(limite - assistido) + ' para liberar a página';
+      txt.textContent = modelo.replace('{tempo}', mmss(limite - assistido));
     }
     if (barra) barra.style.width = Math.min(100, assistido / limite * 100).toFixed(1) + '%';
   }
