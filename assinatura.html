@@ -1801,6 +1801,18 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 @media (max-width: 640px) {
   .plat-grid { grid-template-columns: 1fr; }
   .anat-grid, .passo-grid { gap: 36px; }
+  /* 01/10/2026: no celular a lista dos 12 recursos tinha 2.161 px. Recolhida, mostra os 12 nomes e abre
+     a descrição ao tocar. Só esconde com a classe que o JS põe — sem JS, tudo fica à vista. */
+  .plat-grid.recolhivel .plat-card { padding: 16px 0; cursor: pointer; }
+  .plat-grid.recolhivel .plat-card p { display: none; }
+  .plat-grid.recolhivel .plat-card.aberto p { display: block; }
+  .plat-grid.recolhivel .plat-card h3 { position: relative; padding-right: 30px; }
+  .plat-grid.recolhivel .plat-card h3::after {
+    content: '+'; position: absolute; right: 0; top: 50%; transform: translateY(-50%);
+    font-size: 22px; font-weight: 600; color: var(--dourado);
+  }
+  .plat-grid.recolhivel .plat-card.aberto h3::after { content: '−'; }
+  .plat-grid.recolhivel .plat-card h3:focus-visible { outline: 2px solid var(--dourado); outline-offset: 4px; }
 }
 /* ==========================================================================
    REDESENHO — RODADA 3 (30/09/2026)
@@ -3411,6 +3423,44 @@ function initAccordion(itemSelector, qSelector, aSelector, prefix) {
 }
 initAccordion('.faq-item', '.faq-q', '.faq-a', 'faq-a');
 initAccordion('.acc-item', '.acc-q', '.acc-a', 'acc-a');
+
+/* Lista dos 12 recursos (01/10/2026): no celular, nome + ícone; a descrição abre ao tocar no nome
+   (Enter/Espaço no teclado). No computador fica tudo à vista e o nome não vira botão. */
+(function () {
+  var grade = document.querySelector('.plat-grid');
+  if (!grade || !window.matchMedia) return;
+  var mq = window.matchMedia('(max-width: 640px)');
+  var cards = grade.querySelectorAll('.plat-card');
+  function aplicar() {
+    grade.classList.toggle('recolhivel', mq.matches);
+    cards.forEach(function (c, i) {
+      var h = c.querySelector('h3'), d = c.querySelector('p');
+      if (!h || !d) return;
+      if (!d.id) d.id = 'plat-desc-' + i;
+      if (mq.matches) {
+        h.setAttribute('role', 'button'); h.setAttribute('tabindex', '0');
+        h.setAttribute('aria-controls', d.id);
+        h.setAttribute('aria-expanded', c.classList.contains('aberto') ? 'true' : 'false');
+      } else {
+        ['role', 'tabindex', 'aria-controls', 'aria-expanded'].forEach(function (a) { h.removeAttribute(a); });
+      }
+    });
+  }
+  function alternar(c) {
+    if (!mq.matches) return;
+    var aberto = c.classList.toggle('aberto');
+    c.querySelector('h3').setAttribute('aria-expanded', aberto ? 'true' : 'false');
+  }
+  cards.forEach(function (c) {
+    c.addEventListener('click', function () { alternar(c); });
+    var h = c.querySelector('h3');
+    if (h) h.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); alternar(c); }
+    });
+  });
+  aplicar();
+  if (mq.addEventListener) mq.addEventListener('change', aplicar); else if (mq.addListener) mq.addListener(aplicar);
+})();
 
 // Recalcula a altura do accordion aberto em resize (rotação de tela, etc.)
 window.addEventListener('resize', function () {
