@@ -1606,12 +1606,18 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 /* -- V2. overlay de play/pausa da VSL (so' visual: o clique atravessa e cai no player) */
 .vsl-moldura { position: relative; }
 .vsl-ov { position: absolute; inset: 0; z-index: 3; text-align: center; color: var(--branco); pointer-events: none;
+  container: vslov / size; --vsl-faixa: 80px;
   background: linear-gradient(180deg, rgba(14,22,38,.46) 0%, rgba(14,22,38,.72) 52%, rgba(14,22,38,.34) 84%, rgba(14,22,38,0) 100%); }
 .vsl-ov[hidden] { display: none; }
-/* inicio e fim nao precisam da barra do player: fundo escurecido por igual (a legenda gravada
-   na miniatura nao disputa com o convite); na pausa a base fica clara e a barra aparece */
-.vsl-ov[data-estado="inicio"], .vsl-ov[data-estado="fim"] {
-  background: radial-gradient(ellipse at center, rgba(14,22,38,.58) 0%, rgba(14,22,38,.84) 78%); }
+/* inicio e fim: fundo escurecido por igual (a legenda gravada na miniatura nao disputa com o convite),
+   MENOS a faixa de baixo, que e' do Panda (revisao de 30/09/2026): a barra de progresso comeca a 68 px
+   da base do video no celular, com os botoes embaixo dela. O escuro fica num ::before com mascara
+   (nao apaga texto) e some antes da faixa. Na pausa a base ja' fica clara e a barra aparece. */
+.vsl-ov[data-estado="inicio"], .vsl-ov[data-estado="fim"] { background: none; }
+.vsl-ov[data-estado="inicio"]::before, .vsl-ov[data-estado="fim"]::before { content: ""; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at center, rgba(14,22,38,.58) 0%, rgba(14,22,38,.84) 78%);
+  -webkit-mask-image: linear-gradient(180deg, #000 calc(100% - var(--vsl-faixa) - 24px), transparent calc(100% - var(--vsl-faixa)));
+  mask-image: linear-gradient(180deg, #000 calc(100% - var(--vsl-faixa) - 24px), transparent calc(100% - var(--vsl-faixa))); }
 /* grade 1fr/auto/1fr: o play (ou o botao do fim) fica no CENTRO EXATO do video, em cima do botao do
    proprio Panda -- quem clica no convite acerta o play do player */
 .vsl-ov > div { display: none; position: absolute; inset: 0; grid-template-rows: 1fr auto 1fr; justify-items: center;
@@ -1641,6 +1647,22 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 .vsl-ov-cta { box-shadow: 0 10px 26px rgba(0,0,0,.45); }
 @media (max-width: 560px) { .vsl-ov > div { padding: 8px 12px; } .vsl-ov-titulo, .vsl-ov-desk { display: none; }
   .vsl-ov-kicker { font-size: 9.5px; letter-spacing: .06em; } .vsl-ov-cta { padding: 10px 18px; font-size: 13px; } }
+/* player baixo (celular, notebook de tela curta, celular deitado): o que vem abaixo do play cairia na faixa
+   do Panda -- no celular, o toque no "13 min · com legendas" pulava o video (revisao de 30/09/2026). Ai' os
+   textos do inicio e da pausa sobem para cima do play, que continua no centro exato do video; o texto longo
+   sai, e o titulo so' fica se o video tiver 380 px de altura ou mais. Em player alto, nada muda. Sem suporte
+   a container query, fica como antes. */
+@container vslov (max-height: 479.98px) {
+  .vsl-ov[data-estado="inicio"] .vsl-ov-inicio, .vsl-ov[data-estado="pausa"] .vsl-ov-pausa {
+    --p: min(clamp(60px, 10.5vw, 96px), 32cqh); bottom: 50%; padding-bottom: calc(var(--p) / 2 + 8px);
+    display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 3px; }
+  .vsl-ov-inicio > .vsl-ov-cima, .vsl-ov-inicio > .vsl-ov-baixo, .vsl-ov-pausa > .vsl-ov-cima, .vsl-ov-pausa > .vsl-ov-baixo {
+    align-self: center; padding: 0; gap: 3px; }
+  .vsl-ov-inicio > .vsl-ov-play, .vsl-ov-pausa > .vsl-ov-play { --p: inherit; position: absolute; top: 100%; left: 50%;
+    margin: calc(var(--p) / -2) 0 0 calc(var(--p) / -2); }
+  .vsl-ov-inicio .vsl-ov-titulo, .vsl-ov-desk, .vsl-ov-fim > .vsl-ov-baixo { display: none; }
+}
+@container vslov (min-height: 380px) and (max-height: 479.98px) { .vsl-ov-inicio .vsl-ov-titulo { display: block; } }
 @media (prefers-reduced-motion: reduce) { .vsl-ov-play::after { animation: none; opacity: 0; } }
 
 /* -- E. captura de e-mail da Aula 01 (widget local, nao carrega email-capture.js) */
