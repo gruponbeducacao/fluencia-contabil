@@ -1,0 +1,3 @@
+# O iCalendar (RFC 5545) exige CRLF. Sem isto, o autocrlf do Windows grava LF no
+# repositório e o arquivo publicado sai fora do padrão (e o teste do CI reprova).
+*.ics -text

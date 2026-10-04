@@ -233,6 +233,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   #cap-baixar{width:100%;margin-bottom:4px}
   .cap-nota{font-size:13px;line-height:1.65;color:var(--cinza);margin-top:12px}
   .cap-nota a{color:var(--navy);font-weight:700}
+  .cap-agenda{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+  .btn-agenda{flex:1 1 180px;min-height:44px;display:inline-flex;align-items:center;justify-content:center;
+    padding:10px 14px;border:1.5px solid var(--navy);border-radius:5px;background:#fff;color:var(--navy);
+    font-size:14px;font-weight:700;text-decoration:none;text-align:center}
+  .btn-agenda:hover,.btn-agenda:focus-visible{background:var(--navy);color:#fff}
 
   /* ---------- responsivo ---------- */
   @media (max-width:920px){
@@ -508,6 +513,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <p class="cap-ok-titulo" id="cap-ok-titulo">Pronto. Boa resolução!</p>
       <a class="btn-grande" id="cap-baixar" download hidden>Baixar a folha ↓</a>
       <p class="cap-nota" id="cap-nota"></p>
+      <p class="cap-agenda" id="cap-agenda" hidden>
+        <a class="btn-agenda" id="cap-agenda-google" target="_blank" rel="noopener"
+           aria-label="Pôr no Google Agenda (abre em nova aba)" hidden>Pôr no Google Agenda</a>
+        <a class="btn-agenda" id="cap-agenda-ics" hidden>Outra agenda (.ics)</a>
+      </p>
     </div>
 
     <noscript><p class="cap-erro">Ative o JavaScript para receber a folha.</p></noscript>
@@ -688,6 +698,35 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   function acrescentar(pai, t){ pai.appendChild(document.createTextNode(t)); }
 
+  /* Agenda: só quando a semana já tem o link da transmissão — evento sem link
+     não leva ninguém à aula. Os dois destinos vêm prontos da agenda.json
+     (`agenda_google` e `ics`), publicados pelo kit com o mesmo início e a mesma
+     duração; a página só confere o formato antes de virar link. `onclick` (e não
+     addEventListener) porque esta função roda de novo a cada `confirmado`. */
+  function montarAgenda(){
+    var agenda = el('cap-agenda'), noGoogle = el('cap-agenda-google'), noIcs = el('cap-agenda-ics');
+    agenda.hidden = noGoogle.hidden = noIcs.hidden = true;
+    if (!(proxima && proxima.youtube)) return;
+    var contar = function(){
+      try { if (window.fbq) window.fbq('trackCustom','AdicionouAgenda'); } catch(e){}
+    };
+    if (/^https:\/\/calendar\.google\.com\/calendar\/render\?[A-Za-z0-9%&=+_.~-]+$/.test(proxima.agenda_google || '')) {
+      noGoogle.href = proxima.agenda_google;
+      noGoogle.onclick = contar;
+      noGoogle.hidden = false;
+    }
+    /* O .ics é arquivo, nunca `data:` no link: o navegador interno do Instagram
+       não baixa `data:` URI. E sem o atributo `download`: no Safari do iPhone o
+       link direto abre "Adicionar ao Calendário"; com `download` o arquivo iria
+       para a pasta de downloads. */
+    if (/^assets\/aulas\/aula-[\w.-]+\.ics$/.test(proxima.ics || '')) {
+      noIcs.href = proxima.ics;
+      noIcs.onclick = contar;
+      noIcs.hidden = false;
+    }
+    agenda.hidden = noGoogle.hidden && noIcs.hidden;
+  }
+
   /* `novo` = acabou de capturar (dispara o Lead); falso = voltou à página. */
   function confirmado(novo){
     capturado = true;
@@ -721,6 +760,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       acrescentar(nota, '. ');
       if (EMAIL_AUTOMATICO) acrescentar(nota, 'As resoluções chegam no seu e-mail depois da aula.');
     }
+
+    /* A agenda é enfeite: nada aqui pode impedir o registro da inscrição logo abaixo. */
+    try { montarAgenda(); } catch(e){}
     ok.hidden = false;
     (baixar.hidden ? dlg.querySelector('.cap-fechar') : baixar).focus();
 

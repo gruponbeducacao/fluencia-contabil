@@ -1,0 +1,24 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Fluencia Contabil//Aula ao vivo//PT
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:aula_ao_vivo_2026_09_23@fluenciacontabil.com.br
+DTSTAMP:20261004T135134Z
+DTSTART:20261007T230000Z
+DTEND:20261008T010000Z
+SUMMARY:Aula ao vivo: Impairment — Redução ao Valor Recuperável de Ati
+ vos (CPC 01)
+DESCRIPTION:Ao vivo e gratuita no YouTube: https://www.youtube.com/live/kqS
+ hjmx5_z0
+LOCATION:https://www.youtube.com/live/kqShjmx5_z0
+URL:https://www.youtube.com/live/kqShjmx5_z0
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Aula ao vivo: Impairment — Redução ao Valor Recuperável de
+  Ativos (CPC 01)
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+END:VCALENDAR

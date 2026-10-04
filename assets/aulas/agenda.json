@@ -1,6 +1,6 @@
 {
   "versao": 1,
-  "gerado_em": "2026-10-04T00:25",
+  "gerado_em": "2026-10-04T10:51",
   "gerado_por": "_LIVES/_semanal/publicar_semana_lp.py",
   "aulas": [
     {
@@ -46,7 +46,9 @@
       "pdf": "assets/aulas/folha-2026-10-07-f6e95bc4.pdf",
       "capa_jpg": "assets/aulas/live-2026-10-07-capa-0036a226.jpg",
       "capa_webp": "assets/aulas/live-2026-10-07-capa-0036a226.webp",
-      "youtube": "https://www.youtube.com/live/kqShjmx5_z0"
+      "youtube": "https://www.youtube.com/live/kqShjmx5_z0",
+      "ics": "assets/aulas/aula-2026-10-07-5e6af4cd.ics",
+      "agenda_google": "https://calendar.google.com/calendar/render?action=TEMPLATE&text=Aula+ao+vivo%3A+Impairment+%E2%80%94+Redu%C3%A7%C3%A3o+ao+Valor+Recuper%C3%A1vel+de+Ativos+%28CPC+01%29&dates=20261007T230000Z%2F20261008T010000Z&details=Ao+vivo+e+gratuita+no+YouTube%3A+https%3A%2F%2Fwww.youtube.com%2Flive%2FkqShjmx5_z0&location=https%3A%2F%2Fwww.youtube.com%2Flive%2FkqShjmx5_z0"
     }
   ]
 }
