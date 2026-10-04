@@ -16,7 +16,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: node --test scripts/apps-script-origem-ativo.test.mjs scripts/apps-script-rastreamento.test.mjs scripts/origem.test.mjs scripts/origem-captura.test.mjs scripts/aula-origem.test.mjs scripts/vsl.test.mjs scripts/vsl-overlay.test.mjs scripts/vsl-trava.test.mjs
+      - run: node --test scripts/apps-script-origem-ativo.test.mjs scripts/apps-script-rastreamento.test.mjs scripts/origem.test.mjs scripts/origem-captura.test.mjs scripts/aula-origem.test.mjs scripts/agenda-aula.test.mjs scripts/vsl.test.mjs scripts/vsl-overlay.test.mjs scripts/vsl-trava.test.mjs
       # Fiscal da continuar.html (token, vídeo e trava): só a biblioteca padrão, sem rede,
       # lê apenas arquivos do repositório. O python3 do ubuntu-latest basta.
       - run: python3 scripts/fiscal_continuar.py
