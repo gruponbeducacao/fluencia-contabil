@@ -126,10 +126,9 @@ ok("sem 'método Chaves' em texto novo",
    texto.count("método Chaves") == (texto_antes.count("método Chaves") if antes is not None else 1))
 # 01/10/2026: o Vinícius fixou "mais de 5.800". O banco de produção tinha 5.588 publicadas + 240
 # arquivadas (5.828); ele decidiu o número sabendo da conta.
-# 01/10/2026: travada, a página tem a altura da tela e a conta de rolagem dava 100% no
-# carregamento -- 'rolagem' 25/50/75/100 saía sem ninguém rolar. A medição espera a trava sair.
-ok("rolagem não conta com a página travada",
-   "if (document.documentElement.classList.contains('vsl-trava')) return;" in s)
+# 03/10/2026: a trava no vídeo saiu da página por decisão do Vinícius. Em 3 dias de anúncio, de 71
+# visitas pagas, 4 assistiram até liberar (6:41) e nenhuma clicou em comprar.
+ok("página sem trava no vídeo", "vsl-trava" not in s)
 ok("questões: mais de 5.800 (decisão do Vinícius, 01/10/2026)",
    "Mais de 5.800 questões" in s and "3.800" not in s and "3.697" not in s)
 ok("Ransley: aguarda convocação — sem 'nomeado'", not re.search(r"nomeado", texto, re.I))

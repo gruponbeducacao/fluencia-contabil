@@ -4,7 +4,8 @@ import { readFileSync } from 'node:fs';
 import vm from 'node:vm';
 
 const ARQUIVO = process.env.VSL_TRAVA_ARQUIVO || new URL('../assets/vsl-trava.js', import.meta.url);
-const PAGINA = process.env.VSL_TRAVA_PAGINA || new URL('../assinatura.html', import.meta.url);
+// 03/10/2026: a assinatura.html deixou de travar; no site, a página que usa a trava é a continuar.html.
+const PAGINA = process.env.VSL_TRAVA_PAGINA || new URL('../continuar.html', import.meta.url);
 const source = readFileSync(ARQUIVO, 'utf8');
 const html = readFileSync(PAGINA, 'utf8');
 // Trecho opcional das páginas: ouve o player desde antes do iframe e marca window.FC_VSL_PLAYER_OK.
@@ -42,7 +43,7 @@ function pagina({ hash = '', search = '', ua = 'Mozilla/5.0 (iPhone)', liberada 
   const body = { quem: 'body' };
   const dataLayer = [];
   const window = {
-    location: { href: 'https://fluenciacontabil.com.br/assinatura.html' + search + hash, hash, search },
+    location: { href: 'https://fluenciacontabil.com.br/continuar.html' + search + hash, hash, search },
     navigator: { userAgent: ua }, dataLayer,
     localStorage: { getItem: k => local.get(k) ?? null, setItem: (k, v) => local.set(k, v) },
     sessionStorage: { getItem: k => sessao.get(k) ?? null, setItem: (k, v) => sessao.set(k, v) },
@@ -352,16 +353,16 @@ test('não trava: link com âncora, quem já liberou, ?semtrava=1, robô de busc
 });
 
 // ---------------------------------------------------------------------------------------------
-// O trecho da assinatura.html (<script data-vsl-trava-ouvinte>), o mesmo que as outras páginas copiam.
+// O trecho da página (<script data-vsl-trava-ouvinte>), que nasceu na assinatura.html e hoje vive na continuar.html.
 
-test('assinatura.html: o trecho que ouve o player vem antes do iframe e do código que liga o src', () => {
+test('o trecho que ouve o player vem antes do iframe e do código que liga o src', () => {
   assert.ok(TRECHO, 'sem <script data-vsl-trava-ouvinte> na página');
   const i = html.indexOf('<script data-vsl-trava-ouvinte>');
   assert.ok(i < html.indexOf('id="heroVslFrame"'), 'o trecho tem de vir antes do iframe');
   assert.ok(i < html.indexOf("f.setAttribute('src', src)"), 'o trecho tem de vir antes de o player começar a carregar');
 });
 
-test('corrida A2 com o trecho da assinatura.html: o panda_ready chega antes do arquivo e a página continua travada', () => {
+test('corrida A2 com o trecho da página: o panda_ready chega antes do arquivo e a página continua travada', () => {
   const p = pagina();
   p.roda(TRECHO);                                              // inline, antes do iframe
   p.anda(0.7); p.msg('PANDA_READY'); p.msg('panda_ready', 0); p.msg('panda_allData');
@@ -375,7 +376,7 @@ test('corrida A2 com o trecho da assinatura.html: o panda_ready chega antes do a
   assert.equal(p.motivo(), 'player_travado');
 });
 
-test('trecho da assinatura.html não se engana: outra janela, outra origem ou aviso sem message não marcam o player', () => {
+test('trecho da página não se engana: outra janela, outra origem ou aviso sem message não marcam o player', () => {
   const p = pagina();
   p.roda(TRECHO);
   p.msg('panda_ready', 0, {}, { source: { quem: 'outro-iframe' } });
@@ -387,18 +388,15 @@ test('trecho da assinatura.html não se engana: outra janela, outra origem ou av
   assert.equal(p.motivo(), 'player_mudo');
 });
 
-test('assinatura.html: libera no fim da proposta da Fluência Contábil (6:41) e o texto sem JS bate com o do script', () => {
-  // 30/09/2026: 3:00 era arbitrário e 11:39 (pitch) longo demais; 5:31 (fim da demonstração de débito e crédito)
-  // durou um PR. O Vinícius fechou em 6:41: fim da proposta da Fluência Contábil — "É essa autonomia que eu quero
-  // construir em você." termina em 6:40.55 da VSL v2
-  const trava = (html.match(/id="heroVsl" data-vsl-trava="(\d+)"/) || [])[1];
-  assert.equal(trava, '401');
-  const estatico = (html.match(/data-vsl-trava-txt>([^<]+)</) || [])[1];
-  assert.equal(estatico, 'Assista mais 6:41 para liberar a página');
-  assert.equal(run({ trava }).txt.textContent, estatico);
+test('assinatura.html não trava no vídeo: os planos ficam à vista de quem não assistiu', () => {
+  // 03/10/2026, decisão do Vinícius. A trava de 6:41 (30/09) ficou 3 dias no ar com anúncio: de 71
+  // visitas pagas, 4 assistiram até liberar a página e nenhuma clicou em comprar.
+  const assinatura = readFileSync(new URL('../assinatura.html', import.meta.url), 'utf8');
+  assert.doesNotMatch(assinatura, /vsl-trava/, 'voltou a trava (componente, classe, atributo ou CSS)');
+  assert.doesNotMatch(assinatura.match(/<html[^>]*>/)[0], /class=/);
 });
 
-test('continuar.html: libera no pitch do vídeo do cashback (4:23), texto sem JS igual ao do script, arquivo da assinatura', () => {
+test('continuar.html: libera no pitch do vídeo do cashback (4:23), texto sem JS igual ao do script', () => {
   // 30/09/2026, decisão do Vinícius: trava para todos os compradores do Dicionário; a oferta só
   // aparece depois do pitch (263 s no vídeo já a 1,25x). A página injeta o mesmo arquivo, na mesma versão.
   const html = readFileSync(new URL('../continuar.html', import.meta.url), 'utf8');
@@ -414,21 +412,16 @@ test('continuar.html: libera no pitch do vídeo do cashback (4:23), texto sem JS
   const estatico = (html.match(/data-vsl-trava-txt>([^<]+)</) || [])[1];
   assert.equal(estatico, 'Assista mais 4:23 para liberar seu cashback');
   assert.equal(run({ trava, texto }).txt.textContent, estatico);
-  const assinatura = readFileSync(new URL('../assinatura.html', import.meta.url), 'utf8');
-  const versao = s => (s.match(/assets\/vsl-trava\.js\?v=(\w+)/) || [])[1];
-  assert.ok(versao(html));
-  assert.equal(versao(html), versao(assinatura));
+  // a página injeta o componente com cache-buster
+  assert.ok((html.match(/assets\/vsl-trava\.js\?v=(\w+)/) || [])[1]);
 });
 
-test('continuar.html: o mesmo trecho que ouve o player, antes do iframe e do src, e a corrida A2 continua travada', () => {
+test('continuar.html: o trecho que ouve o player, antes do iframe e do src, e a corrida A2 continua travada', () => {
   // A continuar copia data-src para src em iniciarVsl() e injeta o vsl-trava.js logo depois: o panda_ready pode
-  // chegar antes do arquivo. O trecho é o da assinatura.html, byte a byte (tirando os espaços).
+  // chegar antes do arquivo.
   const cont = readFileSync(new URL('../continuar.html', import.meta.url), 'utf8');
-  const daAssinatura = readFileSync(new URL('../assinatura.html', import.meta.url), 'utf8');
   const trecho = s => (s.match(/<script data-vsl-trava-ouvinte>([\s\S]*?)<\/script>/) || [])[1];
-  const normaliza = s => (s || '').replace(/\s+/g, ' ').trim();
   assert.ok(trecho(cont), 'sem <script data-vsl-trava-ouvinte> na continuar.html');
-  assert.equal(normaliza(trecho(cont)), normaliza(trecho(daAssinatura)));
   const i = cont.indexOf('<script data-vsl-trava-ouvinte>');
   assert.ok(i < cont.indexOf('id="heroVslFrame"'), 'o trecho tem de vir antes do iframe');
   assert.ok(i < cont.indexOf("f.setAttribute('src', src)"), 'o trecho tem de vir antes de o player começar a carregar');
