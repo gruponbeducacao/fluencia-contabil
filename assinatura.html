@@ -1353,9 +1353,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .hero-foto::before { background: linear-gradient(180deg, rgba(19,31,56,0) 55%, var(--azul-noite) 100%); }
     .hero-foto::after { display: none; }
     .hero-logo { width: 80px; margin-bottom: 18px; }
-    /* hero que comeca pela VSL: video colado no topo, texto logo abaixo */
+    /* hero que comeca pela VSL: video com respiro em cima, texto logo abaixo.
+       04/10/2026 (pedido do Vinicius): sem a trava, o video ficava colado no topo da tela. O respiro
+       de cima e' igual ao de baixo do hero (44px), e o conjunto fica centralizado nele. */
     /* no celular o video ocupa a largura inteira da tela */
-    .hero-vsl.hero-vsl--topo { padding: 0; }
+    .hero-vsl.hero-vsl--topo { padding: 44px 0 0; }
     .hero-vsl--topo .vsl-moldura { max-width: none; border-radius: 0; border-width: 1px 0; }
     .hero-grid--vsl .hero-texto { margin-top: 0; padding: 24px 24px 44px; }
   }
