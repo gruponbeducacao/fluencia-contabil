@@ -1,6 +1,6 @@
 {
   "versao": 1,
-  "gerado_em": "2026-09-29T17:58",
+  "gerado_em": "2026-10-04T00:25",
   "gerado_por": "_LIVES/_semanal/publicar_semana_lp.py",
   "aulas": [
     {
@@ -32,6 +32,21 @@
       "capa_jpg": "assets/aulas/live-2026-09-30-capa-8d6edef0.jpg",
       "capa_webp": "assets/aulas/live-2026-09-30-capa-8d6edef0.webp",
       "youtube": "https://www.youtube.com/live/VvfY0huSuL4"
+    },
+    {
+      "data": "2026-10-07",
+      "origem": "aula_ao_vivo_2026_09_23",
+      "campanha": "Live Semanal 23/09 — Impairment",
+      "tema": "Impairment — Redução ao Valor Recuperável de Ativos (CPC 01)",
+      "ancora": "Transpetro 2026 + SEFAZ Bahia · Cesgranrio",
+      "titulo": "Impairment: as <em>3 regras</em> que resolvem quase toda questão.",
+      "sub": "Quarta, 07/10, às 20h, eu resolvo 20 questões de Redução ao Valor Recuperável de Ativos e abro o texto do CPC 01 que sustenta cada gabarito. <strong>Pegue a folha de questões, resolva antes e receba as resoluções por e-mail depois da aula.</strong>",
+      "questoes": 20,
+      "paginas": 22,
+      "pdf": "assets/aulas/folha-2026-10-07-f6e95bc4.pdf",
+      "capa_jpg": "assets/aulas/live-2026-10-07-capa-0036a226.jpg",
+      "capa_webp": "assets/aulas/live-2026-10-07-capa-0036a226.webp",
+      "youtube": "https://www.youtube.com/live/kqShjmx5_z0"
     }
   ]
 }
