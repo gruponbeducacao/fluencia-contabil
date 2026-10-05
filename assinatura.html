@@ -275,7 +275,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             mask-image: linear-gradient(90deg, transparent 0, #000 5%, #000 95%, transparent 100%);
   }
   .dep-trilho { display: flex; width: max-content; animation: depGira 80s linear infinite; }
-  .dep-carrossel:hover .dep-trilho, .dep-carrossel:focus-within .dep-trilho, .dep-carrossel:active .dep-trilho { animation-play-state: paused; }
+  /* No toque, hover e foco podem persistir depois de soltar o dedo. */
+  .dep-carrossel:focus-visible .dep-trilho { animation-play-state: paused; }
+  @media (hover: hover) {
+    .dep-carrossel:hover .dep-trilho { animation-play-state: paused; }
+  }
   .dep-grupo { display: flex; align-items: flex-start; gap: 20px; padding-right: 20px; }
   .dep-grupo > .dep-card { width: 330px; flex: 0 0 auto; }
   .dep-print {
@@ -2635,7 +2639,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- 30/09/2026 (pedido do Vinicius): depoimentos girando, com os prints reais. Os prints sao os 4 ja' aprovados
          para depoimentos.html (sem nome nem foto de quem escreveu); os da aluna beta substituem a versao em texto.
          O grupo aparece duas vezes para o giro nao ter emenda; a copia e' aria-hidden.
-         01/10/2026: Joao Renan e o print da aluna impressionada sairam daqui -- ja' estao no topo da pagina. Pausa ao passar o mouse/tocar;
+         01/10/2026: Joao Renan e o print da aluna impressionada sairam daqui -- ja' estao no topo da pagina. Pausa com mouse ou foco pelo teclado; toques nao interrompem o giro;
          com "reduzir movimento" nao gira e vira rolagem lateral. -->
   </div>
   <div class="dep-carrossel" tabindex="0" aria-label="Depoimentos de alunos (passe o mouse para pausar)">
