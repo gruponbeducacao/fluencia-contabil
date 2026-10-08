@@ -1,6 +1,6 @@
 {
-  "geradoEm": "2026-10-07T14:32:17.805Z",
-  "total": 25,
+  "geradoEm": "2026-10-08T14:36:27.234Z",
+  "total": 26,
   "editais": [
     {
       "concursoSlug": "secretaria-da-fazenda-do-estado-do-ceara-sefaz-ce",
@@ -72,6 +72,23 @@
     {
       "concursoSlug": "petrobras-transporte-s-a-transpetro",
       "orgao": "Petrobras Transporte S.A. – TRANSPETRO",
+      "cargo": "Profissional Transpetro de Nível Superior – Júnior — Ênfase 1: Administração",
+      "banca": "CESGRANRIO",
+      "esfera": "FEDERAL",
+      "uf": "RJ",
+      "area": "EMPRESAS_PUBLICAS",
+      "dataProva": "2026-11-29",
+      "linkOficial": "https://concursos.cesgranrio.org.br/portal/avaliacoes/22",
+      "disciplinas": [
+        {
+          "rotulo": "CONTABILIDADE",
+          "pct": 100
+        }
+      ]
+    },
+    {
+      "concursoSlug": "petrobras-transporte-s-a-transpetro",
+      "orgao": "Petrobras Transporte S.A. – TRANSPETRO",
       "cargo": "Profissional Transpetro de Nível Superior – Júnior — Ênfase 13: Contabilidade",
       "banca": "CESGRANRIO",
       "esfera": "FEDERAL",
@@ -86,23 +103,6 @@
         },
         {
           "rotulo": "LEGISLAÇÃO SOCIETÁRIA",
-          "pct": 100
-        }
-      ]
-    },
-    {
-      "concursoSlug": "petrobras-transporte-s-a-transpetro",
-      "orgao": "Petrobras Transporte S.A. – TRANSPETRO",
-      "cargo": "Profissional Transpetro de Nível Superior – Júnior — Ênfase 1: Administração",
-      "banca": "CESGRANRIO",
-      "esfera": "FEDERAL",
-      "uf": "RJ",
-      "area": "EMPRESAS_PUBLICAS",
-      "dataProva": "2026-11-29",
-      "linkOficial": "https://concursos.cesgranrio.org.br/portal/avaliacoes/22",
-      "disciplinas": [
-        {
-          "rotulo": "CONTABILIDADE",
           "pct": 100
         }
       ]
@@ -250,7 +250,7 @@
     {
       "concursoSlug": "ministerio-da-economia-secretaria-especial-da-receita-federal-do-brasil",
       "orgao": "Ministério da Economia — Secretaria Especial da Receita Federal do Brasil",
-      "cargo": "Auditor-Fiscal da Receita Federal do Brasil",
+      "cargo": "Analista-Tributário da Receita Federal do Brasil",
       "banca": "FGV",
       "esfera": "FEDERAL",
       "uf": null,
@@ -267,13 +267,30 @@
     {
       "concursoSlug": "ministerio-da-economia-secretaria-especial-da-receita-federal-do-brasil",
       "orgao": "Ministério da Economia — Secretaria Especial da Receita Federal do Brasil",
-      "cargo": "Analista-Tributário da Receita Federal do Brasil",
+      "cargo": "Auditor-Fiscal da Receita Federal do Brasil",
       "banca": "FGV",
       "esfera": "FEDERAL",
       "uf": null,
       "area": "FISCAL",
       "dataProva": "2023-03-19",
       "linkOficial": "https://conhecimento.fgv.br/concursos/rfb22",
+      "disciplinas": [
+        {
+          "rotulo": "Contabilidade Geral",
+          "pct": 100
+        }
+      ]
+    },
+    {
+      "concursoSlug": "secretaria-da-fazenda-do-estado-de-pernambuco-sefaz-pe",
+      "orgao": "Secretaria da Fazenda do Estado de Pernambuco (SEFAZ/PE)",
+      "cargo": "Auditor Fiscal do Tesouro Estadual – AFTE",
+      "banca": "FCC",
+      "esfera": "ESTADUAL",
+      "uf": "PE",
+      "area": "FISCAL",
+      "dataProva": "2022-12-11",
+      "linkOficial": "https://www.concursosfcc.com.br/concursos/fazpe122/index.html",
       "disciplinas": [
         {
           "rotulo": "Contabilidade Geral",
@@ -339,6 +356,23 @@
     {
       "concursoSlug": "governo-do-estado-da-bahia-secretaria-da-administracao-do-estado-da-bahia-saeb-s",
       "orgao": "Governo do Estado da Bahia — Secretaria da Administração do Estado da Bahia (SAEB) / Secretaria da Fazenda do Estado da Bahia (SEFAZ)",
+      "cargo": "Auditor Fiscal — Tecnologia da Informação (B02)",
+      "banca": "FCC",
+      "esfera": "ESTADUAL",
+      "uf": "BA",
+      "area": "FISCAL",
+      "dataProva": "2019-05-26",
+      "linkOficial": "https://www.concursosfcc.com.br",
+      "disciplinas": [
+        {
+          "rotulo": "Contabilidade Geral",
+          "pct": 70
+        }
+      ]
+    },
+    {
+      "concursoSlug": "governo-do-estado-da-bahia-secretaria-da-administracao-do-estado-da-bahia-saeb-s",
+      "orgao": "Governo do Estado da Bahia — Secretaria da Administração do Estado da Bahia (SAEB) / Secretaria da Fazenda do Estado da Bahia (SEFAZ)",
       "cargo": "Auditor Fiscal — Administração, Finanças e Controle Interno (A01)",
       "banca": "FCC",
       "esfera": "ESTADUAL",
@@ -357,23 +391,6 @@
       "concursoSlug": "governo-do-estado-da-bahia-secretaria-da-administracao-do-estado-da-bahia-saeb-s",
       "orgao": "Governo do Estado da Bahia — Secretaria da Administração do Estado da Bahia (SAEB) / Secretaria da Fazenda do Estado da Bahia (SEFAZ)",
       "cargo": "Auditor Fiscal — Administração Tributária (C03)",
-      "banca": "FCC",
-      "esfera": "ESTADUAL",
-      "uf": "BA",
-      "area": "FISCAL",
-      "dataProva": "2019-05-26",
-      "linkOficial": "https://www.concursosfcc.com.br",
-      "disciplinas": [
-        {
-          "rotulo": "Contabilidade Geral",
-          "pct": 70
-        }
-      ]
-    },
-    {
-      "concursoSlug": "governo-do-estado-da-bahia-secretaria-da-administracao-do-estado-da-bahia-saeb-s",
-      "orgao": "Governo do Estado da Bahia — Secretaria da Administração do Estado da Bahia (SAEB) / Secretaria da Fazenda do Estado da Bahia (SEFAZ)",
-      "cargo": "Auditor Fiscal — Tecnologia da Informação (B02)",
       "banca": "FCC",
       "esfera": "ESTADUAL",
       "uf": "BA",
