@@ -62,9 +62,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .topo-in { max-width: 520px; margin: 0 auto; padding: 0 20px; }
   .marca { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
   .marca b { font-weight: 800; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; white-space: nowrap; display: flex; align-items: center; gap: 11px; }
-  .marca b img { width: 46px; height: auto; display: block; border-radius: 9px; box-shadow: 0 0 0 1px rgba(255,255,255,.14); }
-  .marca b em { font-style: normal; color: var(--dourado, #C8A84B); }
-  .marca span { font-size: 12.5px; font-weight: 600; opacity: .75; }
+  .marca b em { font-style: normal; color: var(--dourado); }
+  .marca b .selo { flex: 0 0 46px; width: 46px; height: 46px; border-radius: 50%; background: var(--navy-fundo); box-shadow: 0 0 0 2px var(--dourado), 0 0 0 5px rgba(200,168,75,.22); display: grid; place-items: center; }
+  .marca b .selo img { width: 28px; height: auto; display: block; }
+  .marca b small { display: block; font-size: 9.5px; letter-spacing: 2.2px; color: rgba(255,255,255,.65); font-weight: 700; margin-top: 2px; }
+  .marca > span { font-size: 12.5px; font-weight: 600; opacity: .75; white-space: nowrap; }
   .seg { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 5px; }
   .seg i { height: 4px; border-radius: 4px; background: rgba(255,255,255,.18); overflow: hidden; position: relative; }
   .seg i::after { content: ""; position: absolute; inset: 0; background: var(--ac); transform: scaleX(0); transform-origin: left; transition: transform .45s ease; }
@@ -436,7 +438,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 <header class="topo">
   <div class="topo-in">
-    <div class="marca"><b><img src="assets/logo-fc-192.png" width="46" height="36" alt="">Fluência <em>Contábil</em></b><span id="rotuloPasso"></span></div>
+    <div class="marca"><b><span class="selo"><img src="assets/quiz/fc-simbolo.png" width="28" height="21" alt=""></span><span>Fluência <em>Contábil</em><small>Assinatura 2026</small></span></b><span id="rotuloPasso"></span></div>
     <div class="seg" id="seg" aria-hidden="true"></div>
     <div class="heroTopo" id="heroTopo"></div>
   </div>
@@ -829,7 +831,7 @@ function ir(id, semHistorico) {
   if (id === 'abertura') { topo.classList.add('hero'); ht.innerHTML = '<h1>Em 6 perguntas, mostramos por onde destravar contabilidade.</h1><p>Leva cerca de 1 minuto. Sem cadastro e sem formulário no caminho.</p>'; }
   else { topo.classList.remove('hero'); ht.innerHTML = ''; }
   pintarSegmentos(id);
-  $('rotuloPasso').textContent = NUM_PERGUNTA[id] ? 'Pergunta ' + NUM_PERGUNTA[id] + ' de 6' : (id === 'oferta' ? 'Resultado' : '');
+  $('rotuloPasso').textContent = NUM_PERGUNTA[id] ? NUM_PERGUNTA[id] + ' de 6' : (id === 'oferta' ? 'Resultado' : '');
   var t = box.querySelector('.tela');
   if (id !== 'abertura') t.insertAdjacentHTML('beforeend', '<button type="button" class="voltar" data-acao="voltar">Voltar</button>');
   if (HM) t.insertAdjacentHTML('beforeend', '<details class="coment"><summary>Comentar esta tela (' + esc(ROTULOS[id]) + ')</summary><textarea id="campoCom" placeholder="O que mudar nesta tela? Texto, ordem, opção, tom, cor..."></textarea></details>');
