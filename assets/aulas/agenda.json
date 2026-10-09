@@ -1,6 +1,6 @@
 {
   "versao": 1,
-  "gerado_em": "2026-10-07T19:19",
+  "gerado_em": "2026-10-09T10:10",
   "gerado_por": "_LIVES/_semanal/publicar_semana_lp.py",
   "aulas": [
     {
@@ -49,6 +49,23 @@
       "youtube": "https://www.youtube.com/live/kqShjmx5_z0",
       "ics": "assets/aulas/aula-2026-10-07-5e6af4cd.ics",
       "agenda_google": "https://calendar.google.com/calendar/render?action=TEMPLATE&text=Aula+ao+vivo%3A+Impairment+%E2%80%94+Redu%C3%A7%C3%A3o+ao+Valor+Recuper%C3%A1vel+de+Ativos+%28CPC+01%29&dates=20261007T230000Z%2F20261008T010000Z&details=Ao+vivo+e+gratuita+no+YouTube%3A+https%3A%2F%2Fwww.youtube.com%2Flive%2FkqShjmx5_z0&location=https%3A%2F%2Fwww.youtube.com%2Flive%2FkqShjmx5_z0"
+    },
+    {
+      "data": "2026-10-14",
+      "origem": "aula_ao_vivo_2026_10_14",
+      "campanha": "Live Semanal 14/10 — DFC",
+      "tema": "DFC — Demonstração dos Fluxos de Caixa (CPC 03)",
+      "ancora": "FGV, FCC, CEBRASPE e VUNESP",
+      "titulo": "DFC: a demonstração inteira em <em>23 questões</em>.",
+      "sub": "Quarta, 14/10, às 20h, eu resolvo 23 questões de Demonstração dos Fluxos de Caixa, em ordem de dificuldade: da classificação das atividades à DFC montada a partir do balanço e da DRE. <strong>Pegue o caderno de questões, resolva antes e receba as resoluções por e-mail depois da aula.</strong>",
+      "questoes": 23,
+      "paginas": 19,
+      "pdf": "assets/aulas/folha-2026-10-14-2c0cfe75.pdf",
+      "capa_jpg": "assets/aulas/live-2026-10-14-capa-3f9aa67a.jpg",
+      "capa_webp": "assets/aulas/live-2026-10-14-capa-3f9aa67a.webp",
+      "youtube": "https://www.youtube.com/live/BO3dhLv8Uoc",
+      "ics": "assets/aulas/aula-2026-10-14-d7d5bcc1.ics",
+      "agenda_google": "https://calendar.google.com/calendar/render?action=TEMPLATE&text=Aula+ao+vivo%3A+DFC+%E2%80%94+Demonstra%C3%A7%C3%A3o+dos+Fluxos+de+Caixa+%28CPC+03%29&dates=20261014T230000Z%2F20261015T010000Z&details=Ao+vivo+e+gratuita+no+YouTube%3A+https%3A%2F%2Fwww.youtube.com%2Flive%2FBO3dhLv8Uoc&location=https%3A%2F%2Fwww.youtube.com%2Flive%2FBO3dhLv8Uoc"
     }
   ]
 }
