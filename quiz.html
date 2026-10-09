@@ -61,8 +61,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .topo { background: radial-gradient(120% 140% at 80% -20%, var(--navy-claro) 0%, var(--navy) 45%, var(--navy-fundo) 100%); color: #fff; padding: 16px 0 40px; }
   .topo-in { max-width: 520px; margin: 0 auto; padding: 0 20px; }
   .marca { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
-  .marca b { font-weight: 800; font-size: 16px; letter-spacing: -.01em; display: flex; align-items: center; gap: 9px; }
-  .marca b::before { content: ""; width: 10px; height: 10px; border-radius: 3px; background: var(--ac); }
+  .marca b { font-weight: 800; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; white-space: nowrap; display: flex; align-items: center; gap: 11px; }
+  .marca b img { width: 46px; height: auto; display: block; border-radius: 9px; box-shadow: 0 0 0 1px rgba(255,255,255,.14); }
+  .marca b em { font-style: normal; color: var(--dourado, #C8A84B); }
   .marca span { font-size: 12.5px; font-weight: 600; opacity: .75; }
   .seg { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 5px; }
   .seg i { height: 4px; border-radius: 4px; background: rgba(255,255,255,.18); overflow: hidden; position: relative; }
@@ -435,7 +436,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 <header class="topo">
   <div class="topo-in">
-    <div class="marca"><b>Fluência Contábil</b><span id="rotuloPasso"></span></div>
+    <div class="marca"><b><img src="assets/logo-fc-192.png" width="46" height="36" alt="">Fluência <em>Contábil</em></b><span id="rotuloPasso"></span></div>
     <div class="seg" id="seg" aria-hidden="true"></div>
     <div class="heroTopo" id="heroTopo"></div>
   </div>
