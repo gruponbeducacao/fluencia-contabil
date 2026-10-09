@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MGQFHR5J');</script>
+<!-- End Google Tag Manager -->
+<title>Descubra o seu plano · Fluência Contábil</title>
+<meta name="description" content="Responda 6 perguntas e veja o plano de estudos da Fluência Contábil indicado para a sua prova e o seu prazo." />
+<meta name="robots" content="noindex,nofollow" />
+<link rel="canonical" href="https://fluenciacontabil.com.br/quiz.html" />
+<link rel="icon" type="image/png" href="assets/favicon.png" />
+<link rel="apple-touch-icon" href="assets/favicon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Source+Serif+4:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Marca */
+    --navy:       #1B2A4A;
+    --navy-fundo: #17233F;
+    --navy-claro: #2B3E66;
+    --dourado:    #C8A84B;
+    --cream:      #FBF6E9;
+    /* Suavizados para a interface */
+    --papel:      #FFFEFB;
+    --tinta:      #1F2740;
+    --apoio:      #4F5870;
+    --linha:      #ECE6D4;
+    --pastilha:   #EEF1F7;
+    --ouro-suave: #F7EFD6;
+    --ouro-texto: #8E7326;
+    --vermelho:   #C0392B;
+    --sombra: 0 1px 2px rgba(27,42,74,.05), 0 8px 24px -12px rgba(27,42,74,.18);
+    --sans:  'Manrope', system-ui, -apple-system, sans-serif;
+    --serif: 'Source Serif 4', Georgia, serif;
+    --bg-folha: var(--papel);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--sans); color: var(--tinta); background: var(--navy-fundo); -webkit-font-smoothing: antialiased; }
+  button { font-family: inherit; cursor: pointer; }
+  :focus-visible { outline: 3px solid var(--ac); outline-offset: 2px; }
+
+  /* ---------- Barra de homologação (some na versão final) ---------- */
+  .homolog { display: none; position: sticky; top: 0; z-index: 50; background: #ECECEC; color: #333; font-size: 12px; padding: 7px 12px; border-bottom: 1px solid #D5D5D5; }
+  .homolog-linha { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; max-width: 760px; margin: 0 auto; }
+  .homolog strong { font-weight: 800; }
+  .homolog select, .homolog button { font: 600 12px var(--sans); border-radius: 6px; border: 1px solid #BDBDBD; background: #fff; color: #333; padding: 4px 8px; }
+  .homolog .copiar { background: #333; color: #fff; border-color: #333; }
+  .homolog .sp { flex: 1; }
+  .homolog-eventos { max-width: 760px; margin: 6px auto 0; display: none; font-family: ui-monospace, Consolas, monospace; font-size: 11px; background: #fff; border: 1px solid #D5D5D5; border-radius: 6px; padding: 6px 8px; max-height: 84px; overflow: auto; }
+  .homolog-eventos.aberto { display: block; }
+
+  /* ---------- Faixa de topo ---------- */
+  .topo { background: radial-gradient(120% 140% at 80% -20%, var(--navy-claro) 0%, var(--navy) 45%, var(--navy-fundo) 100%); color: #fff; padding: 16px 0 40px; }
+  .topo-in { max-width: 520px; margin: 0 auto; padding: 0 20px; }
+  .marca { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .marca b { font-weight: 800; font-size: 16px; letter-spacing: -.01em; display: flex; align-items: center; gap: 9px; }
+  .marca b::before { content: ""; width: 10px; height: 10px; border-radius: 3px; background: var(--ac); }
+  .marca span { font-size: 12.5px; font-weight: 600; opacity: .75; }
+  .seg { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 5px; }
+  .seg i { height: 4px; border-radius: 4px; background: rgba(255,255,255,.18); overflow: hidden; position: relative; }
+  .seg i::after { content: ""; position: absolute; inset: 0; background: var(--ac); transform: scaleX(0); transform-origin: left; transition: transform .45s ease; }
+  .seg i.on::after { transform: scaleX(1); }
+
+  .topo.hero { padding-bottom: 70px; }
+  .heroTopo { display: none; }
+  .topo.hero .heroTopo { display: block; padding-top: 34px; animation: entra .35s ease; }
+  .heroTopo h1 { color: #fff; font-size: 34px; line-height: 1.08; margin-bottom: 14px; }
+  .heroTopo p { font-family: var(--serif); font-size: 18px; line-height: 1.55; color: rgba(255,255,255,.78); max-width: 34ch; }
+  @media (max-width: 420px) { .heroTopo h1 { font-size: 29px; } }
+
+  /* ---------- Folha ---------- */
+  .folha { background: var(--bg-folha); border-radius: 28px 28px 0 0; margin-top: -26px; position: relative; min-height: calc(100vh - 130px); transition: background .3s; }
+  .folha.escura { --bg-folha: var(--navy-fundo); color: #fff; background: linear-gradient(180deg, var(--navy) 0%, var(--navy-fundo) 100%); }
+  .folha-in { max-width: 520px; margin: 0 auto; padding: 30px 20px 28px; }
+  .tela { animation: entra .28s ease; }
+  @keyframes entra { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .tela { animation: none; } .seg i::after { transition: none; } }
+
+  .pilula { display: inline-flex; align-items: center; gap: 8px; background: var(--pastilha); color: var(--navy); font-size: 12.5px; font-weight: 700; padding: 6px 12px 6px 6px; border-radius: 999px; margin-bottom: 16px; }
+  .pilula b { background: var(--navy); color: #fff; width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; font-size: 12px; }
+  .escura .pilula { background: rgba(255,255,255,.1); color: #fff; }
+  .escura .pilula b { background: var(--ac); color: var(--navy); }
+
+  h1, h2 { font-weight: 800; letter-spacing: -.025em; line-height: 1.12; color: var(--navy); text-wrap: balance; }
+  .escura h1, .escura h2 { color: #fff; }
+  h1 { font-size: 31px; margin-bottom: 14px; }
+  h2 { font-size: 25px; margin-bottom: 8px; }
+  .sub { font-family: var(--serif); font-size: 17px; line-height: 1.6; color: var(--apoio); margin-bottom: 22px; max-width: 46ch; }
+  .escura .sub { color: rgba(255,255,255,.72); }
+
+  /* ---------- Opções ---------- */
+  .opcoes { display: grid; gap: 10px; margin-top: 20px; }
+  .opcao { display: flex; align-items: center; gap: 14px; width: 100%; text-align: left; background: var(--papel); border: 1px solid var(--linha); border-radius: 16px; padding: 12px 14px; box-shadow: var(--sombra); color: var(--tinta); transition: border-color .15s, background .15s, transform .15s; }
+  .opcao:hover { border-color: var(--ac); transform: translateY(-1px); }
+  .opcao.sel { border-color: var(--ac); background: var(--ac-soft); }
+  .opcao .tile { flex: 0 0 46px; height: 46px; border-radius: 13px; background: var(--pastilha); color: var(--navy); display: grid; place-items: center; font-weight: 800; font-size: 13px; letter-spacing: -.02em; }
+  .opcao .tile svg { width: 23px; height: 23px; }
+  .opcao.sel .tile { background: #fff; }
+  .opcao .tx { flex: 1; font-weight: 700; font-size: 15.5px; line-height: 1.3; letter-spacing: -.01em; }
+  .opcao .tx small { display: block; font-weight: 500; font-size: 13.5px; color: var(--apoio); margin-top: 2px; letter-spacing: 0; }
+  .opcao .ck { flex: 0 0 22px; height: 22px; border-radius: 50%; border: 1.5px solid #D9D2BD; display: grid; place-items: center; transition: all .15s; }
+  .opcao.sel .ck { background: var(--navy); border-color: var(--navy); }
+  .opcao.sel .ck::after { content: ""; width: 9px; height: 5px; border: 2px solid #fff; border-top: 0; border-right: 0; transform: rotate(-45deg) translate(1px,-1px); }
+
+  /* frases de dor: em Manrope (sem itálico serifado, reprovado em 08/10) */
+  .opcao.frase { align-items: center; padding: 16px 16px 16px 14px; gap: 12px; }
+  .opcao.frase .asp { flex: 0 0 34px; height: 34px; border-radius: 50%; background: var(--ac-soft); color: var(--ac-soft-txt); display: grid; place-items: center; font-family: var(--sans); font-size: 26px; font-weight: 800; line-height: 1; padding-top: 7px; }
+  .opcao.frase.sel .asp { background: #fff; }
+  .opcao.frase .tx { font-family: var(--sans); font-style: normal; font-weight: 700; font-size: 16.5px; line-height: 1.38; letter-spacing: -.012em; color: var(--navy); }
+
+  /* ---------- Botões ---------- */
+  .acao { position: sticky; bottom: 0; padding: 18px 0 14px; margin-top: 10px; background: linear-gradient(to bottom, transparent, var(--bg-folha) 38%); }
+  .btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; font-family: var(--sans); font-weight: 800; font-size: 16.5px; letter-spacing: -.01em; border: 0; border-radius: 14px; padding: 17px 22px; color: #fff; background: var(--navy); box-shadow: 0 10px 22px -10px rgba(27,42,74,.55); text-decoration: none; transition: transform .15s, box-shadow .15s; }
+  .btn:hover { transform: translateY(-1px); }
+  .btn.compra { background: linear-gradient(180deg, #CB4637, var(--vermelho)); box-shadow: 0 12px 24px -10px rgba(192,57,43,.55); }
+  .btn svg { width: 18px; height: 18px; }
+  .voltar { display: block; margin: 14px auto 0; background: none; border: 0; font: 600 13.5px var(--sans); color: var(--apoio); }
+  .escura .voltar { color: rgba(255,255,255,.6); }
+
+  /* ---------- Abertura ---------- */
+  .selos { display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin-top: 26px; border-top: 1px solid var(--linha); }
+  .selos div { padding: 16px 4px 0; font-size: 13px; color: var(--apoio); line-height: 1.4; }
+  .selos div + div { border-left: 1px solid var(--linha); padding-left: 16px; }
+  .selos b { display: block; font-size: 22px; font-weight: 800; color: var(--navy); letter-spacing: -.02em; margin-bottom: 2px; }
+
+  /* ---------- Depoimentos girando (padrão da assinatura.html) ---------- */
+  .dep-carrossel { overflow: hidden; width: 100vw; margin: 26px calc(50% - 50vw) 8px; padding: 6px 0 12px; outline: none;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%); mask-image: linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%); }
+  .dep-trilho { display: flex; width: max-content; animation: depGira 75s linear infinite; }
+  .dep-carrossel:focus-visible .dep-trilho { animation-play-state: paused; }
+  @media (hover: hover) { .dep-carrossel:hover .dep-trilho { animation-play-state: paused; } }
+  .dep-grupo { display: flex; align-items: flex-start; gap: 14px; padding-right: 14px; }
+  .dep-card { width: 270px; flex: 0 0 auto; background: var(--papel); border: 1px solid var(--linha); border-radius: 18px; padding: 18px; box-shadow: var(--sombra); }
+  .dep-card p { font-size: 15px; line-height: 1.55; font-weight: 500; color: var(--tinta); }
+  .dep-card .autor { margin-top: 12px; font-size: 13px; font-weight: 800; color: var(--navy); }
+  .dep-card .autor span { font-weight: 500; color: var(--apoio); }
+  .dep-print { width: 250px; flex: 0 0 auto; margin: 0; background: #fff; border: 1px solid var(--linha); border-radius: 18px; padding: 12px 12px 10px; box-shadow: var(--sombra); }
+  .dep-print img { display: block; width: 100%; height: auto; border-radius: 10px; }
+  .dep-print figcaption { margin-top: 9px; font-size: 12px; font-weight: 600; color: var(--apoio); text-align: center; }
+  @keyframes depGira { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce) { .dep-carrossel { overflow-x: auto; -webkit-mask-image: none; mask-image: none; } .dep-trilho { animation: none; } }
+  body { overflow-x: hidden; }
+
+  /* ---------- As suas contas ---------- */
+  .conta-card { margin-top: 22px; border-radius: 22px; padding: 28px 24px 24px; color: #fff; background: var(--conta-bg); box-shadow: 0 22px 44px -22px rgba(31,58,148,.7); position: relative; overflow: hidden; }
+  .conta-card::after { content: ""; position: absolute; width: 260px; height: 260px; right: -90px; top: -110px; border-radius: 50%; background: radial-gradient(circle, rgba(255,255,255,.22), transparent 68%); pointer-events: none; }
+  .grande { font-size: 46px; font-weight: 800; letter-spacing: -.035em; color: #fff; line-height: 1.02; margin: 0 0 14px; position: relative; }
+  .conta-mini { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 22px; border-top: 1px solid rgba(255,255,255,.22); position: relative; }
+  .conta-mini div { padding: 14px 8px 0 0; font-size: 12.5px; font-weight: 600; color: rgba(255,255,255,.72); line-height: 1.3; }
+  .conta-mini div + div { padding-left: 14px; border-left: 1px solid rgba(255,255,255,.22); }
+  .conta-mini b { display: block; font-size: 22px; font-weight: 800; letter-spacing: -.02em; color: #fff; margin-bottom: 2px; }
+  .conta-card .sub { color: rgba(255,255,255,.88); margin-bottom: 0; position: relative; }
+  .nota { font-size: 12.5px; color: var(--apoio); margin-top: 14px; line-height: 1.5; }
+  .conta-card .nota { color: rgba(255,255,255,.75); }
+
+  /* ---------- Ferramenta ---------- */
+  .voz { font-family: var(--sans); font-style: normal; font-weight: 600; font-size: 15.5px; line-height: 1.4; color: var(--apoio); margin: 0 0 16px; }
+  .tela-real { margin: 18px -12px 0; border: 1px solid var(--linha); border-radius: 14px; overflow: hidden; background: #fff; box-shadow: var(--sombra); }
+  .tela-real .barra-t { display: flex; align-items: center; gap: 6px; padding: 8px 12px; background: #F1F2F5; font-size: 11.5px; font-weight: 600; color: var(--apoio); }
+  .tela-real .barra-t i { width: 8px; height: 8px; border-radius: 50%; background: #D3D6DE; }
+  .tela-real .barra-t span { margin-left: 6px; }
+  .tela-real video { display: block; width: 100%; height: auto; aspect-ratio: 1264 / 796; background: #F5F4F0; }
+  .ferr { background: var(--papel); border: 1px solid var(--linha); border-radius: 22px; padding: 22px; box-shadow: var(--sombra); }
+  .ferr .tile { width: 46px; height: 46px; border-radius: 13px; background: var(--pastilha); color: var(--navy); display: grid; place-items: center; margin-bottom: 14px; }
+  .ferr .tile svg { width: 23px; height: 23px; }
+  .ferr p { font-family: var(--serif); font-size: 17.5px; line-height: 1.6; color: var(--tinta); }
+  .mock { margin-top: 18px; background: var(--cream); border-radius: 14px; padding: 14px; font-size: 12.5px; color: var(--navy); }
+  .mock .rod { margin-top: 10px; font-size: 11.5px; color: var(--apoio); font-style: italic; }
+  .chips { display: flex; gap: 7px; flex-wrap: wrap; }
+  .chip { background: #fff; border: 1px solid var(--linha); color: var(--navy); font-weight: 700; border-radius: 999px; padding: 6px 12px; }
+  .chip.d { background: var(--ac-soft); border-color: var(--linha); color: var(--ac-soft-txt); }
+  .barra { display: grid; grid-template-columns: 112px 1fr; gap: 10px; align-items: center; margin: 7px 0; font-weight: 600; }
+  .barra i { display: block; height: 9px; border-radius: 9px; background: linear-gradient(90deg, var(--navy-claro), var(--navy)); }
+  .lm div { padding: 8px 0; border-bottom: 1px solid var(--linha); display: flex; justify-content: space-between; gap: 10px; font-weight: 600; }
+  .lm div:last-of-type { border: 0; }
+  .lm b { color: var(--ac-soft-txt); font-weight: 700; }
+  .tc { display: grid; grid-template-columns: 1fr 1fr; background: #fff; border: 1px solid var(--linha); border-radius: 10px; overflow: hidden; font-weight: 800; }
+  .tc div { padding: 11px 12px; }
+  .tc div:first-child { border-right: 1px solid var(--linha); }
+  .alt { padding: 9px 12px; border: 1px solid var(--linha); border-radius: 10px; margin: 6px 0; background: #fff; font-weight: 600; }
+  .alt.ok { border-color: var(--ac); background: var(--ac-soft); }
+
+  /* ---------- Resultado ---------- */
+  .resumo { margin: 20px 0 8px; border-top: 1px solid var(--linha); }
+  .resumo div { display: flex; justify-content: space-between; gap: 18px; padding: 13px 0; border-bottom: 1px solid var(--linha); font-size: 15px; }
+  .resumo span { color: var(--apoio); font-weight: 600; flex: 0 0 34%; }
+  .resumo b { text-align: right; font-weight: 700; }
+  .resumo .vz { font-weight: 700; }
+  .feito { margin-top: 8px; }
+  .feito .item { display: flex; gap: 13px; padding: 13px 0; border-bottom: 1px solid var(--linha); }
+  .feito .item:last-child { border: 0; }
+  .feito .tile { flex: 0 0 34px; height: 34px; border-radius: 10px; background: var(--navy); color: #fff; display: grid; place-items: center; }
+  .feito .tile svg { width: 17px; height: 17px; }
+  .feito b { display: block; font-size: 14.5px; font-weight: 800; color: var(--navy); margin-bottom: 2px; }
+  .feito span.t { font-size: 14px; line-height: 1.5; color: var(--tinta); }
+  .sec-t { font-size: 15px; font-weight: 800; color: var(--navy); margin: 26px 0 4px; letter-spacing: -.01em; }
+  .tools3 .item { display: flex; align-items: center; gap: 13px; padding: 12px 0; border-bottom: 1px solid var(--linha); }
+  .tools3 .item:last-child { border: 0; }
+  .tools3 .tile { flex: 0 0 40px; height: 40px; border-radius: 12px; background: var(--pastilha); color: var(--navy); display: grid; place-items: center; }
+  .tools3 .tile svg { width: 20px; height: 20px; }
+  .tools3 b { display: block; font-size: 15px; font-weight: 700; }
+  .tools3 small { color: var(--apoio); font-size: 13px; }
+  .plano { margin-top: 26px; border-radius: 24px; background: linear-gradient(180deg, #fff, var(--cream)); border: 1px solid var(--linha); box-shadow: var(--sombra); padding: 26px 22px 22px; text-align: center; }
+  .plano .nome { display: inline-block; background: var(--ac-soft); color: var(--ac-soft-txt); font-weight: 800; font-size: 12.5px; padding: 5px 12px; border-radius: 999px; margin-bottom: 12px; }
+  .plano h2 { margin-bottom: 6px; }
+  .plano .mot { font-family: var(--serif); font-size: 16px; color: var(--apoio); line-height: 1.55; max-width: 36ch; margin: 0 auto; }
+  .plano .de { margin-top: 20px; font-size: 13.5px; font-weight: 700; color: var(--apoio); }
+  .plano .valor { font-size: 52px; font-weight: 800; letter-spacing: -.04em; color: var(--navy); line-height: 1.05; }
+  .plano .vista { font-size: 15px; font-weight: 600; color: var(--tinta); margin: 4px 0 14px; }
+  .plano .juros { font-family: var(--serif); font-size: 13.5px; color: var(--apoio); line-height: 1.5; margin-bottom: 18px; }
+  .garantia { margin-top: 14px; font-size: 14px; color: var(--apoio); font-weight: 600; }
+  .outro { text-align: center; margin: 20px 0 0; font-size: 14px; color: var(--apoio); font-weight: 500; }
+  .outro a, .saida a { color: var(--navy); font-weight: 700; text-underline-offset: 3px; }
+  .saida { text-align: center; margin-top: 22px; padding-top: 20px; border-top: 1px solid var(--linha); font-size: 14.5px; color: var(--apoio); }
+  .plano .mes { font-size: 13px; font-weight: 600; color: var(--apoio); margin: -6px 0 14px; }
+
+  /* mais elementos de convencimento na oferta (textos tirados da assinatura.html no ar) */
+  .garantia-card { display: flex; gap: 14px; align-items: flex-start; margin-top: 16px; padding: 18px; border-radius: 18px; background: var(--papel); border: 1px solid var(--linha); box-shadow: var(--sombra); }
+  .garantia-card .tile { flex: 0 0 44px; height: 44px; border-radius: 13px; background: var(--ac-soft); color: var(--ac-soft-txt); display: grid; place-items: center; }
+  .garantia-card .tile svg { width: 23px; height: 23px; }
+  .garantia-card b { display: block; font-size: 15.5px; font-weight: 800; color: var(--navy); margin-bottom: 3px; letter-spacing: -.01em; }
+  .garantia-card span { font-size: 14px; line-height: 1.5; color: var(--apoio); }
+  .sec-h { font-size: 21px; font-weight: 800; color: var(--navy); letter-spacing: -.02em; line-height: 1.2; margin: 34px 0 4px; text-wrap: balance; }
+  .sec-p { font-size: 14.5px; color: var(--apoio); line-height: 1.5; margin-bottom: 6px; }
+  .leva .item { display: flex; gap: 13px; padding: 14px 0; border-bottom: 1px solid var(--linha); }
+  .leva .item:last-child { border: 0; }
+  .leva .tile { flex: 0 0 40px; height: 40px; border-radius: 12px; background: var(--pastilha); color: var(--navy); display: grid; place-items: center; }
+  .leva .tile svg { width: 20px; height: 20px; }
+  .leva b { display: block; font-size: 15px; font-weight: 800; color: var(--navy); letter-spacing: -.01em; }
+  .leva small { display: block; margin-top: 2px; font-size: 13.5px; line-height: 1.45; color: var(--apoio); }
+  .leva small em { font-style: normal; font-weight: 700; color: var(--ac-soft-txt); }
+  .prof { display: flex; gap: 16px; align-items: center; margin-top: 14px; }
+  .prof img { width: 104px; height: 128px; border-radius: 16px; object-fit: cover; object-position: 50% 12%; flex: 0 0 auto; box-shadow: var(--sombra); }
+  .prof b { display: block; font-size: 17px; font-weight: 800; color: var(--navy); letter-spacing: -.015em; }
+  .prof .cargo { font-size: 13px; font-weight: 700; color: var(--ac-soft-txt); margin: 2px 0 8px; line-height: 1.35; }
+  .prof p { font-size: 14px; line-height: 1.5; color: var(--apoio); }
+  .nums { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 16px; border-top: 1px solid var(--linha); }
+  .nums div { padding: 14px 4px 0; font-size: 12.5px; color: var(--apoio); line-height: 1.35; }
+  .nums div + div { border-left: 1px solid var(--linha); padding-left: 12px; }
+  .nums b { display: block; font-size: 22px; font-weight: 800; color: var(--navy); letter-spacing: -.02em; }
+  .naoe { margin-top: 14px; border-radius: 18px; background: var(--cream); padding: 6px 18px; }
+  .naoe div { padding: 14px 0; border-bottom: 1px solid var(--linha); font-size: 14px; line-height: 1.5; color: var(--apoio); }
+  .naoe div:last-child { border: 0; }
+  .naoe b { display: block; color: var(--navy); font-size: 14.5px; font-weight: 800; margin-bottom: 2px; }
+  .faq details { border-bottom: 1px solid var(--linha); }
+  .faq summary { list-style: none; cursor: pointer; padding: 15px 28px 15px 0; font-size: 15px; font-weight: 700; color: var(--navy); position: relative; letter-spacing: -.01em; }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after { content: "+"; position: absolute; right: 4px; top: 50%; transform: translateY(-50%); font-size: 22px; font-weight: 600; color: var(--ac-soft-txt); }
+  .faq details[open] summary::after { content: "−"; }
+  .faq details p { padding: 0 6px 16px 0; font-size: 14px; line-height: 1.6; color: var(--apoio); }
+  .cta-fim { margin-top: 30px; text-align: center; }
+  .cta-fim .quanto { font-size: 14px; font-weight: 600; color: var(--apoio); margin-bottom: 12px; }
+  .cta-fim .quanto b { color: var(--navy); font-weight: 800; }
+
+  /* ---------- Comentar tela (homologação) ---------- */
+  .coment { margin-top: 30px; border-top: 1px dashed #CFC6A9; padding-top: 12px; }
+  .escura .coment { border-color: rgba(255,255,255,.25); }
+  .coment summary { font-size: 12px; font-weight: 700; color: var(--apoio); cursor: pointer; }
+  .escura .coment summary { color: rgba(255,255,255,.65); }
+  .coment textarea { width: 100%; margin-top: 8px; min-height: 70px; font: 14px var(--sans); padding: 10px; border: 1px solid var(--linha); border-radius: 10px; }
+
+  /* ---------- Botão fixo da oferta (celular e desktop) ---------- */
+  /* ---------- Captura da Aula 01 ---------- */
+  .cap-ov { position: fixed; inset: 0; z-index: 200; display: flex; align-items: center; justify-content: center; padding: 18px; background: rgba(23,35,63,.72); }
+  .cap-ov[hidden] { display: none; }
+  .cap-modal { position: relative; width: 100%; max-width: 440px; background: #fff; border-radius: 20px; padding: 30px 24px 22px; box-shadow: 0 30px 60px -20px rgba(0,0,0,.5); }
+  .cap-x { position: absolute; top: 10px; right: 12px; border: 0; background: none; font-size: 26px; line-height: 1; color: var(--apoio); width: 44px; height: 44px; }
+  .cap-modal h3 { font-size: 20px; font-weight: 800; color: var(--navy); letter-spacing: -.02em; margin-bottom: 8px; padding-right: 36px; }
+  .cap-modal p { font-size: 14.5px; line-height: 1.6; color: var(--apoio); margin-bottom: 16px; }
+  .cap-form { display: grid; gap: 10px; }
+  .cap-form input { width: 100%; padding: 14px 16px; border: 1px solid #CFD5E3; border-radius: 12px; font: 500 16px var(--sans); color: var(--tinta); }
+  .cap-form .btn[disabled] { opacity: .6; cursor: wait; }
+  .cap-erro { display: none; margin: -4px 0 0 !important; font-size: 13px !important; color: var(--vermelho) !important; }
+  .cap-erro.on { display: block; }
+  .cap-ok { display: none; font-weight: 700; color: #1E7A46 !important; }
+  .cap-ok.on { display: block; }
+  .cap-legal { margin: 14px 0 6px !important; font-size: 12px !important; }
+  body.hm .homolog { display: block; }
+  .fixo { position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); background: rgba(255,255,255,.96); border-top: 1px solid var(--linha); box-shadow: 0 -10px 30px -12px rgba(23,35,63,.28); transform: translateY(110%); transition: transform .28s ease; visibility: hidden; }
+  .fixo.on { transform: none; visibility: visible; }
+  .fixo-in { max-width: 520px; margin: 0 auto; display: flex; align-items: center; gap: 14px; }
+  .fixo-txt { flex: 1 1 auto; min-width: 0; line-height: 1.25; }
+  .fixo-txt b { display: block; font-size: 15px; font-weight: 800; color: var(--navy); letter-spacing: -.01em; }
+  .fixo-txt span { font-size: 12.5px; font-weight: 600; color: var(--apoio); }
+  .fixo .btn { width: auto; flex: 0 0 auto; min-height: 48px; padding: 13px 20px; font-size: 15.5px; }
+  body.fixo-on { padding-bottom: 76px; }
+  body.fixo-on .toast { bottom: 92px; }
+  @media (prefers-reduced-motion: reduce) { .fixo { transition: none; } }
+  .toast { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); background: var(--navy); color: #fff; font-weight: 600; font-size: 13px; padding: 12px 16px; border-radius: 12px; z-index: 60; max-width: 90vw; text-align: center; display: none; box-shadow: 0 10px 30px rgba(0,0,0,.3); }
+  .toast.on { display: block; }
+  @media (max-width: 420px) { h1 { font-size: 27px; } h2 { font-size: 23px; } .plano .valor { font-size: 44px; } }
+
+  /* =====================================================================
+     v4 (08/10): mais cor, menos pastel. Folha creme da marca, cartões brancos,
+     ícones em navy com dourado, seleção em navy, cartão do plano em navy.
+     ===================================================================== */
+  :root { --papel: #FFFFFF; --sombra: 0 1px 2px rgba(27,42,74,.06), 0 10px 26px -12px rgba(27,42,74,.28); }
+  .folha { background: var(--bg-folha); }
+  .acao { background: linear-gradient(to bottom, rgba(251,246,233,0), var(--bg-folha) 38%); }
+
+  .pilula { background: var(--navy); color: #fff; }
+  .pilula b { background: var(--ac); color: var(--navy); }
+
+  .opcao .tile, .ferr .tile, .tools3 .tile, .leva .tile { background: linear-gradient(145deg, var(--navy-claro), var(--navy)); color: var(--ac); box-shadow: 0 6px 14px -8px rgba(27,42,74,.7); }
+  .opcao { border-color: var(--linha); }
+  .opcao:hover { border-color: var(--ac); }
+  .opcao.sel { background: var(--navy); border-color: var(--navy); color: #fff; }
+  .opcao.sel .tx, .opcao.frase.sel .tx { color: #fff; }
+  .opcao.sel .tx small { color: rgba(255,255,255,.72); }
+  .opcao.sel .tile { background: var(--ac); color: var(--navy); }
+  .opcao.sel .ck { background: var(--ac); border-color: var(--ac); }
+  .opcao.sel .ck::after { border-color: var(--navy); }
+  .opcao.frase .asp { background: linear-gradient(145deg, var(--ac2), var(--ac)); color: var(--navy); }
+  .opcao.frase.sel .asp { background: var(--ac); }
+
+  .garantia-card .tile { background: linear-gradient(145deg, var(--ac2), var(--ac)); color: var(--navy); }
+  .naoe { background: #fff; border: 1px solid var(--linha); box-shadow: var(--sombra); }
+  .naoe div { border-color: var(--linha); }
+  .nums b, .selos b { color: var(--navy); }
+  .dep-print { border-color: var(--ac2); }
+  .tela-real { box-shadow: 0 14px 30px -14px rgba(27,42,74,.45); }
+  .prof img { box-shadow: 0 12px 26px -12px rgba(27,42,74,.55); }
+  .sec-h { padding-top: 6px; }
+
+  /* cartão do plano em navy: o vermelho do botão aparece com força */
+  .plano { background: radial-gradient(120% 130% at 85% -10%, var(--navy-claro) 0%, var(--navy) 50%, var(--navy-fundo) 100%); border: 0; color: #fff; box-shadow: 0 22px 44px -20px rgba(27,42,74,.7); }
+  .plano .nome { background: linear-gradient(145deg, var(--ac2), var(--ac)); color: var(--navy); }
+  .plano h2 { color: #fff; }
+  .plano .mot, .plano .de, .plano .mes { color: rgba(255,255,255,.72); }
+  .plano .valor { color: #fff; }
+  .plano .vista { color: rgba(255,255,255,.92); }
+  .plano .juros { color: rgba(255,255,255,.6); }
+
+  /* ---------- Overlay "montando o seu plano" ---------- */
+  .overlay { position: fixed; inset: 0; z-index: 70; display: none; align-items: center; justify-content: center; padding: 28px; text-align: center; color: #fff;
+    background: radial-gradient(120% 120% at 80% -10%, var(--navy-claro) 0%, var(--navy) 50%, var(--navy-fundo) 100%); opacity: 0; transition: opacity .35s ease; }
+  .overlay.on { display: flex; }
+  .overlay.vis { opacity: 1; }
+  .ov-in { max-width: 380px; width: 100%; }
+  .ov-anel { width: 64px; height: 64px; margin: 0 auto 26px; border-radius: 50%; border: 4px solid rgba(255,255,255,.14); border-top-color: var(--ac); animation: gira 1s linear infinite; }
+  @keyframes gira { to { transform: rotate(360deg); } }
+  .ov-in h2 { color: #fff; font-size: 27px; margin-bottom: 8px; }
+  .ov-in .ov-sub { font-size: 16px; line-height: 1.5; color: rgba(255,255,255,.75); margin-bottom: 28px; }
+  .ov-pas { display: grid; gap: 12px; text-align: left; }
+  .ov-pas div { display: flex; align-items: center; gap: 12px; font-size: 14.5px; font-weight: 600; color: rgba(255,255,255,.45); transition: color .3s; }
+  .ov-pas div i { flex: 0 0 22px; height: 22px; border-radius: 50%; border: 1.5px solid rgba(255,255,255,.3); display: grid; place-items: center; transition: all .3s; }
+  .ov-pas div.ok { color: #fff; }
+  .ov-pas div.ok i { background: var(--ac); border-color: var(--ac); }
+  .ov-pas div.ok i::after { content: ""; width: 9px; height: 5px; border: 2px solid var(--navy); border-top: 0; border-right: 0; transform: rotate(-45deg) translate(1px,-1px); }
+
+
+  /* ---------- Paletas (seletor "Cores" na barra de homologação) ----------
+     A = navy + azul vivo, sem amarelo.  B = navy e cinza frio, dourado só em detalhe pequeno. */
+  :root { --ac:#5B8DEF; --ac2:#8FB4F7; --ac-soft:#E6EEFC; --ac-soft-txt:#2A50A5; --bg-folha:#F3F6FC; --linha:#DCE4F2;
+    --band-plano:linear-gradient(180deg,#DCE7FB 0%,#BFD2F6 100%); --band-creme:#E9EFFB;
+    --sel-bg:linear-gradient(145deg,#6B99F2,#4A7DE8); --sel-ink:#fff; --sel-tile-bg:#fff; --sel-tile-ink:#1B2A4A; }
+  :root { --conta-bg: linear-gradient(145deg, #3A66F0 0%, #2447B8 48%, #1B2A4A 100%); }
+  body[data-p="b"] { --conta-bg: linear-gradient(145deg, #3C5389 0%, #2B3E66 55%, #17233F 100%); --ac:#C8A84B; --ac2:#DCC36F; --ac-soft:#EEF1F6; --ac-soft-txt:#4A5570; --bg-folha:#F5F6F9; --linha:#E1E5EE;
+    --band-plano:linear-gradient(180deg,#EDF0F6 0%,#DDE3EE 100%); --band-creme:#EDF0F6;
+    --sel-bg:linear-gradient(145deg,#38508A,#2B3E66); --sel-ink:#fff; --sel-tile-bg:#C8A84B; --sel-tile-ink:#1B2A4A; }
+
+  /* ---------- v5 (08/10): perguntas em navy, oferta em faixas coloridas ---------- */
+  .escura .opcao.sel { background: var(--sel-bg); border-color: var(--ac); }
+  .escura .opcao.sel .tx, .escura .opcao.frase.sel .tx { color: var(--sel-ink); }
+  .escura .opcao.sel .tx small { color: rgba(255,255,255,.78); }
+  .escura .opcao.sel .tile, .escura .opcao.frase.sel .asp { background: var(--sel-tile-bg); color: var(--sel-tile-ink); }
+  .escura .opcao.sel .ck { background: var(--sel-tile-bg); border-color: var(--sel-tile-bg); }
+  .escura .opcao.sel .ck::after { border-color: var(--sel-tile-ink); }
+  .escura .opcao { border-color: transparent; box-shadow: 0 10px 24px -14px rgba(0,0,0,.6); }
+
+  .faixa { width: 100vw; margin-left: calc(50% - 50vw); padding: 34px 0 36px; }
+  .faixa-in { max-width: 520px; margin: 0 auto; padding: 0 20px; }
+  .faixa .sec-h:first-child, .faixa .sec-t:first-child { margin-top: 0; }
+  .f-claro { background: var(--bg-folha); padding-top: 4px; }
+  .f-branco { background: #fff; }
+  .f-creme { background: var(--band-creme); }
+  .f-ouro { background: var(--band-plano); }
+  .f-ouro .outro, .f-ouro .outro a { color: var(--navy); }
+  .f-navy, .f-conv { background: radial-gradient(120% 120% at 85% -10%, var(--navy-claro) 0%, var(--navy) 50%, var(--navy-fundo) 100%); color: #fff; }
+  .f-navy .sec-h { color: #fff; }
+  .f-navy .sec-p { color: rgba(255,255,255,.7); }
+  .demo-moldura { margin-top: 14px; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 40px -18px rgba(0,0,0,.7); background: #fff; }
+  .demo-moldura iframe { display: block; width: 100%; height: 590px; border: 0; }
+  .vsl-moldura { margin-top: 14px; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 40px -18px rgba(0,0,0,.7); background: #0d1526; }
+  .vsl-moldura iframe { display: block; width: 100%; aspect-ratio: 16 / 9; border: 0; }
+  .conv-h { color: #fff; font-size: 27px; margin: 0 0 22px; }
+  .conv div { padding: 15px 0; border-top: 1px solid rgba(255,255,255,.16); font-size: 15px; line-height: 1.55; color: rgba(255,255,255,.78); }
+  .conv div b { display: block; color: var(--ac); font-size: 17px; font-weight: 800; letter-spacing: -.012em; margin-bottom: 3px; }
+  .conv-conta { margin: 8px 0 22px; padding: 18px; border-radius: 16px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.16); font-size: 15px; line-height: 1.6; color: rgba(255,255,255,.88); }
+  .conv-conta b { color: #fff; }
+  .f-conv .garantia { color: rgba(255,255,255,.84); text-align: center; }
+  .f-branco .faq summary { color: var(--navy); }
+
+  /* hero da oferta: quebra a objeção (técnica "pois é, eu também pensava assim, mas eu percebi") */
+  .f-hero { padding-top: 40px; }
+  .hero3-h { color: #fff; font-size: 29px; margin-bottom: 14px; }
+  .hero3 { font-size: 17px; line-height: 1.6; color: rgba(255,255,255,.86); margin-bottom: 22px; }
+  .hero3 b { color: var(--ac2); font-weight: 800; }
+  .hero3-args > div { display: flex; gap: 13px; padding: 14px 0; border-top: 1px solid rgba(255,255,255,.16); }
+  .hero3-args .tile { flex: 0 0 34px; height: 34px; border-radius: 10px; background: var(--ac); color: var(--navy); display: grid; place-items: center; }
+  .hero3-args .tile svg { width: 19px; height: 19px; }
+  .hero3-args b { display: block; font-size: 15.5px; font-weight: 800; color: #fff; letter-spacing: -.01em; }
+  .hero3-args small { display: block; margin-top: 2px; font-size: 14px; line-height: 1.5; color: rgba(255,255,255,.7); }
+  .hero3-fim { margin-top: 10px; font-size: 13.5px; font-weight: 600; color: rgba(255,255,255,.6); text-align: center; }
+  @media (prefers-reduced-motion: reduce) { .ov-anel { animation: none; } .overlay { transition: none; } }
+</style>
+</head>
+<body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MGQFHR5J" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+<div class="homolog" role="region" aria-label="Barra de homologação">
+  <div class="homolog-linha">
+    <strong>Protótipo para homologação</strong>
+    <span>não é a página final</span>
+    <span class="sp"></span>
+    <label>Ir para
+      <select id="irPara" aria-label="Ir para a tela"></select>
+    </label>
+    <label>Cores <select id="paleta" aria-label="Paleta de cores"><option value="a">A · azul vivo</option><option value="b">B · navy e cinza</option></select></label>
+    <button id="btnOverlay" type="button">Ver overlay</button>
+    <button id="btnEventos" type="button">Eventos</button>
+    <button id="btnReiniciar" type="button">Reiniciar</button>
+    <button id="btnCopiar" class="copiar" type="button">Copiar meus comentários</button>
+  </div>
+  <div class="homolog-eventos" id="logEventos" aria-live="polite"></div>
+</div>
+
+<header class="topo">
+  <div class="topo-in">
+    <div class="marca"><b>Fluência Contábil</b><span id="rotuloPasso"></span></div>
+    <div class="seg" id="seg" aria-hidden="true"></div>
+    <div class="heroTopo" id="heroTopo"></div>
+  </div>
+</header>
+
+<main class="folha" id="folha">
+  <div class="folha-in"><div id="tela"></div></div>
+</main>
+
+<div class="overlay" id="overlay" role="status" aria-live="polite">
+  <div class="ov-in">
+    <div class="ov-anel" aria-hidden="true"></div>
+    <h2>Estamos pensando em você.</h2>
+    <p class="ov-sub">Montando o seu plano a partir das suas respostas.</p>
+    <div class="ov-pas" id="ovPassos"></div>
+  </div>
+</div>
+
+<div class="cap-ov" id="capOv" hidden role="dialog" aria-modal="true" aria-labelledby="capTit">
+  <div class="cap-modal">
+    <button class="cap-x" type="button" id="capX" aria-label="Fechar">×</button>
+    <h3 id="capTit">Aula 01 completa, em PDF</h3>
+    <p>73 páginas: o Método das Partidas Dobradas, com 30 questões comentadas. Deixe seu e-mail e o download começa na hora.</p>
+    <form class="cap-form" id="capForm" novalidate>
+      <input type="email" id="capEmail" name="email" placeholder="seu@email.com" required autocomplete="email" inputmode="email" aria-label="Seu e-mail">
+      <p class="cap-erro" id="capErro">Confere o e-mail? Ele não parece válido.</p>
+      <button type="submit" class="btn" id="capBtn">Baixar a Aula 01</button>
+    </form>
+    <p class="cap-ok" id="capOk">Pronto, o download começou. Bons estudos!</p>
+    <p class="cap-legal">Sem spam. Você entra na newsletter da Fluência Contábil e pode sair quando quiser.</p>
+  </div>
+</div>
+<div class="fixo" id="fixo" aria-hidden="true"></div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+/* =====================================================================
+   ÍCONES (traço, 24x24)
+   ===================================================================== */
+var P = {
+  balanca:  '<path d="M12 3v18M7 21h10M5 7h14M5 7l-3 7a3 3 0 0 0 6 0L5 7zM19 7l-3 7a3 3 0 0 0 6 0l-3-7z"/>',
+  predio:   '<path d="M4 21V5a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v16M14 10h5a1 1 0 0 1 1 1v10M2 21h20M8 8h2M8 12h2M8 16h2"/>',
+  colunas:  '<path d="M3 21h18M6 21V10M10 21V10M14 21V10M18 21V10M3 10l9-6 9 6"/>',
+  calc:     '<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 12h.01M12 12h.01M16 12h.01M8 16h.01M12 16h.01M16 16h.01"/>',
+  bussola:  '<circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/>',
+  raio:     '<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>',
+  calend:   '<path d="M4 6h16v14H4zM4 10h16M8 3v4M16 3v4"/>',
+  ampul:    '<path d="M6 3h12M6 21h12M7 3c0 5 5 6 5 9s-5 4-5 9M17 3c0 5-5 6-5 9s5 4 5 9"/>',
+  ajuda:    '<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 .9-1 1.7M12 17h.01"/>',
+  broto:    '<path d="M12 21v-8M12 13c0-4 3-6 7-6 0 4-3 6-7 6zM12 16c0-3-2-5-6-5 0 3 2 5 6 5z"/>',
+  alvo:     '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
+  volta:    '<path d="M9 14L4 9l5-5M4 9h10a6 6 0 0 1 0 12h-3"/>',
+  carteira: '<path d="M3 7h15a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V7zM3 7l12-3v3M17 14h.01"/>',
+  relogio:  '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  etiqueta: '<path d="M3 12V4h8l10 10-8 8L3 12zM7.5 8.5h.01"/>',
+  ok:       '<circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/>',
+  plano:    '<path d="M4 6h16v14H4zM4 10h16M8 3v4M16 3v4M9 15l2 2 4-4"/>',
+  grafico:  '<path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/>',
+  lista:    '<path d="M9 6h11M9 12h11M9 18h11M3 6l1 1 2-2M3 12l1 1 2-2M3 18l1 1 2-2"/>',
+  livro:    '<path d="M2 5h7a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H2zM22 5h-7a3 3 0 0 0-3 3v13a2 2 0 0 1 2-2h8z"/>',
+  prancheta:'<path d="M9 3h6v4H9zM6 5H5a1 1 0 0 0-1 1v15a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1h-1M9 12h6M9 16h4"/>',
+  timer:    '<circle cx="12" cy="14" r="8"/><path d="M12 14l3-3M9 2h6"/>',
+  escudo:   '<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3zM9 12l2 2 4-4"/>',
+  pdf:      '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5zM14 3v5h5M9 13h6M9 17h4"/>'
+};
+function svg(nome) { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + P[nome] + '</svg>'; }
+
+/* =====================================================================
+   DADOS — na versão final, só este bloco muda de um produto para outro
+   (para o pacote Receita Federal, troca-se este bloco).
+   ===================================================================== */
+var VSL_URL = 'https://player-vz-7867cfdb-be1.tv.pandavideo.com.br/embed/?v=373b4407-d936-4434-8c7c-4102cd40cc48';
+var DADOS = {
+  provas: [
+    { rotulo: 'Auditor Fiscal / SEFAZ',          ico: 'balanca', edital: 'O plano segue o conteúdo do último edital da sua SEFAZ e é atualizado quando o novo sair.' },
+    { rotulo: 'Receita Federal',                 ico: 'predio', edital: 'O plano de estudos é de Receita Federal, montado sobre o último edital. Quando o novo edital sair, ele é atualizado para você.' },
+    { rotulo: 'Tribunais de Contas',             ico: 'colunas', edital: 'O plano segue o conteúdo do último edital de Tribunais de Contas e é atualizado quando o novo sair.' },
+    { rotulo: 'Contador / Exame de Suficiência', ico: 'calc', edital: 'O plano segue o conteúdo do último Exame de Suficiência e é atualizado quando o novo edital sair.' },
+    { rotulo: 'Outra prova, ou ainda não escolhi', ico: 'bussola', edital: 'Você começa pela base que cai em qualquer prova de contabilidade. Quando escolher o edital, o plano se ajusta a ele.' }
+  ],
+  /* regra: até 92 dias = trimestral; de 3 a 6 meses e sem data = semestral; mais de 6 meses = anual.
+     Se a trava é o preço, o anual desce para o semestral (que ainda cobre 6 meses). */
+  prazos: [
+    { id: 'm3',  rotulo: 'Menos de 3 meses',   sub: 'A prova está perto',    ico: 'raio',   semanas: 8,  plano: 'trimestral' },
+    { id: 'm36', rotulo: 'De 3 a 6 meses',     sub: '',                      ico: 'calend', semanas: 19, plano: 'semestral' },
+    { id: 'm6',  rotulo: 'Mais de 6 meses',    sub: '',                      ico: 'ampul',  semanas: 39, plano: 'anual' },
+    { id: 'sd',  rotulo: 'Ainda não tem data', sub: 'Quero começar a base',  ico: 'ajuda',  semanas: 0,  plano: 'semestral' }
+  ],
+  momentos: [
+    { rotulo: 'Estou começando agora',             sub: 'Ainda não estudo para concurso',     ico: 'broto', ajuste: 'Como você está começando, o plano abre pela base, na ordem em que ela se constrói.' },
+    { rotulo: 'Estudo há mais de 1 ano',           sub: 'E a aprovação ainda não veio',       ico: 'ampul', ajuste: 'Como você já estuda há mais de 1 ano, o plano não repete o que você já domina: vai atrás do que ainda erra.' },
+    { rotulo: 'Já fiz a prova e fiquei por pouco', sub: 'Faltaram algumas questões',          ico: 'alvo', ajuste: 'Como você ficou perto, o plano foca nos pontos que separam a nota de corte do seu resultado.' },
+    { rotulo: 'Estou voltando depois de anos',     sub: 'Trabalho, família: a vida aconteceu', ico: 'volta', ajuste: 'Como você está voltando, o plano reconstrói a base antes de apertar o ritmo.' }
+  ],
+  horas: [
+    { rotulo: 'Menos de 1 hora por dia', tile: '<1h',  h: 0.5 },
+    { rotulo: 'De 1 a 2 horas por dia',  tile: '1–2h', h: 1.5 },
+    { rotulo: 'De 2 a 4 horas por dia',  tile: '2–4h', h: 3 },
+    { rotulo: 'Mais de 4 horas por dia', tile: '4h+',  h: 5 }
+  ],
+  /* ordem aprovada em 07/10/2026 */
+  frases: [
+    { frase: 'Eu já errei essa mesma questão cinco vezes.', ferr: 'Plano de Estudos', ico: 'plano', tipo: 'plano',
+      texto: 'O Plano de Estudos monta a sua semana no tempo que você tem e agenda as revisões em D+3, D+7, D+16 e D+35. A revisão chega antes de você esquecer.' },
+    { frase: 'Eu não sei o que a banca quer. Tudo parece importante.', ferr: 'Mapa de Incidência', ico: 'grafico', tipo: 'mapa',
+      texto: 'O Mapa de Incidência mostra, item por item da norma, o que a sua banca mais cobra, a partir de questões reais classificadas uma a uma. Você para de adivinhar.' },
+    { frase: 'Eu estudo o edital inteiro e não sei por onde começar.', ferr: 'Meu Edital', ico: 'lista', tipo: 'edital',
+      texto: 'O Meu Edital organiza o seu edital item por item, cada item ligado às aulas e às normas do curso. Você sabe por onde começar.' },
+    { frase: 'Eu sabia o bizu, mas a banca trocou uma palavra e eu errei.', ferr: 'Módulo 1: a lógica do débito e do crédito', ico: 'livro', tipo: 'modulo1',
+      texto: 'Quem entende o lançamento não depende de bizu quando a banca troca a palavra. O Módulo 1 ensina a lógica do débito e do crédito, e a Aula 01 você testa de graça.' },
+    { frase: 'Em casa eu acerto. Na prova, eu chuto no desespero.', ferr: 'Banco de questões comentadas', ico: 'prancheta', tipo: 'banco',
+      texto: 'Mais de 5.800 questões de banca real, com comentário que explica por que cada alternativa errada está errada. Você treina com a pergunta do jeito que a banca escreve.' },
+    { frase: 'Eu perco minutos só pra entender o que a questão pede.', ferr: 'Simulador', ico: 'timer', tipo: 'simulador',
+      texto: 'O Simulador treina a classificação de contas e os lançamentos contra o relógio, para você ganhar velocidade antes de começar a conta.' }
+  ],
+  objecoes: [
+    { rotulo: 'Já comprei curso e não usei', hero: { fala: "“Já comprei curso e não usei.”", percebi: "Mas eu percebi que quase nunca o problema é você. É o curso que não cabe na sua semana, e aí ele vira pasta esquecida.", args: [{ t: "7 dias para testar por dentro", s: "Entra, assiste, resolve questão. Se não for para você, devolvemos 100% do valor." },{ t: "Uma semana que cabe na sua vida", s: "O Plano de Estudos monta a agenda pelo tempo que você tem. Faltou um dia? A grade recalcula sozinha." },{ t: "Muito mais para usar do que videoaula", s: "Questões comentadas, Meu Edital, Mapa de Incidência, Simulador e Plano de Estudos. Sempre tem o que fazer hoje." }] }, ico: 'carteira', resp: 'Por isso o Plano de Estudos monta a semana pelo tempo que você diz ter, e não pelo tempo que o curso gostaria. Se dentro de 7 dias você achar que não é para você, devolvemos 100% do valor.' },
+    { rotulo: 'Medo de não ter tempo para mais uma coisa', hero: { fala: "“Não tenho tempo para mais uma coisa.”", percebi: "Mas eu percebi que o que falta não é tempo. É saber o que estudar nele. Estudar sem direção gasta horas que a prova nem cobra.", args: [{ t: "Você disse que tem {horas}", s: "É a partir disso que o plano monta a sua semana, sem somar hora nenhuma a mais." },{ t: "Estude primeiro o que a sua banca cobra", s: "O Mapa de Incidência mostra, item por item da norma, o que vale ponto." },{ t: "7 dias para testar", s: "Se não couber na sua rotina, devolvemos 100% do valor." }] }, ico: 'relogio', resp: 'O plano parte das horas que você escolheu, sem somar nada além disso. E há 7 dias para testar por dentro e pedir o dinheiro de volta.' },
+    { rotulo: 'O preço', hero: { fala: "“O preço pesa.”", percebi: "Mas eu percebi que o preço que importa é o do ponto que você perde na prova. E aqui o número está na tela, sem pegadinha.", args: [{ t: "{mes}", s: "Pagamento único. Sem renovação automática e sem módulo avulso para pagar depois." },{ t: "Os dois valores antes do clique", s: "Parcelado e à vista na mesma tela. No cartão há juros do gateway, e a gente avisa." },{ t: "7 dias de garantia", s: "Testou, não gostou, devolvemos 100% do valor pelo mesmo meio de pagamento." }] }, ico: 'etiqueta', resp: 'O pagamento é único, sem renovação automática. Você vê os dois números, parcelado e à vista, antes de clicar. E tem 7 dias para pedir o dinheiro de volta.' },
+    { rotulo: 'Não sei se serve para a minha prova', hero: { fala: "“Não sei se serve para a minha prova.”", percebi: "Mas eu percebi que contabilidade cai em prova de Fiscal, de Contador, de controle e de Tribunais de Contas. O que muda é como a banca cobra, e a plataforma mostra isso.", args: [{ t: "Você marcou: {prova}", s: "O Mapa de Incidência cruza a norma com a sua banca e mostra o que ela mais cobra." },{ t: "Cole o seu edital", s: "O Meu Edital vira uma lista, cada item com a aula que o cobre. Você vê o que serve para a sua prova." },{ t: "7 dias para conferir por dentro", s: "Se não servir, devolvemos 100% do valor." }] }, ico: 'ajuda', resp: 'Contabilidade cai em provas de fiscal, de controle, de tribunais e de contador. O Mapa de Incidência mostra o que a sua banca cobra, item por item.' },
+    { rotulo: 'Nada. Quando eu decido, eu começo.', ico: 'ok', resp: 'Então vamos ao seu plano.' }
+  ],
+  planos: {
+    trimestral: { kw: '4Qx0g3O', nome: 'Plano trimestral', meses: 3, parcela: 'R$ 44,16', vista: 'R$ 427', mes: 'R$ 142 por mês de acesso' },
+    semestral:  { kw: 'DXvdSEu', nome: 'Plano semestral',  meses: 6, parcela: 'R$ 56,57', vista: 'R$ 547', mes: 'R$ 91 por mês de acesso' },
+    /* ANUAL: R$ 814,80 ou 12× R$ 84,27, link Ze6v1aC (confirmado pelo Vinícius em 08/10/2026; existe só no quiz). Trimestral e semestral: mesmos links da assinatura.html. */
+    anual:      { kw: 'Ze6v1aC', nome: 'Plano anual',      meses: 12, parcela: 'R$ 84,27', vista: 'R$ 814,80', mes: 'R$ 68 por mês de acesso' }
+  },
+  /* prova social: os mesmos itens e legendas do carrossel da assinatura.html no ar.
+     Em breve entra vídeo de feedback de aluno; até lá, só prints e textos reais. */
+  social: [
+    { t: 'txt',   txt: 'Contabilidade sempre foi a minha maior dificuldade na área fiscal, e a forma como o conteúdo é apresentado tem ajudado bastante. As aulas são objetivas, certeiras e vão direto ao ponto.', autor: 'João Renan S.', fonte: 'aluno da 1ª turma, pela plataforma' },
+    { t: 'print', img: 'whatsapp-atencao-ao-detalhe',      alt: 'Print da conversa: aluna fala em atenção ao detalhe e no lado humano do professor', w: 383, h: 269, cap: 'Aluna beta · print do WhatsApp' },
+    { t: 'txt',   txt: 'De altíssimo nível seu conteúdo e aprofundamento de um CPC tão complexo. Você tem uma boa didática, mantenha-se firme, logo seu trabalho vai bombar! Parabéns!', autor: '@Mr4lessandro', fonte: 'YouTube' },
+    { t: 'print', img: 'whatsapp-plataforma-sensacional',  alt: 'Print da conversa: aluno elogia a plataforma e a didática que amarra o conteúdo', w: 371, h: 273, cap: 'Aluno beta · print do WhatsApp' },
+    { t: 'print', img: 'whatsapp-impressionada-mercado',   alt: 'Print da conversa: aluna diz estar impressionada com o trabalho e vai entrar na plataforma para dar feedback', w: 369, h: 470, cap: 'Aluna beta · print do WhatsApp' },
+    { t: 'txt',   txt: 'Aula excelente, professor. Estou estudando para certificações do mercado financeiro através dos seus vídeos. Muito obrigado!', autor: '@LuizMarconiluizmn', fonte: 'YouTube' }
+  ],
+  leva: [
+    { ico: 'livro',     t: 'O curso inteiro, em 5 módulos', s: '35 aulas e 3 bônus, do zero à Contabilidade Avançada, em vídeo e PDF.', r: 'você não monta o caminho. Ele já vem em ordem.' },
+    { ico: 'prancheta', t: 'Mais de 5.800 questões de banca real, comentadas', s: 'Com filtro por assunto, banca, órgão e ano, e cadernos que você monta.', r: 'você entende por que cada alternativa errada está errada.' },
+    { ico: 'lista',     t: 'Meu Edital', s: 'Você cola o seu edital e ele vira uma lista, cada item com a aula que o cobre.', r: 'acaba o garimpo no PDF do edital.' },
+    { ico: 'grafico',   t: 'Mapa de Incidência', s: 'O item da norma cruzado com a banca: quanto mais azul, mais aquela banca cobra.', r: 'você estuda primeiro o que a sua banca cobra de verdade.' },
+    { ico: 'plano',     t: 'Plano de Estudos', s: 'Agenda semanal na sua rotina, com revisão espaçada em D+3, 7, 16 e 35 dias.', r: 'acaba o estuda-esquece.' },
+    { ico: 'timer',     t: 'Simulador de Lançamentos', s: 'Treino de partida dobrada com níveis de dificuldade.', r: '' },
+    { ico: 'pdf',       t: 'PDFs baixáveis e certificado', s: 'Dá para estudar offline. As videoaulas ficam na plataforma, em qualquer dispositivo.', r: '' }
+  ],
+  conv: [
+    { t: 'Na prova, a banca troca uma palavra e você erra.', s: ' Com a lógica do débito e do crédito, você reconhece o lançamento, venha como vier.' },
+    { t: 'Quando tudo parece importante, você estuda o que não cai.', s: ' O Mapa de Incidência mostra, item por item da norma, o que a sua banca cobra. Você começa pelo que vale ponto.' },
+    { t: 'Estuda, esquece, estuda de novo.', s: ' O Plano de Estudos põe a revisão no dia certo, em D+3, 7, 16 e 35, sem você precisar lembrar.' },
+    { t: 'Meio ponto é uma questão de contabilidade.', s: ' E contabilidade é a disciplina que mais pesa nas provas de Fiscal e de Contador.' },
+    { t: 'A data da sua prova não negocia.', s: ' Cada semana sem plano é uma semana a menos para chegar pronto.' }
+  ],
+  naoe: [
+    { t: 'Não é preparatório completo.', s: 'Não tem Direito, Português, Legislação Tributária nem Raciocínio Lógico. É Contabilidade Geral, Societária e Avançada, inteira e em profundidade.' },
+    { t: 'Não é assinatura recorrente nem acesso vitalício.', s: 'Pagamento único, 3 ou 6 meses de acesso, sem renovação automática.' },
+    { t: 'Não é garantia de aprovação.', s: 'Nenhum curso é, e quem promete isso está vendendo outra coisa.' }
+  ],
+  faq: [
+    { q: 'Sou iniciante em contabilidade. Consigo acompanhar?', a: 'Sim. O Módulo 1 começa do zero: introdução, partidas dobradas, princípios contábeis e estrutura conceitual. O curso evolui em ordem até a contabilidade avançada dos concursos.' },
+    { q: 'Qual a diferença entre o trimestral e o semestral?', a: 'Só o prazo de acesso. Mesmas aulas, mesmas questões, mesma plataforma. O semestral sai cerca de 36% mais barato por mês de acesso.' },
+    { q: 'Como recebo o acesso depois de comprar?', a: 'A compra é processada pela Kiwify. Em seguida você recebe um e-mail de boas-vindas com o link para definir a senha. Em poucos minutos você já está estudando.' },
+    { q: 'As aulas já estão todas disponíveis?', a: 'A plataforma está no ar e a grande maioria do curso já está disponível. As aulas restantes da edição 2026 são liberadas conforme o cronograma público, dentro do seu período de acesso.' }
+  ]
+};
+
+/* =====================================================================
+   ESTADO E MEDIÇÃO
+   ===================================================================== */
+var R = {};
+var HM = /(?:^|[?&])homolog=1(?:&|$)/.test(location.search); /* barra de homologação e caixa de comentários só com ?homolog=1 */
+if (HM) document.body.classList.add('hm');
+var ORDEM = ['abertura','p1','p2','p3','depo','p4','conta','p5','ferr','p6','oferta'];
+var ROTULOS = { abertura:'Abertura', p1:'P1 · Prova', p2:'P2 · Prazo', p3:'P3 · Momento', depo:'Depoimento', p4:'P4 · Tempo por dia', conta:'As suas contas', p5:'P5 · Qual frase te identifica', ferr:'Tela da ferramenta', p6:'P6 · O que mais te segura', obj:'Resposta à objeção', oferta:'Resultado e oferta' };
+var NUM_PERGUNTA = { p1:1, p2:2, p3:3, p4:4, p5:5, p6:6 };
+var ESCURAS = { p1: 1, p2: 1, p3: 1, p4: 1, p5: 1, p6: 1 }; /* telas escuras removidas em 08/10: o botão navy não aparece sobre fundo navy */
+var atual = 'abertura', historico = [];
+
+function $(id) { return document.getElementById(id); }
+function track(nome, dados) {
+  var ev = Object.assign({ event: nome }, dados || {});
+  try { window.dataLayer = window.dataLayer || []; window.dataLayer.push(ev); } catch (e) {}
+  if (HM) { var l = $('logEventos'), d = document.createElement('div'); d.textContent = JSON.stringify(ev); l.appendChild(d); l.scrollTop = l.scrollHeight; }
+}
+function toast(msg) { var t = $('toast'); t.textContent = msg; t.className = 'toast on'; clearTimeout(toast._t); toast._t = setTimeout(function () { t.className = 'toast'; }, 3800); }
+/* Mesmo utm_campaign da assinatura.html (pos_janela_2026): a única diferença entre os braços do teste é o src. */
+function kiwify(pk) { return 'https://pay.kiwify.com.br/' + DADOS.planos[pk].kw + '?src=lp-q&utm_source=site&utm_medium=lp&utm_campaign=pos_janela_2026&utm_content=' + pk; }
+function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' })[c]; }); }
+function lerCom(k) { try { return localStorage.getItem('qa2_com_' + k) || ''; } catch (e) { return ''; } }
+function gravarCom(k, v) { try { localStorage.setItem('qa2_com_' + k, v); } catch (e) {} }
+
+/* =====================================================================
+   TELAS
+   ===================================================================== */
+function opcoes(lista, selecionado) {
+  return '<div class="opcoes" role="list">' + lista.map(function (o, i) {
+    var tile = o.ico ? svg(o.ico) : (o.tile || '');
+    var sub = o.sub ? '<small>' + esc(o.sub) + '</small>' : '';
+    return '<button type="button" role="listitem" class="opcao' + (selecionado === i ? ' sel' : '') + '" data-i="' + i + '"><span class="tile">' + tile + '</span><span class="tx">' + esc(o.rotulo) + sub + '</span><span class="ck"></span></button>';
+  }).join('') + '</div>';
+}
+function pilula(n, txt) { return '<div class="pilula"><b>' + n + '</b>' + esc(txt) + '</div>'; }
+function acao(html) { return '<div class="acao">' + html + '</div>'; }
+var SETA = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+
+var TELAS = {
+  abertura: function () {
+    return acao('<button type="button" class="btn" data-acao="comecar">Começar' + SETA + '</button>') +
+      '<div class="selos"><div><b>4</b>aprovações do professor em concursos de elite</div><div><b>3.000+</b>alunos do professor ao longo de 40 turmas</div></div>';
+  },
+  p1: function () { return pilula(1, 'de 6 · para começar') + '<h2>Qual é a sua próxima prova?</h2><p class="sub">Sem resposta certa. É para o plano combinar com a sua rotina.</p>' + opcoes(DADOS.provas, R.prova); },
+  p2: function () { return pilula(2, 'de 6 · o seu prazo') + '<h2>Daqui a quanto tempo é a prova?</h2><p class="sub">Uma estimativa já serve.</p>' + opcoes(DADOS.prazos, R.prazo); },
+  p3: function () { return pilula(3, 'de 6 · o seu momento') + '<h2>Em que momento você está na preparação?</h2>' + opcoes(DADOS.momentos, R.momento); },
+  depo: function () {
+    return '<h2>Você não é o primeiro a travar em contabilidade.</h2><p class="sub">O que dizem alunos que já entraram na plataforma.</p>' +
+      carrossel() +
+      acao('<button type="button" class="btn" data-acao="seguir">Continuar' + SETA + '</button>');
+  },
+  p4: function () { return pilula(4, 'de 6 · a sua rotina') + '<h2>Num dia normal, quanto tempo sobra para estudar de verdade?</h2><p class="sub">Pense num dia de trabalho, sem contar o fim de semana.</p>' + opcoes(DADOS.horas, R.horas); },
+  conta: function () {
+    var h = DADOS.horas[R.horas].h, pz = DADOS.prazos[R.prazo], corpo;
+    if (pz.semanas > 0) {
+      var total = Math.round(h * 7 * pz.semanas / 10) * 10;
+      corpo = '<div class="conta-card"><div class="grande">cerca de ' + total + ' horas</div><p class="sub">É o que cabe até a sua prova: ' + esc(DADOS.horas[R.horas].rotulo.toLowerCase()) + ', por mais ou menos ' + pz.semanas + ' semanas. O que importa é para onde elas vão.</p>' +
+        '<div class="conta-mini"><div><b>' + String(h).replace('.', ',') + ' h</b>por dia, em média</div><div><b>' + pz.semanas + '</b>semanas até a prova</div><div><b>' + String(Math.round(h * 7 * 10) / 10).replace('.', ',') + ' h</b>por semana</div></div></div><p class="nota">Estimativa: horas por dia × 7 × semanas centrais da faixa que você marcou.</p>';
+    } else {
+      var sem = String(Math.round(h * 7 * 10) / 10).replace('.', ',');
+      corpo = '<div class="conta-card"><div class="grande">cerca de ' + sem + ' horas por semana</div><p class="sub">Sem data de prova, o que decide é a constância. É isso que o plano organiza.</p></div><p class="nota">Estimativa: horas por dia × 7.</p>';
+    }
+    return '<h2>As suas contas</h2>' + corpo + acao('<button type="button" class="btn" data-acao="seguir">Continuar' + SETA + '</button>');
+  },
+  p5: function () {
+    var l = DADOS.frases.map(function (f) { return { rotulo: f.frase, __frase: 1 }; });
+    return pilula(5, 'de 6 · a sua trava') + '<h2>Qual destas frases mais parece com você?</h2>' +
+      '<div class="opcoes" role="list">' + DADOS.frases.map(function (f, i) {
+        return '<button type="button" role="listitem" class="opcao frase' + (R.frase === i ? ' sel' : '') + '" data-i="' + i + '"><span class="asp">“</span><span class="tx">' + esc(f.frase) + '</span><span class="ck"></span></button>';
+      }).join('') + '</div>';
+  },
+  ferr: function () {
+    var f = DADOS.frases[R.frase];
+    return '<p class="voz">“' + esc(f.frase) + '”</p>' +
+      '<div class="ferr"><div class="tile">' + svg(f.ico) + '</div><h2>' + esc(f.ferr) + '</h2><p>' + esc(f.texto) + '</p>' + telaReal(f.tipo) + '</div>' +
+      acao('<button type="button" class="btn" data-acao="seguir">Continuar' + SETA + '</button>');
+  },
+  p6: function () { return pilula(6, 'de 6 · última pergunta') + '<h2>Quando você pensa em começar algo novo nos estudos, o que mais te segura?</h2>' + opcoes(DADOS.objecoes, R.objecao); },
+  obj: function () {
+    var o = DADOS.objecoes[R.objecao];
+    return '<h2>' + esc(o.rotulo === 'O preço' ? 'Sobre o preço' : o.rotulo.replace(/\.$/, '')) + '</h2><p class="sub" style="color:var(--tinta)">' + esc(o.resp) + '</p>' +
+      acao('<button type="button" class="btn" data-acao="seguir">Ver o meu plano' + SETA + '</button>');
+  },
+  oferta: function () {
+    var pz = DADOS.prazos[R.prazo], pk = planoFinal(), pl = DADOS.planos[pk], f = DADOS.frases[R.frase];
+    var outras = DADOS.frases.filter(function (x, i) { return i !== R.frase; }).slice(0, 2);
+    var rebaixou = pz.plano === 'anual' && pk === 'semestral';
+    var motivo = rebaixou ? 'Você disse que o preço pesa. O semestral cobre 6 meses com a menor parcela que ainda leva você longe.'
+      : (pk === 'anual' ? 'A sua prova está a mais de 6 meses. O anual cobre os 12 meses, a base inteira e todas as revisões até lá.'
+      : (pk === 'trimestral' ? 'A sua prova está a menos de 3 meses. O trimestral cobre até o dia da prova.'
+      : (pz.id === 'm36' ? 'O trimestral não chega até a sua prova. O semestral cobre os 6 meses.' : 'Sem data, o semestral dá tempo de construir a base com calma.')));
+    var outroId = pk === 'anual' ? 'semestral' : (pk === 'semestral' ? (rebaixou ? 'anual' : 'trimestral') : 'semestral'), outro = DADOS.planos[outroId];
+    function faixa(cls, dentro) { return '<section class="faixa ' + cls + '"><div class="faixa-in">' + dentro + '</div></section>'; }
+    var botao = function (local) { return '<a class="btn compra" href="' + kiwify(pk) + '" data-fc-local="quiz-' + local + '">Quero começar agora</a>'; };
+
+    var ob = DADOS.objecoes[R.objecao == null ? 0 : R.objecao], hero0 = '';
+    if (ob.hero) {
+      var subs = function (t) { return t.replace('{horas}', DADOS.horas[R.horas].rotulo.toLowerCase()).replace('{mes}', pl.mes).replace('{prova}', DADOS.provas[R.prova].rotulo); };
+      hero0 = '<h2 class="hero3-h">' + esc(ob.hero.fala) + '</h2>' +
+        '<p class="hero3"><b>Pois é.</b> <b>Eu também pensava assim.</b> ' + esc(ob.hero.percebi) + '</p>' +
+        '<div class="hero3-args">' + ob.hero.args.map(function (x) { return '<div><span class="tile">' + svg('ok') + '</span><div><b>' + esc(subs(x.t)) + '</b><small>' + esc(subs(x.s)) + '</small></div></div>'; }).join('') + '</div>' +
+        '<p class="hero3-fim">Veja o seu plano logo abaixo.</p>';
+    }
+    var hd = DADOS.horas[R.horas].h, semH = String(Math.round(hd * 7 * 10) / 10).replace('.', ',');
+    var fi = [
+      ['plano', 'Para a ' + DADOS.provas[R.prova].rotulo, DADOS.provas[R.prova].edital],
+      ['calend', pz.semanas > 0 ? 'Cabe nas suas ' + semH + ' horas por semana' : 'Cabe na sua rotina', pz.semanas > 0 ? 'A grade é montada para ' + DADOS.horas[R.horas].rotulo.toLowerCase() + ' e cobre as ' + pz.semanas + ' semanas até a prova. Se um dia falhar, ela recalcula sozinha.' : 'A grade é montada para ' + DADOS.horas[R.horas].rotulo.toLowerCase() + ' e recalcula sozinha se um dia falhar.'],
+      ['volta', 'Revisões no seu ritmo', 'Cada assunto volta em D+3, D+7, D+16 e D+35, para o que você estudou não evaporar antes da prova.'],
+      ['ampul', 'Ajustado ao seu momento', DADOS.momentos[R.momento].ajuste],
+      [f.ico, 'Começa pela sua trava', 'Você disse “' + f.frase + '”. Por isso o plano abre por ' + f.ferr + '.']
+    ];
+    var feito = fi.map(function (x) { return '<div class="item"><span class="tile">' + svg(x[0]) + '</span><div><b>' + esc(x[1]) + '</b><span class="t">' + esc(x[2]) + '</span></div></div>'; }).join('');
+    var a = '<h2>O seu plano está pronto.</h2>' +
+      '<div class="resumo"><div><span>Prova</span><b>' + esc(DADOS.provas[R.prova].rotulo) + '</b></div><div><span>Prazo</span><b>' + esc(pz.rotulo) + '</b></div><div><span>Tempo por dia</span><b>' + esc(DADOS.horas[R.horas].rotulo) + '</b></div><div><span>A sua trava</span><b class="vz">“' + esc(f.frase) + '”</b></div></div>' +
+      '<div class="sec-t">Como o plano foi montado para você</div>' +
+      '<div class="feito">' + feito + '</div>' +
+      '<div class="sec-t">Por onde você começa</div>' +
+      '<div class="tools3"><div class="item"><span class="tile">' + svg(f.ico) + '</span><div><b>' + esc(f.ferr) + '</b><small>A resposta para a sua trava</small></div></div>' +
+      outras.map(function (o) { return '<div class="item"><span class="tile">' + svg(o.ico) + '</span><div><b>' + esc(o.ferr) + '</b><small>Também está na assinatura</small></div></div>'; }).join('') + '</div>';
+
+    var b = '<div class="plano"><span class="nome">Plano indicado para você</span><h2>' + esc(pl.nome) + '</h2><p class="mot">' + esc(motivo) + '</p>' +
+      '<div class="de">12× de</div><div class="valor">' + esc(pl.parcela) + '</div><div class="vista">ou ' + esc(pl.vista) + ' à vista, no Pix ou boleto</div>' +
+      '<p class="mes">Equivale a ' + esc(pl.mes) + '</p>' +
+      '<p class="juros">No cartão, as parcelas têm juros do gateway, por isso o total parcelado fica acima do valor à vista. Pagamento único, sem renovação.</p>' + botao('plano') + '</div>' +
+      '<div class="garantia-card"><span class="tile">' + svg('escudo') + '</span><div><b>7 dias de garantia incondicional</b><span>Entre, assista às aulas, resolva questões e explore a plataforma. Se achar que não é para você, devolvemos 100% do valor pelo mesmo meio de pagamento, sem perguntas.</span></div></div>' +
+      '<p class="outro">Prefere outro prazo? <a href="' + kiwify(outroId) + '" data-fc-local="quiz-outro-prazo">' + esc(outro.nome) + ': 12× de ' + esc(outro.parcela) + ' ou ' + esc(outro.vista) + ' à vista</a></p>';
+
+    var c = '<div class="sec-h">Quem já está por dentro</div>' + carrossel();
+
+    var d = '<div class="sec-h">Navegue na plataforma agora</div><p class="sec-p">É a plataforma de verdade, com dados de exemplo. Clique nos menus e teste.</p>' +
+      '<div class="demo-moldura"><iframe src="assets/quiz/demo_plataforma.html" title="Demonstração navegável da plataforma" loading="lazy"></iframe></div>';
+
+    var e = '<div class="sec-h">O que você leva nos dois planos</div><p class="sec-p">Sete coisas, e o que cada uma resolve.</p>' +
+      '<div class="leva">' + DADOS.leva.map(function (x) {
+        return '<div class="item"><span class="tile">' + svg(x.ico) + '</span><div><b>' + esc(x.t) + '</b><small>' + esc(x.s) + (x.r ? ' <em>Resolve:</em> ' + esc(x.r) : '') + '</small></div></div>';
+      }).join('') + '</div>';
+
+    var g = '<div class="sec-h">Quem ensina</div>' +
+      '<div class="prof"><picture><source srcset="assets/quiz/foto-vinicius.webp" type="image/webp"><img src="assets/quiz/foto-vinicius.jpg" alt="Prof. Vinícius Ferraz" width="104" height="128" loading="lazy"></picture>' +
+      '<div><b>Prof. Vinícius Ferraz</b><div class="cargo">Auditor Fiscal do Município do Rio de Janeiro</div><p>Aprovado como Analista Legislativo de Contabilidade do Senado Federal, Auditor Fiscal do Estado de Minas e Analista de Planejamento e Orçamento do Município do Rio. Contabilidade ensinada como um idioma, pela lógica, e não pela memorização.</p></div></div>' +
+      '<div class="nums"><div><b>4</b>aprovações em concursos de elite</div><div><b>3.000+</b>alunos em mentoria</div><div><b>40</b>turmas</div></div>';
+
+    var h = '<div class="sec-h">Ouça o professor explicar o método</div><p class="sec-p">Em poucos minutos você entende por que a Fluência funciona diferente.</p>' +
+      '<div class="vsl-moldura"><iframe src="' + VSL_URL + '" title="Vídeo de apresentação da Fluência Contábil" loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></div>';
+
+    var i = '<h2 class="conv-h">Você não perde vaga por falta de estudo. Perde por estudar errado.</h2>' +
+      '<div class="conv">' + DADOS.conv.map(function (x) { return '<div><b>' + esc(x.t) + '</b>' + esc(x.s) + '</div>'; }).join('') + '</div>' +
+      '<div class="conv-conta"><b>Faz a conta.</b> O curso é pagamento único: ' + esc(pl.nome.toLowerCase()) + ', <b>12× de ' + esc(pl.parcela) + '</b> ou ' + esc(pl.vista) + ' à vista. O salário inicial de um fiscal estadual fica entre R$ 20 e 30 mil por mês. O curso você paga uma vez. A vaga paga todo mês.</div>' + botao('fechamento') +
+      '<p class="garantia">7 dias para testar por dentro. Se não for para você, devolvemos 100% do valor.</p>';
+
+    var j = '<div class="sec-h">Dúvidas comuns</div>' +
+      '<div class="faq">' + DADOS.faq.map(function (x) { return '<details><summary>' + esc(x.q) + '</summary><p>' + esc(x.a) + '</p></details>'; }).join('') + '</div>' +
+      '<p class="saida">Prefere testar antes de decidir? <a href="#" data-acao="aula01">Baixar a Aula 01 grátis</a></p>';
+
+    return (hero0 ? faixa('f-navy f-hero', hero0) : '') + faixa('f-claro', a) + faixa('f-ouro', b) + faixa('f-branco', c) + faixa('f-navy', d) + faixa('f-creme', e) + faixa('f-branco', g) + faixa('f-creme', h) + faixa('f-conv', i) + faixa('f-branco', j);
+  }
+};
+
+/* Tela real da plataforma: gravação de tela recortada (sem a barra lateral e o topo da conta). */
+function telaReal(tipo) {
+  var b = 'assets/quiz/telas/' + tipo;
+  return '<div class="tela-real"><div class="barra-t"><i></i><i></i><i></i><span>Tela real da plataforma</span></div>' +
+    '<video autoplay muted loop playsinline preload="auto" poster="' + b + '.jpg"><source src="' + b + '.mp4" type="video/mp4"></video></div>';
+}
+
+/* Carrossel de depoimentos girando (mesmo padrão da assinatura.html). O grupo aparece duas vezes para o giro não ter emenda. */
+function carrossel() {
+  function grupo(oculto) {
+    return '<div class="dep-grupo"' + (oculto ? ' aria-hidden="true"' : '') + '>' + DADOS.social.map(function (s) {
+      if (s.t === 'print') return '<figure class="dep-print"><picture><source srcset="assets/quiz/prints/' + s.img + '.webp" type="image/webp"><img src="assets/quiz/prints/' + s.img + '.png" alt="' + esc(s.alt) + '" width="' + s.w + '" height="' + s.h + '" loading="lazy"></picture><figcaption>' + esc(s.cap) + '</figcaption></figure>';
+      return '<div class="dep-card"><p>“' + esc(s.txt) + '”</p><div class="autor">' + esc(s.autor) + ' <span>· ' + esc(s.fonte) + '</span></div></div>';
+    }).join('') + '</div>';
+  }
+  return '<div class="dep-carrossel" tabindex="0" aria-label="Depoimentos de alunos (passe o mouse para pausar)"><div class="dep-trilho">' + grupo(false) + grupo(true) + '</div></div>';
+}
+
+/* =====================================================================
+   NAVEGAÇÃO
+   ===================================================================== */
+function montarSegmentos() {
+  var s = $('seg'); s.innerHTML = '';
+  for (var i = 0; i < 7; i++) s.appendChild(document.createElement('i'));
+}
+function pintarSegmentos(id) {
+  var n = NUM_PERGUNTA[id];
+  if (n == null) { var i = ORDEM.indexOf(id); n = id === 'oferta' ? 7 : (id === 'abertura' ? 0 : Math.max.apply(null, ORDEM.slice(0, i + 1).map(function (k) { return NUM_PERGUNTA[k] || 0; }))); }
+  else n = n - 0.0001 >= 0 ? n : 0;
+  var seg = $('seg').children, ate = id === 'oferta' ? 7 : (NUM_PERGUNTA[id] ? NUM_PERGUNTA[id] : n);
+  for (var k = 0; k < seg.length; k++) seg[k].className = k < ate ? 'on' : '';
+}
+/* Botão fixo: aparece na oferta depois que o 1º botão de compra passou da tela e some enquanto qualquer botão de compra está visível */
+var fixoPlano = null;
+function fixoAtualiza() {
+  var fx = $('fixo'), on = false;
+  if (atual === 'oferta' && fixoPlano) {
+    var bs = document.querySelectorAll('#tela .btn.compra'), vh = window.innerHeight, visivel = false;
+    for (var k = 0; k < bs.length; k++) { var r = bs[k].getBoundingClientRect(); if (r.bottom > 0 && r.top < vh) { visivel = true; break; } }
+    on = bs.length > 0 && !visivel && bs[0].getBoundingClientRect().top < 0;
+  }
+  fx.classList.toggle('on', on); fx.setAttribute('aria-hidden', on ? 'false' : 'true');
+  document.body.classList.toggle('fixo-on', on);
+}
+var fixoRaf = 0;
+function fixoAgenda() { if (!fixoRaf) fixoRaf = requestAnimationFrame(function () { fixoRaf = 0; fixoAtualiza(); }); }
+window.addEventListener('scroll', fixoAgenda, { passive: true });
+window.addEventListener('resize', fixoAgenda);
+function fixoMonta() {
+  if (atual !== 'oferta') { fixoPlano = null; fixoAtualiza(); return; }
+  var pk = planoFinal(), pl = DADOS.planos[pk];
+  fixoPlano = pk;
+  $('fixo').innerHTML = '<div class="fixo-in"><div class="fixo-txt"><b>' + esc(pl.nome) + '</b><span>12× de ' + esc(pl.parcela) + ' · 7 dias de garantia</span></div>' +
+    '<a class="btn compra" href="' + kiwify(pk) + '" data-fc-local="quiz-fixo">Quero começar</a></div>';
+  fixoAtualiza();
+}
+function ir(id, semHistorico) {
+  if (!semHistorico && atual && atual !== id) historico.push(atual);
+  atual = id;
+  var box = $('tela');
+  try { box.innerHTML = '<div class="tela">' + TELAS[id]() + '</div>'; } catch (e) { box.innerHTML = '<p>Esta tela depende de respostas anteriores. Use "Reiniciar" ou percorra o quiz em ordem.</p>'; }
+  $('folha').className = 'folha' + (ESCURAS[id] ? ' escura' : '');
+  var topo = document.querySelector('.topo'), ht = $('heroTopo');
+  if (id === 'abertura') { topo.classList.add('hero'); ht.innerHTML = '<h1>Em 6 perguntas, mostramos por onde destravar contabilidade.</h1><p>Leva cerca de 1 minuto. Sem cadastro e sem formulário no caminho.</p>'; }
+  else { topo.classList.remove('hero'); ht.innerHTML = ''; }
+  pintarSegmentos(id);
+  $('rotuloPasso').textContent = NUM_PERGUNTA[id] ? 'Pergunta ' + NUM_PERGUNTA[id] + ' de 6' : (id === 'oferta' ? 'Resultado' : '');
+  var t = box.querySelector('.tela');
+  if (id !== 'abertura') t.insertAdjacentHTML('beforeend', '<button type="button" class="voltar" data-acao="voltar">Voltar</button>');
+  if (HM) t.insertAdjacentHTML('beforeend', '<details class="coment"><summary>Comentar esta tela (' + esc(ROTULOS[id]) + ')</summary><textarea id="campoCom" placeholder="O que mudar nesta tela? Texto, ordem, opção, tom, cor..."></textarea></details>');
+  var tx = $('campoCom'); if (tx) { tx.value = lerCom(id); if (tx.value) tx.parentNode.open = true; tx.addEventListener('input', function () { gravarCom(id, tx.value); }); }
+  $('irPara').value = id;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  fixoMonta();
+  if (id === 'oferta') track('quiz_oferta_vista', { plano_indicado: planoFinal(), prazo: DADOS.prazos[R.prazo].id });
+}
+/* plano que a página indica: pelo prazo; se a trava é o preço, o anual desce para o semestral */
+function planoFinal() {
+  var base = DADOS.prazos[R.prazo == null ? 1 : R.prazo].plano, ob = DADOS.objecoes[R.objecao == null ? 0 : R.objecao];
+  return (base === 'anual' && ob && ob.rotulo === 'O preço') ? 'semestral' : base;
+}
+function proxima() { ir(ORDEM[ORDEM.indexOf(atual) + 1]); }
+
+/* Overlay antes da oferta. Os 3 passos descrevem o que a página de fato faz com as respostas. Dura cerca de 3 s. */
+var ovTimers = [];
+function montando(depois) {
+  var ov = $('overlay'), pz = DADOS.prazos[R.prazo == null ? 1 : R.prazo];
+  var passos = ['Cruzando a sua prova com o seu prazo', pz.semanas > 0 ? 'Escolhendo o plano que cobre até a sua prova' : 'Escolhendo o plano para construir a sua base', 'Separando as ferramentas para a sua trava'];
+  $('ovPassos').innerHTML = passos.map(function (p) { return '<div><i></i>' + esc(p) + '</div>'; }).join('');
+  ovTimers.forEach(clearTimeout); ovTimers = [];
+  var reduz = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches, passo = reduz ? 250 : 900;
+  track('quiz_overlay');
+  ov.classList.add('on'); requestAnimationFrame(function () { ov.classList.add('vis'); });
+  var itens = $('ovPassos').children;
+  for (var i = 0; i < itens.length; i++) (function (k) { ovTimers.push(setTimeout(function () { itens[k].classList.add('ok'); }, passo * (k + 1) - 300)); })(i);
+  ovTimers.push(setTimeout(function () {
+    depois();
+    ov.classList.remove('vis');
+    ovTimers.push(setTimeout(function () { ov.classList.remove('on'); }, 360));
+  }, passo * itens.length + 350));
+}
+
+var CAMPO = { p1: 'prova', p2: 'prazo', p3: 'momento', p4: 'horas', p5: 'frase', p6: 'objecao' };
+document.addEventListener('click', function (ev) {
+  var op = ev.target.closest('.opcao');
+  if (op && CAMPO[atual]) {
+    var i = parseInt(op.getAttribute('data-i'), 10); R[CAMPO[atual]] = i;
+    var lista = { p1: DADOS.provas, p2: DADOS.prazos, p3: DADOS.momentos, p4: DADOS.horas, p5: DADOS.frases, p6: DADOS.objecoes }[atual];
+    var item = lista[i];
+    track('quiz_resposta', { pergunta: NUM_PERGUNTA[atual], opcao: item.rotulo || item.frase });
+    if (atual === 'p5') track('quiz_frase', { frase: i + 1, ferramenta: DADOS.frases[i].ferr });
+    op.parentNode.querySelectorAll('.opcao').forEach(function (x) { x.classList.remove('sel'); });
+    op.classList.add('sel');
+    setTimeout(atual === 'p6' ? function () { montando(proxima); } : proxima, 260); return;
+  }
+  var a = ev.target.closest('[data-acao]'); if (!a) return;
+  ev.preventDefault();
+  var ac = a.getAttribute('data-acao');
+  if (ac === 'comecar') { track('quiz_inicio'); proxima(); }
+  else if (ac === 'seguir') { if (atual === 'obj') montando(proxima); else proxima(); }
+  else if (ac === 'voltar') { if (historico.length) ir(historico.pop(), true); }
+  else if (ac === 'aula01') { aula01Abrir(); }
+});
+
+
+/* Captura de e-mail da Aula 01: mesmo endpoint e mesmos campos da assinatura.html (origem assinatura_aula01, o campo 'pagina' registra /quiz.html).
+   Quem já é lead (localStorage fc_ec_subscribed) baixa direto. */
+var CAP_ENDPOINT = 'https://script.google.com/macros/s/AKfycbx8lWrX5F0IByv0JEJ0iBGPjtLto7f2VxDHIh0uT0gZtvoj8EDVx0NFiriou-Dt0cxh/exec';
+var CAP_PDF = 'aulas/aula-01-partidas-dobradas.pdf?v=20260813', capEnviado = false, capFoco = null;
+function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+function lsSet(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+function aula01Baixar(metodo) {
+  track('download_aula01', { metodo: metodo, cta_location: 'quiz-saida' });
+  var a = document.createElement('a'); a.href = CAP_PDF; a.download = 'Fluencia-Contabil-Aula-01-Partidas-Dobradas.pdf';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+}
+function aula01Abrir() {
+  if (capEnviado || lsGet('fc_ec_subscribed') === '1') { aula01Baixar('ja_lead'); return; }
+  capFoco = document.activeElement; $('capOv').hidden = false; setTimeout(function () { $('capEmail').focus(); }, 50);
+}
+function aula01Fechar() { $('capOv').hidden = true; if (capFoco && capFoco.focus) capFoco.focus(); }
+(function () {
+  var form = $('capForm'), input = $('capEmail'), erro = $('capErro'), ok = $('capOk'), btn = $('capBtn');
+  $('capX').addEventListener('click', aula01Fechar);
+  $('capOv').addEventListener('click', function (e) { if (e.target === $('capOv')) aula01Fechar(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !$('capOv').hidden) aula01Fechar(); });
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var email = (input.value || '').trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { erro.classList.add('on'); input.focus(); return; }
+    erro.classList.remove('on'); btn.disabled = true; btn.textContent = 'Enviando...';
+    var data = new URLSearchParams();
+    data.append('email', email); data.append('origem', 'assinatura_aula01');
+    try {
+      var q = new URLSearchParams(location.search);
+      data.append('pagina', location.pathname + location.search); data.append('referrer', document.referrer || '');
+      ['utm_source', 'utm_medium', 'utm_campaign'].forEach(function (k) { data.append(k, q.get(k) || ''); });
+      data.append('dispositivo', matchMedia('(max-width: 720px)').matches ? 'Mobile' : 'Desktop');
+    } catch (e2) {}
+    function feito() {
+      capEnviado = true; lsSet('fc_ec_subscribed', '1');
+      track('lead_capturado', { origem: 'assinatura_aula01' });
+      form.style.display = 'none'; ok.classList.add('on'); aula01Baixar('com_email'); setTimeout(aula01Fechar, 1800);
+    }
+    function falhou() { btn.disabled = false; btn.textContent = 'Baixar a Aula 01'; erro.textContent = 'Não foi possível enviar agora. Confira sua conexão e tente de novo.'; erro.classList.add('on'); }
+    try { fetch(CAP_ENDPOINT, { method: 'POST', body: data, mode: 'no-cors' }).then(feito, falhou); } catch (e3) { falhou(); }
+  });
+})();
+
+/* barra de homologação */
+(function () {
+  var sel = $('irPara');
+  ORDEM.forEach(function (id) { var o = document.createElement('option'); o.value = id; o.textContent = ROTULOS[id]; sel.appendChild(o); });
+  function preencher() {
+    if (R.prova == null) R.prova = 0; if (R.prazo == null) R.prazo = 1; if (R.momento == null) R.momento = 1;
+    if (R.horas == null) R.horas = 1; if (R.frase == null) R.frase = 0; if (R.objecao == null) R.objecao = 2;
+  }
+  sel.addEventListener('change', function () { preencher(); ir(sel.value); });
+  (function () { var pl = $('paleta'), v = 'a'; if (HM) { try { v = localStorage.getItem('qa_paleta') || 'a'; } catch (e) {} } pl.value = v; document.body.setAttribute('data-p', v);
+    pl.addEventListener('change', function () { document.body.setAttribute('data-p', pl.value); try { localStorage.setItem('qa_paleta', pl.value); } catch (e) {} }); })();
+  $('btnOverlay').addEventListener('click', function () { preencher(); atual = 'obj'; montando(function () { ir('oferta'); }); });
+  $('btnEventos').addEventListener('click', function () { $('logEventos').classList.toggle('aberto'); });
+  $('btnReiniciar').addEventListener('click', function () { R = {}; historico = []; $('logEventos').innerHTML = ''; ir('abertura', true); });
+  $('btnCopiar').addEventListener('click', function () {
+    var linhas = ORDEM.map(function (id) { var c = lerCom(id).trim(); return c ? '[' + ROTULOS[id] + '] ' + c : ''; }).filter(Boolean);
+    var txt = linhas.length ? 'Comentários sobre o quiz da Assinatura:\n' + linhas.join('\n') : 'Sem comentários anotados. Pode seguir.';
+    function ok() { toast('Comentários copiados. Cole no chat.'); }
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(ok, function () { prompt('Copie o texto:', txt); });
+    else { var ta = document.createElement('textarea'); ta.value = txt; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); ok(); } catch (e) { prompt('Copie o texto:', txt); } document.body.removeChild(ta); }
+  });
+  montarSegmentos();
+  ir('abertura', true);
+})();
+</script>
+<script src="assets/origem.js?v=20260909" defer></script>
+</body>
+</html>
