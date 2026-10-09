@@ -1,0 +1,23 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Fluencia Contabil//Aula ao vivo//PT
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:aula_ao_vivo_2026_10_14@fluenciacontabil.com.br
+DTSTAMP:20261009T131058Z
+DTSTART:20261014T230000Z
+DTEND:20261015T010000Z
+SUMMARY:Aula ao vivo: DFC — Demonstração dos Fluxos de Caixa (CPC 03)
+DESCRIPTION:Ao vivo e gratuita no YouTube: https://www.youtube.com/live/BO3
+ dhLv8Uoc
+LOCATION:https://www.youtube.com/live/BO3dhLv8Uoc
+URL:https://www.youtube.com/live/BO3dhLv8Uoc
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Aula ao vivo: DFC — Demonstração dos Fluxos de Caixa (CPC 0
+ 3)
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+END:VCALENDAR
