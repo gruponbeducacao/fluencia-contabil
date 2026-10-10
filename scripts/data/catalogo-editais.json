@@ -1,6 +1,6 @@
 {
-  "geradoEm": "2026-10-09T14:23:21.495Z",
-  "total": 26,
+  "geradoEm": "2026-10-10T13:44:48.351Z",
+  "total": 27,
   "editais": [
     {
       "concursoSlug": "secretaria-da-fazenda-do-estado-do-ceara-sefaz-ce",
@@ -53,6 +53,23 @@
       ]
     },
     {
+      "concursoSlug": "controladoria-geral-da-uniao-cgu",
+      "orgao": "Controladoria-Geral da União (CGU)",
+      "cargo": "Cargo 1: Auditor Federal de Finanças e Controle (AFFC) – Especialidade: Auditoria",
+      "banca": "CEBRASPE (CESPE)",
+      "esfera": "FEDERAL",
+      "uf": null,
+      "area": "CONTROLE",
+      "dataProva": "2026-12-13",
+      "linkOficial": "http://www.cebraspe.org.br/concursos/cgu_26_affc",
+      "disciplinas": [
+        {
+          "rotulo": "FINANÇAS PÚBLICAS, ORÇAMENTO E CONTABILIDADE PÚBLICA",
+          "pct": 67
+        }
+      ]
+    },
+    {
       "concursoSlug": "policia-civil-da-bahia-pc-secretaria-da-administracao-do-estado-da-bahia-saeb",
       "orgao": "Polícia Civil da Bahia – PC (Secretaria da Administração do Estado da Bahia – SAEB)",
       "cargo": "Investigador de Polícia Civil (Cód. 403)",
@@ -66,23 +83,6 @@
         {
           "rotulo": "NOÇÕES DE CONTABILIDADE",
           "pct": 64
-        }
-      ]
-    },
-    {
-      "concursoSlug": "petrobras-transporte-s-a-transpetro",
-      "orgao": "Petrobras Transporte S.A. – TRANSPETRO",
-      "cargo": "Profissional Transpetro de Nível Superior – Júnior — Ênfase 1: Administração",
-      "banca": "CESGRANRIO",
-      "esfera": "FEDERAL",
-      "uf": "RJ",
-      "area": "EMPRESAS_PUBLICAS",
-      "dataProva": "2026-11-29",
-      "linkOficial": "https://concursos.cesgranrio.org.br/portal/avaliacoes/22",
-      "disciplinas": [
-        {
-          "rotulo": "CONTABILIDADE",
-          "pct": 100
         }
       ]
     },
@@ -103,6 +103,23 @@
         },
         {
           "rotulo": "LEGISLAÇÃO SOCIETÁRIA",
+          "pct": 100
+        }
+      ]
+    },
+    {
+      "concursoSlug": "petrobras-transporte-s-a-transpetro",
+      "orgao": "Petrobras Transporte S.A. – TRANSPETRO",
+      "cargo": "Profissional Transpetro de Nível Superior – Júnior — Ênfase 1: Administração",
+      "banca": "CESGRANRIO",
+      "esfera": "FEDERAL",
+      "uf": "RJ",
+      "area": "EMPRESAS_PUBLICAS",
+      "dataProva": "2026-11-29",
+      "linkOficial": "https://concursos.cesgranrio.org.br/portal/avaliacoes/22",
+      "disciplinas": [
+        {
+          "rotulo": "CONTABILIDADE",
           "pct": 100
         }
       ]
@@ -250,7 +267,7 @@
     {
       "concursoSlug": "ministerio-da-economia-secretaria-especial-da-receita-federal-do-brasil",
       "orgao": "Ministério da Economia — Secretaria Especial da Receita Federal do Brasil",
-      "cargo": "Analista-Tributário da Receita Federal do Brasil",
+      "cargo": "Auditor-Fiscal da Receita Federal do Brasil",
       "banca": "FGV",
       "esfera": "FEDERAL",
       "uf": null,
@@ -267,7 +284,7 @@
     {
       "concursoSlug": "ministerio-da-economia-secretaria-especial-da-receita-federal-do-brasil",
       "orgao": "Ministério da Economia — Secretaria Especial da Receita Federal do Brasil",
-      "cargo": "Auditor-Fiscal da Receita Federal do Brasil",
+      "cargo": "Analista-Tributário da Receita Federal do Brasil",
       "banca": "FGV",
       "esfera": "FEDERAL",
       "uf": null,
@@ -373,7 +390,7 @@
     {
       "concursoSlug": "governo-do-estado-da-bahia-secretaria-da-administracao-do-estado-da-bahia-saeb-s",
       "orgao": "Governo do Estado da Bahia — Secretaria da Administração do Estado da Bahia (SAEB) / Secretaria da Fazenda do Estado da Bahia (SEFAZ)",
-      "cargo": "Auditor Fiscal — Administração, Finanças e Controle Interno (A01)",
+      "cargo": "Auditor Fiscal — Administração Tributária (C03)",
       "banca": "FCC",
       "esfera": "ESTADUAL",
       "uf": "BA",
@@ -390,7 +407,7 @@
     {
       "concursoSlug": "governo-do-estado-da-bahia-secretaria-da-administracao-do-estado-da-bahia-saeb-s",
       "orgao": "Governo do Estado da Bahia — Secretaria da Administração do Estado da Bahia (SAEB) / Secretaria da Fazenda do Estado da Bahia (SEFAZ)",
-      "cargo": "Auditor Fiscal — Administração Tributária (C03)",
+      "cargo": "Auditor Fiscal — Administração, Finanças e Controle Interno (A01)",
       "banca": "FCC",
       "esfera": "ESTADUAL",
       "uf": "BA",
