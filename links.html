@@ -27,8 +27,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     assets/links/links.json    vídeo e artigo novos, um item cada. As instruções
                                estão no campo "leiame" do próprio arquivo.
 
+  A imagem do destaque é a miniatura que o YouTube mostra para a transmissão,
+  buscada pelo campo `youtube` da agenda: trocar a miniatura lá troca aqui. Entre o
+  fim de uma aula e a publicação da próxima, o destaque é a gravação da última.
+
   Sem os dois arquivos a página continua de pé: o destaque cai no texto fixo
-  ("Toda quarta, 20h") e a lista de novidades não aparece.
+  ("Toda quarta, 20h"), com o símbolo da marca na faixa, e a lista de novidades
+  não aparece.
 
   ⚠️ ETIQUETA — é o motivo de a página existir, não enfeite:
 
@@ -66,6 +71,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="icon" href="assets/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://i.ytimg.com">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
@@ -79,6 +85,8 @@ html{-webkit-text-size-adjust:100%}
 body{font-family:'Montserrat',system-ui,-apple-system,'Segoe UI',Arial,sans-serif;background:var(--azul-profundo);color:var(--branco);line-height:1.3;-webkit-font-smoothing:antialiased;min-height:100vh}
 a{color:inherit;text-decoration:none}
 img{display:block;max-width:100%}
+/* sem isto, o display:block acima venceria o atributo hidden das imagens */
+[hidden]{display:none!important}
 svg{flex:none}
 :focus-visible{outline:3px solid var(--dourado);outline-offset:3px}
 
@@ -90,11 +98,12 @@ svg{flex:none}
 h1{font-size:17px;font-weight:800;letter-spacing:-.005em}
 .topo p{font-size:12px;font-weight:600;color:var(--dourado);margin-top:2px}
 
-/* destaque: a aula ao vivo da semana */
-/* a altura mínima é a do cartão com capa: quando a agenda chega, o resto da página não pula */
-.dest{display:grid;grid-template-columns:1fr;gap:12px;align-items:center;min-height:135px;background:var(--cream);color:var(--azul);border-radius:16px;padding:16px}
-.dest.com-capa{grid-template-columns:92px 1fr;padding:10px 14px 10px 10px}
-.dest img{width:92px;height:115px;object-fit:cover;border-radius:10px}
+/* destaque: a aula ao vivo da semana. A faixa 16:9 já nasce no HTML, com o símbolo
+   da marca ao fundo: quando a miniatura chega, ela cobre a faixa e nada pula. */
+.dest{display:block;background:var(--cream);color:var(--azul);border-radius:16px;overflow:hidden}
+.dest-faixa{display:block;position:relative;padding-top:56.25%;background:#1A2A49 url(assets/logo-fc-192.webp) center/96px auto no-repeat}
+.dest-faixa img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover}
+.dest-txt{display:block;padding:13px 16px 16px}
 .k{display:flex;align-items:center;gap:7px;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--cta)}
 .pulso{flex:none;width:7px;height:7px;border-radius:50%;background:var(--cta);animation:pulso 1.6s ease-in-out infinite}
 @keyframes pulso{50%{opacity:.35}}
@@ -159,8 +168,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   <!-- Texto fixo: é o que fica quando não há aula marcada ou a agenda não carrega. -->
   <a class="dest" id="dest" href="aula-ao-vivo.html?src=bio&amp;utm_source=instagram&amp;utm_medium=bio&amp;utm_campaign=bio-links&amp;utm_content=live" data-bio="live">
-    <picture id="dest-capa" hidden><source id="dest-webp" type="image/webp"><img id="dest-img" alt="" width="92" height="115" decoding="async"></picture>
-    <span>
+    <span class="dest-faixa"><img id="dest-img" alt="" decoding="async" hidden></span>
+    <span class="dest-txt">
       <span class="k" id="dest-k">Toda quarta, 20h</span>
       <strong id="dest-t">Aula ao vivo e gratuita de Contabilidade</strong>
       <span class="go"><span id="dest-go">Ver a aula da semana</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M12.5 6.5 18 12l-5.5 5.5"/></svg></span>
@@ -269,10 +278,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   function limpo(s) { return texto(s).replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim().replace(/\.$/, ''); }
   function destinoOk(url) { return /^https:\/\/[a-z0-9]/i.test(texto(url)) || /^[a-z0-9][a-z0-9\/._-]*\.html(#[a-z0-9_-]*)?$/i.test(texto(url)); }
   function imagemOk(p) { return /^assets\/[a-z0-9\/._-]+\.(webp|jpg|png)$/i.test(texto(p)) ? p : ''; }
+  // O id do vídeo, de qualquer formato de endereço do YouTube ('' quando não é vídeo).
+  function video(url) {
+    var m = /^https:\/\/(?:www\.|m\.)?(?:youtube\.com\/(?:live\/|shorts\/|embed\/|watch\?(?:[^#]*&)?v=)|youtu\.be\/)([A-Za-z0-9_-]{11})(?![A-Za-z0-9_-])/.exec(texto(url));
+    return m ? m[1] : '';
+  }
 
-  /* Do que está publicado, o que a página mostra agora: a próxima aula ainda não
-     terminada (mesma regra da aula-ao-vivo.html: início às 20h, vale por 2h) e as
-     cinco novidades mais recentes, com a gravação da última aula entre elas. */
+  /* Do que está publicado, o que a página mostra agora. Destaque: a próxima aula
+     ainda não terminada (mesma regra da aula-ao-vivo.html: início às 20h, vale por
+     2h); sem aula marcada, a gravação da última. Depois, as cinco novidades mais
+     recentes, com a gravação entre elas quando ela não está no destaque. */
   function montar(agenda, links, agora) {
     var aulas = ((agenda && agenda.aulas) || []).filter(function (x) {
       return x && /^\d{4}-\d{2}-\d{2}$/.test(texto(x.data)) && limpo(x.titulo);
@@ -283,24 +298,25 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     var futuras = aulas.filter(function (x) { return x.d.getTime() + DUAS_HORAS > agora.getTime(); })
       .sort(function (a, b) { return a.d - b.d; });
     var dadas = aulas.filter(function (x) {
-      return x.d.getTime() + DUAS_HORAS <= agora.getTime() && /^https:\/\/(www\.)?youtube\.com\//.test(texto(x.a.youtube));
+      return x.d.getTime() + DUAS_HORAS <= agora.getTime() && video(x.a.youtube);
     }).sort(function (a, b) { return b.d - a.d; });
 
-    var destaque = null, f = futuras[0];
+    var destaque = null, f = futuras[0], g = dadas[0], itens = [];
+    var gravacao = g && { kicker: 'Gravação · live de ' + ddmm(g.d), titulo: limpo(g.a.titulo), url: g.a.youtube, video: video(g.a.youtube) };
     if (f) {
       destaque = {
+        botao: 'live',
         kicker: 'Ao vivo · ' + (mesmoDia(f.d, agora) ? 'hoje, 20h' : DIAS[f.d.getDay()] + ', ' + ddmm(f.d) + ' · 20h'),
         titulo: limpo(f.a.titulo),
         cta: texto(f.a.pdf) ? 'Pegar o caderno de questões' : 'Ver a aula da semana',
-        capa_webp: imagemOk(f.a.capa_webp), capa_jpg: imagemOk(f.a.capa_jpg)
+        url: 'aula-ao-vivo.html', video: video(f.a.youtube)
       };
+      if (gravacao) itens.push({ id: 'gravacao', tipo: 'gravacao', d: g.d, kicker: gravacao.kicker, titulo: gravacao.titulo, url: gravacao.url, img: '', video: gravacao.video });
+    } else if (gravacao) {
+      // Da quarta à noite até o kit publicar a próxima aula: a gravação sobe para o destaque.
+      destaque = { botao: 'gravacao', kicker: gravacao.kicker, titulo: gravacao.titulo, cta: 'Assistir à gravação', url: gravacao.url, video: gravacao.video };
     }
 
-    var itens = [];
-    if (dadas[0]) {
-      itens.push({ id: 'gravacao', tipo: 'gravacao', d: dadas[0].d, kicker: 'Gravação · live de ' + ddmm(dadas[0].d),
-        titulo: limpo(dadas[0].a.titulo), url: dadas[0].a.youtube, img: '' });
-    }
     ((links && links.novidades) || []).forEach(function (n) {
       var q = n && quando(n.data), rotulo = n && ROTULO[n.tipo];
       if (!q || !rotulo || !NOME.test(texto(n.id)) || n.id === 'gravacao' || !limpo(n.titulo) || !destinoOk(n.url)) return;
@@ -309,13 +325,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         ? 'estreia ' + DIAS[q.d.getDay()] + ', ' + ddmm(q.d) + (q.hora ? ', ' + q.d.getHours() + 'h' + (q.d.getMinutes() ? dois(q.d.getMinutes()) : '') : '')
         : ddmm(q.d);
       itens.push({ id: n.id, tipo: n.tipo, d: q.d, kicker: rotulo + (falta > -SEMANA ? ' novo' : '') + ' · ' + data,
-        titulo: limpo(n.titulo), url: n.url, img: imagemOk(n.img) });
+        titulo: limpo(n.titulo), url: n.url, img: imagemOk(n.img), video: video(n.url) });
     });
     itens.sort(function (a, b) { return b.d - a.d; });
     return { destaque: destaque, novidades: itens.slice(0, 5) };
   }
 
-  window.FC_LINKS = { etiqueta: etiqueta, marcar: marcar, montar: montar };
+  window.FC_LINKS = { etiqueta: etiqueta, marcar: marcar, montar: montar, video: video };
 
   // ───────────── daqui para baixo, só a página ─────────────
 
@@ -344,26 +360,47 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   }
 
   var PLAY = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg>';
+  var YT = 'https://i.ytimg.com/';
+
+  /* Miniatura do YouTube. Quando o tamanho pedido não existe, ele não dá erro de
+     imagem: responde com um cinza de 120×90. Por isso a conferência da largura. */
+  function carregar(img, fontes, seFalhar) {
+    function proxima() {
+      var src = fontes.shift();
+      if (!src) { seFalhar(); return; }
+      img.onload = function () { if (img.naturalWidth > 120) img.hidden = false; else proxima(); };
+      img.onerror = proxima;
+      img.src = src;
+    }
+    proxima();
+  }
+  function semMiniatura() {
+    var s = document.createElement('span');
+    s.className = 'nov-sem';
+    s.innerHTML = PLAY;
+    return s;
+  }
 
   function pintar(m) {
     var d = m.destaque;
     if (d) {
-      var k = el('dest-k');
+      var cartao = el('dest'), k = el('dest-k');
       k.textContent = '';
-      var ponto = document.createElement('i');
-      ponto.className = 'pulso';
-      k.appendChild(ponto);
+      if (d.botao === 'live') {
+        var ponto = document.createElement('i');
+        ponto.className = 'pulso';
+        k.appendChild(ponto);
+      }
       k.appendChild(document.createTextNode(d.kicker));
       el('dest-t').textContent = d.titulo;
       el('dest-go').textContent = d.cta;
-      if (d.capa_jpg) {
-        if (d.capa_webp) el('dest-webp').srcset = d.capa_webp;
-        el('dest-img').src = d.capa_jpg;
-        el('dest-capa').hidden = false;
-        el('dest').classList.add('com-capa');
-      }
+      cartao.href = d.url;
+      cartao.setAttribute('data-bio', d.botao);
+      if (!daCasa(new URL(cartao.href))) { cartao.target = '_blank'; cartao.rel = 'noopener'; }
+      // A grande em WebP; se a transmissão ainda não tem miniatura em alta, a média.
+      // Se nenhuma vier, a faixa fica com o símbolo da marca, que já está no fundo.
+      if (d.video) carregar(el('dest-img'), [YT + 'vi_webp/' + d.video + '/maxresdefault.webp', YT + 'vi/' + d.video + '/hqdefault.jpg'], function () {});
     }
-    if (!m.novidades.length) return;
     var lista = el('nov-lista');
     m.novidades.forEach(function (n) {
       var a = document.createElement('a');
@@ -371,15 +408,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       a.href = n.url;
       a.setAttribute('data-bio', n.id);
       if (!daCasa(new URL(a.href))) { a.target = '_blank'; a.rel = 'noopener'; }
-      if (n.img) {
+      // Arquivo próprio, quando o item traz um; senão, a miniatura do vídeo no YouTube.
+      var src = n.img || (n.video ? YT + 'vi/' + n.video + '/mqdefault.jpg' : '');
+      if (src) {
         var img = document.createElement('img');
-        img.src = n.img; img.alt = ''; img.width = 92; img.height = 52; img.loading = 'lazy'; img.decoding = 'async';
+        img.alt = ''; img.width = 92; img.height = 52; img.loading = 'lazy'; img.decoding = 'async';
         a.appendChild(img);
+        carregar(img, [src], function () { if (img.parentNode === a) a.replaceChild(semMiniatura(), img); });
       } else {
-        var sem = document.createElement('span');
-        sem.className = 'nov-sem';
-        sem.innerHTML = PLAY;
-        a.appendChild(sem);
+        a.appendChild(semMiniatura());
       }
       var caixa = document.createElement('span'), rot = document.createElement('small'), tit = document.createElement('b');
       rot.textContent = n.kicker;
@@ -388,7 +425,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       a.appendChild(caixa);
       lista.appendChild(a);
     });
-    el('novidades').hidden = false;
+    if (m.novidades.length) el('novidades').hidden = false;
     remarcarTodos();
   }
 

@@ -1,6 +1,6 @@
 {
   "versao": 1,
-  "leiame": "Novidades da página links.html (o link da bio). Um item por vídeo ou artigo: id (minúsculas, números e hífen; vira o nome do botão no rastreamento), tipo (video ou artigo), data (AAAA-MM-DD, ou AAAA-MM-DDTHH:MM para estreia com hora), titulo, url (https://... ou caminho do site terminado em .html) e img (336x189 px, em assets/links/). A página mostra os cinco itens mais recentes. A aula ao vivo da semana e a gravação da última aula NÃO entram aqui: vêm sozinhas de assets/aulas/agenda.json. Conferir com: node --test scripts/links.test.mjs",
+  "leiame": "Novidades da página links.html (o link da bio). Um item por vídeo ou artigo: id (minúsculas, números e hífen; vira o nome do botão no rastreamento), tipo (video ou artigo), data (AAAA-MM-DD, ou AAAA-MM-DDTHH:MM para estreia com hora), titulo, url (https://... ou caminho do site terminado em .html) e img (336x189 px, em assets/links/). Vídeo do YouTube dispensa o img: sem ele, a página usa a miniatura que o YouTube mostra. Artigo precisa do img. A página mostra os cinco itens mais recentes. A aula ao vivo da semana e a gravação da última aula NÃO entram aqui: vêm sozinhas de assets/aulas/agenda.json. Conferir com: node --test scripts/links.test.mjs",
   "novidades": [
     {
       "id": "artigo-cgu-2026",

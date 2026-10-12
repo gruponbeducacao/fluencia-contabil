@@ -130,35 +130,56 @@ test('a venda chega ao checkout como bio, com o botão em utm_term, e fora do te
   assert.equal(p.get('utm_term'), 'assinatura', 'o botão da bio desce para utm_term');
 });
 
+// `v` + data dá 11 caracteres, o tamanho de um id de vídeo do YouTube.
 const aula = (data, extra = {}) => ({
   data, titulo: `Tema de ${data}: as <em>3 regras</em> de prova.`, pdf: 'assets/aulas/folha.pdf',
-  capa_webp: 'assets/aulas/capa.webp', capa_jpg: 'assets/aulas/capa.jpg', youtube: `https://www.youtube.com/live/${data}`, ...extra,
+  capa_webp: 'assets/aulas/capa.webp', capa_jpg: 'assets/aulas/capa.jpg', youtube: `https://www.youtube.com/live/v${data}`, ...extra,
 });
 const agenda = { aulas: [aula('2026-09-30'), aula('2026-10-07'), aula('2026-10-14')] };
 
 test('a próxima aula vira o destaque e a última já dada vira gravação', () => {
   const m = L.montar(agenda, { novidades: [] }, new Date(2026, 9, 12, 10, 0));
+  // A imagem do destaque é a miniatura do YouTube: a página só precisa do id do vídeo.
   assert.deepEqual(copia(m.destaque), {
-    kicker: 'Ao vivo · qua, 14/10 · 20h', titulo: 'Tema de 2026-10-14: as 3 regras de prova',
-    cta: 'Pegar o caderno de questões', capa_webp: 'assets/aulas/capa.webp', capa_jpg: 'assets/aulas/capa.jpg',
+    botao: 'live', kicker: 'Ao vivo · qua, 14/10 · 20h', titulo: 'Tema de 2026-10-14: as 3 regras de prova',
+    cta: 'Pegar o caderno de questões', url: 'aula-ao-vivo.html', video: 'v2026-10-14',
   });
   assert.equal(m.novidades.length, 1);
   assert.equal(m.novidades[0].id, 'gravacao');
   assert.equal(m.novidades[0].kicker, 'Gravação · live de 07/10');
-  assert.equal(m.novidades[0].url, 'https://www.youtube.com/live/2026-10-07');
+  assert.equal(m.novidades[0].url, 'https://www.youtube.com/live/v2026-10-07');
+  assert.equal(m.novidades[0].video, 'v2026-10-07');
 });
 
-test('no dia da aula o destaque diz hoje; duas horas depois do início ela vira gravação', () => {
+test('no dia da aula o destaque diz hoje; sem aula marcada, o destaque é a gravação da última', () => {
   const durante = L.montar(agenda, { novidades: [] }, new Date(2026, 9, 14, 21, 30));
   assert.equal(durante.destaque.kicker, 'Ao vivo · hoje, 20h');
+  // Duas horas depois do início a aula acabou. Enquanto o kit não publica a próxima,
+  // a faixa do destaque mostra a gravação, que então sai da lista para não repetir.
   const depois = L.montar(agenda, { novidades: [] }, new Date(2026, 9, 14, 22, 0));
-  assert.equal(depois.destaque, null);
-  assert.equal(depois.novidades[0].kicker, 'Gravação · live de 14/10');
+  assert.deepEqual(copia(depois.destaque), {
+    botao: 'gravacao', kicker: 'Gravação · live de 14/10', titulo: 'Tema de 2026-10-14: as 3 regras de prova',
+    cta: 'Assistir à gravação', url: 'https://www.youtube.com/live/v2026-10-14', video: 'v2026-10-14',
+  });
+  assert.deepEqual(campo(depois.novidades, 'id'), []);
+});
+
+test('o id do vídeo sai de qualquer formato de endereço do YouTube, e só dele', () => {
+  for (const url of ['https://www.youtube.com/live/BO3dhLv8Uoc', 'https://youtu.be/BO3dhLv8Uoc', 'https://www.youtube.com/watch?v=BO3dhLv8Uoc&t=30s',
+    'https://www.youtube.com/watch?feature=share&v=BO3dhLv8Uoc', 'https://youtube.com/shorts/BO3dhLv8Uoc', 'https://www.youtube.com/live/BO3dhLv8Uoc?si=abc']) {
+    assert.equal(L.video(url), 'BO3dhLv8Uoc', url);
+  }
+  for (const url of ['', null, 'blog/artigo.html', 'https://www.youtube.com/@prof.viniciusferraz', 'https://outro.example/live/BO3dhLv8Uoc',
+    'https://www.youtube.com/live/curto', 'https://www.youtube.com/live/BO3dhLv8Uoc_longo']) {
+    assert.equal(L.video(url), '', String(url));
+  }
 });
 
 test('aula sem caderno publicado não promete caderno; sem agenda a página segue de pé', () => {
   const m = L.montar({ aulas: [aula('2026-10-14', { pdf: '' })] }, { novidades: [] }, new Date(2026, 9, 12, 10, 0));
   assert.equal(m.destaque.cta, 'Ver a aula da semana');
+  const semYoutube = L.montar({ aulas: [aula('2026-10-14', { youtube: '' })] }, { novidades: [] }, new Date(2026, 9, 12, 10, 0));
+  assert.equal(semYoutube.destaque.video, '', 'sem endereço no YouTube, o destaque fica só com a faixa da marca');
   assert.deepEqual(copia(L.montar(null, null, new Date(2026, 9, 12))), { destaque: null, novidades: [] });
 });
 
@@ -167,7 +188,7 @@ test('novidades saem da mais nova para a mais antiga, no máximo cinco, com data
     { id: 'artigo-velho', tipo: 'artigo', data: '2026-08-01', titulo: 'Artigo antigo', url: 'blog/antigo.html' },
     { id: 'video-novo', tipo: 'video', data: '2026-10-08', titulo: 'Vídeo da semana.', url: 'https://www.youtube.com/watch?v=sintetico', img: 'assets/links/video.webp' },
     { id: 'artigo-novo', tipo: 'artigo', data: '2026-10-09', titulo: 'Artigo da semana', url: 'blog/novo.html' },
-    { id: 'video-estreia', tipo: 'video', data: '2026-10-15T19:00', titulo: 'Vídeo que estreia', url: 'https://www.youtube.com/watch?v=estreia' },
+    { id: 'video-estreia', tipo: 'video', data: '2026-10-15T19:00', titulo: 'Vídeo que estreia', url: 'https://www.youtube.com/watch?v=estreia_123' },
     { id: 'video-meia', tipo: 'video', data: '2026-10-16T19:30', titulo: 'Estreia na meia hora', url: 'https://www.youtube.com/watch?v=meia' },
     { id: 'artigo-set', tipo: 'artigo', data: '2026-09-29', titulo: 'Artigo de setembro', url: 'blog/setembro.html' },
   ];
@@ -179,6 +200,8 @@ test('novidades saem da mais nova para a mais antiga, no máximo cinco, com data
   ]);
   assert.equal(m.novidades[3].titulo, 'Vídeo da semana');
   assert.equal(m.novidades[3].img, 'assets/links/video.webp');
+  assert.equal(m.novidades[1].video, 'estreia_123', 'vídeo sem arquivo de miniatura usa a do YouTube');
+  assert.equal(m.novidades[2].video, '', 'artigo não tem vídeo');
   const velho = L.montar({ aulas: [] }, { novidades: [novidades[0]] }, new Date(2026, 9, 12, 10, 0));
   assert.equal(velho.novidades[0].kicker, 'Artigo · 01/08');
 });
@@ -203,8 +226,9 @@ test('o que está publicado hoje monta sem erro e aponta para arquivo que existe
   assert.equal(todos.novidades.length, Math.min(5, linksReal.novidades.length));
   for (const n of linksReal.novidades) {
     assert.equal(fixos.has(n.id), false, `${n.id}: nome já usado por um botão fixo`);
-    assert.ok(n.img, `${n.id}: sem miniatura`);
-    assert.ok(existsSync(new URL(n.img, raiz)), `${n.id}: miniatura ${n.img} não existe`);
+    // Vídeo do YouTube dispensa arquivo: a página busca a miniatura lá. Artigo precisa da sua.
+    assert.ok(n.img || L.video(n.url), `${n.id}: sem miniatura`);
+    if (n.img) assert.ok(existsSync(new URL(n.img, raiz)), `${n.id}: miniatura ${n.img} não existe`);
     if (!/^https:/.test(n.url)) assert.ok(existsSync(new URL(n.url.split('#')[0], raiz)), `${n.id}: ${n.url} não existe`);
   }
   assert.equal(new Set(linksReal.novidades.map((n) => n.id)).size, linksReal.novidades.length);
