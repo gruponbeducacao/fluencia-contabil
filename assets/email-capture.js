@@ -846,6 +846,31 @@
     } catch (e) {}
   }
 
+  /* Artigo de concurso traz a ARTE DE EDITAL já pronta (render-artes/arte-edital),
+     declarada no <head> em <meta name="fc:arte-feed"> e <meta name="fc:arte-story">.
+     Quando ela existe, é ela que o leitor recebe. O card desenhado em Canvas fica
+     para os demais posts e de reserva: se a arte não carregar, o botão não fica
+     sem imagem. */
+  function arteProntaDoArtigo(formato) {
+    var caminho = metaConteudo('fc:arte-' + formato);
+    if (!caminho || !window.fetch) return null;
+    return fetch(caminho).then(function (r) {
+      if (!r.ok) throw new Error('arte pronta respondeu ' + r.status);
+      return r.blob();
+    }).then(function (blob) {
+      if (blob.type.indexOf('image/') !== 0) throw new Error('arte pronta não é imagem');
+      return { blob: blob, pronta: true };
+    });
+  }
+
+  function obterArte(formato, dados) {
+    function desenhar() {
+      return carregarGeradorDeCard().then(function (api) { return api.render(formato, dados); });
+    }
+    var pronta = arteProntaDoArtigo(formato);
+    return pronta ? pronta['catch'](desenhar) : desenhar();
+  }
+
   function ligarInstagram(el, url) {
     var btn = el.querySelector('.fc-ec-ig');
     var painel = el.querySelector('.fc-ec-ig-formatos');
@@ -885,10 +910,13 @@
       travarChips(true);
       avisar('Gerando a arte…');
 
-      carregarGeradorDeCard()
-        .then(function (api) { return api.render(formato, dados); })
+      obterArte(formato, dados)
         .then(function (resultado) {
           var blob = resultado.blob;
+          // A foto da arte de edital pode exigir atribuição: o crédito vai na
+          // legenda do feed, antes das hashtags.
+          var credito = (resultado.pronta && formato === 'feed') ? metaConteudo('fc:arte-credito') : '';
+          if (credito) legenda = legenda.replace(/\n\n(#[^\n]*)$/, '\n\n' + credito + '\n\n$1');
           var arquivo = blob;
           try { arquivo = new File([blob], nome, { type: 'image/jpeg' }); } catch (e) {}
 
