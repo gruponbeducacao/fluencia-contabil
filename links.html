@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MGQFHR5J');</script>
+<!-- End Google Tag Manager -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0E1929">
+<title>Links · Fluência Contábil</title>
+<meta name="description" content="Tudo da Fluência Contábil num lugar só: a aula ao vivo da semana, os vídeos e artigos novos, a assinatura, os cursos e os editais.">
+<meta name="robots" content="noindex,follow">
+<link rel="canonical" href="https://fluenciacontabil.com.br/links.html">
+
+<!--
+  PÁGINA DO LINK DA BIO — fluenciacontabil.com.br/links
+
+  O HTML não muda de semana para semana. O que muda vem de dois arquivos:
+
+    assets/aulas/agenda.json   a aula ao vivo da semana (destaque) e a gravação da
+                               última aula. Quem escreve é o kit das lives
+                               (_LIVES/_semanal/publicar_semana_lp.py); nada a fazer aqui.
+    assets/links/links.json    vídeo e artigo novos, um item cada. As instruções
+                               estão no campo "leiame" do próprio arquivo.
+
+  Sem os dois arquivos a página continua de pé: o destaque cai no texto fixo
+  ("Toda quarta, 20h") e a lista de novidades não aparece.
+
+  ⚠️ ETIQUETA — é o motivo de a página existir, não enfeite:
+
+  1. Todo link leva `data-bio` com o nome do botão. Link para o site ou para o
+     Dicionário já sai do HTML com src=bio, utm_source=instagram, utm_medium=bio,
+     utm_campaign=bio-links e utm_content=<botão>. O origem.js da página de destino
+     leva isso até a Kiwify, e o botão chega lá em utm_term. Sem a etiqueta, a venda
+     herda a campanha paga do botão da cursos.html e entra no CPA da Meta.
+
+  2. O fbclid que o Instagram acrescenta ao link da bio NÃO é repassado: a
+     assinatura.html sorteia para o teste A/B quem chega com fbclid (marca de
+     anúncio pago). Só segue adiante quando a visita já chegou com etiqueta própria
+     (utm_campaign ou utm_medium), que é o caso de anúncio.
+
+  3. Outra rede usa o mesmo endereço com a fonte na frente — por exemplo
+     /links?utm_source=youtube na bio do YouTube. O resto da etiqueta continua igual.
+
+  4. Clique em qualquer botão empurra `bio_click` no dataLayer (cta_location = nome
+     do botão). No WhatsApp vai também o `whatsapp_cta_click`, que o container já
+     transforma no Contact da Meta. Não chamar fbq daqui: contaria duas vezes.
+
+  A página não carrega email-capture.js de propósito: barra fixa e modal de saída
+  tirariam o visitante do único gesto que se quer dele, que é tocar num link.
+
+  Conferência: node --test scripts/links.test.mjs
+-->
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Fluência Contábil · Links">
+<meta property="og:description" content="A aula ao vivo da semana, os vídeos e artigos novos, a assinatura, os cursos e os editais.">
+<meta property="og:url" content="https://fluenciacontabil.com.br/links.html">
+<meta property="og:image" content="https://fluenciacontabil.com.br/assets/hero-institucional.jpg">
+<meta property="og:locale" content="pt_BR">
+
+<link rel="icon" href="assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --azul:#1B2A4A; --azul-med:#2A3F6F; --azul-profundo:#0E1929;
+  --dourado:#C8A84B; --cream:#FBF6E9; --branco:#FFFFFF;
+  --cta:#C0392B; --cta-hover:#922B1F;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:'Montserrat',system-ui,-apple-system,'Segoe UI',Arial,sans-serif;background:var(--azul-profundo);color:var(--branco);line-height:1.3;-webkit-font-smoothing:antialiased;min-height:100vh}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+svg{flex:none}
+:focus-visible{outline:3px solid var(--dourado);outline-offset:3px}
+
+.pg{width:100%;max-width:460px;margin:0 auto;padding:18px 14px 30px;display:flex;flex-direction:column;gap:14px}
+
+/* topo */
+.topo{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center}
+.topo img{width:54px;height:42px;border-radius:10px}
+h1{font-size:17px;font-weight:800;letter-spacing:-.005em}
+.topo p{font-size:12px;font-weight:600;color:var(--dourado);margin-top:2px}
+
+/* destaque: a aula ao vivo da semana */
+/* a altura mínima é a do cartão com capa: quando a agenda chega, o resto da página não pula */
+.dest{display:grid;grid-template-columns:1fr;gap:12px;align-items:center;min-height:135px;background:var(--cream);color:var(--azul);border-radius:16px;padding:16px}
+.dest.com-capa{grid-template-columns:92px 1fr;padding:10px 14px 10px 10px}
+.dest img{width:92px;height:115px;object-fit:cover;border-radius:10px}
+.k{display:flex;align-items:center;gap:7px;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--cta)}
+.pulso{flex:none;width:7px;height:7px;border-radius:50%;background:var(--cta);animation:pulso 1.6s ease-in-out infinite}
+@keyframes pulso{50%{opacity:.35}}
+.dest strong{display:block;font-size:17px;font-weight:900;line-height:1.15;letter-spacing:-.01em;margin:6px 0 9px}
+.go{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:800}
+.go svg{width:15px;height:15px}
+
+/* atalhos */
+.grade{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.t{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:86px;background:var(--azul);border-radius:14px;padding:12px 6px;text-align:center;font-size:12px;font-weight:700;line-height:1.2;transition:background .15s ease}
+.t svg{width:22px;height:22px;color:var(--dourado)}
+.t.venda{background:var(--cta)}
+.t.venda svg{color:var(--branco)}
+
+/* novidades */
+h2{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.62);margin:8px 2px 6px}
+#nov-lista{display:flex;flex-direction:column;gap:2px}
+.nov{display:grid;grid-template-columns:92px 1fr;gap:12px;align-items:center;padding:7px 2px;border-radius:10px}
+.nov img,.nov-sem{width:92px;height:52px;border-radius:8px;object-fit:cover}
+.nov-sem{background:var(--azul-med);display:grid;place-items:center;color:var(--dourado)}
+.nov-sem svg{width:20px;height:20px}
+.nov small{display:block;font-size:10.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--dourado)}
+.nov b{display:block;font-size:13.5px;font-weight:700;line-height:1.25;margin-top:3px}
+
+/* mais */
+.mais{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:4px}
+.mais a{border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:11px 12px;text-align:center;font-size:12.5px;font-weight:600;transition:background .15s ease}
+
+.pe{text-align:center;font-size:12px;font-weight:600;color:rgba(255,255,255,.55);margin-top:12px}
+
+@media (hover:hover){
+  .t:hover{background:var(--azul-med)}
+  .t.venda:hover{background:var(--cta-hover)}
+  .mais a:hover,.nov:hover{background:rgba(255,255,255,.07)}
+}
+@media (min-width:560px){
+  .pg{padding-top:44px;gap:16px}
+}
+@media (prefers-reduced-motion:reduce){
+  .pulso{animation:none}
+  .t,.mais a{transition:none}
+}
+</style>
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MGQFHR5J"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<main class="pg">
+
+  <header class="topo">
+    <a href="index.html?src=bio&amp;utm_source=instagram&amp;utm_medium=bio&amp;utm_campaign=bio-links&amp;utm_content=site" data-bio="site" aria-label="Site da Fluência Contábil">
+      <picture><source srcset="assets/logo-fc-192.webp" type="image/webp"><img src="assets/logo-fc-192.png" alt="" width="54" height="42" decoding="async"></picture>
+    </a>
+    <div>
+      <h1>Fluência Contábil</h1>
+      <p>Prof. Vinícius Ferraz Neves</p>
+    </div>
+  </header>
+
+  <!-- Texto fixo: é o que fica quando não há aula marcada ou a agenda não carrega. -->
+  <a class="dest" id="dest" href="aula-ao-vivo.html?src=bio&amp;utm_source=instagram&amp;utm_medium=bio&amp;utm_campaign=bio-links&amp;utm_content=live" data-bio="live">
+    <picture id="dest-capa" hidden><source id="dest-webp" type="image/webp"><img id="dest-img" alt="" width="92" height="115" decoding="async"></picture>
+    <span>
+      <span class="k" id="dest-k">Toda quarta, 20h</span>
+      <strong id="dest-t">Aula ao vivo e gratuita de Contabilidade</strong>
+      <span class="go"><span id="dest-go">Ver a aula da semana</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M12.5 6.5 18 12l-5.5 5.5"/></svg></span>
+    </span>
+  </a>
+
+  <nav class="grade" aria-label="Atalhos">
+    <a class="t venda" href="assinatura.html?src=bio&amp;utm_source=instagram&amp;utm_medium=bio&amp;utm_campaign=bio-links&amp;utm_content=assinatura" data-bio="assinatura">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 9.5 12 5l9.5 4.5L12 14z"/><path d="M6.5 11.8V16c1.5 1.5 3.4 2.2 5.5 2.2s4-.7 5.5-2.2v-4.2"/></svg>
+      <span>Assinatura</span>
+    </a>
+    <a class="t" href="cursos.html?src=bio&amp;utm_source=instagram&amp;utm_medium=bio&amp;utm_campaign=bio-links&amp;utm_content=cursos" data-bio="cursos">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg>
+      <span>Cursos e pacotes</span>
+    </a>
+    <a class="t" href="editais.html?src=bio&amp;utm_source=instagram&amp;utm_medium=bio&amp;utm_campaign=bio-links&amp;utm_content=editais" data-bio="editais">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="5" width="12" height="15.5" rx="1.5"/><path d="M9 5V3.5h6V5M9 10.5h6M9 14h6"/></svg>
+      <span>Editais</span>
+    </a>
+    <a class="t" href="https://dicionario.fluenciacontabil.com.br/?src=bio&amp;utm_source=instagram&amp;utm_medium=bio&amp;utm_campaign=bio-links&amp;utm_content=dicionario" data-bio="dicionario">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4.5h11a3 3 0 0 1 3 3v12H8a3 3 0 0 1-3-3z"/><path d="M5 16.5a3 3 0 0 1 3-3h11"/></svg>
+      <span>Dicionário</span>
+    </a>
+    <a class="t" href="blog.html?src=bio&amp;utm_source=instagram&amp;utm_medium=bio&amp;utm_campaign=bio-links&amp;utm_content=blog" data-bio="blog">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3.5h9l3 3v14H6z"/><path d="M9 10h6M9 13.5h6M9 17h4"/></svg>
+      <span>Blog</span>
+    </a>
+    <a class="t" href="https://www.youtube.com/@prof.viniciusferraz" target="_blank" rel="noopener" data-bio="youtube">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="3.5"/><path d="M10.2 9.3v5.4l4.6-2.7z" fill="currentColor" stroke="none"/></svg>
+      <span>YouTube</span>
+    </a>
+  </nav>
+
+  <section id="novidades" aria-labelledby="nov-h" hidden>
+    <h2 id="nov-h">Novidades</h2>
+    <div id="nov-lista"></div>
+  </section>
+
+  <nav class="mais" aria-label="Mais">
+    <a href="depoimentos.html?src=bio&amp;utm_source=instagram&amp;utm_medium=bio&amp;utm_campaign=bio-links&amp;utm_content=depoimentos" data-bio="depoimentos">Depoimentos</a>
+    <a href="professor.html?src=bio&amp;utm_source=instagram&amp;utm_medium=bio&amp;utm_campaign=bio-links&amp;utm_content=professor" data-bio="professor">O professor</a>
+    <a href="https://wa.me/5521959042832?text=Oi!%20Vim%20pelo%20link%20da%20bio%20e%20quero%20saber%20mais%20sobre%20o%20curso." target="_blank" rel="noopener" data-bio="whatsapp">WhatsApp</a>
+    <a href="https://portal.fluenciacontabil.com.br/" data-bio="aluno">Área do Aluno</a>
+  </nav>
+
+  <p class="pe">Contabilidade para quem quer ser fluente.</p>
+
+</main>
+
+<script src="assets/origem.js?v=20260909" defer></script>
+<script>
+(function () {
+  'use strict';
+
+  var CASA = ['fluenciacontabil.com.br', 'www.fluenciacontabil.com.br', 'dicionario.fluenciacontabil.com.br'];
+  var PADRAO = { src: 'bio', utm_source: 'instagram', utm_medium: 'bio', utm_campaign: 'bio-links' };
+  var SO_DE_ANUNCIO = ['utm_term', 'sck', 'fbclid', 'gclid'];
+  var NOME = /^[a-z0-9][a-z0-9._-]{0,39}$/;
+  var ROTULO = { video: 'Vídeo', artigo: 'Artigo' };
+  var DIAS = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'];
+  var DUAS_HORAS = 2 * 60 * 60 * 1000, SEMANA = 7 * 24 * 60 * 60 * 1000;
+
+  function texto(v) { return typeof v === 'string' && v ? v : ''; }
+
+  /* A etiqueta com que o visitante sai daqui. Campanha e src nunca ficam vazios:
+     sem campanha, a venda herdaria a do botão pago da página de destino. */
+  function etiqueta(origem, botao) {
+    var o = origem || {}, t = {};
+    Object.keys(PADRAO).forEach(function (k) { t[k] = texto(o[k]) || PADRAO[k]; });
+    // utm_campaign ou utm_medium na entrada = visita que já veio etiquetada (anúncio).
+    // Só nesse caso o fbclid segue: sozinho, ele é o que o Instagram põe em todo
+    // link de bio, e na assinatura.html jogaria o visitante no teste A/B de pago.
+    if (texto(o.utm_campaign) || texto(o.utm_medium)) {
+      SO_DE_ANUNCIO.forEach(function (k) { if (texto(o[k])) t[k] = o[k]; });
+    }
+    t.utm_content = botao;
+    return t;
+  }
+
+  // Página da casa: os domínios públicos da marca e o próprio endereço em que a
+  // página está aberta (a prévia do Netlify e o teste local se comportam como o site).
+  function daCasa(u) {
+    var aqui = '';
+    try { aqui = window.location.hostname; } catch (e) {}
+    return /^https?:$/.test(u.protocol) && (CASA.indexOf(u.hostname) !== -1 || (!!aqui && u.hostname === aqui));
+  }
+
+  function marcar(href, origem, botao) {
+    var u;
+    try { u = new URL(href); } catch (e) { return href; }
+    if (!daCasa(u)) return href;
+    Object.keys(PADRAO).concat(SO_DE_ANUNCIO, 'utm_content').forEach(function (k) { u.searchParams.delete(k); });
+    var t = etiqueta(origem, botao);
+    Object.keys(t).forEach(function (k) { u.searchParams.set(k, t[k]); });
+    return u.toString();
+  }
+
+  function dois(n) { return String(n).padStart(2, '0'); }
+  function ddmm(d) { return dois(d.getDate()) + '/' + dois(d.getMonth() + 1); }
+  function mesmoDia(a, b) { return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate(); }
+  function quando(iso) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2}))?$/.exec(texto(iso));
+    return m ? { d: new Date(+m[1], +m[2] - 1, +m[3], m[4] ? +m[4] : 0, m[5] ? +m[5] : 0), hora: !!m[4] } : null;
+  }
+  // Os títulos da agenda trazem <em> para a LP; aqui entram como texto puro.
+  function limpo(s) { return texto(s).replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim().replace(/\.$/, ''); }
+  function destinoOk(url) { return /^https:\/\/[a-z0-9]/i.test(texto(url)) || /^[a-z0-9][a-z0-9\/._-]*\.html(#[a-z0-9_-]*)?$/i.test(texto(url)); }
+  function imagemOk(p) { return /^assets\/[a-z0-9\/._-]+\.(webp|jpg|png)$/i.test(texto(p)) ? p : ''; }
+
+  /* Do que está publicado, o que a página mostra agora: a próxima aula ainda não
+     terminada (mesma regra da aula-ao-vivo.html: início às 20h, vale por 2h) e as
+     cinco novidades mais recentes, com a gravação da última aula entre elas. */
+  function montar(agenda, links, agora) {
+    var aulas = ((agenda && agenda.aulas) || []).filter(function (x) {
+      return x && /^\d{4}-\d{2}-\d{2}$/.test(texto(x.data)) && limpo(x.titulo);
+    }).map(function (x) {
+      var p = x.data.split('-');
+      return { a: x, d: new Date(+p[0], +p[1] - 1, +p[2], 20, 0, 0) };
+    });
+    var futuras = aulas.filter(function (x) { return x.d.getTime() + DUAS_HORAS > agora.getTime(); })
+      .sort(function (a, b) { return a.d - b.d; });
+    var dadas = aulas.filter(function (x) {
+      return x.d.getTime() + DUAS_HORAS <= agora.getTime() && /^https:\/\/(www\.)?youtube\.com\//.test(texto(x.a.youtube));
+    }).sort(function (a, b) { return b.d - a.d; });
+
+    var destaque = null, f = futuras[0];
+    if (f) {
+      destaque = {
+        kicker: 'Ao vivo · ' + (mesmoDia(f.d, agora) ? 'hoje, 20h' : DIAS[f.d.getDay()] + ', ' + ddmm(f.d) + ' · 20h'),
+        titulo: limpo(f.a.titulo),
+        cta: texto(f.a.pdf) ? 'Pegar o caderno de questões' : 'Ver a aula da semana',
+        capa_webp: imagemOk(f.a.capa_webp), capa_jpg: imagemOk(f.a.capa_jpg)
+      };
+    }
+
+    var itens = [];
+    if (dadas[0]) {
+      itens.push({ id: 'gravacao', tipo: 'gravacao', d: dadas[0].d, kicker: 'Gravação · live de ' + ddmm(dadas[0].d),
+        titulo: limpo(dadas[0].a.titulo), url: dadas[0].a.youtube, img: '' });
+    }
+    ((links && links.novidades) || []).forEach(function (n) {
+      var q = n && quando(n.data), rotulo = n && ROTULO[n.tipo];
+      if (!q || !rotulo || !NOME.test(texto(n.id)) || n.id === 'gravacao' || !limpo(n.titulo) || !destinoOk(n.url)) return;
+      var falta = q.d.getTime() - agora.getTime();
+      var data = falta > 0
+        ? 'estreia ' + DIAS[q.d.getDay()] + ', ' + ddmm(q.d) + (q.hora ? ', ' + q.d.getHours() + 'h' + (q.d.getMinutes() ? dois(q.d.getMinutes()) : '') : '')
+        : ddmm(q.d);
+      itens.push({ id: n.id, tipo: n.tipo, d: q.d, kicker: rotulo + (falta > -SEMANA ? ' novo' : '') + ' · ' + data,
+        titulo: limpo(n.titulo), url: n.url, img: imagemOk(n.img) });
+    });
+    itens.sort(function (a, b) { return b.d - a.d; });
+    return { destaque: destaque, novidades: itens.slice(0, 5) };
+  }
+
+  window.FC_LINKS = { etiqueta: etiqueta, marcar: marcar, montar: montar };
+
+  // ───────────── daqui para baixo, só a página ─────────────
+
+  function el(id) { return document.getElementById(id); }
+  function origemDaVisita() { try { return (window.FC_ORIGEM && window.FC_ORIGEM.origem) || {}; } catch (e) { return {}; } }
+  function remarcar(a) {
+    var botao = a.getAttribute('data-bio');
+    if (!botao) return;
+    var novo = marcar(a.href, origemDaVisita(), botao);
+    if (novo !== a.href) a.href = novo;
+  }
+  function remarcarTodos() { Array.prototype.forEach.call(document.querySelectorAll('a[data-bio]'), remarcar); }
+
+  function aoClique(ev) {
+    try {
+      if (ev.type === 'auxclick' ? ev.button !== 1 : ev.button !== undefined && ev.button !== 0) return;
+      var a = ev.target && ev.target.closest ? ev.target.closest('a[data-bio]') : null;
+      if (!a) return;
+      remarcar(a);
+      var u = new URL(a.href);
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ event: 'bio_click', cta_location: a.getAttribute('data-bio'), destino: u.hostname + u.pathname, pagina: window.location.pathname });
+      // Só o dataLayer: é o container que transforma whatsapp_cta_click no Contact da Meta.
+      if (u.hostname === 'wa.me') window.dataLayer.push({ event: 'whatsapp_cta_click', cta_location: 'bio' });
+    } catch (e) {}
+  }
+
+  var PLAY = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg>';
+
+  function pintar(m) {
+    var d = m.destaque;
+    if (d) {
+      var k = el('dest-k');
+      k.textContent = '';
+      var ponto = document.createElement('i');
+      ponto.className = 'pulso';
+      k.appendChild(ponto);
+      k.appendChild(document.createTextNode(d.kicker));
+      el('dest-t').textContent = d.titulo;
+      el('dest-go').textContent = d.cta;
+      if (d.capa_jpg) {
+        if (d.capa_webp) el('dest-webp').srcset = d.capa_webp;
+        el('dest-img').src = d.capa_jpg;
+        el('dest-capa').hidden = false;
+        el('dest').classList.add('com-capa');
+      }
+    }
+    if (!m.novidades.length) return;
+    var lista = el('nov-lista');
+    m.novidades.forEach(function (n) {
+      var a = document.createElement('a');
+      a.className = 'nov';
+      a.href = n.url;
+      a.setAttribute('data-bio', n.id);
+      if (!daCasa(new URL(a.href))) { a.target = '_blank'; a.rel = 'noopener'; }
+      if (n.img) {
+        var img = document.createElement('img');
+        img.src = n.img; img.alt = ''; img.width = 92; img.height = 52; img.loading = 'lazy'; img.decoding = 'async';
+        a.appendChild(img);
+      } else {
+        var sem = document.createElement('span');
+        sem.className = 'nov-sem';
+        sem.innerHTML = PLAY;
+        a.appendChild(sem);
+      }
+      var caixa = document.createElement('span'), rot = document.createElement('small'), tit = document.createElement('b');
+      rot.textContent = n.kicker;
+      tit.textContent = n.titulo;
+      caixa.appendChild(rot); caixa.appendChild(tit);
+      a.appendChild(caixa);
+      lista.appendChild(a);
+    });
+    el('novidades').hidden = false;
+    remarcarTodos();
+  }
+
+  /* O Cloudflare guarda asset por 4h e respeita a query string: sem o `t`, que
+     muda a cada 10 minutos, o vídeo publicado de manhã só apareceria à tarde. */
+  function ler(caminho) {
+    return fetch(caminho + '?t=' + Math.floor(Date.now() / 600000), { cache: 'no-store' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .catch(function () { return null; });
+  }
+
+  /* Depois do origem.js (defer): a etiqueta depende da origem que ele leu, e o
+     clique tem de ser ouvido depois do dele para o nome do botão prevalecer. */
+  function iniciar() {
+    remarcarTodos();
+    document.addEventListener('click', aoClique, true);
+    document.addEventListener('auxclick', aoClique, true);
+    if (!window.fetch) return;
+    Promise.all([ler('assets/aulas/agenda.json'), ler('assets/links/links.json')]).then(function (r) {
+      try { pintar(montar(r[0], r[1], new Date())); } catch (e) {}
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', iniciar, { once: true });
+  else iniciar();
+})();
+</script>
+</body>
+</html>
