@@ -19,13 +19,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <!--
   PÁGINA DO LINK DA BIO — fluenciacontabil.com.br/links
 
-  O HTML não muda de semana para semana. O que muda vem de dois arquivos:
+  O HTML não muda de semana para semana. O que muda vem de três arquivos, e só o
+  último pede um gesto (a rotina inteira está em scripts/LINKS.md):
 
     assets/aulas/agenda.json   a aula ao vivo da semana (destaque) e a gravação da
                                última aula. Quem escreve é o kit das lives
                                (_LIVES/_semanal/publicar_semana_lp.py); nada a fazer aqui.
-    assets/links/links.json    vídeo e artigo novos, um item cada. As instruções
-                               estão no campo "leiame" do próprio arquivo.
+    blog/feed.xml              os artigos. O CI regenera o feed a cada post
+                               publicado; nada a fazer aqui.
+    assets/links/links.json    o vídeo da semana, um item por vídeo, escrito por
+                               scripts/links_video.py.
 
   A imagem do destaque é a miniatura que o YouTube mostra para a transmissão,
   buscada pelo campo `youtube` da agenda: trocar a miniatura lá troca aqui. Entre o
@@ -284,11 +287,46 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     return m ? m[1] : '';
   }
 
+  var ENTIDADE = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'" };
+  // Uma passada só: `&amp;amp;` vira `&amp;`, não `&`.
+  function semEntidade(s) {
+    return s.replace(/&(#x[0-9a-f]+|#\d+|amp|lt|gt|quot|apos);/gi, function (tudo, e) {
+      e = e.toLowerCase();
+      if (e.charAt(0) !== '#') return ENTIDADE[e];
+      var n = e.charAt(1) === 'x' ? parseInt(e.slice(2), 16) : parseInt(e.slice(1), 10);
+      return n > 0 && n < 0x110000 ? String.fromCodePoint(n) : '';
+    });
+  }
+  // Onde o endereço cai dentro do site, sem domínio, extensão, busca nem âncora.
+  function caminho(url) {
+    return texto(url).replace(/^https:\/\/(www\.)?fluenciacontabil\.com\.br\//, '').replace(/[?#].*$/, '').replace(/^\/+/, '').replace(/\.html$/, '');
+  }
+
+  /* Os artigos do blog/feed.xml, que o CI regenera a cada post publicado: é por ele
+     que artigo novo entra aqui sem ninguém mexer nesta página. Lido por expressão
+     regular de propósito: o arquivo é nosso, e assim a regra roda no teste. */
+  function feed(xml) {
+    var artigos = [], item = /<item>([\s\S]*?)<\/item>/g, m;
+    function campo(bloco, nome) {
+      var c = new RegExp('<' + nome + '>([\\s\\S]*?)</' + nome + '>').exec(bloco);
+      return c ? semEntidade(c[1]).replace(/\s+/g, ' ').trim() : '';
+    }
+    while ((m = item.exec(texto(xml)))) {
+      var titulo = campo(m[1], 'title');
+      var slug = /^https:\/\/fluenciacontabil\.com\.br\/blog\/([a-z0-9][a-z0-9-]*)(?:\.html)?$/.exec(campo(m[1], 'link'));
+      var d = new Date(campo(m[1], 'pubDate'));
+      if (!titulo || !slug || isNaN(d.getTime())) continue;
+      // O gerador grava meia-noite de Brasília em GMT: o dia certo é o da data em UTC.
+      artigos.push({ slug: slug[1], titulo: titulo, d: d, dia: dois(d.getUTCDate()) + '/' + dois(d.getUTCMonth() + 1) });
+    }
+    return artigos;
+  }
+
   /* Do que está publicado, o que a página mostra agora. Destaque: a próxima aula
      ainda não terminada (mesma regra da aula-ao-vivo.html: início às 20h, vale por
-     2h); sem aula marcada, a gravação da última. Depois, as cinco novidades mais
-     recentes, com a gravação entre elas quando ela não está no destaque. */
-  function montar(agenda, links, agora) {
+     2h); sem aula marcada, a gravação da última. Novidades: os dois vídeos e os dois
+     artigos mais recentes, mais a gravação quando ela não está no destaque. */
+  function montar(agenda, links, agora, artigos) {
     var aulas = ((agenda && agenda.aulas) || []).filter(function (x) {
       return x && /^\d{4}-\d{2}-\d{2}$/.test(texto(x.data)) && limpo(x.titulo);
     }).map(function (x) {
@@ -317,21 +355,38 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       destaque = { botao: 'gravacao', kicker: gravacao.kicker, titulo: gravacao.titulo, cta: 'Assistir à gravação', url: gravacao.url, video: gravacao.video };
     }
 
+    var candidatos = [], jaTem = {};
     ((links && links.novidades) || []).forEach(function (n) {
       var q = n && quando(n.data), rotulo = n && ROTULO[n.tipo];
       if (!q || !rotulo || !NOME.test(texto(n.id)) || n.id === 'gravacao' || !limpo(n.titulo) || !destinoOk(n.url)) return;
       var falta = q.d.getTime() - agora.getTime();
+      // Item agendado espera a hora: link de vídeo programado ainda é privado. Só a
+      // estreia, que já tem página pública no YouTube, aparece antes.
+      if (falta > 0 && n.estreia !== true) return;
       var data = falta > 0
         ? 'estreia ' + DIAS[q.d.getDay()] + ', ' + ddmm(q.d) + (q.hora ? ', ' + q.d.getHours() + 'h' + (q.d.getMinutes() ? dois(q.d.getMinutes()) : '') : '')
         : ddmm(q.d);
-      itens.push({ id: n.id, tipo: n.tipo, d: q.d, kicker: rotulo + (falta > -SEMANA ? ' novo' : '') + ' · ' + data,
+      candidatos.push({ id: n.id, tipo: n.tipo, d: q.d, kicker: rotulo + (falta > -SEMANA ? ' novo' : '') + ' · ' + data,
         titulo: limpo(n.titulo), url: n.url, img: imagemOk(n.img), video: video(n.url) });
+      jaTem[caminho(n.url)] = true;
     });
-    itens.sort(function (a, b) { return b.d - a.d; });
-    return { destaque: destaque, novidades: itens.slice(0, 5) };
+    // Os artigos vêm do feed. O que já foi posto à mão no links.json vale no lugar dele.
+    (artigos || []).forEach(function (a) {
+      var url = 'blog/' + a.slug + '.html', idade = agora.getTime() - a.d.getTime();
+      if (idade < 0 || jaTem[caminho(url)]) return;
+      candidatos.push({ id: ('artigo-' + a.slug).slice(0, 40), tipo: 'artigo', d: a.d, kicker: ROTULO.artigo + (idade < SEMANA ? ' novo' : '') + ' · ' + a.dia,
+        titulo: a.titulo, url: url, img: 'blog/imgs/share/' + a.slug + '-og.jpg', video: '' });
+    });
+    // Dois de cada tipo: o links.json pode guardar o histórico sem a lista encher de vídeo.
+    var recente = function (a, b) { return b.d - a.d; }, visto = {};
+    candidatos.sort(recente).forEach(function (n) {
+      visto[n.tipo] = (visto[n.tipo] || 0) + 1;
+      if (visto[n.tipo] <= 2) itens.push(n);
+    });
+    return { destaque: destaque, novidades: itens.sort(recente).slice(0, 5) };
   }
 
-  window.FC_LINKS = { etiqueta: etiqueta, marcar: marcar, montar: montar, video: video };
+  window.FC_LINKS = { etiqueta: etiqueta, marcar: marcar, montar: montar, video: video, feed: feed };
 
   // ───────────── daqui para baixo, só a página ─────────────
 
@@ -360,6 +415,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   }
 
   var PLAY = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg>';
+  var FOLHA = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3.5h9l3 3v14H6z"/><path d="M9 10h6M9 13.5h6M9 17h4"/></svg>';
   var YT = 'https://i.ytimg.com/';
 
   /* Miniatura do YouTube. Quando o tamanho pedido não existe, ele não dá erro de
@@ -374,10 +430,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     }
     proxima();
   }
-  function semMiniatura() {
+  function semMiniatura(tipo) {
     var s = document.createElement('span');
     s.className = 'nov-sem';
-    s.innerHTML = PLAY;
+    s.innerHTML = tipo === 'artigo' ? FOLHA : PLAY;
     return s;
   }
 
@@ -408,15 +464,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       a.href = n.url;
       a.setAttribute('data-bio', n.id);
       if (!daCasa(new URL(a.href))) { a.target = '_blank'; a.rel = 'noopener'; }
-      // Arquivo próprio, quando o item traz um; senão, a miniatura do vídeo no YouTube.
+      // Arquivo do site, quando há (o artigo usa a imagem de compartilhamento do post);
+      // senão, a miniatura do vídeo no YouTube. Se a imagem não vier, fica o ícone.
       var src = n.img || (n.video ? YT + 'vi/' + n.video + '/mqdefault.jpg' : '');
       if (src) {
         var img = document.createElement('img');
         img.alt = ''; img.width = 92; img.height = 52; img.loading = 'lazy'; img.decoding = 'async';
         a.appendChild(img);
-        carregar(img, [src], function () { if (img.parentNode === a) a.replaceChild(semMiniatura(), img); });
+        carregar(img, [src], function () { if (img.parentNode === a) a.replaceChild(semMiniatura(n.tipo), img); });
       } else {
-        a.appendChild(semMiniatura());
+        a.appendChild(semMiniatura(n.tipo));
       }
       var caixa = document.createElement('span'), rot = document.createElement('small'), tit = document.createElement('b');
       rot.textContent = n.kicker;
@@ -431,9 +488,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   /* O Cloudflare guarda asset por 4h e respeita a query string: sem o `t`, que
      muda a cada 10 minutos, o vídeo publicado de manhã só apareceria à tarde. */
-  function ler(caminho) {
-    return fetch(caminho + '?t=' + Math.floor(Date.now() / 600000), { cache: 'no-store' })
-      .then(function (r) { return r.ok ? r.json() : null; })
+  function ler(arquivo, comoTexto) {
+    return fetch(arquivo + '?t=' + Math.floor(Date.now() / 600000), { cache: 'no-store' })
+      .then(function (r) { return r.ok ? (comoTexto ? r.text() : r.json()) : null; })
       .catch(function () { return null; });
   }
 
@@ -444,8 +501,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     document.addEventListener('click', aoClique, true);
     document.addEventListener('auxclick', aoClique, true);
     if (!window.fetch) return;
-    Promise.all([ler('assets/aulas/agenda.json'), ler('assets/links/links.json')]).then(function (r) {
-      try { pintar(montar(r[0], r[1], new Date())); } catch (e) {}
+    // Três fontes, e a falta de qualquer uma não derruba as outras.
+    Promise.all([ler('assets/aulas/agenda.json'), ler('assets/links/links.json'), ler('blog/feed.xml', true)]).then(function (r) {
+      try { pintar(montar(r[0], r[1], new Date(), feed(r[2]))); } catch (e) {}
     });
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', iniciar, { once: true });

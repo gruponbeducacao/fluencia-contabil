@@ -1,5 +1,9 @@
 import assert from 'node:assert/strict';
-import { existsSync, readFileSync } from 'node:fs';
+import { spawnSync } from 'node:child_process';
+import { existsSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import vm from 'node:vm';
 import test from 'node:test';
 
@@ -13,6 +17,7 @@ const html = readFileSync(new URL('links.html', raiz), 'utf8');
 const origemJs = readFileSync(new URL('assets/origem.js', raiz), 'utf8');
 const agendaReal = JSON.parse(readFileSync(new URL('assets/aulas/agenda.json', raiz), 'utf8'));
 const linksReal = JSON.parse(readFileSync(new URL('assets/links/links.json', raiz), 'utf8'));
+const feedReal = readFileSync(new URL('blog/feed.xml', raiz), 'utf8');
 
 const scripts = [...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g)]
   .map((m) => m[1]).filter((s) => s.includes('window.FC_LINKS'));
@@ -183,27 +188,69 @@ test('aula sem caderno publicado não promete caderno; sem agenda a página segu
   assert.deepEqual(copia(L.montar(null, null, new Date(2026, 9, 12))), { destaque: null, novidades: [] });
 });
 
-test('novidades saem da mais nova para a mais antiga, no máximo cinco, com data e selo de novo', () => {
+// Artigo como o feed do blog entrega: o pubDate do gerador é meia-noite de Brasília (03:00 GMT).
+const artigo = (slug, titulo, mes, dia) => ({ slug, titulo, d: new Date(Date.UTC(2026, mes - 1, dia, 3)), dia: `${String(dia).padStart(2, '0')}/${String(mes).padStart(2, '0')}` });
+
+test('novidades: os dois vídeos e os dois artigos mais recentes, mais a gravação, da mais nova para a mais antiga', () => {
   const novidades = [
-    { id: 'artigo-velho', tipo: 'artigo', data: '2026-08-01', titulo: 'Artigo antigo', url: 'blog/antigo.html' },
-    { id: 'video-novo', tipo: 'video', data: '2026-10-08', titulo: 'Vídeo da semana.', url: 'https://www.youtube.com/watch?v=sintetico', img: 'assets/links/video.webp' },
-    { id: 'artigo-novo', tipo: 'artigo', data: '2026-10-09', titulo: 'Artigo da semana', url: 'blog/novo.html' },
-    { id: 'video-estreia', tipo: 'video', data: '2026-10-15T19:00', titulo: 'Vídeo que estreia', url: 'https://www.youtube.com/watch?v=estreia_123' },
-    { id: 'video-meia', tipo: 'video', data: '2026-10-16T19:30', titulo: 'Estreia na meia hora', url: 'https://www.youtube.com/watch?v=meia' },
-    { id: 'artigo-set', tipo: 'artigo', data: '2026-09-29', titulo: 'Artigo de setembro', url: 'blog/setembro.html' },
+    { id: 'video-setembro', tipo: 'video', data: '2026-09-24', titulo: 'Vídeo de setembro', url: 'https://www.youtube.com/watch?v=setembro_12' },
+    { id: 'video-semana', tipo: 'video', data: '2026-10-08', titulo: 'Vídeo da semana.', url: 'https://www.youtube.com/watch?v=semana_1234', img: 'assets/links/video.webp' },
+    { id: 'video-outubro', tipo: 'video', data: '2026-10-01', titulo: 'Vídeo de outubro', url: 'https://www.youtube.com/watch?v=outubro_123' },
   ];
-  const m = L.montar(agenda, { novidades }, new Date(2026, 9, 12, 10, 0));
-  assert.deepEqual(campo(m.novidades, 'id'), ['video-meia', 'video-estreia', 'artigo-novo', 'video-novo', 'gravacao']);
+  // O feed já vem do mais novo para o mais antigo; o terceiro artigo e o terceiro vídeo ficam de fora.
+  const artigos = [artigo('cgu-2026', 'Artigo da semana', 10, 9), artigo('recurso-cfc', 'Artigo de setembro', 9, 29), artigo('dva', 'Artigo de agosto', 8, 1)];
+  const m = L.montar(agenda, { novidades }, new Date(2026, 9, 12, 10, 0), artigos);
+  assert.deepEqual(campo(m.novidades, 'id'), ['artigo-cgu-2026', 'video-semana', 'gravacao', 'video-outubro', 'artigo-recurso-cfc']);
   assert.deepEqual(campo(m.novidades, 'kicker'), [
-    'Vídeo novo · estreia sex, 16/10, 19h30', 'Vídeo novo · estreia qui, 15/10, 19h',
-    'Artigo novo · 09/10', 'Vídeo novo · 08/10', 'Gravação · live de 07/10',
+    'Artigo novo · 09/10', 'Vídeo novo · 08/10', 'Gravação · live de 07/10', 'Vídeo · 01/10', 'Artigo · 29/09',
   ]);
-  assert.equal(m.novidades[3].titulo, 'Vídeo da semana');
-  assert.equal(m.novidades[3].img, 'assets/links/video.webp');
-  assert.equal(m.novidades[1].video, 'estreia_123', 'vídeo sem arquivo de miniatura usa a do YouTube');
-  assert.equal(m.novidades[2].video, '', 'artigo não tem vídeo');
-  const velho = L.montar({ aulas: [] }, { novidades: [novidades[0]] }, new Date(2026, 9, 12, 10, 0));
-  assert.equal(velho.novidades[0].kicker, 'Artigo · 01/08');
+  assert.equal(m.novidades[0].url, 'blog/cgu-2026.html');
+  assert.equal(m.novidades[0].img, 'blog/imgs/share/cgu-2026-og.jpg', 'a miniatura do artigo é a imagem de compartilhamento do próprio post');
+  assert.equal(m.novidades[0].video, '', 'artigo não tem vídeo');
+  assert.equal(m.novidades[1].titulo, 'Vídeo da semana');
+  assert.equal(m.novidades[1].img, 'assets/links/video.webp');
+  assert.equal(m.novidades[3].video, 'outubro_123', 'vídeo sem arquivo de miniatura usa a do YouTube');
+});
+
+test('vídeo com data futura só aparece na hora marcada; marcado como estreia, aparece antes', () => {
+  // É o que deixa o PR do vídeo ser mesclado na véspera: link de vídeo agendado ainda é privado.
+  const quinta = { id: 'video-quinta', tipo: 'video', data: '2026-10-15T19:00', titulo: 'Vídeo de quinta', url: 'https://www.youtube.com/watch?v=quinta_1234' };
+  const antes = L.montar({ aulas: [] }, { novidades: [quinta] }, new Date(2026, 9, 15, 18, 59));
+  assert.deepEqual(campo(antes.novidades, 'id'), []);
+  const naHora = L.montar({ aulas: [] }, { novidades: [quinta] }, new Date(2026, 9, 15, 19, 0));
+  assert.deepEqual(campo(naHora.novidades, 'kicker'), ['Vídeo novo · 15/10']);
+  const estreias = [{ ...quinta, estreia: true }, { ...quinta, id: 'video-sexta', data: '2026-10-16T19:30', estreia: true }];
+  const comEstreia = L.montar({ aulas: [] }, { novidades: estreias }, new Date(2026, 9, 14, 12, 0));
+  assert.deepEqual(campo(comEstreia.novidades, 'kicker'), ['Vídeo novo · estreia sex, 16/10, 19h30', 'Vídeo novo · estreia qui, 15/10, 19h']);
+});
+
+test('artigo posto à mão no links.json vale no lugar do mesmo artigo vindo do feed', () => {
+  const manual = { id: 'artigo-especial', tipo: 'artigo', data: '2026-10-09', titulo: 'Título escolhido à mão', url: 'blog/cgu-2026.html', img: 'assets/links/especial.webp' };
+  const m = L.montar({ aulas: [] }, { novidades: [manual] }, new Date(2026, 9, 12, 10, 0), [artigo('cgu-2026', 'Título do feed', 10, 9), artigo('recurso-cfc', 'Outro artigo', 9, 29)]);
+  assert.deepEqual(campo(m.novidades, 'id'), ['artigo-especial', 'artigo-recurso-cfc']);
+  assert.equal(m.novidades[0].titulo, 'Título escolhido à mão');
+  const antigo = L.montar({ aulas: [] }, { novidades: [] }, new Date(2026, 9, 12, 10, 0), [artigo('dva', 'Artigo de agosto', 8, 1)]);
+  assert.equal(antigo.novidades[0].kicker, 'Artigo · 01/08');
+});
+
+test('o feed do blog vira lista de artigos, só com endereço do próprio blog', () => {
+  const xml = `<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel>
+    <title>Blog</title><link>https://fluenciacontabil.com.br/blog.html</link><pubDate>Fri, 09 Oct 2026 03:00:00 GMT</pubDate>
+    <item><title>Sal&#225;rio &amp; corte: R$ 20 mil &lt;por m&#xEA;s&gt; &quot;real&quot; &amp;amp; sem dupla troca</title>
+      <link>https://fluenciacontabil.com.br/blog/cgu-2026-contabilidade</link><pubDate>Fri, 09 Oct 2026 03:00:00 GMT</pubDate></item>
+    <item><title>Com extensão</title><link>https://fluenciacontabil.com.br/blog/outro-post.html</link><pubDate>Tue, 29 Sep 2026 03:00:00 GMT</pubDate></item>
+    <item><title>De outro site</title><link>https://outro.example/blog/x</link><pubDate>Tue, 29 Sep 2026 03:00:00 GMT</pubDate></item>
+    <item><title>Fora da pasta do blog</title><link>https://fluenciacontabil.com.br/cursos</link><pubDate>Tue, 29 Sep 2026 03:00:00 GMT</pubDate></item>
+    <item><title>Sem data</title><link>https://fluenciacontabil.com.br/blog/sem-data</link></item>
+    <item><title></title><link>https://fluenciacontabil.com.br/blog/sem-titulo</link><pubDate>Tue, 29 Sep 2026 03:00:00 GMT</pubDate></item>
+  </channel></rss>`;
+  const lidos = L.feed(xml);
+  assert.deepEqual(Array.from(lidos, (a) => [a.slug, a.titulo, a.dia]), [
+    ['cgu-2026-contabilidade', 'Salário & corte: R$ 20 mil <por mês> "real" &amp; sem dupla troca', '09/10'],
+    ['outro-post', 'Com extensão', '29/09'],
+  ]);
+  assert.equal(lidos[0].d.getTime(), Date.UTC(2026, 9, 9, 3));
+  for (const vazio of ['', null, undefined, '<html>página de erro</html>']) assert.deepEqual(copia(L.feed(vazio)), []);
 });
 
 test('item malformado ou com destino estranho fica de fora, sem derrubar os outros', () => {
@@ -217,13 +264,49 @@ test('item malformado ou com destino estranho fica de fora, sem derrubar os outr
   assert.equal(m.novidades[1].img, '');
 });
 
+test('o comando da rotina grava um vídeo que a página aceita, sem duplicar', () => {
+  const python = process.env.PYTHON || (process.platform === 'win32' ? 'python' : 'python3');
+  const arquivo = path.join(mkdtempSync(path.join(tmpdir(), 'links-')), 'links.json');
+  writeFileSync(arquivo, JSON.stringify({ versao: 1, leiame: 'fica como está', novidades: [] }));
+  const rodar = (...args) => spawnSync(python, [fileURLToPath(new URL('scripts/links_video.py', raiz)), ...args, '--arquivo', arquivo], { encoding: 'utf8' });
+  const url = 'https://youtu.be/quinta_1234';
+  let r = rodar(url, '--titulo', '  Balanço e DRE:   a ponte  ', '--data', '2026-10-15T19:00');
+  assert.equal(r.status, 0, r.stderr);
+  // O mesmo vídeo de novo, por outro formato de endereço: corrige o item, não cria outro.
+  r = rodar('https://www.youtube.com/watch?v=quinta_1234', '--titulo', 'Balanço e DRE: a ponte pelo lucro', '--data', '2026-10-15T19:00', '--estreia');
+  assert.equal(r.status, 0, r.stderr);
+  const cru = readFileSync(arquivo, 'utf8');
+  assert.equal(cru.includes('\r'), false, 'fim de linha LF, mesmo no Windows');
+  const gravado = JSON.parse(cru);
+  assert.deepEqual(gravado, { versao: 1, leiame: 'fica como está', novidades: [
+    { id: 'video-2026-10-15', tipo: 'video', data: '2026-10-15T19:00', titulo: 'Balanço e DRE: a ponte pelo lucro', url: 'https://www.youtube.com/watch?v=quinta_1234', estreia: true },
+  ] });
+  // O que o comando grava é o que a página mostra: as duas regras não podem divergir.
+  const m = L.montar({ aulas: [] }, gravado, new Date(2026, 9, 14, 12, 0));
+  assert.deepEqual(campo(m.novidades, 'kicker'), ['Vídeo novo · estreia qui, 15/10, 19h']);
+  assert.equal(m.novidades[0].video, 'quinta_1234');
+  const recusados = [
+    ['https://www.youtube.com/@prof.viniciusferraz', '--titulo', 'canal não é vídeo'],
+    [url, '--titulo', 'data errada', '--data', '15/10/2026'],
+    [url, '--titulo', '   '],
+    ['https://youtu.be/outro_12345', '--titulo', 'outro vídeo com o mesmo nome', '--id', 'video-2026-10-15'],
+  ];
+  for (const ruim of recusados) assert.equal(rodar(...ruim).status, 1, ruim.join(' '));
+  assert.equal(readFileSync(arquivo, 'utf8'), cru, 'comando recusado não toca no arquivo');
+});
+
 test('o que está publicado hoje monta sem erro e aponta para arquivo que existe', () => {
   const fixos = new Set(ancoras.map((a) => a.bio));
   assert.ok(Array.isArray(linksReal.novidades));
-  const m = L.montar(agendaReal, linksReal, new Date());
+  const artigosReais = L.feed(feedReal);
+  assert.ok(artigosReais.length >= 2, 'o feed do blog tem de ser legível pela página');
+  for (const a of artigosReais) assert.ok(existsSync(new URL(`blog/${a.slug}.html`, raiz)), `feed aponta para blog/${a.slug}.html, que não existe`);
+  const m = L.montar(agendaReal, linksReal, new Date(), artigosReais);
   // Nada do links.json é descartado em silêncio: item inválido tem de falhar aqui, não sumir da página.
-  const todos = L.montar({ aulas: [] }, linksReal, new Date(2020, 0, 1));
-  assert.equal(todos.novidades.length, Math.min(5, linksReal.novidades.length));
+  // Com o relógio lá na frente nenhum item está no futuro; sobram os dois mais recentes de cada tipo.
+  const todos = L.montar({ aulas: [] }, linksReal, new Date(2100, 0, 1));
+  const doTipo = (tipo) => Math.min(2, linksReal.novidades.filter((n) => n.tipo === tipo).length);
+  assert.equal(todos.novidades.length, doTipo('video') + doTipo('artigo'));
   for (const n of linksReal.novidades) {
     assert.equal(fixos.has(n.id), false, `${n.id}: nome já usado por um botão fixo`);
     // Vídeo do YouTube dispensa arquivo: a página busca a miniatura lá. Artigo precisa da sua.
