@@ -2,8 +2,9 @@
    Teste A/B: página de venda da assinatura (assinatura.html) × quiz (quiz.html).
    Só entra no teste quem chega de anúncio pago (utm_medium=cpc, fbclid ou gclid).
    Orgânico e acesso direto ficam na assinatura.html, sem sorteio.
-   A divisão é 50/50 por padrão e fica gravada no navegador (localStorage, 30 dias):
-   quem voltar vê sempre a mesma versão. O redirecionamento leva a query string
+   A divisão é a do pctQuiz e fica gravada no navegador (localStorage, 30 dias):
+   quem voltar vê sempre a mesma versão. Era 50/50 de 09 a 13/10/2026; desde então
+   pctQuiz = 100, ou seja, todo visitante pago novo vai para o quiz. O redirecionamento leva a query string
    inteira, então o origem.js do quiz herda UTMs e src do anúncio como na assinatura.
    Desligar o teste: ativo = false (a assinatura.html para de redirecionar na hora).
    QA: ?ab=quiz ou ?ab=assinatura força a versão, sem gravar e sem emitir evento.
@@ -11,7 +12,7 @@
    Falha de storage não impede a navegação (sem storage, sorteia a cada visita). */
 (function () {
   'use strict';
-  var CFG = { ativo: true, pctQuiz: 50, chave: 'fc_ab_assinatura_quiz', dias: 30, teste: 'assinatura_quiz' };
+  var CFG = { ativo: true, pctQuiz: 100, chave: 'fc_ab_assinatura_quiz', dias: 30, teste: 'assinatura_quiz' };
 
   var loc = window.location;
   var naAssinatura = /\/assinatura(\.html)?\/?$/.test(loc.pathname);
