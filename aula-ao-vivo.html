@@ -575,7 +575,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   }
 
   function preencherAula(p){
-    var n = p.questoes, dia = ddmm(p._d);
+    /* `questoes` é o que a live resolve; `questoes_folha`, o que o PDF tem (quando a folha traz
+       questões a mais, como na live de DFC de 21/10/2026: 20 ao vivo, 23 no caderno). */
+    var n = p.questoes, nf = p.questoes_folha || p.questoes, dia = ddmm(p._d);
     if (p.titulo) el('hero-titulo').innerHTML = htmlSeguro(p.titulo);
     if (p.sub)    el('hero-sub').innerHTML    = htmlSeguro(p.sub);
     texto('p-dia', porExtenso(p._d));
@@ -593,12 +595,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     if (temFolha) {
       var paginas = p.paginas ? ' · ' + p.paginas + ' páginas' : '';
-      texto('cta-hero-nota', 'Grátis. As ' + n + ' questões da próxima aula, para você resolver antes.');
-      texto('capa-legenda', n + ' questões' + paginas + ' · PDF');
-      texto('cap-legenda', n + ' questões' + paginas);
+      texto('cta-hero-nota', nf === n
+        ? 'Grátis. As ' + n + ' questões da próxima aula, para você resolver antes.'
+        : 'Grátis. A folha com as ' + nf + ' questões, para você resolver antes.');
+      texto('capa-legenda', nf + ' questões' + paginas + ' · PDF');
+      texto('cap-legenda', nf + ' questões' + paginas);
       texto('semana-nota', 'O PDF abre na hora, sem espera. A transmissão é aberta no YouTube, quarta às 20h.');
       texto('fecho-titulo', 'Quarta, ' + dia + ', 20h. Traga a folha resolvida.');
-      texto('cap-sub', 'Deixe seu e-mail e o PDF com as ' + n + ' questões abre agora mesmo.');
+      texto('cap-sub', 'Deixe seu e-mail e o PDF com as ' + nf + ' questões abre agora mesmo.');
       rotuloEnviar = 'Liberar minha folha ↓';
     } else {
       /* A folha ainda não saiu: a promessa continua sendo a folha, entregue por
