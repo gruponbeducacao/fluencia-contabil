@@ -5,7 +5,7 @@ Testes: `scripts/ab-assinatura-quiz.test.mjs` (rodam no workflow `origem.yml`).
 
 ## Como funciona
 - Só entra no teste quem chega de anúncio pago: `utm_medium=cpc`, `fbclid` ou `gclid`. Orgânico e direto ficam na `assinatura.html`.
-- O sorteio é 50/50 (`pctQuiz`) e fica no `localStorage` (`fc_ab_assinatura_quiz`, 30 dias): a mesma pessoa vê sempre a mesma versão.
+- A proporção é o `pctQuiz`: 50/50 de 09 a 13/10/2026 e 100 desde então (todo visitante pago novo vai para o quiz). O sorteio fica no `localStorage` (`fc_ab_assinatura_quiz`, 30 dias): a mesma pessoa vê sempre a mesma versão.
 - Sorteado para o quiz: `location.replace('/quiz.html' + query + hash)`. As UTMs e o `src` do anúncio chegam ao quiz e o `origem.js` os leva até a Kiwify, igual à assinatura.
 - Evento no dataLayer, uma vez por visita das duas versões: `ab_atribuido` com `ab_teste=assinatura_quiz`, `ab_variante=quiz|assinatura`, `ab_pct_quiz`.
 

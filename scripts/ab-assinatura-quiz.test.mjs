@@ -5,7 +5,8 @@ import vm from 'node:vm';
 
 const fonte = fs.readFileSync(new URL('../assets/ab-assinatura-quiz.js', import.meta.url), 'utf8');
 
-function roda({ path = '/assinatura.html', search = '', hash = '', storage = {}, sorteio = 0.1, semStorage = false }) {
+// pct = 50 exercita a mecânica do sorteio; pct = null roda o arquivo como está publicado
+function roda({ path = '/assinatura.html', search = '', hash = '', storage = {}, sorteio = 0.1, semStorage = false, pct = 50 }) {
   const dados = { ...storage };
   const redirecionou = [];
   const dataLayer = [];
@@ -16,7 +17,8 @@ function roda({ path = '/assinatura.html', search = '', hash = '', storage = {},
     dataLayer,
   };
   const Math2 = Object.create(Math); Math2.random = () => sorteio;
-  vm.runInNewContext(fonte, { window, URLSearchParams, JSON, Date, Math: Math2 });
+  const codigo = pct === null ? fonte : fonte.replace(/pctQuiz: \d+/, 'pctQuiz: ' + pct);
+  vm.runInNewContext(codigo, { window, URLSearchParams, JSON, Date, Math: Math2 });
   return { window, redirecionou, dataLayer, dados };
 }
 
@@ -81,6 +83,14 @@ test('sem storage não quebra a página', () => {
 test('em outra página o script não faz nada', () => {
   const r = roda({ path: '/cursos.html', search: PAGO });
   assert.equal(r.redirecionou.length + r.dataLayer.length, 0);
+});
+
+test('a proporção publicada manda todo visitante pago novo para o quiz', () => {
+  assert.match(fonte, /pctQuiz: 100/);
+  const r = roda({ search: PAGO, sorteio: 0.99, pct: null });
+  assert.deepEqual(r.redirecionou, ['https://fluenciacontabil.com.br/quiz.html' + PAGO]);
+  const jaSorteado = { fc_ab_assinatura_quiz: JSON.stringify({ v: 'assinatura', t: Date.now() }) };
+  assert.equal(roda({ search: PAGO, sorteio: 0.01, storage: jaSorteado, pct: null }).redirecionou.length, 0);
 });
 
 test('o kill switch (ativo: false) está no código', () => {
