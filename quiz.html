@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!-- Teste A/B assinatura x quiz: vem antes do GTM para redirecionar sem contar a visita duas vezes -->
 <script src="assets/ab-assinatura-quiz.js?v=20261013a"></script>
+<script src="assets/oferta-quiz.js?v=20261014a"></script>
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -607,6 +608,18 @@ var DADOS = {
     { q: 'As aulas já estão todas disponíveis?', a: 'A plataforma está no ar e a grande maioria do curso já está disponível. As aulas restantes da edição 2026 são liberadas conforme o cronograma público, dentro do seu período de acesso.' }
   ]
 };
+
+/* Tabela b de ofertas: assets/oferta-quiz.js escolhe a ou b por navegador. Mesmos produtos da Kiwify,
+   outros links (parcela de 12× conferida no checkout). Por mês de acesso: 99, 66 e 41. */
+var PLANOS_B = {
+  trimestral: { kw: '5DBL8y7', parcela: 'R$ 30,72', vista: 'R$ 297', mes: 'R$ 99 por mês de acesso' },
+  semestral:  { kw: 'CY76Yiq', parcela: 'R$ 41,06', vista: 'R$ 397', mes: 'R$ 66 por mês de acesso' },
+  anual:      { kw: 'n16FyVi', parcela: 'R$ 51,40', vista: 'R$ 497', mes: 'R$ 41 por mês de acesso' }
+};
+if (window.FC_OFERTA === 'b') {
+  Object.keys(PLANOS_B).forEach(function (k) { Object.assign(DADOS.planos[k], PLANOS_B[k]); });
+  DADOS.faq.forEach(function (f) { f.a = f.a.replace('cerca de 36% mais barato', 'cerca de 33% mais barato'); });
+}
 
 /* =====================================================================
    ESTADO E MEDIÇÃO
