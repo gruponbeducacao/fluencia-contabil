@@ -127,3 +127,7 @@ test('a resposta a "O preço" destaca a parcela, não o custo por mês de acesso
   assert.equal(preco.hero.args[0].t, '12× de {parcela}');
   assert.ok(quiz.includes(".replace('{parcela}', pl.parcela)"), 'o quiz não substitui {parcela}');
 });
+
+test('o cartão de preço não mostra o custo por mês de acesso', () => {
+  assert.ok(!quiz.includes('Equivale a '), 'o cartão voltou a mostrar "Equivale a R$ X por mês de acesso"');
+});

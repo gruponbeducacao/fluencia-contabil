@@ -226,7 +226,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .outro { text-align: center; margin: 20px 0 0; font-size: 14px; color: var(--apoio); font-weight: 500; }
   .outro a, .saida a { color: var(--navy); font-weight: 700; text-underline-offset: 3px; }
   .saida { text-align: center; margin-top: 22px; padding-top: 20px; border-top: 1px solid var(--linha); font-size: 14.5px; color: var(--apoio); }
-  .plano .mes { font-size: 13px; font-weight: 600; color: var(--apoio); margin: -6px 0 14px; }
 
   /* mais elementos de convencimento na oferta (textos tirados da assinatura.html no ar) */
   .garantia-card { display: flex; gap: 14px; align-items: flex-start; margin-top: 16px; padding: 18px; border-radius: 18px; background: var(--papel); border: 1px solid var(--linha); box-shadow: var(--sombra); }
@@ -340,7 +339,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .plano { background: radial-gradient(120% 130% at 85% -10%, var(--navy-claro) 0%, var(--navy) 50%, var(--navy-fundo) 100%); border: 0; color: #fff; box-shadow: 0 22px 44px -20px rgba(27,42,74,.7); }
   .plano .nome { background: linear-gradient(145deg, var(--ac2), var(--ac)); color: var(--navy); }
   .plano h2 { color: #fff; }
-  .plano .mot, .plano .de, .plano .mes { color: rgba(255,255,255,.72); }
+  .plano .mot, .plano .de { color: rgba(255,255,255,.72); }
   .plano .valor { color: #fff; }
   .plano .vista { color: rgba(255,255,255,.92); }
   .plano .juros { color: rgba(255,255,255,.6); }
@@ -744,7 +743,6 @@ var TELAS = {
 
     var b = '<div class="plano"><span class="nome">Plano indicado para você</span><h2>' + esc(pl.nome) + '</h2><p class="mot">' + esc(motivo) + '</p>' +
       '<div class="de">12× de</div><div class="valor">' + esc(pl.parcela) + '</div><div class="vista">ou ' + esc(pl.vista) + ' à vista, no Pix ou boleto</div>' +
-      '<p class="mes">Equivale a ' + esc(pl.mes) + '</p>' +
       '<p class="juros">No cartão, as parcelas têm juros do gateway, por isso o total parcelado fica acima do valor à vista. Pagamento único, sem renovação.</p>' + botao('plano') + '</div>' +
       '<div class="garantia-card"><span class="tile">' + svg('escudo') + '</span><div><b>7 dias de garantia incondicional</b><span>Entre, assista às aulas, resolva questões e explore a plataforma. Se achar que não é para você, devolvemos 100% do valor pelo mesmo meio de pagamento, sem perguntas.</span></div></div>' +
       '<p class="outro">Prefere outro prazo? <a href="' + kiwify(outroId) + '" data-fc-local="quiz-outro-prazo">' + esc(outro.nome) + ': 12× de ' + esc(outro.parcela) + ' ou ' + esc(outro.vista) + ' à vista</a></p>';
