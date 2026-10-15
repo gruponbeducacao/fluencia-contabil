@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!-- Teste A/B assinatura x quiz: vem antes do GTM para redirecionar sem contar a visita duas vezes -->
 <script src="assets/ab-assinatura-quiz.js?v=20261013a"></script>
+<script src="assets/oferta-quiz.js?v=20261014a"></script>
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -559,7 +560,7 @@ var DADOS = {
   objecoes: [
     { rotulo: 'Já comprei curso e não usei', hero: { fala: "“Já comprei curso e não usei.”", percebi: "Mas eu percebi que quase nunca o problema é você. É o curso que não cabe na sua semana, e aí ele vira pasta esquecida.", args: [{ t: "7 dias para testar por dentro", s: "Entra, assiste, resolve questão. Se não for para você, devolvemos 100% do valor." },{ t: "Uma semana que cabe na sua vida", s: "O Plano de Estudos monta a agenda pelo tempo que você tem. Faltou um dia? A grade recalcula sozinha." },{ t: "Muito mais para usar do que videoaula", s: "Questões comentadas, Meu Edital, Mapa de Incidência, Simulador e Plano de Estudos. Sempre tem o que fazer hoje." }] }, ico: 'carteira', resp: 'Por isso o Plano de Estudos monta a semana pelo tempo que você diz ter, e não pelo tempo que o curso gostaria. Se dentro de 7 dias você achar que não é para você, devolvemos 100% do valor.' },
     { rotulo: 'Medo de não ter tempo para mais uma coisa', hero: { fala: "“Não tenho tempo para mais uma coisa.”", percebi: "Mas eu percebi que o que falta não é tempo. É saber o que estudar nele. Estudar sem direção gasta horas que a prova nem cobra.", args: [{ t: "Você disse que tem {horas}", s: "É a partir disso que o plano monta a sua semana, sem somar hora nenhuma a mais." },{ t: "Estude primeiro o que a sua banca cobra", s: "O Mapa de Incidência mostra, item por item da norma, o que vale ponto." },{ t: "7 dias para testar", s: "Se não couber na sua rotina, devolvemos 100% do valor." }] }, ico: 'relogio', resp: 'O plano parte das horas que você escolheu, sem somar nada além disso. E há 7 dias para testar por dentro e pedir o dinheiro de volta.' },
-    { rotulo: 'O preço', hero: { fala: "“O preço pesa.”", percebi: "Mas eu percebi que o preço que importa é o do ponto que você perde na prova. E aqui o número está na tela, sem pegadinha.", args: [{ t: "{mes}", s: "Pagamento único. Sem renovação automática e sem módulo avulso para pagar depois." },{ t: "Os dois valores antes do clique", s: "Parcelado e à vista na mesma tela. No cartão há juros do gateway, e a gente avisa." },{ t: "7 dias de garantia", s: "Testou, não gostou, devolvemos 100% do valor pelo mesmo meio de pagamento." }] }, ico: 'etiqueta', resp: 'O pagamento é único, sem renovação automática. Você vê os dois números, parcelado e à vista, antes de clicar. E tem 7 dias para pedir o dinheiro de volta.' },
+    { rotulo: 'O preço', hero: { fala: "“O preço pesa.”", percebi: "Mas eu percebi que o preço que importa é o do ponto que você perde na prova. E aqui o número está na tela, sem pegadinha.", args: [{ t: "12× de {parcela}", s: "Pagamento único. Sem renovação automática e sem módulo avulso para pagar depois." },{ t: "Os dois valores antes do clique", s: "Parcelado e à vista na mesma tela. No cartão há juros do gateway, e a gente avisa." },{ t: "7 dias de garantia", s: "Testou, não gostou, devolvemos 100% do valor pelo mesmo meio de pagamento." }] }, ico: 'etiqueta', resp: 'O pagamento é único, sem renovação automática. Você vê os dois números, parcelado e à vista, antes de clicar. E tem 7 dias para pedir o dinheiro de volta.' },
     { rotulo: 'Não sei se serve para a minha prova', hero: { fala: "“Não sei se serve para a minha prova.”", percebi: "Mas eu percebi que contabilidade cai em prova de Fiscal, de Contador, de controle e de Tribunais de Contas. O que muda é como a banca cobra, e a plataforma mostra isso.", args: [{ t: "Você marcou: {prova}", s: "O Mapa de Incidência cruza a norma com a sua banca e mostra o que ela mais cobra." },{ t: "Cole o seu edital", s: "O Meu Edital vira uma lista, cada item com a aula que o cobre. Você vê o que serve para a sua prova." },{ t: "7 dias para conferir por dentro", s: "Se não servir, devolvemos 100% do valor." }] }, ico: 'ajuda', resp: 'Contabilidade cai em provas de fiscal, de controle, de tribunais e de contador. O Mapa de Incidência mostra o que a sua banca cobra, item por item.' },
     { rotulo: 'Nada. Quando eu decido, eu começo.', ico: 'ok', resp: 'Então vamos ao seu plano.' }
   ],
@@ -607,6 +608,18 @@ var DADOS = {
     { q: 'As aulas já estão todas disponíveis?', a: 'A plataforma está no ar e a grande maioria do curso já está disponível. As aulas restantes da edição 2026 são liberadas conforme o cronograma público, dentro do seu período de acesso.' }
   ]
 };
+
+/* Tabela b de ofertas: assets/oferta-quiz.js escolhe a ou b por navegador. Mesmos produtos da Kiwify,
+   outros links (parcela de 12× conferida no checkout). Por mês de acesso: 99, 66 e 41. */
+var PLANOS_B = {
+  trimestral: { kw: '5DBL8y7', parcela: 'R$ 30,72', vista: 'R$ 297', mes: 'R$ 99 por mês de acesso' },
+  semestral:  { kw: 'CY76Yiq', parcela: 'R$ 41,06', vista: 'R$ 397', mes: 'R$ 66 por mês de acesso' },
+  anual:      { kw: 'n16FyVi', parcela: 'R$ 51,40', vista: 'R$ 497', mes: 'R$ 41 por mês de acesso' }
+};
+if (window.FC_OFERTA === 'b') {
+  Object.keys(PLANOS_B).forEach(function (k) { Object.assign(DADOS.planos[k], PLANOS_B[k]); });
+  DADOS.faq.forEach(function (f) { f.a = f.a.replace('cerca de 36% mais barato', 'cerca de 33% mais barato'); });
+}
 
 /* =====================================================================
    ESTADO E MEDIÇÃO
@@ -706,7 +719,7 @@ var TELAS = {
 
     var ob = DADOS.objecoes[R.objecao == null ? 0 : R.objecao], hero0 = '';
     if (ob.hero) {
-      var subs = function (t) { return t.replace('{horas}', DADOS.horas[R.horas].rotulo.toLowerCase()).replace('{mes}', pl.mes).replace('{prova}', DADOS.provas[R.prova].rotulo); };
+      var subs = function (t) { return t.replace('{horas}', DADOS.horas[R.horas].rotulo.toLowerCase()).replace('{mes}', pl.mes).replace('{parcela}', pl.parcela).replace('{prova}', DADOS.provas[R.prova].rotulo); };
       hero0 = '<h2 class="hero3-h">' + esc(ob.hero.fala) + '</h2>' +
         '<p class="hero3"><b>Pois é.</b> <b>Eu também pensava assim.</b> ' + esc(ob.hero.percebi) + '</p>' +
         '<div class="hero3-args">' + ob.hero.args.map(function (x) { return '<div><span class="tile">' + svg('ok') + '</span><div><b>' + esc(subs(x.t)) + '</b><small>' + esc(subs(x.s)) + '</small></div></div>'; }).join('') + '</div>' +
