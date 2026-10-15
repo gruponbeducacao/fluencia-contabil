@@ -66,6 +66,7 @@ AREA_ROTULO = {
     "MILITAR": "Militar",
     "PREVIDENCIARIO": "Previdenciário",
     "SUFICIENCIA": "Exame de Suficiência (CFC)",
+    "ADMINISTRACAO_PUBLICA": "Administração Pública",
     "GERAL": "Concursos para contadores",
 }
 
