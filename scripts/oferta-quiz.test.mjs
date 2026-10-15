@@ -121,3 +121,9 @@ test('tabela b: troca links, valores, mês de acesso e o FAQ, e mantém o resto 
   assert.ok(d.faq.some((f) => f.a.includes('cerca de 33% mais barato')));
   assert.ok(!d.faq.some((f) => f.a.includes('36%')));
 });
+
+test('a resposta a "O preço" destaca a parcela, não o custo por mês de acesso', () => {
+  const preco = planos('b').objecoes.find((o) => o.rotulo === 'O preço');
+  assert.equal(preco.hero.args[0].t, '12× de {parcela}');
+  assert.ok(quiz.includes(".replace('{parcela}', pl.parcela)"), 'o quiz não substitui {parcela}');
+});
