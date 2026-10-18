@@ -3,6 +3,13 @@
   "leiame": "Vídeos da página links.html (o link da bio). Quem escreve aqui é scripts/links_video.py; a rotina está em scripts/LINKS.md. Um item por vídeo: id (minúsculas, números e hífen; vira o nome do botão no rastreamento), tipo (video), data (AAAA-MM-DD, ou AAAA-MM-DDTHH:MM quando o vídeo está agendado), titulo e url do YouTube. Item com data futura só aparece na hora marcada; com \"estreia\": true aparece antes, como estreia. A miniatura vem do YouTube. A página mostra os dois vídeos mais recentes, então o histórico pode ficar. NÃO entram aqui: a aula ao vivo e a gravação (vêm de assets/aulas/agenda.json) e os artigos (vêm de blog/feed.xml). Um artigo só entra aqui, com tipo artigo e img em assets/links/, para trocar o título ou a imagem que o feed traria. Conferir com: node --test scripts/links.test.mjs",
   "novidades": [
     {
+      "id": "video-2026-10-15",
+      "tipo": "video",
+      "data": "2026-10-15T19:00",
+      "titulo": "O balanço é a foto, a DRE é o filme: como o lucro liga os dois",
+      "url": "https://youtu.be/gmmRCWiNcyI"
+    },
+    {
       "id": "video-debito-credito",
       "tipo": "video",
       "data": "2026-10-08",
