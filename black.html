@@ -148,6 +148,26 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .ok-titulo{font-size:22px;font-weight:900;color:var(--dourado);line-height:1.3;margin-top:4px}
   #vip-ok p{font-size:15px;line-height:1.65;color:var(--branco-2);margin-top:10px}
   #vip-ok .acoes{display:grid;gap:10px;margin-top:20px}
+  /* Bônus da inscrição dentro do cartão: a capa do Raio-X ao lado da promessa. */
+  .bonus{display:grid;grid-template-columns:52px 1fr;gap:14px;align-items:center;margin-top:18px;padding:12px 14px;
+    border:1px solid #c8a84b55;border-radius:10px;background:#0b0e1459}
+  .bonus img{width:52px;height:auto;border-radius:3px;box-shadow:0 6px 16px #0008}
+  .bonus p{font-size:13.5px;line-height:1.5;color:var(--branco-2)}
+  .bonus b{display:block;font-size:11px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--dourado-claro)}
+
+  /* ---------- o Raio-X da Banca (bônus da inscrição) ---------- */
+  .raiox-in{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+  .raiox-lista{list-style:none;display:grid;gap:12px;margin-top:24px;max-width:58ch}
+  .raiox-lista li{position:relative;padding-left:26px;font-size:15.5px;line-height:1.65;color:var(--branco-2)}
+  .raiox-lista li::before{content:'';position:absolute;left:0;top:.62em;width:10px;height:10px;border-radius:2px;background:var(--dourado)}
+  .raiox-lista b{color:var(--branco)}
+  .raiox-txt .btn{width:auto;min-width:300px;margin-top:30px}
+  .raiox-txt small{display:block;margin-top:12px;font-size:12.5px;color:var(--branco-2)}
+  .raiox-pags{position:relative;height:460px}
+  .raiox-pags img{position:absolute;width:56%;border-radius:4px;box-shadow:0 24px 50px #000c}
+  .raiox-pags .p-mapa{left:0;top:40px;transform:rotate(-5deg)}
+  .raiox-pags .p-ficha{right:0;top:40px;transform:rotate(5deg)}
+  .raiox-pags .p-capa{left:50%;top:0;width:58%;transform:translateX(-50%);z-index:1}
 
   /* ---------- faixa de autoridade ---------- */
   .autoridade{background:var(--azul);border-top:1px solid var(--linha);border-bottom:1px solid var(--linha)}
@@ -266,6 +286,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .prova{grid-template-columns:1fr;gap:28px}
     .vd{width:min(78%,290px);margin-inline:auto}
     .tela{grid-template-columns:1fr;gap:20px}
+    .raiox-in{grid-template-columns:1fr;gap:40px}
+    .raiox-pags{order:-1;height:auto;aspect-ratio:1.15;max-width:520px;width:100%;margin-inline:auto}
   }
   @media (max-width:760px){
     .sec{padding:60px 0}
@@ -279,6 +301,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .cartao{padding:26px 20px 22px}
     .fecho .btn{width:100%}
     .cta-meio .btn{width:100%;min-width:0}
+    .raiox-txt .btn{width:100%;min-width:0}
     .dep-card{width:260px}
     .dep-print{width:240px}
     .dep-print.largo{width:290px}
@@ -329,7 +352,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="cartao" id="lista">
       <span class="eyebrow">Lista VIP · gratuita</span>
       <h2 id="vip-titulo">Entre na lista VIP</h2>
-      <p id="vip-sub">Deixe seus dados e receba o link da live antes de todo mundo.</p>
+      <p id="vip-sub">Deixe seus dados e receba <strong>na hora o Raio-X da Banca</strong>, e o link da live antes de todo mundo.</p>
+      <div class="bonus" id="vip-bonus">
+        <img src="assets/black/raio-x-capa.jpg" alt="" width="520" height="736">
+        <p><b>Bônus da inscrição</b>Raio-X da Banca: o que FGV, CEBRASPE, FCC, VUNESP e CESGRANRIO mais cobram em Contabilidade. PDF de 9 páginas.</p>
+      </div>
 
       <form id="vip-form" novalidate>
         <div>
@@ -357,6 +384,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <p class="ok-titulo" id="vip-ok-titulo">Pronto! Você está na lista VIP.</p>
         <p>Em 11/11, às 19h50, o link da live chega no seu e-mail, 10 minutos antes do aviso geral.</p>
         <div class="acoes">
+          <a class="btn" id="vip-raiox" href="assets/black/raio-x-da-banca-2026.pdf" target="_blank" rel="noopener">Baixar o Raio-X da Banca (PDF)</a>
           <a class="btn" id="vip-grupo" target="_blank" rel="noopener" hidden>Entrar no grupo VIP do WhatsApp</a>
           <a class="btn btn-contorno" id="vip-agenda" target="_blank" rel="noopener"
              aria-label="Pôr a live de 11/11 no Google Agenda (abre em nova aba)">Pôr 11/11, 20h na agenda</a>
@@ -375,6 +403,37 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div><b>Auditor Fiscal</b> do Município do Rio de Janeiro</div>
   </div>
 </div>
+
+<!-- ══════════════════ O BÔNUS DA INSCRIÇÃO: RAIO-X DA BANCA ══════════════════
+     O PDF é gerado fora do site (_MARKETING/_campanhas/_black_friday_2026/raio-x/).
+     Os números vêm do banco de questões da Fluência: a página diz isso, nunca
+     "todas as provas". -->
+<section class="sec" id="raio-x">
+  <div class="wrap raiox-in">
+    <div class="raiox-txt">
+      <span class="eyebrow">Bônus da inscrição · PDF gratuito</span>
+      <h2>Entre na lista e receba na hora o Raio-X da Banca.</h2>
+      <p class="lead">Onde FGV, CEBRASPE, FCC, VUNESP e CESGRANRIO concentram as questões de
+        Contabilidade, e como cada uma cobra. Feito com as 2.916 questões dessas cinco bancas que
+        estão no banco da Fluência, de provas de 2018 a 2026, cada uma ligada ao item da norma que cobra.</p>
+      <ul class="raiox-lista">
+        <li><b>O mapa de calor</b> dos 16 CPCs que mais aparecem, banca por banca.</li>
+        <li><b>Uma ficha por banca:</b> os 5 assuntos que mais pesam, o item campeão e o jeito de cobrar.</li>
+        <li><b>Por onde começar:</b> os 3 primeiros assuntos da ficha cobrem de 22% a 56% das questões da banca.</li>
+      </ul>
+      <a class="btn" href="#lista">Quero o Raio-X da Banca</a>
+      <small>9 páginas. Chega na hora, na tela de confirmação, e também no seu e-mail.</small>
+    </div>
+    <div class="raiox-pags">
+      <img class="p-mapa" src="assets/black/raio-x-mapa.jpg" width="640" height="906" loading="lazy"
+           alt="Página do mapa: a fatia das questões de cada banca em 16 CPCs">
+      <img class="p-ficha" src="assets/black/raio-x-ficha-fcc.jpg" width="640" height="906" loading="lazy"
+           alt="Ficha da FCC: os 5 assuntos que mais pesam e o item campeão">
+      <img class="p-capa" src="assets/black/raio-x-capa.jpg" width="520" height="736" loading="lazy"
+           alt="Capa do Raio-X da Banca, Black da Fluência 2026">
+    </div>
+  </div>
+</section>
 
 <!-- ══════════════════ O QUE A LISTA RECEBE ══════════════════ -->
 <section class="sec">
@@ -428,7 +487,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="dep-carrossel volta" tabindex="0" aria-label="Depoimentos de alunos, segunda fileira (passe o mouse para pausar)"><div class="dep-trilho" id="dep-b"></div></div>
   <div class="wrap cta-meio">
     <a class="btn" href="#lista">Entrar na lista VIP</a>
-    <small>Gratuito. O link da live de 11/11 chega 10 minutos antes.</small>
+    <small>Gratuito. O Raio-X da Banca chega na hora, e o link da live de 11/11, 10 minutos antes.</small>
   </div>
 </section>
 
@@ -540,6 +599,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <details open><summary>Entrar na lista VIP custa alguma coisa?</summary>
       <p>Não. A lista é gratuita, e a live também: é aberta no YouTube.</p></details>
 
+    <details><summary>De onde vêm os números do Raio-X da Banca?</summary>
+      <p>Das 2.916 questões de Contabilidade de FGV, CEBRASPE, FCC, VUNESP e CESGRANRIO que estão
+        no banco de questões da Fluência, de provas de 2018 a 2026, quase todas de CPC. Cada questão
+        está ligada ao item da norma que ela cobra, e o texto de cada item foi conferido no CPC
+        oficial. É um retrato do banco, não de todas as provas já aplicadas. A CESGRANRIO tem
+        amostra pequena (88 questões): a ficha dela serve como direção, não como regra.</p></details>
+
     <details><summary>O que é a Black da Fluência?</summary>
       <p>É a campanha de novembro da Fluência Contábil. A condição é revelada na live de 11/11, às
         20h. A da noite vale até 23h59 de 11/11, e o que é só da Black termina em 27/11.</p></details>
@@ -560,8 +626,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="wrap">
     <img src="assets/email/logo-black-selo.png" alt="" width="440" height="440" loading="lazy">
     <h2>Quarta, 11/11, 20h.</h2>
-    <p>Entre na lista VIP, receba o link antes de todo mundo e fique sabendo primeiro quando a
-      condição abrir.</p>
+    <p>Entre na lista VIP, receba o Raio-X da Banca na hora, o link antes de todo mundo e fique
+      sabendo primeiro quando a condição abrir.</p>
     <a class="btn" href="#lista">Entrar na lista VIP</a>
   </div>
 </section>
@@ -770,6 +836,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     erro.hidden = true;
     el('vip-titulo').hidden = true;
     el('vip-sub').hidden = true;
+    el('vip-bonus').hidden = true;
     ok.hidden = false;
     el('vip-agenda').href = AGENDA;
     if (/^https:\/\/chat\.whatsapp\.com\/[A-Za-z0-9]+$/.test(GRUPO_VIP)) {
@@ -797,6 +864,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     } catch(e){}
     setTimeout(irObrigado, 1600);
   }
+
+  el('vip-raiox').addEventListener('click', function(){
+    try { if (window.dataLayer) window.dataLayer.push({event: 'raio_x_download', origem: 'black'}); } catch(e){}
+  });
 
   // quem já entrou na lista, neste navegador, não repete o cadastro
   try { if (localStorage.getItem(CHAVE_LOCAL) === '1') confirmado(false); } catch(e){}
