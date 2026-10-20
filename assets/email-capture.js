@@ -767,7 +767,8 @@
     'concursos': ['#concursofiscal', '#sefaz'],
     'demonstrações': ['#demonstracoescontabeis', '#balancopatrimonial'],
     'bancas': ['#cebraspe', '#fcc', '#fgv'],
-    'fundamentos': ['#contabilidadebasica']
+    'fundamentos': ['#contabilidadebasica'],
+    'reforma tributária': ['#reformatributaria', '#ibs', '#cbs']
   };
 
   /** Limite de caracteres da legenda do story (o feed não tem limite prático). */
@@ -837,6 +838,17 @@
     setTimeout(function () { URL.revokeObjectURL(href); }, 10000);
   }
 
+  /* Vários arquivos: o navegador pede, uma vez, licença para baixar mais de um. Um pequeno
+     intervalo entre eles evita que o Chrome descarte os seguintes. */
+  function baixarTodos(blobs, nomes) {
+    for (var k = 0; k < blobs.length; k++) {
+      (function (b, n, atraso) {
+        if (!atraso) baixarArquivo(b, n);
+        else setTimeout(function () { baixarArquivo(b, n); }, atraso);
+      })(blobs[k], nomes[k], k * 400);
+    }
+  }
+
   function evento(nome, dados) {
     try {
       window.dataLayer = window.dataLayer || [];
@@ -846,20 +858,40 @@
     } catch (e) {}
   }
 
-  /* Artigo de concurso traz a ARTE DE EDITAL já pronta (render-artes/arte-edital),
-     declarada no <head> em <meta name="fc:arte-feed"> e <meta name="fc:arte-story">.
-     Quando ela existe, é ela que o leitor recebe. O card desenhado em Canvas fica
-     para os demais posts e de reserva: se a arte não carregar, o botão não fica
-     sem imagem. */
+  /* Artigo com ARTE PRONTA (a de edital, ou uma peça desenhada à mão) declara os arquivos no <head>:
+       <meta name="fc:arte-feed" content="/blog/imgs/share/x-feed.jpg">           uma imagem no Feed
+       <meta name="fc:arte-feed-carrossel" content="/…/x-01.jpg /…/x-02.jpg …">   carrossel no Feed: 2 a 10
+                                                                                  imagens, na ordem, separadas
+                                                                                  por espaço ou vírgula
+       <meta name="fc:arte-story" content="/blog/imgs/share/x-story.jpg">         Story
+     O carrossel vale no lugar de fc:arte-feed. O card desenhado em Canvas fica para os demais
+     posts e de reserva: se a arte (ou QUALQUER slide) não carregar, o botão entrega o card em vez de
+     um carrossel pela metade, e não fica sem imagem. */
+  var MAX_SLIDES_INSTAGRAM = 10;
+
+  function caminhosDaArte(formato) {
+    var lista = formato === 'feed' ? metaConteudo('fc:arte-feed-carrossel') : '';
+    if (lista) {
+      var itens = lista.split(/[\s,]+/).filter(Boolean).slice(0, MAX_SLIDES_INSTAGRAM);
+      if (itens.length) return itens;
+    }
+    var unico = metaConteudo('fc:arte-' + formato);
+    return unico ? [unico] : [];
+  }
+
   function arteProntaDoArtigo(formato) {
-    var caminho = metaConteudo('fc:arte-' + formato);
-    if (!caminho || !window.fetch) return null;
-    return fetch(caminho).then(function (r) {
-      if (!r.ok) throw new Error('arte pronta respondeu ' + r.status);
-      return r.blob();
-    }).then(function (blob) {
-      if (blob.type.indexOf('image/') !== 0) throw new Error('arte pronta não é imagem');
-      return { blob: blob, pronta: true };
+    var caminhos = caminhosDaArte(formato);
+    if (!caminhos.length || !window.fetch) return null;
+    return Promise.all(caminhos.map(function (caminho) {
+      return fetch(caminho).then(function (r) {
+        if (!r.ok) throw new Error('arte pronta respondeu ' + r.status);
+        return r.blob();
+      }).then(function (blob) {
+        if (blob.type.indexOf('image/') !== 0) throw new Error('arte pronta não é imagem');
+        return blob;
+      });
+    })).then(function (blobs) {
+      return { blob: blobs[0], blobs: blobs, pronta: true };
     });
   }
 
@@ -877,6 +909,11 @@
     var status = el.querySelector('.fc-ec-share-status');
     var chips = el.querySelectorAll('.fc-ec-chip');
     if (!btn || !painel) return;
+
+    // Post com carrossel: o chip diz o que o leitor vai receber.
+    var chipFeed = el.querySelector('.fc-ec-chip[data-formato="feed"]');
+    var slidesFeed = caminhosDaArte('feed').length;
+    if (chipFeed && slidesFeed > 1) chipFeed.textContent = 'Carrossel 4:5 · ' + slidesFeed + ' slides';
 
     function avisar(texto, erro) {
       status.textContent = texto;
@@ -904,25 +941,39 @@
 
     function gerarArte(formato) {
       var dados = dadosDoArtigo();
-      var nome = slugDoArtigo() + '-instagram-' + formato + '.jpg';
+      var slug = slugDoArtigo();
       var legenda = legendaInstagram(dados, url, formato);
+      var total = caminhosDaArte(formato).length;
 
       travarChips(true);
-      avisar('Gerando a arte…');
+      avisar(total > 1 ? 'Gerando os ' + total + ' slides…' : 'Gerando a arte…');
 
       obterArte(formato, dados)
         .then(function (resultado) {
-          var blob = resultado.blob;
+          var blobs = resultado.blobs || [resultado.blob];
+          var varios = blobs.length > 1;
+          // Carrossel: 01, 02… para os arquivos ficarem na ordem certa na pasta de downloads.
+          var nomes = blobs.map(function (_, k) {
+            return slug + '-instagram-' + formato + (varios ? '-' + (k < 9 ? '0' : '') + (k + 1) : '') + '.jpg';
+          });
           // A foto da arte de edital pode exigir atribuição: o crédito vai na
           // legenda do feed, antes das hashtags.
           var credito = (resultado.pronta && formato === 'feed') ? metaConteudo('fc:arte-credito') : '';
           if (credito) legenda = legenda.replace(/\n\n(#[^\n]*)$/, '\n\n' + credito + '\n\n$1');
-          var arquivo = blob;
-          try { arquivo = new File([blob], nome, { type: 'image/jpeg' }); } catch (e) {}
+          var arquivos = blobs.map(function (b, k) {
+            try { return new File([b], nomes[k], { type: 'image/jpeg' }); } catch (e) { return b; }
+          });
+          var todosArquivos = !!window.File && arquivos.every(function (a) { return a instanceof File; });
 
-          var podeArquivo = !!(navigator.canShare && window.File && (arquivo instanceof File)
-                            && navigator.canShare({ files: [arquivo] }));
+          var podeArquivo = !!(navigator.canShare && todosArquivos && navigator.canShare({ files: arquivos }));
           var ehToque = !!(window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
+          var baixados = varios
+            ? blobs.length + ' slides baixados'
+            : 'Imagem baixada';
+          var orientacao = varios
+            ? ' e legenda copiada. No Instagram, escolha Selecionar vários e suba os slides na ordem (01 a '
+              + (blobs.length < 10 ? '0' : '') + blobs.length + ').'
+            : ' e legenda copiada. Abra o Instagram e cole na publicação.';
 
           if (podeArquivo && ehToque && navigator.share) {
             // Copia ANTES de abrir a bandeja: depois dela o navegador pode
@@ -931,25 +982,25 @@
               .then(function () {
                 // Só `files`. Com `title`/`text` junto, o Safari do iOS compartilha
                 // o TEXTO em vez da imagem — e o Instagram não recebe a arte.
-                return navigator.share({ files: [arquivo] });
+                return navigator.share({ files: arquivos });
               })
               .then(function () {
-                evento('fc_share_instagram', { formato: formato, metodo: 'share', slug: slugDoArtigo() });
+                evento('fc_share_instagram', { formato: formato, metodo: 'share', slug: slug, slides: blobs.length });
                 avisar('Pronto! A legenda já está copiada — é só colar na publicação.');
               })['catch'](function (e) {
                 if (e && e.name === 'AbortError') { avisar(''); return; }
-                baixarArquivo(blob, nome);
-                evento('fc_share_instagram', { formato: formato, metodo: 'download', slug: slugDoArtigo() });
-                avisar('Imagem baixada e legenda copiada. Abra o Instagram e cole na publicação.');
+                baixarTodos(blobs, nomes);
+                evento('fc_share_instagram', { formato: formato, metodo: 'download', slug: slug, slides: blobs.length });
+                avisar(baixados + orientacao);
               });
           }
 
-          baixarArquivo(blob, nome);
-          evento('fc_share_instagram', { formato: formato, metodo: 'download', slug: slugDoArtigo() });
+          baixarTodos(blobs, nomes);
+          evento('fc_share_instagram', { formato: formato, metodo: 'download', slug: slug, slides: blobs.length });
           return copiarTexto(legenda).then(function () {
-            avisar('Imagem baixada e legenda copiada. Abra o Instagram e cole na publicação.');
+            avisar(baixados + orientacao);
           }, function () {
-            avisar('Imagem baixada. Não consegui copiar a legenda — o navegador bloqueou a área de transferência.');
+            avisar(baixados + '. Não consegui copiar a legenda — o navegador bloqueou a área de transferência.');
           });
         })['catch'](function () {
           avisar('Não consegui gerar a imagem agora. Tente novamente.', true);
