@@ -687,12 +687,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   // ───────────── a plataforma por dentro ─────────────
   /* Gravações de tela de assets/quiz/telas/. Textos do bloco "O que você leva" do quiz. */
   var TELAS = [
-    /* aula-videos: Aula 16 (CPC 01) gravada no portal em 20/10/2026, layout da 3.4.63. */
-    { id: 'aula-videos', nome: 'Aulas',                t: 'O curso inteiro, em 5 módulos', d: '35 aulas e 3 bônus, do zero à Contabilidade Avançada, em vídeo e PDF. Dentro de cada aula, os vídeos de teoria e os de resolução de questões ficam em abas separadas.', r: 'Você não monta o caminho. Ele já vem em ordem.' },
-    { id: 'banco',     nome: 'Questões',               t: 'Mais de 5.800 questões de banca real, comentadas', d: 'Com filtro por assunto, banca, órgão e ano, e cadernos que você monta.', r: 'Você entende por que cada alternativa errada está errada.' },
+    /* Gravadas no portal em 20/10/2026 (plataforma 3.4.63), na visão de aluno.
+       Brutos e LEIA-ME em _ASSETS_GLOBAIS/videos_telas_plataforma/2026-10-20_black_aula_videos/. */
+    { id: 'aula-videos', nome: 'Aulas', t: 'O curso inteiro, em vídeos curtos', d: '35 aulas e 3 bônus, do zero à Contabilidade Avançada, em vídeo e PDF. Cada aula é dividida em vídeos curtos de teoria e de resolução de questões, e a aba Questões monta na hora um caderno só com as questões daquela aula.', r: 'Você não monta o caminho. Ele já vem em ordem.' },
+    { id: 'questoes-filtros', nome: 'Questões', t: 'Mais de 5.500 questões de banca real, comentadas', d: 'Filtro por assunto, banca, área e ano. A questão aparece inteira, com tabela e alternativas, e depois de responder vem a resolução comentada da Fluência.', r: 'Você entende por que cada alternativa errada está errada.' },
+    { id: 'cadernos-pastas', nome: 'Cadernos', t: 'Cadernos em pastas e modo Simulado', d: 'Guarde os cadernos em pastas do seu jeito e refaça qualquer um como simulado cronometrado, com o tempo por questão do ritmo de prova.', r: 'Você treina o relógio da prova antes da prova.' },
     { id: 'mapa',      nome: 'Mapa de Incidência',     t: 'Mapa de Incidência', d: 'O item da norma cruzado com a banca: quanto mais azul, mais aquela banca cobra.', r: 'Você estuda primeiro o que a sua banca cobra de verdade.' },
-    { id: 'edital',    nome: 'Meu Edital',             t: 'Meu Edital', d: 'Você cola o seu edital e ele vira uma lista, cada item com a aula que o cobre.', r: 'Acaba o garimpo no PDF do edital.' },
-    { id: 'plano',     nome: 'Plano de Estudos',       t: 'Plano de Estudos', d: 'Agenda semanal na sua rotina, com revisão espaçada em D+3, 7, 16 e 35 dias.', r: 'Acaba o estuda-esquece.' },
+    { id: 'edital-catalogo', nome: 'Meu Edital', t: 'Catálogo de Editais e Meu Edital', d: 'Filtre os editais por esfera, área e banca e veja a data da prova e quanto do conteúdo o curso cobre. No Meu Edital, cada item vem com as aulas e as questões ligadas a ele.', r: 'Acaba o garimpo no PDF do edital.' },
+    { id: 'plano-estudos', nome: 'Plano de Estudos', t: 'Plano de Estudos', d: 'A semana montada na sua rotina, as tarefas do dia em ordem, o cronômetro da sessão e a revisão espaçada em D+3, 7, 16 e 35 dias.', r: 'Acaba o estuda-esquece.' },
     { id: 'simulador', nome: 'Simulador',              t: 'Simulador de Lançamentos', d: 'Treino de partida dobrada com níveis de dificuldade.', r: '' }
   ];
   var video = el('tela-video'), abas = el('abas'), telaVisivel = false, atual = 0;
