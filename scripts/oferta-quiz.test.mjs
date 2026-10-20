@@ -122,10 +122,9 @@ test('tabela b: troca links, valores, mês de acesso e o FAQ, e mantém o resto 
   assert.ok(!d.faq.some((f) => f.a.includes('36%')));
 });
 
-test('a resposta a "O preço" destaca a parcela, não o custo por mês de acesso', () => {
+test('a resposta a "O preço" não mostra valor no topo da tela', () => {
   const preco = planos('b').objecoes.find((o) => o.rotulo === 'O preço');
-  assert.equal(preco.hero.args[0].t, '12× de {parcela}');
-  assert.ok(quiz.includes(".replace('{parcela}', pl.parcela)"), 'o quiz não substitui {parcela}');
+  assert.ok(preco.hero.args.every((a) => !/R\$|\{parcela\}|12×/.test(a.t + a.s)), 'o topo da resposta a "O preço" voltou a mostrar valor');
 });
 
 test('o cartão de preço não mostra o custo por mês de acesso', () => {
