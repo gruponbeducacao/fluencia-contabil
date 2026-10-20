@@ -1,0 +1,96 @@
+/* ═══════════════════════════════════════════════════════════════
+   Tema da Black da Fluência — camada TEMPORÁRIA sobre o site.
+   Só vale com html.tema-black, que o assets/black/tema-black.js liga de
+   24/10/2026 0h até 28/11/2026 0h (ou com ?tema=black, para homologar antes).
+   Fora da janela este arquivo não muda nada.
+   Identidade da Black: preto no fundo, dourado no destaque, vermelho
+   só no botão de ação. Sem sidebar.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* O azul das paletas de cada família de página vira o preto da Black.
+   site.css: --azul, --azul-med, --azul-profundo · páginas de concurso: --azul-noite,
+   --azul-medio, --azul-inter · aula ao vivo: --navy, --navy2, --night. */
+html.tema-black{
+  --azul:#0B0E14;
+  --azul-med:#1B2A4A;
+  --azul-profundo:#07090D;
+  --azul-noite:#0B0E14;
+  --azul-medio:#1B2A4A;
+  --azul-inter:#1B2A4A;
+  --navy:#0B0E14;
+  --navy2:#11151D;
+  --night:#07090D;
+}
+
+/* faixa do topo: a #topbar do site.css vira o aviso da Black */
+html.tema-black #topbar{background:#0B0E14;color:#D4B860;border-bottom:1px solid rgba(200,168,75,.4)}
+html.tema-black #topbar a{color:#fff;background:#C0392B;text-decoration:none;padding:3px 10px;border-radius:3px;margin-left:4px}
+html.tema-black #topbar a:hover{background:#A93226}
+
+/* faixa nova nas páginas sem #topbar (posts, concursos, aula ao vivo) */
+.fc-black-faixa{position:relative;z-index:2147483000;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px 10px;
+  padding:8px 16px;background:#0B0E14;border-bottom:1px solid rgba(200,168,75,.4);color:#D4B860;
+  font:700 11px/1.4 Montserrat,Arial,sans-serif;letter-spacing:1.4px;text-transform:uppercase;text-align:center}
+.fc-black-faixa img{width:22px;height:22px}
+.fc-black-faixa a{color:#fff;background:#C0392B;text-decoration:none;padding:4px 10px;border-radius:3px;white-space:nowrap}
+.fc-black-faixa a:hover{background:#A93226}
+
+/* menu do site.css: preto, com o selo da Black no lugar da logo */
+html.tema-black #mainNav{background:rgba(11,14,20,.97);border-bottom-color:rgba(200,168,75,.35)}
+html.tema-black .fc-black-marca{display:flex;align-items:center;gap:12px;text-decoration:none}
+html.tema-black .fc-black-marca img{height:52px;width:52px;filter:drop-shadow(0 4px 10px rgba(0,0,0,.5))}
+html.tema-black .fc-black-marca span{font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#fff;line-height:1.35}
+html.tema-black .fc-black-marca span b{display:block;color:#D4B860;font-weight:800}
+
+/* botão de ação em vermelho (decisão de 20/10: todo botão de ação da Black) */
+html.tema-black .nav-btn,
+html.tema-black .nav-cta-mobile,
+html.tema-black .btn-p{background:#C0392B;color:#fff}
+html.tema-black .nav-btn:hover,
+html.tema-black .nav-cta-mobile:hover,
+html.tema-black .btn-p:hover{background:#A93226;color:#fff}
+
+/* topo das páginas do site.css: o gradiente azul vira o preto com brilho dourado da /black */
+html.tema-black .hero-dramatic{background:
+  radial-gradient(ellipse 70% 55% at 15% 0%,rgba(200,168,75,.18),transparent 60%),
+  radial-gradient(ellipse 60% 70% at 100% 100%,rgba(27,42,74,.7),transparent 60%),
+  #0B0E14 !important}
+html.tema-black .hero-glow{background:radial-gradient(circle,rgba(200,168,75,.22) 0%,transparent 65%)}
+html.tema-black .hero-logo{opacity:.55}
+
+/* preço solto na página de cursos some enquanto as vendas estão fechadas */
+html.tema-black-fechado .hv-avista,
+html.tema-black-fechado .launch-box{display:none}
+
+/* bloco que substitui os planos durante as vendas fechadas (cursos.html) */
+.fc-black-fechado{max-width:860px;margin:0 auto;background:#0B0E14;border:1px solid rgba(200,168,75,.45);border-radius:16px;
+  padding:40px 32px;text-align:center;color:#fff;box-shadow:0 30px 70px rgba(0,0,0,.35)}
+.fc-black-fechado img{width:120px;height:120px;margin:0 auto 18px;display:block}
+.fc-black-fechado .k{display:inline-block;font-size:11px;font-weight:900;letter-spacing:2.4px;text-transform:uppercase;color:#0B0E14;
+  background:#D4B860;padding:6px 12px;border-radius:4px}
+.fc-black-fechado h2{margin:16px 0 0;font-size:clamp(26px,3.6vw,40px);font-weight:900;line-height:1.12;letter-spacing:-.8px;color:#fff}
+.fc-black-fechado h2 em{font-style:normal;color:#D4B860}
+.fc-black-fechado p{margin:14px auto 0;max-width:56ch;font-size:16px;line-height:1.7;color:rgba(255,255,255,.78)}
+.fc-black-fechado a{display:inline-block;margin-top:24px;background:#C0392B;color:#fff;text-decoration:none;padding:16px 30px;border-radius:6px;
+  font-size:13px;font-weight:900;letter-spacing:1.2px;text-transform:uppercase}
+.fc-black-fechado a:hover{background:#A93226}
+
+/* links.html (o link da bio): fundo preto, selo no topo e o destaque da lista VIP */
+html.tema-black .fc-black-selo-bio{width:54px;height:54px;display:block}
+.fc-black-dest{display:grid;grid-template-columns:76px 1fr;gap:14px;align-items:center;margin:0 0 14px;padding:14px 16px;
+  background:#0B0E14;border:1.5px solid #C8A84B;border-radius:16px;text-decoration:none;color:#fff;
+  box-shadow:0 16px 40px rgba(0,0,0,.45)}
+.fc-black-dest img{width:76px;height:76px}
+.fc-black-dest .k{display:block;font-size:11px;font-weight:800;letter-spacing:1.6px;text-transform:uppercase;color:#D4B860}
+.fc-black-dest strong{display:block;margin-top:4px;font-size:17px;font-weight:900;line-height:1.25;color:#fff}
+.fc-black-dest .go{display:inline-block;margin-top:10px;background:#C0392B;color:#fff;font-size:12px;font-weight:900;letter-spacing:1px;
+  text-transform:uppercase;padding:8px 12px;border-radius:6px}
+
+/* topo da aula ao vivo (aula-ao-vivo.html): o gradiente azul próprio vira o preto da /black.
+   O .hero-in também está nos posts e na /black, que já ficam pretos; as páginas de concurso
+   não têm .hero-in, e o .hero delas (com ilustração) fica intacto. */
+html.tema-black .hero:has(> .hero-in){background:
+  radial-gradient(ellipse 80% 60% at 0% 0%,rgba(200,168,75,.18),transparent 52%),
+  radial-gradient(ellipse 60% 70% at 100% 100%,rgba(27,42,74,.7),transparent 60%),
+  #0B0E14}
+html.tema-black .topbar{background:rgba(11,14,20,.97)}
