@@ -31,7 +31,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="apple-touch-icon" href="assets/black/apple-touch-black.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@1,9..144,600&family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
   :root{
@@ -53,7 +53,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .ok{display:inline-flex;align-items:center;gap:8px;margin-top:22px;padding:7px 14px;border:1px solid #c8a84b66;border-radius:999px;
     font-size:11px;font-weight:800;letter-spacing:1.6px;text-transform:uppercase;color:var(--dourado)}
   h1{margin-top:16px;font-size:clamp(28px,4.4vw,42px);font-weight:900;line-height:1.12;letter-spacing:-1px;text-wrap:balance}
-  .it{font-family:Fraunces,Georgia,serif;font-style:italic;font-weight:600;color:var(--dourado-claro)}
+  /* Destaque do título: mesma Montserrat, em dourado (a serifada em itálico saiu a pedido do Vinícius, 20/10). */
+  .it{color:var(--dourado-claro)}
   .sub{margin:14px auto 0;max-width:52ch;font-size:17px;line-height:1.7;color:var(--branco-2)}
 
   .passos{display:grid;gap:16px;margin:34px 0 0}
@@ -80,6 +81,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .contagem span{display:block;margin-top:7px;font-size:9.5px;font-weight:800;letter-spacing:1.6px;text-transform:uppercase;color:var(--branco-2)}
   .quando{margin-top:12px;text-align:center;font-size:12px;font-weight:800;letter-spacing:1.6px;text-transform:uppercase;color:var(--dourado)}
 
+  /* O bônus da inscrição: a capa do Raio-X e o download, antes dos passos. */
+  .raiox{display:grid;grid-template-columns:120px 1fr;gap:22px;align-items:center;margin-top:34px;padding:22px;
+    border:1px solid #c8a84b66;border-radius:14px;background:linear-gradient(135deg,#1b2a4a,#0b0e14)}
+  .raiox img{width:120px;border-radius:4px;box-shadow:0 14px 30px #000b}
+  .raiox .rotulo{font-size:11px;font-weight:800;letter-spacing:1.6px;text-transform:uppercase;color:var(--dourado)}
+  .raiox h2{margin-top:6px;font-size:22px;font-weight:900;line-height:1.25;letter-spacing:-.3px}
+  .raiox p{margin-top:8px;font-size:14.5px;line-height:1.6;color:var(--branco-2)}
+  .raiox .btn{margin-top:14px}
+
   .sem-inscricao{margin-top:28px;text-align:center;font-size:14px;color:var(--branco-2)}
   .sem-inscricao a{color:var(--dourado-claro);font-weight:700}
 
@@ -90,6 +100,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     header{padding-top:28px}
     header img{width:120px;height:120px}
     .passo{grid-template-columns:1fr;gap:12px;padding:22px 18px}
+    .raiox{grid-template-columns:78px 1fr;gap:16px;align-items:start;padding:20px 16px}
+    .raiox img{width:78px}
+    .raiox h2{font-size:19px}
+    .raiox p{font-size:14px}
     .btn{width:100%}
     .contagem div{min-width:0;flex:1}
   }
@@ -106,8 +120,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <img src="assets/email/logo-black-selo.png" width="440" height="440" alt="Selo da Black da Fluência: 11.11.2026, pra sempre">
     <span class="ok" id="ok">✓ Inscrição confirmada</span>
     <h1 id="titulo">Pronto! Você está na <span class="it">lista VIP.</span></h1>
-    <p class="sub">Falta só um passo para não perder nada: entrar no grupo VIP do WhatsApp.</p>
+    <p class="sub" id="sub">Seu Raio-X da Banca está aqui embaixo. Depois, falta só um passo para não perder
+      nada: entrar no grupo VIP do WhatsApp.</p>
   </header>
+
+  <section class="raiox" id="raiox">
+    <img src="assets/black/raio-x-capa.jpg" width="520" height="736" alt="Capa do Raio-X da Banca">
+    <div>
+      <span class="rotulo">Seu bônus da inscrição</span>
+      <h2>Raio-X da Banca</h2>
+      <p>Onde FGV, CEBRASPE, FCC, VUNESP e CESGRANRIO concentram as questões de Contabilidade, e
+        como cada uma cobra. PDF de 9 páginas; uma cópia também vai para o seu e-mail.</p>
+      <a class="btn" id="baixar" href="assets/black/raio-x-da-banca-2026.pdf" target="_blank" rel="noopener">Baixar o Raio-X (PDF)</a>
+    </div>
+  </section>
 
   <div class="passos">
     <section class="passo principal">
@@ -142,8 +168,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="n">3</div>
       <div>
         <h2>Fique de olho no seu e-mail</h2>
-        <p>Os avisos da Black chegam por e-mail até 27/11. Se não encontrar, procure em
-          Promoções ou no spam e marque a Fluência Contábil como contato.</p>
+        <p>O primeiro e-mail leva o Raio-X da Banca, e os avisos da Black seguem até 27/11. Se não
+          encontrar, procure em Promoções ou no spam e marque a Fluência Contábil como contato.</p>
       </div>
     </section>
   </div>
@@ -157,7 +183,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <p class="quando">Quarta, 11/11 · 20h · ao vivo no YouTube</p>
 
   <p class="sem-inscricao" id="sem-inscricao" hidden>Ainda não se inscreveu?
-    <a href="black#lista">Entre na lista VIP</a> para receber os avisos por e-mail também.</p>
+    <a href="black#lista">Entre na lista VIP</a> para receber o Raio-X da Banca e os avisos por e-mail também.</p>
 
   <footer>
     <a href="https://fluenciacontabil.com.br/">fluenciacontabil.com.br</a> ·
@@ -186,8 +212,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   if (!inscrito && !nome) {
     el('ok').hidden = true;
     el('titulo').textContent = 'O grupo VIP da Black da Fluência';
+    el('sub').textContent = 'Entre no grupo VIP do WhatsApp para receber os avisos da Black.';
+    /* O Raio-X é o bônus da inscrição: quem chega aqui sem se inscrever é mandado para a lista. */
+    el('raiox').hidden = true;
     el('sem-inscricao').hidden = false;
   }
+
+  el('baixar').addEventListener('click', function(){
+    try { if (window.dataLayer) window.dataLayer.push({event: 'raio_x_download', origem: 'black_obrigado'}); } catch(e){}
+  });
 
   el('agenda').href = 'https://calendar.google.com/calendar/render?action=TEMPLATE'
     + '&text=' + encodeURIComponent('Live da Black da Fluência')
