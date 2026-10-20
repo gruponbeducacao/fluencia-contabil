@@ -416,6 +416,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .hero3-args small { display: block; margin-top: 2px; font-size: 14px; line-height: 1.5; color: rgba(255,255,255,.7); }
   .hero3-fim { margin-top: 10px; font-size: 13.5px; font-weight: 600; color: rgba(255,255,255,.6); text-align: center; }
   @media (prefers-reduced-motion: reduce) { .ov-anel { animation: none; } .overlay { transition: none; } }
+  /* ---------- Vídeo de aluno ---------- */
+  .vd { margin: 22px auto 6px; width: min(78%, 280px); }
+  .vd-moldura { position: relative; aspect-ratio: 9 / 16; border-radius: 20px; overflow: hidden; background: var(--navy-fundo); box-shadow: var(--sombra); }
+  .vd-moldura video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+  .vd-play { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; border: 0; background: linear-gradient(180deg, rgba(23,35,63,0) 55%, rgba(23,35,63,.45)); cursor: pointer; }
+  .vd-play i { width: 58px; height: 58px; border-radius: 50%; background: rgba(255,255,255,.94); display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 22px rgba(0,0,0,.3); }
+  .vd-play svg { width: 22px; height: 22px; margin-left: 3px; fill: var(--navy); }
+  .vd.tocando .vd-play { display: none; }
+  .vd-leg { margin-top: 12px; text-align: center; font-family: var(--serif); font-size: 15.5px; line-height: 1.5; color: var(--tinta); font-style: italic; }
+  .vd-leg b { display: block; margin-top: 6px; font-family: var(--sans); font-style: normal; font-size: 12.5px; font-weight: 700; color: var(--apoio); letter-spacing: .01em; }
 </style>
 </head>
 <body>
@@ -559,7 +569,7 @@ var DADOS = {
   objecoes: [
     { rotulo: 'Já comprei curso e não usei', hero: { fala: "“Já comprei curso e não usei.”", percebi: "Mas eu percebi que quase nunca o problema é você. É o curso que não cabe na sua semana, e aí ele vira pasta esquecida.", args: [{ t: "7 dias para testar por dentro", s: "Entra, assiste, resolve questão. Se não for para você, devolvemos 100% do valor." },{ t: "Uma semana que cabe na sua vida", s: "O Plano de Estudos monta a agenda pelo tempo que você tem. Faltou um dia? A grade recalcula sozinha." },{ t: "Muito mais para usar do que videoaula", s: "Questões comentadas, Meu Edital, Mapa de Incidência, Simulador e Plano de Estudos. Sempre tem o que fazer hoje." }] }, ico: 'carteira', resp: 'Por isso o Plano de Estudos monta a semana pelo tempo que você diz ter, e não pelo tempo que o curso gostaria. Se dentro de 7 dias você achar que não é para você, devolvemos 100% do valor.' },
     { rotulo: 'Medo de não ter tempo para mais uma coisa', hero: { fala: "“Não tenho tempo para mais uma coisa.”", percebi: "Mas eu percebi que o que falta não é tempo. É saber o que estudar nele. Estudar sem direção gasta horas que a prova nem cobra.", args: [{ t: "Você disse que tem {horas}", s: "É a partir disso que o plano monta a sua semana, sem somar hora nenhuma a mais." },{ t: "Estude primeiro o que a sua banca cobra", s: "O Mapa de Incidência mostra, item por item da norma, o que vale ponto." },{ t: "7 dias para testar", s: "Se não couber na sua rotina, devolvemos 100% do valor." }] }, ico: 'relogio', resp: 'O plano parte das horas que você escolheu, sem somar nada além disso. E há 7 dias para testar por dentro e pedir o dinheiro de volta.' },
-    { rotulo: 'O preço', hero: { fala: "“O preço pesa.”", percebi: "Mas eu percebi que o preço que importa é o do ponto que você perde na prova. E aqui o número está na tela, sem pegadinha.", args: [{ t: "12× de {parcela}", s: "Pagamento único. Sem renovação automática e sem módulo avulso para pagar depois." },{ t: "Os dois valores antes do clique", s: "Parcelado e à vista na mesma tela. No cartão há juros do gateway, e a gente avisa." },{ t: "7 dias de garantia", s: "Testou, não gostou, devolvemos 100% do valor pelo mesmo meio de pagamento." }] }, ico: 'etiqueta', resp: 'O pagamento é único, sem renovação automática. Você vê os dois números, parcelado e à vista, antes de clicar. E tem 7 dias para pedir o dinheiro de volta.' },
+    { rotulo: 'O preço', hero: { fala: "“O preço pesa.”", percebi: "Mas eu percebi que o preço que importa é o do ponto que você perde na prova. E aqui o número está na tela, sem pegadinha.", args: [{ t: "Pagamento único", s: "Sem renovação automática e sem módulo avulso para pagar depois." },{ t: "Os dois valores antes do clique", s: "Parcelado e à vista na mesma tela. No cartão há juros do gateway, e a gente avisa." },{ t: "7 dias de garantia", s: "Testou, não gostou, devolvemos 100% do valor pelo mesmo meio de pagamento." }] }, ico: 'etiqueta', resp: 'O pagamento é único, sem renovação automática. Você vê os dois números, parcelado e à vista, antes de clicar. E tem 7 dias para pedir o dinheiro de volta.' },
     { rotulo: 'Não sei se serve para a minha prova', hero: { fala: "“Não sei se serve para a minha prova.”", percebi: "Mas eu percebi que contabilidade cai em prova de Fiscal, de Contador, de controle e de Tribunais de Contas. O que muda é como a banca cobra, e a plataforma mostra isso.", args: [{ t: "Você marcou: {prova}", s: "O Mapa de Incidência cruza a norma com a sua banca e mostra o que ela mais cobra." },{ t: "Cole o seu edital", s: "O Meu Edital vira uma lista, cada item com a aula que o cobre. Você vê o que serve para a sua prova." },{ t: "7 dias para conferir por dentro", s: "Se não servir, devolvemos 100% do valor." }] }, ico: 'ajuda', resp: 'Contabilidade cai em provas de fiscal, de controle, de tribunais e de contador. O Mapa de Incidência mostra o que a sua banca cobra, item por item.' },
     { rotulo: 'Nada. Quando eu decido, eu começo.', ico: 'ok', resp: 'Então vamos ao seu plano.' }
   ],
@@ -669,7 +679,7 @@ var TELAS = {
   p3: function () { return pilula(3, 'de 6 · o seu momento') + '<h2>Em que momento você está na preparação?</h2>' + opcoes(DADOS.momentos, R.momento); },
   depo: function () {
     return '<h2>Você não é o primeiro a travar em contabilidade.</h2><p class="sub">O que dizem alunos que já entraram na plataforma.</p>' +
-      carrossel() +
+      videoAluno() + carrossel() +
       acao('<button type="button" class="btn" data-acao="seguir">Continuar' + SETA + '</button>');
   },
   p4: function () { return pilula(4, 'de 6 · a sua rotina') + '<h2>Num dia normal, quanto tempo sobra para estudar de verdade?</h2><p class="sub">Pense num dia de trabalho, sem contar o fim de semana.</p>' + opcoes(DADOS.horas, R.horas); },
@@ -747,7 +757,7 @@ var TELAS = {
       '<div class="garantia-card"><span class="tile">' + svg('escudo') + '</span><div><b>7 dias de garantia incondicional</b><span>Entre, assista às aulas, resolva questões e explore a plataforma. Se achar que não é para você, devolvemos 100% do valor pelo mesmo meio de pagamento, sem perguntas.</span></div></div>' +
       '<p class="outro">Prefere outro prazo? <a href="' + kiwify(outroId) + '" data-fc-local="quiz-outro-prazo">' + esc(outro.nome) + ': 12× de ' + esc(outro.parcela) + ' ou ' + esc(outro.vista) + ' à vista</a></p>';
 
-    var c = '<div class="sec-h">Quem já está por dentro</div>' + carrossel();
+    var c = '<div class="sec-h">Quem já está por dentro</div>' + videoAluno() + carrossel();
 
     var d = '<div class="sec-h">Navegue na plataforma agora</div><p class="sec-p">É a plataforma de verdade, com dados de exemplo. Clique nos menus e teste.</p>' +
       '<div class="demo-moldura"><iframe src="assets/quiz/demo_plataforma.html" title="Demonstração navegável da plataforma" loading="lazy"></iframe></div>';
@@ -784,6 +794,18 @@ function telaReal(tipo) {
   return '<div class="tela-real"><div class="barra-t"><i></i><i></i><i></i><span>Tela real da plataforma</span></div>' +
     '<video autoplay muted loop playsinline preload="auto" poster="' + b + '.jpg"><source src="' + b + '.mp4" type="video/mp4"></video></div>';
 }
+
+/* Vídeo de aluno. Toque para ouvir; o vídeo já vem legendado. */
+function videoAluno() {
+  return '<div class="vd"><div class="vd-moldura"><video playsinline preload="metadata" poster="assets/quiz/depo/tallys.jpg"><source src="assets/quiz/depo/tallys.mp4" type="video/mp4"></video>' +
+    '<button type="button" class="vd-play" data-acao="vd-play" aria-label="Assistir ao depoimento do Tallys"><i><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></i></button></div>' +
+    '<p class="vd-leg">“Direta, sem enrolação e focada naquilo que realmente cai na prova.”<b>Tallys · aprovado em Auditor Fiscal, 2026</b></p></div>';
+}
+document.addEventListener('click', function (ev) {
+  var b = ev.target.closest && ev.target.closest('[data-acao="vd-play"]'); if (!b) return;
+  var box = b.closest('.vd'), v = box.querySelector('video'); box.classList.add('tocando'); v.controls = true; v.currentTime = 0; v.play();
+  track('depo_video_play', { aluno: 'tallys' });
+});
 
 /* Carrossel de depoimentos girando (mesmo padrão da assinatura.html). O grupo aparece duas vezes para o giro não ter emenda. */
 function carrossel() {
