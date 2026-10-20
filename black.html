@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MGQFHR5J');</script>
+<!-- End Google Tag Manager -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0B0E14">
+<title>Black da Fluência · 11/11, 20h · Lista VIP</title>
+<meta name="description" content="Quarta, 11 de novembro, 20h: na live eu revelo a condição da Black da Fluência. Entre na lista VIP e receba o link 10 minutos antes de todo mundo.">
+<link rel="canonical" href="https://fluenciacontabil.com.br/black">
+
+<!--
+  /black — Black da Fluência 2026. ESTADO 1: CAPTAÇÃO (21/10 a 11/11, 19h50).
+
+  Plano: _MARKETING/_campanhas/_black_friday_2026/plano-black-2026.html.
+  Os estados 2 a 5 (ao vivo, noite, carrinho, encerrada) entram depois, fora
+  deste repositório público até a revelação: nada com preço sobe antes de 11/11.
+
+  ⚠️ CAPTURA — como se amarra:
+
+  1. Toda origem `aula_*` cai no `handleAulaAoVivo` do Apps Script, que busca
+     rótulo e tópico pela ORIGEM na aba "Config Aulas". As duas linhas abaixo
+     precisam existir ANTES da página ir ao ar, senão o lead entra como
+     "DESCONHECIDA":
+       aula_black_2026            Black da Fluência 2026  black-2026  11/11/2026 20:00:00  sim
+       aula_black_2026_whatsapp   Black da Fluência 2026  black-2026  11/11/2026 20:00:00  sim
+     Depois, rodar setupAulasAoVivo() para o tópico `black-2026` existir no SES.
+
+  2. A aba "Aulas ao Vivo" não tem coluna de aceite. O aceite de WhatsApp fica
+     registrado na ORIGEM: `_whatsapp` no fim = marcou a caixa. É por ela que
+     o Mensageiro vai saber a quem pode escrever. Nunca mandar a origem com
+     `_whatsapp` sem a caixa marcada.
+
+  3. O container GTM-MGQFHR5J escuta `lead_capturado` e manda o Lead para a
+     Meta. NÃO chamar fbq('track','Lead') aqui: o Lead contaria duas vezes.
+
+  4. GRUPO_VIP vazio esconde o botão do grupo. Preencher com o link de convite
+     do grupo antes do merge.
+-->
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Black da Fluência · 11/11, 20h">
+<meta property="og:description" content="Na live de 11/11 eu revelo a maior condição que a Fluência já fez. Entre na lista VIP e receba o link 10 minutos antes.">
+<meta property="og:url" content="https://fluenciacontabil.com.br/black">
+<meta property="og:image" content="https://fluenciacontabil.com.br/assets/black/black-og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="pt_BR">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@1,9..144,600&family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+  /* Identidade da Black (plano v3): preto no fundo, dourado no destaque.
+     Texto sobre o preto só em branco ou dourado. Vermelho só no botão de ação
+     (decisão do Vinícius em 20/10: o "Entrar na lista VIP" também é vermelho). */
+  :root{
+    --preto:#0B0E14; --azul:#1B2A4A; --dourado:#C8A84B; --dourado-claro:#D4B860;
+    --cream:#FBF6E9; --branco:#fff; --branco-2:#ffffffc7; --linha:#c8a84b38;
+    --vermelho:#C0392B; --vermelho-hover:#A93226;
+  }
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth;scroll-padding-top:84px}
+  body{background:var(--preto);color:var(--branco);font:400 16px/1.7 Montserrat,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+  img{display:block;max-width:100%;height:auto}
+  a{color:inherit}
+  [hidden]{display:none!important}
+  a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--dourado);outline-offset:3px}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}html{scroll-behavior:auto}}
+
+  .wrap{width:90%;max-width:1080px;margin-inline:auto}
+  .sec{padding:84px 0;border-top:1px solid var(--linha)}
+  .eyebrow{display:block;font-size:10.5px;font-weight:800;letter-spacing:3.5px;text-transform:uppercase;color:var(--dourado);margin-bottom:14px}
+  h1,h2,h3{font-weight:900;color:var(--branco);line-height:1.12;letter-spacing:-.6px}
+  h2{font-size:clamp(27px,3.2vw,38px);text-wrap:balance}
+  h3{font-size:18px;letter-spacing:-.2px;line-height:1.35}
+  .it{font-family:Fraunces,Georgia,serif;font-style:italic;font-weight:600;color:var(--dourado-claro);letter-spacing:-.3px}
+  .lead{font-size:17.5px;line-height:1.75;color:var(--branco-2);max-width:62ch;margin-top:16px}
+
+  /* ---------- topo ---------- */
+  .topbar{position:sticky;top:0;z-index:40;background:#0b0e14f2;backdrop-filter:blur(10px);border-bottom:1px solid var(--linha)}
+  .nav{height:68px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .nav .marca{display:flex;align-items:center;gap:12px;text-decoration:none}
+  .nav .marca img{width:46px;height:46px}
+  .nav .marca span{font-size:12px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--dourado)}
+  .nav a.cta{padding:11px 20px;background:var(--vermelho);border-radius:4px;color:#fff;
+    font-size:11px;font-weight:800;letter-spacing:.9px;text-transform:uppercase;text-decoration:none;white-space:nowrap}
+  .nav a.cta:hover{background:var(--vermelho-hover)}
+
+  /* ---------- hero ---------- */
+  .hero{position:relative;isolation:isolate;overflow:hidden;
+    background:radial-gradient(ellipse 70% 55% at 15% 0%,#c8a84b26,transparent 60%),
+               radial-gradient(ellipse 60% 70% at 100% 100%,#1b2a4ab3,transparent 60%),var(--preto)}
+  .hero::after{content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;
+    background-image:linear-gradient(#c8a84b0d 1px,transparent 1px),linear-gradient(90deg,#c8a84b0d 1px,transparent 1px);
+    background-size:46px 46px;mask-image:radial-gradient(ellipse 70% 70% at 40% 40%,#000 30%,transparent 100%)}
+  .hero-in{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center;padding:56px 0 72px}
+  .selo-hero{width:200px;height:200px;filter:drop-shadow(0 18px 40px #0009)}
+  .quando{display:inline-flex;flex-wrap:wrap;gap:6px 12px;align-items:center;margin-top:26px;
+    font-size:11px;font-weight:800;letter-spacing:1.8px;text-transform:uppercase;color:var(--dourado)}
+  .quando i{width:5px;height:5px;border-radius:50%;background:var(--dourado);display:inline-block}
+  h1{font-size:clamp(32px,4.2vw,52px);margin-top:14px;letter-spacing:-1.3px;text-wrap:balance}
+  .hero p.sub{font-size:18px;line-height:1.72;color:var(--branco-2);margin-top:20px;max-width:52ch}
+  .hero p.sub strong{color:var(--branco)}
+
+  .contagem{display:flex;gap:10px;margin-top:30px}
+  .contagem div{min-width:74px;padding:12px 8px 10px;border:1px solid var(--linha);border-radius:8px;background:#1b2a4a66;text-align:center}
+  .contagem b{display:block;font-size:30px;font-weight:900;color:var(--dourado);line-height:1;font-variant-numeric:tabular-nums}
+  .contagem span{display:block;margin-top:7px;font-size:9.5px;font-weight:800;letter-spacing:1.6px;text-transform:uppercase;color:var(--branco-2)}
+  .contagem-fim{margin-top:30px;font-size:15px;font-weight:800;color:var(--dourado)}
+
+  /* ---------- cartão do formulário ---------- */
+  .cartao{background:var(--azul);border:1px solid #c8a84b55;border-radius:14px;padding:32px 28px 26px;box-shadow:0 30px 80px #000a}
+  .cartao h2{font-size:clamp(23px,2.4vw,28px)}
+  .cartao > p{font-size:15px;line-height:1.65;color:var(--branco-2);margin-top:10px}
+  #vip-form{margin-top:20px;display:grid;gap:14px}
+  #vip-form label{display:block;font-size:11px;font-weight:800;letter-spacing:.9px;text-transform:uppercase;color:var(--dourado-claro);margin-bottom:6px}
+  #vip-form input[type=text],#vip-form input[type=email],#vip-form input[type=tel]{width:100%;min-height:52px;padding:13px 14px;
+    border:1.5px solid #ffffff2e;border-radius:6px;background:#fff;color:var(--preto);font:inherit;font-size:15.5px}
+  #vip-form input:focus{border-color:var(--dourado)}
+  #vip-form input[aria-invalid="true"]{border-color:#E6A39A;box-shadow:0 0 0 2px #e6a39a55}
+  #vip-form label.aceite{display:flex;gap:12px;align-items:flex-start;margin:0;padding:12px 14px;border:1px solid #ffffff24;border-radius:6px;cursor:pointer;
+    font-size:14px;font-weight:600;letter-spacing:0;text-transform:none;line-height:1.55;color:var(--branco)}
+  .aceite input{flex:none;width:20px;height:20px;margin-top:2px;accent-color:var(--dourado);cursor:pointer}
+  .aceite small{display:block;font-size:12.5px;font-weight:400;color:var(--branco-2);margin-top:3px}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:56px;width:100%;
+    padding:15px 26px;background:var(--vermelho);color:#fff;border:0;border-radius:6px;
+    font:inherit;font-size:14px;font-weight:900;letter-spacing:.07em;text-transform:uppercase;text-decoration:none;
+    cursor:pointer;box-shadow:0 12px 30px #c0392b47;transition:background .2s,transform .2s}
+  .btn:hover{background:var(--vermelho-hover);transform:translateY(-1px)}
+  .btn:disabled{opacity:.7;cursor:progress;transform:none}
+  .btn-contorno{background:transparent;color:var(--dourado);border:1.5px solid var(--dourado);box-shadow:none}
+  .btn-contorno:hover{background:#c8a84b1f}
+  .privacidade{font-size:12px;line-height:1.7;color:var(--branco-2)}
+  .privacidade a{color:var(--dourado-claro);font-weight:700}
+  .erro{font-size:14px;line-height:1.6;color:#F1B8B0;font-weight:700}
+  .ok-titulo{font-size:22px;font-weight:900;color:var(--dourado);line-height:1.3;margin-top:4px}
+  #vip-ok p{font-size:15px;line-height:1.65;color:var(--branco-2);margin-top:10px}
+  #vip-ok .acoes{display:grid;gap:10px;margin-top:20px}
+
+  /* ---------- faixa de autoridade ---------- */
+  .autoridade{background:var(--azul);border-top:1px solid var(--linha);border-bottom:1px solid var(--linha)}
+  .autoridade .wrap{display:flex;flex-wrap:wrap;gap:14px 44px;align-items:center;justify-content:center;padding:22px 0}
+  .autoridade div{display:flex;align-items:baseline;gap:9px;font-size:13.5px;color:var(--branco-2)}
+  .autoridade b{font-size:19px;font-weight:900;color:var(--dourado);letter-spacing:-.3px}
+
+  /* ---------- o que a lista recebe ---------- */
+  .trinca{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:36px}
+  .item{border:1px solid var(--linha);border-radius:10px;padding:26px 22px;background:#1b2a4a59}
+  .item .n{display:grid;place-items:center;width:40px;height:40px;border-radius:8px;border:1px solid var(--dourado);color:var(--dourado);font-size:16px;font-weight:900;margin-bottom:16px}
+  .item p{font-size:15px;line-height:1.65;color:var(--branco-2);margin-top:9px}
+
+  .cta-meio{margin-top:40px;text-align:center}
+  .cta-meio .btn{width:auto;min-width:300px}
+  .cta-meio small{display:block;margin-top:12px;font-size:12.5px;color:var(--branco-2)}
+
+  /* ---------- quem já está por dentro ---------- */
+  .prova{display:grid;grid-template-columns:300px 1fr;gap:48px;align-items:center;margin-top:36px}
+  .vd-moldura{position:relative;aspect-ratio:9/16;border-radius:20px;overflow:hidden;background:var(--azul);
+    border:1px solid #c8a84b66;box-shadow:0 24px 60px #000b}
+  .vd-moldura img,.vd-moldura iframe{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;border:0}
+  .vd-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;border:0;cursor:pointer;
+    background:linear-gradient(180deg,#0b0e1400 50%,#0b0e14b3)}
+  .vd-play i{width:66px;height:66px;border-radius:50%;background:var(--vermelho);display:flex;align-items:center;justify-content:center;box-shadow:0 10px 28px #000a}
+  .vd-play svg{width:24px;height:24px;margin-left:4px;fill:#fff}
+  .vd.tocando .vd-play{display:none}
+  .vd-leg{margin-top:16px;font-family:Fraunces,Georgia,serif;font-style:italic;font-weight:600;font-size:17px;line-height:1.5;color:var(--dourado-claro);text-align:center}
+  .vd-leg b{display:block;margin-top:6px;font-family:Montserrat,Arial,sans-serif;font-style:normal;font-size:12.5px;font-weight:700;color:var(--branco-2)}
+  .prova-txt .numero{font-size:56px;font-weight:900;color:var(--dourado);line-height:1;letter-spacing:-2px}
+  .prova-txt .numero small{display:block;font-size:13px;font-weight:700;letter-spacing:.5px;color:var(--branco-2);margin-top:8px}
+
+  .dep-carrossel{overflow:hidden;width:100vw;margin:22px calc(50% - 50vw) 0;padding:6px 0;outline:none;
+    -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 7%,#000 93%,transparent 100%);
+            mask-image:linear-gradient(90deg,transparent 0,#000 7%,#000 93%,transparent 100%)}
+  .dep-trilho{display:flex;width:max-content;animation:depGira 90s linear infinite}
+  .dep-carrossel.volta .dep-trilho{animation-direction:reverse;animation-duration:100s}
+  .dep-carrossel:focus-visible .dep-trilho{animation-play-state:paused}
+  @media (hover:hover){.dep-carrossel:hover .dep-trilho{animation-play-state:paused}}
+  .dep-grupo{display:flex;align-items:flex-start;gap:16px;padding-right:16px}
+  .dep-card{width:300px;flex:0 0 auto;background:var(--azul);border:1px solid var(--linha);border-radius:16px;padding:20px}
+  .dep-card p{font-size:14.5px;line-height:1.6;color:var(--branco)}
+  .dep-card .autor{margin-top:14px;font-size:12.5px;font-weight:800;color:var(--dourado)}
+  .dep-card .autor span{font-weight:600;color:var(--branco-2)}
+  .dep-print{width:280px;flex:0 0 auto;margin:0;background:#fff;border-radius:16px;padding:10px 10px 9px}
+  .dep-print.largo{width:340px}
+  .dep-print img{display:block;width:100%;height:auto;border-radius:10px}
+  .dep-print figcaption{margin-top:8px;font-size:12px;font-weight:700;color:#1B2A4A;text-align:center;line-height:1.45}
+  .dep-print figcaption span{display:block;font-weight:500;color:#5A6A7E}
+  @keyframes depGira{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  @media (prefers-reduced-motion:reduce){.dep-carrossel{overflow-x:auto;-webkit-mask-image:none;mask-image:none}.dep-trilho{animation:none}}
+  body{overflow-x:hidden}
+
+  /* ---------- a plataforma por dentro ---------- */
+  .abas{display:flex;flex-wrap:wrap;gap:8px;margin-top:30px}
+  .aba{padding:10px 16px;border:1px solid var(--linha);border-radius:999px;background:transparent;color:var(--branco);
+    font:inherit;font-size:13px;font-weight:700;cursor:pointer}
+  .aba[aria-selected="true"]{background:var(--dourado);border-color:var(--dourado);color:var(--preto)}
+  .tela{display:grid;grid-template-columns:1.5fr 1fr;gap:36px;align-items:center;margin-top:22px}
+  .tela-real{border:1px solid #c8a84b55;border-radius:14px;overflow:hidden;background:#fff;box-shadow:0 26px 60px #000b}
+  .tela-real .barra-t{display:flex;align-items:center;gap:6px;padding:8px 12px;background:#F1F2F5;font-size:11.5px;font-weight:600;color:#5A6A7E}
+  .tela-real .barra-t i{width:8px;height:8px;border-radius:50%;background:#D3D6DE}
+  .tela-real .barra-t span{margin-left:6px}
+  .tela-real video{display:block;width:100%;height:auto;aspect-ratio:1264/796;background:#F5F4F0}
+  .tela-txt h3{font-size:24px;letter-spacing:-.4px}
+  .tela-txt p{font-size:16px;line-height:1.7;color:var(--branco-2);margin-top:12px}
+  .tela-txt p.resolve{color:var(--dourado-claro);font-weight:700}
+  .demo{margin-top:36px;text-align:center}
+  .demo-moldura{margin-top:20px;border-radius:16px;overflow:hidden;background:#fff;border:1px solid #c8a84b55}
+  .demo-moldura iframe{display:block;width:100%;height:600px;border:0}
+
+  /* ---------- vídeo do professor ---------- */
+  .vsl-moldura{margin-top:30px;border-radius:16px;overflow:hidden;background:var(--azul);border:1px solid #c8a84b55;box-shadow:0 26px 60px #000b;max-width:880px}
+  .vsl-moldura iframe{display:block;width:100%;aspect-ratio:16/9;border:0}
+
+  /* ---------- números do professor ---------- */
+  .nums{display:grid;grid-template-columns:repeat(3,1fr);margin-top:22px;border-top:1px solid var(--linha);max-width:560px}
+  .nums div{padding:16px 6px 0;font-size:13px;color:var(--branco-2);line-height:1.4}
+  .nums div + div{border-left:1px solid var(--linha);padding-left:14px}
+  .nums b{display:block;font-size:26px;font-weight:900;color:var(--dourado);letter-spacing:-.5px}
+
+  /* ---------- linha do tempo ---------- */
+  .tempo{margin-top:36px;display:grid;gap:0;max-width:760px}
+  .marco{display:grid;grid-template-columns:150px 1fr;gap:24px;padding:22px 0;border-top:1px solid var(--linha)}
+  .marco:last-child{border-bottom:1px solid var(--linha)}
+  .marco .data{font-size:12px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;color:var(--dourado);line-height:1.5}
+  .marco p{font-size:15.5px;line-height:1.65;color:var(--branco-2);margin-top:6px}
+
+  /* ---------- professor ---------- */
+  .prof{display:grid;grid-template-columns:200px 1fr;gap:42px;align-items:center}
+  .prof img{border-radius:10px;border:2px solid var(--dourado)}
+
+  /* ---------- FAQ ---------- */
+  .faq details{border-bottom:1px solid var(--linha);padding:20px 0}
+  .faq summary{cursor:pointer;list-style:none;font-size:16.5px;font-weight:800;color:var(--branco);display:flex;justify-content:space-between;gap:18px;align-items:center}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::after{content:'+';font-size:22px;font-weight:800;color:var(--dourado)}
+  .faq details[open] summary::after{content:'–'}
+  .faq details p{font-size:15.5px;line-height:1.75;color:var(--branco-2);margin-top:14px;max-width:72ch}
+
+  /* ---------- fecho ---------- */
+  .fecho{text-align:center;background:radial-gradient(ellipse 60% 80% at 50% 0%,#c8a84b1f,transparent 70%),var(--preto)}
+  .fecho img{width:120px;height:120px;margin:0 auto 24px}
+  .fecho p{font-size:17px;line-height:1.7;color:var(--branco-2);margin:16px auto 0;max-width:54ch}
+  .fecho .btn{width:auto;margin-top:30px}
+
+  footer{border-top:1px solid var(--linha);color:var(--branco-2);padding:32px 0;font-size:13px;line-height:1.9}
+  footer a{color:var(--dourado)}
+  footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+
+  /* ---------- responsivo ---------- */
+  @media (max-width:920px){
+    .hero-in{grid-template-columns:1fr;gap:36px;padding:36px 0 56px}
+    .prof{grid-template-columns:1fr;gap:24px}
+    .prof img{width:170px}
+    .prova{grid-template-columns:1fr;gap:28px}
+    .vd{width:min(78%,290px);margin-inline:auto}
+    .tela{grid-template-columns:1fr;gap:20px}
+  }
+  @media (max-width:760px){
+    .sec{padding:60px 0}
+    .trinca{grid-template-columns:1fr}
+    .selo-hero{width:150px;height:150px}
+    .contagem div{min-width:0;flex:1}
+    .contagem b{font-size:26px}
+    .marco{grid-template-columns:1fr;gap:4px}
+    .autoridade .wrap{justify-content:flex-start;gap:10px 24px}
+    .nav .marca span{display:none}
+    .cartao{padding:26px 20px 22px}
+    .fecho .btn{width:100%}
+    .cta-meio .btn{width:100%;min-width:0}
+    .dep-card{width:260px}
+    .dep-print{width:240px}
+    .dep-print.largo{width:290px}
+    .abas{flex-wrap:nowrap;overflow-x:auto;margin-inline:-5%;padding-inline:5%;scrollbar-width:none}
+    .aba{flex:0 0 auto}
+    .demo-moldura iframe{height:520px}
+    .prova-txt .numero{font-size:44px}
+  }
+</style>
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MGQFHR5J"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<header class="topbar">
+  <div class="wrap nav">
+    <a class="marca" href="https://fluenciacontabil.com.br/" aria-label="Fluência Contábil">
+      <img src="assets/email/logo-black-selo.png" alt="" width="46" height="46">
+      <span>Black da Fluência</span>
+    </a>
+    <a class="cta" href="#lista">Entrar na lista VIP</a>
+  </div>
+</header>
+
+<!-- ══════════════════ HERO ══════════════════ -->
+<section class="hero">
+  <div class="wrap hero-in">
+    <div>
+      <img class="selo-hero" src="assets/email/logo-black-selo.png" width="440" height="440"
+           alt="Selo da Black da Fluência: 11.11.2026, pra sempre">
+      <div class="quando"><span>Quarta, 11 de novembro</span><i></i><span>20h</span><i></i><span>Ao vivo no YouTube</span></div>
+      <h1>11/11, 20h. A maior condição que a Fluência <span class="it">já fez.</span></h1>
+      <p class="sub">Na live de 11 de novembro eu revelo a condição da Black da Fluência, e ela vale
+        por uma noite. Quem está na lista VIP recebe o link <strong>10 minutos antes de todo mundo</strong>
+        e fica sabendo primeiro quando a condição abrir.</p>
+
+      <div class="contagem" id="contagem" aria-label="Tempo até a live de 11/11, 20h">
+        <div><b id="c-dias">--</b><span>dias</span></div>
+        <div><b id="c-horas">--</b><span>horas</span></div>
+        <div><b id="c-min">--</b><span>min</span></div>
+        <div><b id="c-seg">--</b><span>seg</span></div>
+      </div>
+      <p class="contagem-fim" id="contagem-fim" hidden>A live de 11/11 já começou.</p>
+    </div>
+
+    <div class="cartao" id="lista">
+      <span class="eyebrow">Lista VIP · gratuita</span>
+      <h2 id="vip-titulo">Entre na lista VIP</h2>
+      <p id="vip-sub">Deixe seus dados e receba o link da live antes de todo mundo.</p>
+
+      <form id="vip-form" novalidate>
+        <div>
+          <label for="vip-nome">Seu nome</label>
+          <input id="vip-nome" name="nome" type="text" autocomplete="name" maxlength="80" required>
+        </div>
+        <div>
+          <label for="vip-telefone">WhatsApp com DDD</label>
+          <input id="vip-telefone" name="telefone" type="tel" inputmode="tel" autocomplete="tel-national"
+                 maxlength="16" placeholder="(21) 99999-9999" required>
+        </div>
+        <div>
+          <label for="vip-email">Seu melhor e-mail</label>
+          <input id="vip-email" name="email" type="email" inputmode="email" autocomplete="email"
+                 maxlength="254" placeholder="voce@exemplo.com" required>
+        </div>
+        <label class="aceite" for="vip-aceite">
+          <input id="vip-aceite" type="checkbox">
+          <span>Quero receber mensagens no WhatsApp
+            <small>No máximo 4 mensagens individuais até 27/11, sobre a Black.</small></span>
+        </label>
+        <button class="btn" id="vip-enviar" type="submit">Entrar na lista VIP</button>
+        <p class="erro" id="vip-erro" role="status" aria-live="polite" hidden></p>
+        <p class="privacidade">Você recebe por e-mail os avisos da Black da Fluência até 27/11. No
+          WhatsApp, só se marcar a caixa acima. Sai quando quiser, num clique.
+          <a href="https://portal.fluenciacontabil.com.br/privacidade" target="_blank" rel="noopener">Política de Privacidade</a>.</p>
+      </form>
+
+      <div id="vip-ok" hidden>
+        <p class="ok-titulo" id="vip-ok-titulo">Pronto! Você está na lista VIP.</p>
+        <p>Em 11/11, às 19h50, o link da live chega no seu e-mail, 10 minutos antes do aviso geral.</p>
+        <div class="acoes">
+          <a class="btn" id="vip-grupo" target="_blank" rel="noopener" hidden>Entrar no grupo VIP do WhatsApp</a>
+          <a class="btn btn-contorno" id="vip-agenda" target="_blank" rel="noopener"
+             aria-label="Pôr a live de 11/11 no Google Agenda (abre em nova aba)">Pôr 11/11, 20h na agenda</a>
+        </div>
+      </div>
+
+      <noscript><p class="erro">Ative o JavaScript para entrar na lista.</p></noscript>
+    </div>
+  </div>
+</section>
+
+<div class="autoridade">
+  <div class="wrap">
+    <div><b>3.000+</b> alunos</div>
+    <div><b>40</b> turmas</div>
+    <div><b>Auditor Fiscal</b> do Município do Rio de Janeiro</div>
+  </div>
+</div>
+
+<!-- ══════════════════ O QUE A LISTA RECEBE ══════════════════ -->
+<section class="sec">
+  <div class="wrap">
+    <span class="eyebrow">Por que entrar na lista</span>
+    <h2>Quem está na lista chega <span class="it">primeiro.</span></h2>
+    <p class="lead">A condição de 11/11 vale por uma noite. A lista VIP existe para você não depender
+      de ver um story na hora certa.</p>
+    <div class="trinca">
+      <article class="item">
+        <div class="n">1</div>
+        <h3>O link 10 minutos antes</h3>
+        <p>Às 19h50 de 11/11, o link da live chega no seu e-mail e no grupo, antes do aviso para
+          todo mundo.</p>
+      </article>
+      <article class="item">
+        <div class="n">2</div>
+        <h3>A condição primeiro</h3>
+        <p>Quando a condição abrir, durante a live, quem está no grupo VIP fica sabendo na hora.</p>
+      </article>
+      <article class="item">
+        <div class="n">3</div>
+        <h3>Um grupo sem barulho</h3>
+        <p>No grupo VIP do WhatsApp só a equipe escreve. Avisos da Black, sem conversa paralela.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ QUEM JÁ ESTÁ POR DENTRO ══════════════════ -->
+<section class="sec" id="alunos">
+  <div class="wrap">
+    <span class="eyebrow">Quem já está por dentro</span>
+    <h2>O que os alunos dizem, <span class="it">nas palavras deles.</span></h2>
+    <div class="prova">
+      <div class="vd">
+        <div class="vd-moldura">
+          <img src="assets/quiz/depo/tallys.jpg" alt="" width="540" height="960" loading="lazy">
+          <button type="button" class="vd-play" id="vd-play" aria-label="Assistir ao depoimento do Tallys"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4l14 8-14 8z"/></svg></i></button>
+        </div>
+        <p class="vd-leg">“Direta, sem enrolação e focada naquilo que realmente cai na prova.”<b>Tallys · aprovado em Auditor Fiscal, 2026</b></p>
+      </div>
+      <div class="prova-txt">
+        <div class="numero">3.000+<small>alunos ao longo de 40 turmas</small></div>
+        <p class="lead">Os depoimentos abaixo são falas reais, com o canal em que chegaram: plataforma,
+          WhatsApp, Instagram e YouTube. Onde a pessoa não autorizou o nome, aparece como Aluno(a).</p>
+      </div>
+    </div>
+  </div>
+  <div class="dep-carrossel" tabindex="0" aria-label="Depoimentos de alunos, primeira fileira (passe o mouse para pausar)"><div class="dep-trilho" id="dep-a"></div></div>
+  <div class="dep-carrossel volta" tabindex="0" aria-label="Depoimentos de alunos, segunda fileira (passe o mouse para pausar)"><div class="dep-trilho" id="dep-b"></div></div>
+  <div class="wrap cta-meio">
+    <a class="btn" href="#lista">Entrar na lista VIP</a>
+    <small>Gratuito. O link da live de 11/11 chega 10 minutos antes.</small>
+  </div>
+</section>
+
+<!-- ══════════════════ A PLATAFORMA POR DENTRO ══════════════════ -->
+<section class="sec" id="plataforma">
+  <div class="wrap">
+    <span class="eyebrow">A plataforma por dentro</span>
+    <h2>Tela real, <span class="it">sem maquiagem.</span></h2>
+    <p class="lead">Gravações da plataforma como ela está hoje. Escolha a ferramenta.</p>
+
+    <div class="abas" role="tablist" aria-label="Ferramentas da plataforma" id="abas"></div>
+    <div class="tela">
+      <div class="tela-real">
+        <div class="barra-t"><i></i><i></i><i></i><span>Tela real da plataforma</span></div>
+        <video id="tela-video" muted loop playsinline preload="none" poster="assets/quiz/telas/aula-videos.jpg"></video>
+      </div>
+      <div class="tela-txt" aria-live="polite">
+        <h3 id="tela-titulo"></h3>
+        <p id="tela-desc"></p>
+        <p class="resolve" id="tela-resolve"></p>
+      </div>
+    </div>
+
+    <div class="demo">
+      <button class="btn btn-contorno" type="button" id="demo-abrir" style="width:auto;min-width:300px">Navegar na plataforma agora</button>
+      <div class="demo-moldura" id="demo-moldura" hidden></div>
+    </div>
+
+    <div class="cta-meio">
+      <a class="btn" href="#lista">Entrar na lista VIP</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ O MÉTODO, NA VOZ DO PROFESSOR ══════════════════ -->
+<section class="sec">
+  <div class="wrap">
+    <span class="eyebrow">O método</span>
+    <h2>Ouça o professor explicar <span class="it">por que funciona.</span></h2>
+    <p class="lead">Em poucos minutos você entende por que a Fluência ensina Contabilidade como um idioma,
+      pela lógica, e não pela memorização.</p>
+    <div class="vsl-moldura">
+      <iframe src="https://player-vz-7867cfdb-be1.tv.pandavideo.com.br/embed/?v=373b4407-d936-4434-8c7c-4102cd40cc48"
+              title="Vídeo de apresentação da Fluência Contábil" loading="lazy"
+              allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ COMO VAI SER ══════════════════ -->
+<section class="sec">
+  <div class="wrap">
+    <span class="eyebrow">Até lá</span>
+    <h2>Como vai ser.</h2>
+    <div class="tempo">
+      <div class="marco">
+        <div class="data">Toda quarta<br>até 04/11</div>
+        <div><h3>Aula ao vivo, 20h</h3>
+          <p>As aulas de quarta seguem normais no YouTube: questão de prova resolvida do zero, com a
+            norma que sustenta o gabarito.</p></div>
+      </div>
+      <div class="marco">
+        <div class="data">11/11 · 19h50</div>
+        <div><h3>O link chega para a lista VIP</h3>
+          <p>No seu e-mail e no grupo, 10 minutos antes do aviso geral.</p></div>
+      </div>
+      <div class="marco">
+        <div class="data">11/11 · 20h</div>
+        <div><h3>A live da revelação</h3>
+          <p>A condição da Black da Fluência é revelada durante a transmissão.</p></div>
+      </div>
+      <div class="marco">
+        <div class="data">11/11 · até 23h59</div>
+        <div><h3>Uma noite só</h3>
+          <p>A condição da noite vale até 23h59 de 11/11 e não volta depois.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ PROFESSOR ══════════════════ -->
+<section class="sec">
+  <div class="wrap prof">
+    <picture>
+      <source srcset="assets/foto-vinicius.webp" type="image/webp">
+      <img src="assets/foto-vinicius.jpg" alt="Prof. Vinícius Ferraz" width="220" height="165" loading="lazy">
+    </picture>
+    <div>
+      <span class="eyebrow">Quem faz a live</span>
+      <h2>Prof. Vinícius Ferraz</h2>
+      <p class="lead">Auditor Fiscal do Município do Rio de Janeiro, aprovado como Analista
+        Legislativo de Contabilidade do Senado Federal e como Auditor Fiscal do Estado de Minas
+        Gerais. Fundador da Fluência Contábil, com mais de 3.000 alunos em 40 turmas.</p>
+      <div class="nums">
+        <div><b>4</b>aprovações em concursos de elite</div>
+        <div><b>3.000+</b>alunos</div>
+        <div><b>40</b>turmas</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ FAQ ══════════════════ -->
+<section class="sec faq">
+  <div class="wrap">
+    <span class="eyebrow">Dúvidas</span>
+    <h2>O que costumam perguntar</h2>
+
+    <details open><summary>Entrar na lista VIP custa alguma coisa?</summary>
+      <p>Não. A lista é gratuita, e a live também: é aberta no YouTube.</p></details>
+
+    <details><summary>O que é a Black da Fluência?</summary>
+      <p>É a campanha de novembro da Fluência Contábil. A condição é revelada na live de 11/11, às
+        20h. A da noite vale até 23h59 de 11/11, e o que é só da Black termina em 27/11.</p></details>
+
+    <details><summary>Não vou conseguir assistir ao vivo. Perco a condição?</summary>
+      <p>Não precisa estar na live para aproveitar: depois da transmissão, a condição chega no seu
+        e-mail e vale até 23h59 de 11/11. Mas ao vivo dá para perguntar o que quiser na hora.</p></details>
+
+    <details><summary>Vou receber muita mensagem?</summary>
+      <p>Por e-mail, os avisos da Black até 27/11. No WhatsApp, só se você marcar a caixa: no
+        máximo 4 mensagens individuais, e o grupo VIP, em que só a equipe escreve. Você sai de
+        qualquer um deles quando quiser.</p></details>
+  </div>
+</section>
+
+<!-- ══════════════════ FECHO ══════════════════ -->
+<section class="sec fecho">
+  <div class="wrap">
+    <img src="assets/email/logo-black-selo.png" alt="" width="440" height="440" loading="lazy">
+    <h2>Quarta, 11/11, 20h.</h2>
+    <p>Entre na lista VIP, receba o link antes de todo mundo e fique sabendo primeiro quando a
+      condição abrir.</p>
+    <a class="btn" href="#lista">Entrar na lista VIP</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div><strong>Fluência Contábil</strong> · Contabilidade para concursos</div>
+    <div>
+      <a href="https://fluenciacontabil.com.br/">fluenciacontabil.com.br</a> ·
+      <a href="https://instagram.com/prof.viniciusferraz">@prof.viniciusferraz</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  'use strict';
+
+  var ENDPOINT = 'https://script.google.com/macros/s/AKfycbx8lWrX5F0IByv0JEJ0iBGPjtLto7f2VxDHIh0uT0gZtvoj8EDVx0NFiriou-Dt0cxh/exec';
+  /* As duas linhas da Config Aulas (ver o comentário no topo). */
+  var ORIGEM = 'aula_black_2026';
+  var ORIGEM_COM_WHATSAPP = 'aula_black_2026_whatsapp';
+  /* Link de convite do grupo VIP. Vazio = botão escondido. */
+  var GRUPO_VIP = '';
+
+  /* 11/11/2026, 20h de Brasília. */
+  var LIVE = new Date('2026-11-11T20:00:00-03:00').getTime();
+  var CHAVE_LOCAL = 'fc_black_2026_vip';
+  /* Google Agenda: 20h às 22h de Brasília = 23h às 01h UTC. */
+  var AGENDA = 'https://calendar.google.com/calendar/render?action=TEMPLATE'
+    + '&text=' + encodeURIComponent('Live da Black da Fluência')
+    + '&dates=20261111T230000Z/20261112T010000Z'
+    + '&details=' + encodeURIComponent('Ao vivo no YouTube. O link chega no seu e-mail às 19h50 de 11/11.')
+    + '&location=' + encodeURIComponent('fluenciacontabil.com.br/black');
+
+  function el(id){ return document.getElementById(id); }
+  function dois(n){ return String(n).padStart(2, '0'); }
+
+  // ───────────── contagem ─────────────
+  var relogio = null;
+  function contar(){
+    var falta = LIVE - Date.now();
+    if (falta <= 0) {
+      el('contagem').hidden = true;
+      el('contagem-fim').hidden = false;
+      if (relogio) clearInterval(relogio);
+      return;
+    }
+    var s = Math.floor(falta / 1000);
+    el('c-dias').textContent  = Math.floor(s / 86400);
+    el('c-horas').textContent = dois(Math.floor(s % 86400 / 3600));
+    el('c-min').textContent   = dois(Math.floor(s % 3600 / 60));
+    el('c-seg').textContent   = dois(s % 60);
+  }
+  contar();
+  relogio = setInterval(contar, 1000);
+
+  function esc(s){
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  // ───────────── depoimentos ─────────────
+  /* Falas copiadas de depoimentos.html (a fonte publicada), sem edição. Prints
+     em assets/depoimentos/. Aluno sem autorização de nome aparece como Aluno(a).
+     O Ransley é 1º colocado e AGUARDA convocação: nunca escrever "nomeado". */
+  var FILEIRA_A = [
+    { txt: 'Suas aulas são maravilhosas e nenhum professor explica questões como você. Impossível não aprender. [...] Eu tinha [...] dificuldades com DRE, nunca tinha aprendido [...] foi como um passe de mágica', autor: 'Gisele C.', canal: 'Instagram' },
+    { txt: 'Não é modéstia, honestamente é uma das melhores aulas sobre quaisquer CPCs que já assisti. Obrigada por esse PRESENTE!', autor: '@yarabezerra9762', canal: 'YouTube' },
+    { txt: 'Esse estudo me fez gostar, novamente, de estudar. Querer mais a cada dia. Ter mais conhecimento hoje do que ontem. Principalmente o Vinícius, com sua dedicação e cuidado conosco, ajudou nesse reinício.', autor: 'Érica Freitas', canal: 'WhatsApp' },
+    { txt: 'Sua didática é incrível, dá pra ver que você realmente gosta de contabilidade. [...] As aulas são sucintas, vão direto ao ponto, trazem exemplos da vida real e como as bancas cobram. Eu com certeza recomendaria pra todo mundo que está estudando contabilidade!', autor: 'Aluno(a)', canal: 'WhatsApp' },
+    { txt: 'Muito legal acompanhar a evolução da Plataforma. Na minha opinião é a melhor do mercado.', autor: 'Aluno(a)', canal: 'WhatsApp' },
+    { txt: 'Recurso perfeito: a aula já tá vinculada ao tema e a análise estatística de quantidade de questões indicadas. Esse recurso, pra uma reta final e uma trilha, vai dar bom. Economizar tempo e agilizar os conteúdos.', autor: 'Marcos Vinícius R.', canal: 'WhatsApp' },
+    { txt: 'Excelente aula. Muito obrigada professor Vinícius, estou entendo coisas que achei que nunca iria aprender... Sua didática é ótima. Grava mais por favor... Precisamos da sua ajuda', autor: '@carolinnepmaia', canal: 'YouTube' },
+    { txt: 'As funcionalidades e a criatividade para inovação me surpreenderam, deixo meus sinceros parabéns.', autor: 'Bruno D.', canal: 'Aluno' },
+    { txt: 'Isso aqui é mt legal. [...] Tá muito diferenciado. Adorei o layout do sistema de questões.', autor: 'Maria Clara R.', canal: 'WhatsApp' }
+  ];
+  var FILEIRA_B = [
+    { img: 'aprovacao-ransley-2026-08-11', w: 540, h: 405, largo: true, alt: 'Print da conversa em que o aluno anuncia o primeiro lugar na lista PcD',
+      cap: 'Ransley Moreira Alves', sub: '1º lugar na lista PcD · Fiscal de Tributos, Senador Canedo (GO)' },
+    { txt: 'Contabilidade sempre foi a minha maior dificuldade na área fiscal, e a forma como o conteúdo é apresentado tem ajudado bastante. As aulas são objetivas, certeiras e vão direto ao ponto.', autor: 'João Renan S.', canal: 'aluno da 1ª turma, pela plataforma' },
+    { img: 'whatsapp-impressionada-mercado', w: 369, h: 470, alt: 'Print da conversa: aluna diz que o trabalho está magnífico e que não há nada semelhante no mercado',
+      cap: 'Fernanda C.', sub: 'print do WhatsApp' },
+    { txt: 'De altíssimo nível seu conteúdo e aprofundamento de um CPC tão complexo. Muito obrigado por disponibilizar do seu tempo e conteúdo tão rico. Acredito muito na lei do retorno. Você tem uma boa didática, mantenha-se firme, logo seu trabalho vai bombar! Parabéns!', autor: '@Mr4lessandro', canal: 'YouTube' },
+    { img: 'whatsapp-plataforma-sensacional', w: 371, h: 273, alt: 'Print da conversa: aluno elogia a plataforma e a didática que amarra o conteúdo',
+      cap: 'Aluno(a)', sub: 'print do WhatsApp' },
+    { txt: 'Eu achei a proposta excelente. Os slides bem formatados, bem estruturados. A forma de abordagem do conteúdo bem interessante, com os estímulos para o estudo dos CPCs desde o início da jornada. [...] Não tem jeito, a contabilidade funciona assim, como um quebra-cabeças.', autor: 'Aluno(a)', canal: 'WhatsApp' },
+    { img: 'whatsapp-atencao-ao-detalhe', w: 383, h: 269, alt: 'Print da conversa: aluna fala em atenção ao detalhe e no lado humano do professor',
+      cap: 'Aluno(a)', sub: 'print do WhatsApp' },
+    { txt: 'Aquela aba de provas de contabilidade da SEFAZ é muito boa. Arrasou!', autor: 'Aluno(a)', canal: 'Instagram' }
+  ];
+  function cartaoDepo(d){
+    if (d.img) return '<figure class="dep-print' + (d.largo ? ' largo' : '') + '"><picture>' +
+      '<source srcset="assets/depoimentos/' + d.img + '.webp" type="image/webp">' +
+      '<img src="assets/depoimentos/' + d.img + '.png" alt="' + esc(d.alt) + '" width="' + d.w + '" height="' + d.h + '" loading="lazy" decoding="async"></picture>' +
+      '<figcaption>' + esc(d.cap) + '<span>' + esc(d.sub) + '</span></figcaption></figure>';
+    return '<div class="dep-card"><p>“' + esc(d.txt) + '”</p><div class="autor">' + esc(d.autor) + ' <span>· ' + esc(d.canal) + '</span></div></div>';
+  }
+  /* O grupo entra duas vezes para o giro não ter emenda; a cópia fica fora do leitor de tela. */
+  function fileira(id, itens){
+    var g = itens.map(cartaoDepo).join('');
+    el(id).innerHTML = '<div class="dep-grupo">' + g + '</div><div class="dep-grupo" aria-hidden="true">' + g + '</div>';
+  }
+  fileira('dep-a', FILEIRA_A);
+  fileira('dep-b', FILEIRA_B);
+
+  /* Vídeo do Tallys (Panda). O player só carrega no toque. A biblioteca do
+     Panda libera por domínio: fora de fluenciacontabil.com.br ele não toca. */
+  var DEPO_PANDA = 'https://player-vz-7867cfdb-be1.tv.pandavideo.com.br/embed/?v=d8614e2c-f9bc-4c83-8373-de2d66e05b15';
+  el('vd-play').addEventListener('click', function(){
+    var box = this.closest('.vd'), m = box.querySelector('.vd-moldura');
+    var f = document.createElement('iframe');
+    f.src = DEPO_PANDA + '&autoplay=true';
+    f.title = 'Depoimento do Tallys';
+    f.allow = 'accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture';
+    f.allowFullscreen = true;
+    m.appendChild(f);
+    box.classList.add('tocando');
+  });
+
+  // ───────────── a plataforma por dentro ─────────────
+  /* Gravações de tela de assets/quiz/telas/. Textos do bloco "O que você leva" do quiz. */
+  var TELAS = [
+    /* aula-videos: Aula 16 (CPC 01) gravada no portal em 20/10/2026, layout da 3.4.63. */
+    { id: 'aula-videos', nome: 'Aulas',                t: 'O curso inteiro, em 5 módulos', d: '35 aulas e 3 bônus, do zero à Contabilidade Avançada, em vídeo e PDF. Dentro de cada aula, os vídeos de teoria e os de resolução de questões ficam em abas separadas.', r: 'Você não monta o caminho. Ele já vem em ordem.' },
+    { id: 'banco',     nome: 'Questões',               t: 'Mais de 5.800 questões de banca real, comentadas', d: 'Com filtro por assunto, banca, órgão e ano, e cadernos que você monta.', r: 'Você entende por que cada alternativa errada está errada.' },
+    { id: 'mapa',      nome: 'Mapa de Incidência',     t: 'Mapa de Incidência', d: 'O item da norma cruzado com a banca: quanto mais azul, mais aquela banca cobra.', r: 'Você estuda primeiro o que a sua banca cobra de verdade.' },
+    { id: 'edital',    nome: 'Meu Edital',             t: 'Meu Edital', d: 'Você cola o seu edital e ele vira uma lista, cada item com a aula que o cobre.', r: 'Acaba o garimpo no PDF do edital.' },
+    { id: 'plano',     nome: 'Plano de Estudos',       t: 'Plano de Estudos', d: 'Agenda semanal na sua rotina, com revisão espaçada em D+3, 7, 16 e 35 dias.', r: 'Acaba o estuda-esquece.' },
+    { id: 'simulador', nome: 'Simulador',              t: 'Simulador de Lançamentos', d: 'Treino de partida dobrada com níveis de dificuldade.', r: '' }
+  ];
+  var video = el('tela-video'), abas = el('abas'), telaVisivel = false, atual = 0;
+  abas.innerHTML = TELAS.map(function(x, i){
+    return '<button class="aba" type="button" role="tab" id="aba-' + x.id + '" aria-selected="' + (i === 0) + '" data-i="' + i + '">' + esc(x.nome) + '</button>';
+  }).join('');
+  function mostrar(i){
+    atual = i;
+    var x = TELAS[i];
+    abas.querySelectorAll('.aba').forEach(function(b, j){ b.setAttribute('aria-selected', String(j === i)); });
+    el('tela-titulo').textContent = x.t;
+    el('tela-desc').textContent = x.d;
+    el('tela-resolve').textContent = x.r;
+    el('tela-resolve').hidden = !x.r;
+    video.poster = 'assets/quiz/telas/' + x.id + '.jpg';
+    /* O vídeo só baixa quando a seção aparece na tela. */
+    if (telaVisivel) {
+      video.src = 'assets/quiz/telas/' + x.id + '.mp4';
+      var p = video.play(); if (p && p.catch) p.catch(function(){});
+    }
+  }
+  abas.addEventListener('click', function(ev){
+    var b = ev.target.closest('.aba'); if (b) mostrar(+b.dataset.i);
+  });
+  mostrar(0);
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function(entradas, obs){
+      if (!entradas[0].isIntersecting) return;
+      telaVisivel = true; obs.disconnect(); mostrar(atual);
+    }, { rootMargin: '200px' }).observe(video);
+  } else { telaVisivel = true; mostrar(atual); }
+
+  el('demo-abrir').addEventListener('click', function(){
+    var m = el('demo-moldura');
+    if (!m.firstChild) m.innerHTML = '<iframe src="assets/quiz/demo_plataforma.html" title="Demonstração navegável da plataforma"></iframe>';
+    m.hidden = false;
+    this.hidden = true;
+  });
+
+  // ───────────── formulário ─────────────
+  var form = el('vip-form'), nome = el('vip-nome'), tel = el('vip-telefone'), email = el('vip-email'),
+      aceite = el('vip-aceite'), enviar = el('vip-enviar'), erro = el('vip-erro'), ok = el('vip-ok');
+  var ocupado = false;
+
+  function digitos(s){ return String(s || '').replace(/\D/g, ''); }
+  /* Aceita o número com ou sem o 55 na frente; guarda só DDD + número. */
+  function telefoneLimpo(s){
+    var d = digitos(s);
+    if (d.length > 11 && d.indexOf('55') === 0) d = d.slice(2);
+    return d;
+  }
+  function mascara(d){
+    d = d.slice(0, 11);
+    if (d.length <= 2) return d.length ? '(' + d : '';
+    if (d.length <= 6) return '(' + d.slice(0,2) + ') ' + d.slice(2);
+    if (d.length <= 10) return '(' + d.slice(0,2) + ') ' + d.slice(2,6) + '-' + d.slice(6);
+    return '(' + d.slice(0,2) + ') ' + d.slice(2,7) + '-' + d.slice(7);
+  }
+  tel.addEventListener('input', function(){ tel.value = mascara(telefoneLimpo(tel.value)); });
+
+  function emailOk(s){ return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(s || '').trim()); }
+  function telefoneOk(d){ return /^[1-9]{2}9?\d{8}$/.test(d); }
+
+  function marcar(campo, valido){ campo.setAttribute('aria-invalid', valido ? 'false' : 'true'); return valido; }
+
+  function falhar(msg, campo){
+    erro.textContent = msg; erro.hidden = false;
+    enviar.disabled = false; enviar.textContent = 'Entrar na lista VIP';
+    [nome, tel, email].forEach(function(c){ c.readOnly = false; });
+    aceite.disabled = false;
+    (campo || enviar).focus();
+  }
+
+  function confirmado(novo){
+    form.hidden = true;
+    erro.hidden = true;
+    el('vip-titulo').hidden = true;
+    el('vip-sub').hidden = true;
+    ok.hidden = false;
+    el('vip-agenda').href = AGENDA;
+    if (/^https:\/\/chat\.whatsapp\.com\/[A-Za-z0-9]+$/.test(GRUPO_VIP)) {
+      el('vip-grupo').href = GRUPO_VIP;
+      el('vip-grupo').hidden = false;
+    }
+    if (!novo) return;
+    try { localStorage.setItem(CHAVE_LOCAL, '1'); } catch(e){}
+    el('vip-ok-titulo').setAttribute('tabindex', '-1');
+    el('vip-ok-titulo').focus();
+    /* O Lead sai pelo container (gatilho `lead_capturado` → tag Meta — Lead).
+       Ver o comentário no topo antes de mexer. */
+    try { if (window.dataLayer) window.dataLayer.push({event:'lead_capturado', origem:'black_2026'}); } catch(e){}
+  }
+
+  // quem já entrou na lista, neste navegador, não repete o cadastro
+  try { if (localStorage.getItem(CHAVE_LOCAL) === '1') confirmado(false); } catch(e){}
+
+  form.addEventListener('submit', function(ev){
+    ev.preventDefault();
+    if (ocupado) return;
+    erro.hidden = true;
+    nome.value = nome.value.trim();
+    email.value = email.value.trim();
+    var fone = telefoneLimpo(tel.value);
+
+    if (!marcar(nome, nome.value.length >= 2)) return falhar('Escreva seu nome.', nome);
+    if (!marcar(tel, telefoneOk(fone))) return falhar('Confira o WhatsApp: DDD e número, como (21) 99999-9999.', tel);
+    if (!marcar(email, emailOk(email.value))) return falhar('Confira o e-mail: parece que falta algo.', email);
+
+    ocupado = true;
+    enviar.disabled = true;
+    enviar.textContent = 'Confirmando…';
+    [nome, tel, email].forEach(function(c){ c.readOnly = true; });
+    aceite.disabled = true;
+
+    var corpo = new URLSearchParams({
+      email: email.value.toLowerCase(),
+      nome: nome.value,
+      telefone_digits: fone,
+      origem: aceite.checked ? ORIGEM_COM_WHATSAPP : ORIGEM,
+      campanha: 'Black da Fluência 2026',
+      pagina: location.origin + location.pathname,
+      referrer: document.referrer || '',
+      dispositivo: window.matchMedia('(max-width: 760px)').matches ? 'Mobile' : 'Desktop',
+      consentimento: aceite.checked ? 'avisos_black_email_e_whatsapp' : 'avisos_black_email'
+    });
+    var veio = new URLSearchParams(location.search);
+    // A navegação interna pode remover a query; origem.js conserva a visita.
+    var salva = window.FC_ORIGEM && window.FC_ORIGEM.instalada && window.FC_ORIGEM.origem;
+    var usarSalva = salva && typeof salva === 'object' && !Array.isArray(salva);
+    ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','src'].forEach(function(k){
+      var v = usarSalva ? salva[k] : veio.get(k);
+      if (typeof v === 'string' && v && v.length <= 180) corpo.set(k, v);
+    });
+    if (corpo.get('src')) corpo.set('ref', corpo.get('src'));
+
+    /* `cors` de propósito: a inscrição só é confirmada depois de LER a resposta.
+       O Apps Script responde com Access-Control-Allow-Origin: *. */
+    var aborta = new AbortController();
+    var limite = setTimeout(function(){ aborta.abort(); }, 20000);
+
+    fetch(ENDPOINT, { method:'POST', body:corpo, mode:'cors', credentials:'omit', redirect:'follow', signal:aborta.signal })
+      .then(function(r){ if (!r.ok || r.type === 'opaque') throw new Error('sem confirmacao'); return r.json(); })
+      .then(function(res){ if (res.ok !== true) throw new Error('recusado'); confirmado(true); })
+      .catch(function(e){
+        falhar(e && e.name === 'AbortError'
+          ? 'A confirmação demorou mais que o esperado. Tente de novo.'
+          : 'Não consegui confirmar o cadastro agora. Confira a conexão e tente de novo.');
+      })
+      .finally(function(){ clearTimeout(limite); ocupado = false; });
+  });
+})();
+</script>
+<script src="assets/origem.js?v=20260909" defer></script>
+</body>
+</html>
