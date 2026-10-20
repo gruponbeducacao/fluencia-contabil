@@ -1,8 +1,14 @@
 /* ═══════════════════════════════════════════════════════════════
    Tema da Black da Fluência — camada TEMPORÁRIA sobre o site.
-   Liga sozinho de 24/10/2026 0h a 28/11/2026 0h (Brasília); fora da janela
-   não faz nada, e para desfazer basta deixar a data passar.
-   Para homologar antes: ?tema=black no endereço.
+   Fica no ar até 28/11/2026 0h (Brasília); depois não faz nada, e para
+   desfazer basta deixar a data passar. Três fases:
+     pré-virada  até 24/10 0h: só o visual (topo preto, selo, faixa "11/11,
+                 20h · lista VIP", destaque da Black nos links). As vendas
+                 estão abertas: preço, botões, assinatura e quiz intactos.
+                 Pedido do Vinícius em 20/10 ("ligar o visual já").
+     fechado     24/10 0h a 11/11 20h: vendas da assinatura fechadas.
+     condição    11/11 20h a 27/11: os botões levam à condição, na /black.
+   ?tema=black no endereço força a fase de vendas fechadas, para homologar.
 
    Vai no <head>, de forma síncrona, logo depois do assets/black/tema-black.css,
    para a classe html.tema-black existir antes da primeira pintura.
@@ -24,31 +30,35 @@
    Black mora na própria /black, então os botões continuam indo para lá. */
 (function () {
   'use strict';
-  var INICIO = Date.parse('2026-10-24T00:00:00-03:00');
-  var FIM = Date.parse('2026-11-28T00:00:00-03:00');
+  var VISUAL = Date.parse('2026-10-20T00:00:00-03:00');
+  var FECHA = Date.parse('2026-10-24T00:00:00-03:00');
   var REABRE = Date.parse('2026-11-11T20:00:00-03:00');
+  var FIM = Date.parse('2026-11-28T00:00:00-03:00');
   var agora = Date.now();
   var forcado = /[?&]tema=black(?:&|$)/.test(location.search);
-  if (!forcado && (agora < INICIO || agora >= FIM)) return;
+  if (!forcado && (agora < VISUAL || agora >= FIM)) return;
+  var fase = agora >= REABRE ? 'condicao' : (agora >= FECHA || forcado) ? 'fechado' : 'pre';
 
   var script = document.currentScript;
   var modo = (script && script.getAttribute('data-black')) || 'site';
   if (modo === 'redirecionar') {
-    location.replace('/black' + location.search + location.hash);
+    if (fase !== 'pre') location.replace('/black' + location.search + location.hash);
     return;
   }
 
   var raiz = document.documentElement;
-  var fechado = agora < REABRE;
+  var fechado = fase === 'fechado';
   raiz.classList.add('tema-black');
   if (fechado) raiz.classList.add('tema-black-fechado');
 
   var SELO = '/assets/email/logo-black-selo.png';
   var DESTINO = '/black';
-  var BOTAO = fechado ? 'Entrar na lista VIP' : 'Ver a condição da Black';
-  var AVISO = fechado
-    ? 'Black da Fluência · vendas fechadas até 11/11 · 11/11, 20h, ao vivo '
-    : 'Black da Fluência · a condição vale até 27/11 ';
+  var BOTAO = fase === 'condicao' ? 'Ver a condição da Black' : 'Entrar na lista VIP';
+  var AVISO = {
+    pre: 'Black da Fluência · 11/11, 20h, ao vivo · a maior condição que a Fluência já fez ',
+    fechado: 'Black da Fluência · vendas fechadas até 11/11 · 11/11, 20h, ao vivo ',
+    condicao: 'Black da Fluência · a condição vale até 27/11 '
+  }[fase];
 
   function el(tag, attrs, texto) {
     var e = document.createElement(tag);
@@ -169,19 +179,21 @@
       var card = el('a', { 'class': 'fc-black-dest', href: DESTINO + etiqueta, 'data-bio': 'black' });
       card.appendChild(el('img', { src: SELO, alt: '' }));
       var txt = el('span', { 'class': 'txt' });
-      txt.appendChild(el('span', { 'class': 'k' }, fechado ? 'Black da Fluência · 11/11, 20h' : 'Black da Fluência · até 27/11'));
-      txt.appendChild(el('strong', {}, fechado ? 'Entre na lista VIP e ganhe o Raio-X da Banca' : 'A maior condição que a Fluência já fez'));
+      var lista = fase !== 'condicao';
+      txt.appendChild(el('span', { 'class': 'k' }, lista ? 'Black da Fluência · 11/11, 20h' : 'Black da Fluência · até 27/11'));
+      txt.appendChild(el('strong', {}, lista ? 'Entre na lista VIP e ganhe o Raio-X da Banca' : 'A maior condição que a Fluência já fez'));
       txt.appendChild(el('span', { 'class': 'go' }, BOTAO + ' →'));
       card.appendChild(txt);
       dest.parentNode.insertBefore(card, dest);
     }
+    // com as vendas abertas (pré-virada) o atalho da assinatura continua sendo a assinatura
     var tile = document.querySelector('a.t.venda span');
-    if (tile) tile.textContent = 'Black · lista VIP';
+    if (tile && fase !== 'pre') tile.textContent = 'Black · lista VIP';
   }
 
   function aplicar() {
     if (modo === 'bio') bio(); else faixa();
-    botoes();
+    if (fase !== 'pre') botoes();
     if (modo === 'site') {
       seloNoMenu();
       if (fechado) vendasFechadas();
