@@ -159,6 +159,74 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .item .n{display:grid;place-items:center;width:40px;height:40px;border-radius:8px;border:1px solid var(--dourado);color:var(--dourado);font-size:16px;font-weight:900;margin-bottom:16px}
   .item p{font-size:15px;line-height:1.65;color:var(--branco-2);margin-top:9px}
 
+  .cta-meio{margin-top:40px;text-align:center}
+  .cta-meio .btn{width:auto;min-width:300px}
+  .cta-meio small{display:block;margin-top:12px;font-size:12.5px;color:var(--branco-2)}
+
+  /* ---------- quem já está por dentro ---------- */
+  .prova{display:grid;grid-template-columns:300px 1fr;gap:48px;align-items:center;margin-top:36px}
+  .vd-moldura{position:relative;aspect-ratio:9/16;border-radius:20px;overflow:hidden;background:var(--azul);
+    border:1px solid #c8a84b66;box-shadow:0 24px 60px #000b}
+  .vd-moldura img,.vd-moldura iframe{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;border:0}
+  .vd-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;border:0;cursor:pointer;
+    background:linear-gradient(180deg,#0b0e1400 50%,#0b0e14b3)}
+  .vd-play i{width:66px;height:66px;border-radius:50%;background:var(--vermelho);display:flex;align-items:center;justify-content:center;box-shadow:0 10px 28px #000a}
+  .vd-play svg{width:24px;height:24px;margin-left:4px;fill:#fff}
+  .vd.tocando .vd-play{display:none}
+  .vd-leg{margin-top:16px;font-family:Fraunces,Georgia,serif;font-style:italic;font-weight:600;font-size:17px;line-height:1.5;color:var(--dourado-claro);text-align:center}
+  .vd-leg b{display:block;margin-top:6px;font-family:Montserrat,Arial,sans-serif;font-style:normal;font-size:12.5px;font-weight:700;color:var(--branco-2)}
+  .prova-txt .numero{font-size:56px;font-weight:900;color:var(--dourado);line-height:1;letter-spacing:-2px}
+  .prova-txt .numero small{display:block;font-size:13px;font-weight:700;letter-spacing:.5px;color:var(--branco-2);margin-top:8px}
+
+  .dep-carrossel{overflow:hidden;width:100vw;margin:22px calc(50% - 50vw) 0;padding:6px 0;outline:none;
+    -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 7%,#000 93%,transparent 100%);
+            mask-image:linear-gradient(90deg,transparent 0,#000 7%,#000 93%,transparent 100%)}
+  .dep-trilho{display:flex;width:max-content;animation:depGira 90s linear infinite}
+  .dep-carrossel.volta .dep-trilho{animation-direction:reverse;animation-duration:100s}
+  .dep-carrossel:focus-visible .dep-trilho{animation-play-state:paused}
+  @media (hover:hover){.dep-carrossel:hover .dep-trilho{animation-play-state:paused}}
+  .dep-grupo{display:flex;align-items:flex-start;gap:16px;padding-right:16px}
+  .dep-card{width:300px;flex:0 0 auto;background:var(--azul);border:1px solid var(--linha);border-radius:16px;padding:20px}
+  .dep-card p{font-size:14.5px;line-height:1.6;color:var(--branco)}
+  .dep-card .autor{margin-top:14px;font-size:12.5px;font-weight:800;color:var(--dourado)}
+  .dep-card .autor span{font-weight:600;color:var(--branco-2)}
+  .dep-print{width:280px;flex:0 0 auto;margin:0;background:#fff;border-radius:16px;padding:10px 10px 9px}
+  .dep-print.largo{width:340px}
+  .dep-print img{display:block;width:100%;height:auto;border-radius:10px}
+  .dep-print figcaption{margin-top:8px;font-size:12px;font-weight:700;color:#1B2A4A;text-align:center;line-height:1.45}
+  .dep-print figcaption span{display:block;font-weight:500;color:#5A6A7E}
+  @keyframes depGira{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  @media (prefers-reduced-motion:reduce){.dep-carrossel{overflow-x:auto;-webkit-mask-image:none;mask-image:none}.dep-trilho{animation:none}}
+  body{overflow-x:hidden}
+
+  /* ---------- a plataforma por dentro ---------- */
+  .abas{display:flex;flex-wrap:wrap;gap:8px;margin-top:30px}
+  .aba{padding:10px 16px;border:1px solid var(--linha);border-radius:999px;background:transparent;color:var(--branco);
+    font:inherit;font-size:13px;font-weight:700;cursor:pointer}
+  .aba[aria-selected="true"]{background:var(--dourado);border-color:var(--dourado);color:var(--preto)}
+  .tela{display:grid;grid-template-columns:1.5fr 1fr;gap:36px;align-items:center;margin-top:22px}
+  .tela-real{border:1px solid #c8a84b55;border-radius:14px;overflow:hidden;background:#fff;box-shadow:0 26px 60px #000b}
+  .tela-real .barra-t{display:flex;align-items:center;gap:6px;padding:8px 12px;background:#F1F2F5;font-size:11.5px;font-weight:600;color:#5A6A7E}
+  .tela-real .barra-t i{width:8px;height:8px;border-radius:50%;background:#D3D6DE}
+  .tela-real .barra-t span{margin-left:6px}
+  .tela-real video{display:block;width:100%;height:auto;aspect-ratio:1264/796;background:#F5F4F0}
+  .tela-txt h3{font-size:24px;letter-spacing:-.4px}
+  .tela-txt p{font-size:16px;line-height:1.7;color:var(--branco-2);margin-top:12px}
+  .tela-txt p.resolve{color:var(--dourado-claro);font-weight:700}
+  .demo{margin-top:36px;text-align:center}
+  .demo-moldura{margin-top:20px;border-radius:16px;overflow:hidden;background:#fff;border:1px solid #c8a84b55}
+  .demo-moldura iframe{display:block;width:100%;height:600px;border:0}
+
+  /* ---------- vídeo do professor ---------- */
+  .vsl-moldura{margin-top:30px;border-radius:16px;overflow:hidden;background:var(--azul);border:1px solid #c8a84b55;box-shadow:0 26px 60px #000b;max-width:880px}
+  .vsl-moldura iframe{display:block;width:100%;aspect-ratio:16/9;border:0}
+
+  /* ---------- números do professor ---------- */
+  .nums{display:grid;grid-template-columns:repeat(3,1fr);margin-top:22px;border-top:1px solid var(--linha);max-width:560px}
+  .nums div{padding:16px 6px 0;font-size:13px;color:var(--branco-2);line-height:1.4}
+  .nums div + div{border-left:1px solid var(--linha);padding-left:14px}
+  .nums b{display:block;font-size:26px;font-weight:900;color:var(--dourado);letter-spacing:-.5px}
+
   /* ---------- linha do tempo ---------- */
   .tempo{margin-top:36px;display:grid;gap:0;max-width:760px}
   .marco{display:grid;grid-template-columns:150px 1fr;gap:24px;padding:22px 0;border-top:1px solid var(--linha)}
@@ -193,6 +261,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .hero-in{grid-template-columns:1fr;gap:36px;padding:36px 0 56px}
     .prof{grid-template-columns:1fr;gap:24px}
     .prof img{width:170px}
+    .prova{grid-template-columns:1fr;gap:28px}
+    .vd{width:min(78%,290px);margin-inline:auto}
+    .tela{grid-template-columns:1fr;gap:20px}
   }
   @media (max-width:760px){
     .sec{padding:60px 0}
@@ -205,6 +276,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .nav .marca span{display:none}
     .cartao{padding:26px 20px 22px}
     .fecho .btn{width:100%}
+    .cta-meio .btn{width:100%;min-width:0}
+    .dep-card{width:260px}
+    .dep-print{width:240px}
+    .dep-print.largo{width:290px}
+    .abas{flex-wrap:nowrap;overflow-x:auto;margin-inline:-5%;padding-inline:5%;scrollbar-width:none}
+    .aba{flex:0 0 auto}
+    .demo-moldura iframe{height:520px}
+    .prova-txt .numero{font-size:44px}
   }
 </style>
 </head>
@@ -328,6 +407,80 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </section>
 
+<!-- ══════════════════ QUEM JÁ ESTÁ POR DENTRO ══════════════════ -->
+<section class="sec" id="alunos">
+  <div class="wrap">
+    <span class="eyebrow">Quem já está por dentro</span>
+    <h2>O que os alunos dizem, <span class="it">nas palavras deles.</span></h2>
+    <div class="prova">
+      <div class="vd">
+        <div class="vd-moldura">
+          <img src="assets/quiz/depo/tallys.jpg" alt="" width="540" height="960" loading="lazy">
+          <button type="button" class="vd-play" id="vd-play" aria-label="Assistir ao depoimento do Tallys"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4l14 8-14 8z"/></svg></i></button>
+        </div>
+        <p class="vd-leg">“Direta, sem enrolação e focada naquilo que realmente cai na prova.”<b>Tallys · aprovado em Auditor Fiscal, 2026</b></p>
+      </div>
+      <div class="prova-txt">
+        <div class="numero">3.000+<small>alunos ao longo de 40 turmas</small></div>
+        <p class="lead">Os depoimentos abaixo são falas reais, com o canal em que chegaram: plataforma,
+          WhatsApp, Instagram e YouTube. Onde a pessoa não autorizou o nome, aparece como Aluno(a).</p>
+      </div>
+    </div>
+  </div>
+  <div class="dep-carrossel" tabindex="0" aria-label="Depoimentos de alunos, primeira fileira (passe o mouse para pausar)"><div class="dep-trilho" id="dep-a"></div></div>
+  <div class="dep-carrossel volta" tabindex="0" aria-label="Depoimentos de alunos, segunda fileira (passe o mouse para pausar)"><div class="dep-trilho" id="dep-b"></div></div>
+  <div class="wrap cta-meio">
+    <a class="btn" href="#lista">Entrar na lista VIP</a>
+    <small>Gratuito. O link da live de 11/11 chega 10 minutos antes.</small>
+  </div>
+</section>
+
+<!-- ══════════════════ A PLATAFORMA POR DENTRO ══════════════════ -->
+<section class="sec" id="plataforma">
+  <div class="wrap">
+    <span class="eyebrow">A plataforma por dentro</span>
+    <h2>Tela real, <span class="it">sem maquiagem.</span></h2>
+    <p class="lead">Gravações da plataforma como ela está hoje. Escolha a ferramenta.</p>
+
+    <div class="abas" role="tablist" aria-label="Ferramentas da plataforma" id="abas"></div>
+    <div class="tela">
+      <div class="tela-real">
+        <div class="barra-t"><i></i><i></i><i></i><span>Tela real da plataforma</span></div>
+        <video id="tela-video" muted loop playsinline preload="none" poster="assets/quiz/telas/modulo1.jpg"></video>
+      </div>
+      <div class="tela-txt" aria-live="polite">
+        <h3 id="tela-titulo"></h3>
+        <p id="tela-desc"></p>
+        <p class="resolve" id="tela-resolve"></p>
+      </div>
+    </div>
+
+    <div class="demo">
+      <button class="btn btn-contorno" type="button" id="demo-abrir" style="width:auto;min-width:300px">Navegar na plataforma agora</button>
+      <div class="demo-moldura" id="demo-moldura" hidden></div>
+    </div>
+
+    <div class="cta-meio">
+      <a class="btn" href="#lista">Entrar na lista VIP</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ O MÉTODO, NA VOZ DO PROFESSOR ══════════════════ -->
+<section class="sec">
+  <div class="wrap">
+    <span class="eyebrow">O método</span>
+    <h2>Ouça o professor explicar <span class="it">por que funciona.</span></h2>
+    <p class="lead">Em poucos minutos você entende por que a Fluência ensina Contabilidade como um idioma,
+      pela lógica, e não pela memorização.</p>
+    <div class="vsl-moldura">
+      <iframe src="https://player-vz-7867cfdb-be1.tv.pandavideo.com.br/embed/?v=373b4407-d936-4434-8c7c-4102cd40cc48"
+              title="Vídeo de apresentação da Fluência Contábil" loading="lazy"
+              allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+    </div>
+  </div>
+</section>
+
 <!-- ══════════════════ COMO VAI SER ══════════════════ -->
 <section class="sec">
   <div class="wrap">
@@ -372,6 +525,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <p class="lead">Auditor Fiscal do Município do Rio de Janeiro, aprovado como Analista
         Legislativo de Contabilidade do Senado Federal e como Auditor Fiscal do Estado de Minas
         Gerais. Fundador da Fluência Contábil, com mais de 3.000 alunos em 40 turmas.</p>
+      <div class="nums">
+        <div><b>4</b>aprovações em concursos de elite</div>
+        <div><b>3.000+</b>alunos</div>
+        <div><b>40</b>turmas</div>
+      </div>
     </div>
   </div>
 </section>
@@ -463,6 +621,115 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   }
   contar();
   relogio = setInterval(contar, 1000);
+
+  function esc(s){
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  // ───────────── depoimentos ─────────────
+  /* Falas copiadas de depoimentos.html (a fonte publicada), sem edição. Prints
+     em assets/depoimentos/. Aluno sem autorização de nome aparece como Aluno(a).
+     O Ransley é 1º colocado e AGUARDA convocação: nunca escrever "nomeado". */
+  var FILEIRA_A = [
+    { txt: 'Suas aulas são maravilhosas e nenhum professor explica questões como você. Impossível não aprender. [...] Eu tinha [...] dificuldades com DRE, nunca tinha aprendido [...] foi como um passe de mágica', autor: 'Gisele C.', canal: 'Instagram' },
+    { txt: 'Não é modéstia, honestamente é uma das melhores aulas sobre quaisquer CPCs que já assisti. Obrigada por esse PRESENTE!', autor: '@yarabezerra9762', canal: 'YouTube' },
+    { txt: 'Esse estudo me fez gostar, novamente, de estudar. Querer mais a cada dia. Ter mais conhecimento hoje do que ontem. Principalmente o Vinícius, com sua dedicação e cuidado conosco, ajudou nesse reinício.', autor: 'Érica Freitas', canal: 'WhatsApp' },
+    { txt: 'Sua didática é incrível, dá pra ver que você realmente gosta de contabilidade. [...] As aulas são sucintas, vão direto ao ponto, trazem exemplos da vida real e como as bancas cobram. Eu com certeza recomendaria pra todo mundo que está estudando contabilidade!', autor: 'Aluno(a)', canal: 'WhatsApp' },
+    { txt: 'Muito legal acompanhar a evolução da Plataforma. Na minha opinião é a melhor do mercado.', autor: 'Aluno(a)', canal: 'WhatsApp' },
+    { txt: 'Recurso perfeito: a aula já tá vinculada ao tema e a análise estatística de quantidade de questões indicadas. Esse recurso, pra uma reta final e uma trilha, vai dar bom. Economizar tempo e agilizar os conteúdos.', autor: 'Marcos Vinícius R.', canal: 'WhatsApp' },
+    { txt: 'Excelente aula. Muito obrigada professor Vinícius, estou entendo coisas que achei que nunca iria aprender... Sua didática é ótima. Grava mais por favor... Precisamos da sua ajuda', autor: '@carolinnepmaia', canal: 'YouTube' },
+    { txt: 'As funcionalidades e a criatividade para inovação me surpreenderam, deixo meus sinceros parabéns.', autor: 'Bruno D.', canal: 'Aluno' },
+    { txt: 'Isso aqui é mt legal. [...] Tá muito diferenciado. Adorei o layout do sistema de questões.', autor: 'Maria Clara R.', canal: 'WhatsApp' }
+  ];
+  var FILEIRA_B = [
+    { img: 'aprovacao-ransley-2026-08-11', w: 540, h: 405, largo: true, alt: 'Print da conversa em que o aluno anuncia o primeiro lugar na lista PcD',
+      cap: 'Ransley Moreira Alves', sub: '1º lugar na lista PcD · Fiscal de Tributos, Senador Canedo (GO)' },
+    { txt: 'Contabilidade sempre foi a minha maior dificuldade na área fiscal, e a forma como o conteúdo é apresentado tem ajudado bastante. As aulas são objetivas, certeiras e vão direto ao ponto.', autor: 'João Renan S.', canal: 'aluno da 1ª turma, pela plataforma' },
+    { img: 'whatsapp-impressionada-mercado', w: 369, h: 470, alt: 'Print da conversa: aluna diz que o trabalho está magnífico e que não há nada semelhante no mercado',
+      cap: 'Fernanda C.', sub: 'print do WhatsApp' },
+    { txt: 'De altíssimo nível seu conteúdo e aprofundamento de um CPC tão complexo. Muito obrigado por disponibilizar do seu tempo e conteúdo tão rico. Acredito muito na lei do retorno. Você tem uma boa didática, mantenha-se firme, logo seu trabalho vai bombar! Parabéns!', autor: '@Mr4lessandro', canal: 'YouTube' },
+    { img: 'whatsapp-plataforma-sensacional', w: 371, h: 273, alt: 'Print da conversa: aluno elogia a plataforma e a didática que amarra o conteúdo',
+      cap: 'Aluno(a)', sub: 'print do WhatsApp' },
+    { txt: 'Eu achei a proposta excelente. Os slides bem formatados, bem estruturados. A forma de abordagem do conteúdo bem interessante, com os estímulos para o estudo dos CPCs desde o início da jornada. [...] Não tem jeito, a contabilidade funciona assim, como um quebra-cabeças.', autor: 'Aluno(a)', canal: 'WhatsApp' },
+    { img: 'whatsapp-atencao-ao-detalhe', w: 383, h: 269, alt: 'Print da conversa: aluna fala em atenção ao detalhe e no lado humano do professor',
+      cap: 'Aluno(a)', sub: 'print do WhatsApp' },
+    { txt: 'Aquela aba de provas de contabilidade da SEFAZ é muito boa. Arrasou!', autor: 'Aluno(a)', canal: 'Instagram' }
+  ];
+  function cartaoDepo(d){
+    if (d.img) return '<figure class="dep-print' + (d.largo ? ' largo' : '') + '"><picture>' +
+      '<source srcset="assets/depoimentos/' + d.img + '.webp" type="image/webp">' +
+      '<img src="assets/depoimentos/' + d.img + '.png" alt="' + esc(d.alt) + '" width="' + d.w + '" height="' + d.h + '" loading="lazy" decoding="async"></picture>' +
+      '<figcaption>' + esc(d.cap) + '<span>' + esc(d.sub) + '</span></figcaption></figure>';
+    return '<div class="dep-card"><p>“' + esc(d.txt) + '”</p><div class="autor">' + esc(d.autor) + ' <span>· ' + esc(d.canal) + '</span></div></div>';
+  }
+  /* O grupo entra duas vezes para o giro não ter emenda; a cópia fica fora do leitor de tela. */
+  function fileira(id, itens){
+    var g = itens.map(cartaoDepo).join('');
+    el(id).innerHTML = '<div class="dep-grupo">' + g + '</div><div class="dep-grupo" aria-hidden="true">' + g + '</div>';
+  }
+  fileira('dep-a', FILEIRA_A);
+  fileira('dep-b', FILEIRA_B);
+
+  /* Vídeo do Tallys (Panda). O player só carrega no toque. A biblioteca do
+     Panda libera por domínio: fora de fluenciacontabil.com.br ele não toca. */
+  var DEPO_PANDA = 'https://player-vz-7867cfdb-be1.tv.pandavideo.com.br/embed/?v=d8614e2c-f9bc-4c83-8373-de2d66e05b15';
+  el('vd-play').addEventListener('click', function(){
+    var box = this.closest('.vd'), m = box.querySelector('.vd-moldura');
+    var f = document.createElement('iframe');
+    f.src = DEPO_PANDA + '&autoplay=true';
+    f.title = 'Depoimento do Tallys';
+    f.allow = 'accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture';
+    f.allowFullscreen = true;
+    m.appendChild(f);
+    box.classList.add('tocando');
+  });
+
+  // ───────────── a plataforma por dentro ─────────────
+  /* Gravações de tela de assets/quiz/telas/. Textos do bloco "O que você leva" do quiz. */
+  var TELAS = [
+    { id: 'modulo1',   nome: 'Aulas',                  t: 'O curso inteiro, em 5 módulos', d: '35 aulas e 3 bônus, do zero à Contabilidade Avançada, em vídeo e PDF.', r: 'Você não monta o caminho. Ele já vem em ordem.' },
+    { id: 'banco',     nome: 'Questões',               t: 'Mais de 5.800 questões de banca real, comentadas', d: 'Com filtro por assunto, banca, órgão e ano, e cadernos que você monta.', r: 'Você entende por que cada alternativa errada está errada.' },
+    { id: 'mapa',      nome: 'Mapa de Incidência',     t: 'Mapa de Incidência', d: 'O item da norma cruzado com a banca: quanto mais azul, mais aquela banca cobra.', r: 'Você estuda primeiro o que a sua banca cobra de verdade.' },
+    { id: 'edital',    nome: 'Meu Edital',             t: 'Meu Edital', d: 'Você cola o seu edital e ele vira uma lista, cada item com a aula que o cobre.', r: 'Acaba o garimpo no PDF do edital.' },
+    { id: 'plano',     nome: 'Plano de Estudos',       t: 'Plano de Estudos', d: 'Agenda semanal na sua rotina, com revisão espaçada em D+3, 7, 16 e 35 dias.', r: 'Acaba o estuda-esquece.' },
+    { id: 'simulador', nome: 'Simulador',              t: 'Simulador de Lançamentos', d: 'Treino de partida dobrada com níveis de dificuldade.', r: '' }
+  ];
+  var video = el('tela-video'), abas = el('abas'), telaVisivel = false, atual = 0;
+  abas.innerHTML = TELAS.map(function(x, i){
+    return '<button class="aba" type="button" role="tab" id="aba-' + x.id + '" aria-selected="' + (i === 0) + '" data-i="' + i + '">' + esc(x.nome) + '</button>';
+  }).join('');
+  function mostrar(i){
+    atual = i;
+    var x = TELAS[i];
+    abas.querySelectorAll('.aba').forEach(function(b, j){ b.setAttribute('aria-selected', String(j === i)); });
+    el('tela-titulo').textContent = x.t;
+    el('tela-desc').textContent = x.d;
+    el('tela-resolve').textContent = x.r;
+    el('tela-resolve').hidden = !x.r;
+    video.poster = 'assets/quiz/telas/' + x.id + '.jpg';
+    /* O vídeo só baixa quando a seção aparece na tela. */
+    if (telaVisivel) {
+      video.src = 'assets/quiz/telas/' + x.id + '.mp4';
+      var p = video.play(); if (p && p.catch) p.catch(function(){});
+    }
+  }
+  abas.addEventListener('click', function(ev){
+    var b = ev.target.closest('.aba'); if (b) mostrar(+b.dataset.i);
+  });
+  mostrar(0);
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function(entradas, obs){
+      if (!entradas[0].isIntersecting) return;
+      telaVisivel = true; obs.disconnect(); mostrar(atual);
+    }, { rootMargin: '200px' }).observe(video);
+  } else { telaVisivel = true; mostrar(atual); }
+
+  el('demo-abrir').addEventListener('click', function(){
+    var m = el('demo-moldura');
+    if (!m.firstChild) m.innerHTML = '<iframe src="assets/quiz/demo_plataforma.html" title="Demonstração navegável da plataforma"></iframe>';
+    m.hidden = false;
+    this.hidden = true;
+  });
 
   // ───────────── formulário ─────────────
   var form = el('vip-form'), nome = el('vip-nome'), tel = el('vip-telefone'), email = el('vip-email'),
