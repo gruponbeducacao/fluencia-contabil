@@ -33,9 +33,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
      Depois, rodar setupAulasAoVivo() para o tópico `black-2026` existir no SES.
 
   2. A aba "Aulas ao Vivo" não tem coluna de aceite. O aceite de WhatsApp fica
-     registrado na ORIGEM: `_whatsapp` no fim = marcou a caixa. É por ela que
-     o Mensageiro vai saber a quem pode escrever. Nunca mandar a origem com
-     `_whatsapp` sem a caixa marcada.
+     registrado na ORIGEM: `_whatsapp` no fim = aceitou. Até 20/10/2026 à tarde
+     era uma caixa; desde então (pedido do Vinícius) o aceite é o aviso logo
+     abaixo do botão, e toda inscrição vai com `aula_black_2026_whatsapp`.
+     Quem entrou com `aula_black_2026` não marcou a caixa: o Mensageiro não
+     escreve para essa pessoa. Se o aviso sair da página, a origem volta a ser
+     `aula_black_2026`.
 
   3. O container GTM-MGQFHR5J escuta `lead_capturado` e manda o Lead para a
      Meta. NÃO chamar fbq('track','Lead') aqui: o Lead contaria duas vezes.
@@ -131,10 +134,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     border:1.5px solid #ffffff2e;border-radius:6px;background:#fff;color:var(--preto);font:inherit;font-size:15.5px}
   #vip-form input:focus{border-color:var(--dourado)}
   #vip-form input[aria-invalid="true"]{border-color:#E6A39A;box-shadow:0 0 0 2px #e6a39a55}
-  #vip-form label.aceite{display:flex;gap:12px;align-items:flex-start;margin:0;padding:12px 14px;border:1px solid #ffffff24;border-radius:6px;cursor:pointer;
-    font-size:14px;font-weight:600;letter-spacing:0;text-transform:none;line-height:1.55;color:var(--branco)}
-  .aceite input{flex:none;width:20px;height:20px;margin-top:2px;accent-color:var(--dourado);cursor:pointer}
-  .aceite small{display:block;font-size:12.5px;font-weight:400;color:var(--branco-2);margin-top:3px}
   .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:56px;width:100%;
     padding:15px 26px;background:var(--vermelho);color:#fff;border:0;border-radius:6px;
     font:inherit;font-size:14px;font-weight:900;letter-spacing:.07em;text-transform:uppercase;text-decoration:none;
@@ -347,15 +346,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <input id="vip-email" name="email" type="email" inputmode="email" autocomplete="email"
                  maxlength="254" placeholder="voce@exemplo.com" required>
         </div>
-        <label class="aceite" for="vip-aceite">
-          <input id="vip-aceite" type="checkbox">
-          <span>Quero receber mensagens no WhatsApp
-            <small>No máximo 4 mensagens individuais até 27/11, sobre a Black.</small></span>
-        </label>
         <button class="btn" id="vip-enviar" type="submit">Entrar na lista VIP</button>
         <p class="erro" id="vip-erro" role="status" aria-live="polite" hidden></p>
-        <p class="privacidade">Você recebe por e-mail os avisos da Black da Fluência até 27/11. No
-          WhatsApp, só se marcar a caixa acima. Sai quando quiser, num clique.
+        <p class="privacidade">Ao entrar, você aceita receber os avisos da Black da Fluência até 27/11
+          por e-mail e no WhatsApp (no máximo 4 mensagens individuais). Sai quando quiser, num clique.
           <a href="https://portal.fluenciacontabil.com.br/privacidade" target="_blank" rel="noopener">Política de Privacidade</a>.</p>
       </form>
 
@@ -555,9 +549,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         e-mail e vale até 23h59 de 11/11. Mas ao vivo dá para perguntar o que quiser na hora.</p></details>
 
     <details><summary>Vou receber muita mensagem?</summary>
-      <p>Por e-mail, os avisos da Black até 27/11. No WhatsApp, só se você marcar a caixa: no
-        máximo 4 mensagens individuais, e o grupo VIP, em que só a equipe escreve. Você sai de
-        qualquer um deles quando quiser.</p></details>
+      <p>Por e-mail, os avisos da Black até 27/11. No WhatsApp, no máximo 4 mensagens
+        individuais, e o grupo VIP, em que só a equipe escreve. Você sai de qualquer um deles
+        quando quiser.</p></details>
   </div>
 </section>
 
@@ -587,8 +581,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   'use strict';
 
   var ENDPOINT = 'https://script.google.com/macros/s/AKfycbx8lWrX5F0IByv0JEJ0iBGPjtLto7f2VxDHIh0uT0gZtvoj8EDVx0NFiriou-Dt0cxh/exec';
-  /* As duas linhas da Config Aulas (ver o comentário no topo). */
-  var ORIGEM = 'aula_black_2026';
+  /* Linha da Config Aulas (ver o comentário no topo). A outra linha,
+     `aula_black_2026`, ficou para as inscrições feitas com a caixa desmarcada. */
   var ORIGEM_COM_WHATSAPP = 'aula_black_2026_whatsapp';
   /* Link de convite do grupo "Black da Fluência · Lista VIP" (criado em 20/10/2026).
      Vazio = botão escondido. O mesmo link está na black-obrigado.html. */
@@ -740,7 +734,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   // ───────────── formulário ─────────────
   var form = el('vip-form'), nome = el('vip-nome'), tel = el('vip-telefone'), email = el('vip-email'),
-      aceite = el('vip-aceite'), enviar = el('vip-enviar'), erro = el('vip-erro'), ok = el('vip-ok');
+      enviar = el('vip-enviar'), erro = el('vip-erro'), ok = el('vip-ok');
   var ocupado = false;
 
   function digitos(s){ return String(s || '').replace(/\D/g, ''); }
@@ -768,7 +762,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     erro.textContent = msg; erro.hidden = false;
     enviar.disabled = false; enviar.textContent = 'Entrar na lista VIP';
     [nome, tel, email].forEach(function(c){ c.readOnly = false; });
-    aceite.disabled = false;
     (campo || enviar).focus();
   }
 
@@ -824,18 +817,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     enviar.disabled = true;
     enviar.textContent = 'Confirmando…';
     [nome, tel, email].forEach(function(c){ c.readOnly = true; });
-    aceite.disabled = true;
 
+    /* O aceite de WhatsApp é o aviso abaixo do botão (ver o item 2 no topo). */
     var corpo = new URLSearchParams({
       email: email.value.toLowerCase(),
       nome: nome.value,
       telefone_digits: fone,
-      origem: aceite.checked ? ORIGEM_COM_WHATSAPP : ORIGEM,
+      origem: ORIGEM_COM_WHATSAPP,
       campanha: 'Black da Fluência 2026',
       pagina: location.origin + location.pathname,
       referrer: document.referrer || '',
       dispositivo: window.matchMedia('(max-width: 760px)').matches ? 'Mobile' : 'Desktop',
-      consentimento: aceite.checked ? 'avisos_black_email_e_whatsapp' : 'avisos_black_email'
+      consentimento: 'avisos_black_email_e_whatsapp_por_aviso'
     });
     var veio = new URLSearchParams(location.search);
     // A navegação interna pode remover a query; origem.js conserva a visita.
