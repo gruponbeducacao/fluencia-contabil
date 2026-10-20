@@ -63,7 +63,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="apple-touch-icon" href="assets/black/apple-touch-black.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@1,9..144,600&family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
   /* Identidade da Black (plano v3): preto no fundo, dourado no destaque.
@@ -89,7 +89,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   h1,h2,h3{font-weight:900;color:var(--branco);line-height:1.12;letter-spacing:-.6px}
   h2{font-size:clamp(27px,3.2vw,38px);text-wrap:balance}
   h3{font-size:18px;letter-spacing:-.2px;line-height:1.35}
-  .it{font-family:Fraunces,Georgia,serif;font-style:italic;font-weight:600;color:var(--dourado-claro);letter-spacing:-.3px}
+  /* Destaque do título: mesma Montserrat, em dourado (a serifada em itálico saiu a pedido do Vinícius, 20/10). */
+  .it{color:var(--dourado-claro)}
   .lead{font-size:17.5px;line-height:1.75;color:var(--branco-2);max-width:62ch;margin-top:16px}
 
   /* ---------- topo ---------- */
@@ -195,7 +196,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .vd-play i{width:66px;height:66px;border-radius:50%;background:var(--vermelho);display:flex;align-items:center;justify-content:center;box-shadow:0 10px 28px #000a}
   .vd-play svg{width:24px;height:24px;margin-left:4px;fill:#fff}
   .vd.tocando .vd-play{display:none}
-  .vd-leg{margin-top:16px;font-family:Fraunces,Georgia,serif;font-style:italic;font-weight:600;font-size:17px;line-height:1.5;color:var(--dourado-claro);text-align:center}
+  .vd-leg{margin-top:16px;font-weight:700;font-size:16px;line-height:1.5;color:var(--dourado-claro);text-align:center}
   .vd-leg b{display:block;margin-top:6px;font-family:Montserrat,Arial,sans-serif;font-style:normal;font-size:12.5px;font-weight:700;color:var(--branco-2)}
   .prova-txt .numero{font-size:56px;font-weight:900;color:var(--dourado);line-height:1;letter-spacing:-2px}
   .prova-txt .numero small{display:block;font-size:13px;font-weight:700;letter-spacing:.5px;color:var(--branco-2);margin-top:8px}
