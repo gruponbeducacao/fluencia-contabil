@@ -40,8 +40,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   3. O container GTM-MGQFHR5J escuta `lead_capturado` e manda o Lead para a
      Meta. NÃO chamar fbq('track','Lead') aqui: o Lead contaria duas vezes.
 
-  4. GRUPO_VIP vazio esconde o botão do grupo. Preencher com o link de convite
-     do grupo antes do merge.
+  4. Depois da inscrição a página vai para black-obrigado (convite do grupo VIP).
+     GRUPO_VIP vazio esconde o botão do grupo no cartão de "Pronto", que só
+     aparece para quem volta à página ou se o redirecionamento falhar.
 -->
 
 <meta property="og:type" content="website">
@@ -587,8 +588,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   /* As duas linhas da Config Aulas (ver o comentário no topo). */
   var ORIGEM = 'aula_black_2026';
   var ORIGEM_COM_WHATSAPP = 'aula_black_2026_whatsapp';
-  /* Link de convite do grupo VIP. Vazio = botão escondido. */
-  var GRUPO_VIP = '';
+  /* Link de convite do grupo "Black da Fluência · Lista VIP" (criado em 20/10/2026).
+     Vazio = botão escondido. O mesmo link está na black-obrigado.html. */
+  var GRUPO_VIP = 'https://chat.whatsapp.com/E1g998o4J2H8ZOD7RoeHxZ';
 
   /* 11/11/2026, 20h de Brasília. */
   var LIVE = new Date('2026-11-11T20:00:00-03:00').getTime();
@@ -781,11 +783,24 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     }
     if (!novo) return;
     try { localStorage.setItem(CHAVE_LOCAL, '1'); } catch(e){}
+    /* O primeiro nome vai para a página de obrigado pelo sessionStorage, nunca pela URL. */
+    try { sessionStorage.setItem('fc_black_nome', (nome.value.split(/\s+/)[0] || '').slice(0, 30)); } catch(e){}
     el('vip-ok-titulo').setAttribute('tabindex', '-1');
     el('vip-ok-titulo').focus();
     /* O Lead sai pelo container (gatilho `lead_capturado` → tag Meta — Lead).
-       Ver o comentário no topo antes de mexer. */
-    try { if (window.dataLayer) window.dataLayer.push({event:'lead_capturado', origem:'black_2026'}); } catch(e){}
+       Ver o comentário no topo antes de mexer. Só depois de o GTM disparar as
+       tags a página vai para o obrigado; sem GTM (bloqueador), vai em 1,6 s.
+       O cartão de "Pronto" fica na tela se o redirecionamento falhar. */
+    var foi = false;
+    function irObrigado(){ if (foi) return; foi = true; location.href = 'black-obrigado'; }
+    try {
+      if (window.dataLayer && window.google_tag_manager) {
+        window.dataLayer.push({event:'lead_capturado', origem:'black_2026', eventCallback: irObrigado, eventTimeout: 1500});
+      } else if (window.dataLayer) {
+        window.dataLayer.push({event:'lead_capturado', origem:'black_2026'});
+      }
+    } catch(e){}
+    setTimeout(irObrigado, 1600);
   }
 
   // quem já entrou na lista, neste navegador, não repete o cadastro
