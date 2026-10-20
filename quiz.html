@@ -419,7 +419,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   /* ---------- Vídeo de aluno ---------- */
   .vd { margin: 22px auto 6px; width: min(78%, 280px); }
   .vd-moldura { position: relative; aspect-ratio: 9 / 16; border-radius: 20px; overflow: hidden; background: var(--navy-fundo); box-shadow: var(--sombra); }
-  .vd-moldura video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+  .vd-moldura img, .vd-moldura iframe { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
   .vd-play { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; border: 0; background: linear-gradient(180deg, rgba(23,35,63,0) 55%, rgba(23,35,63,.45)); cursor: pointer; }
   .vd-play i { width: 58px; height: 58px; border-radius: 50%; background: rgba(255,255,255,.94); display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 22px rgba(0,0,0,.3); }
   .vd-play svg { width: 22px; height: 22px; margin-left: 3px; fill: var(--navy); }
@@ -795,15 +795,18 @@ function telaReal(tipo) {
     '<video autoplay muted loop playsinline preload="auto" poster="' + b + '.jpg"><source src="' + b + '.mp4" type="video/mp4"></video></div>';
 }
 
-/* Vídeo de aluno. Toque para ouvir; o vídeo já vem legendado. */
+/* Vídeo de aluno (Panda). O player só carrega no toque: poster leve até lá, para não pesar a tela. */
+var DEPO_PANDA = 'https://player-vz-7867cfdb-be1.tv.pandavideo.com.br/embed/?v=d8614e2c-f9bc-4c83-8373-de2d66e05b15';
 function videoAluno() {
-  return '<div class="vd"><div class="vd-moldura"><video playsinline preload="metadata" poster="assets/quiz/depo/tallys.jpg"><source src="assets/quiz/depo/tallys.mp4?v=20261020a" type="video/mp4"></video>' +
+  return '<div class="vd"><div class="vd-moldura"><img src="assets/quiz/depo/tallys.jpg" alt="" width="540" height="960" loading="lazy">' +
     '<button type="button" class="vd-play" data-acao="vd-play" aria-label="Assistir ao depoimento do Tallys"><i><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></i></button></div>' +
     '<p class="vd-leg">“Direta, sem enrolação e focada naquilo que realmente cai na prova.”<b>Tallys · aprovado em Auditor Fiscal, 2026</b></p></div>';
 }
 document.addEventListener('click', function (ev) {
   var b = ev.target.closest && ev.target.closest('[data-acao="vd-play"]'); if (!b) return;
-  var box = b.closest('.vd'), v = box.querySelector('video'); box.classList.add('tocando'); v.controls = true; v.currentTime = 0; v.play();
+  var box = b.closest('.vd'), m = box.querySelector('.vd-moldura');
+  m.insertAdjacentHTML('beforeend', '<iframe src="' + DEPO_PANDA + '&autoplay=true" title="Depoimento do Tallys" style="border:none" allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture" allowfullscreen></iframe>');
+  box.classList.add('tocando');
   track('depo_video_play', { aluno: 'tallys' });
 });
 
