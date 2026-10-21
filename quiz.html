@@ -420,6 +420,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   @media (prefers-reduced-motion: reduce) { .ov-anel { animation: none; } .overlay { transition: none; } }
   /* ---------- Vídeo de aluno ---------- */
   .vd { margin: 22px auto 6px; width: min(78%, 280px); }
+  /* dois vídeos: no celular uma fileira que rola de lado (o 2º aparece pela metade); com 520 px ou mais os dois cabem */
+  .vd-fila { display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; margin: 22px -20px 6px; padding: 4px 20px 12px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .vd-fila::-webkit-scrollbar { display: none; }
+  .vd-fila .vd { flex: 0 0 min(62vw, 225px); width: auto; margin: 0; scroll-snap-align: center; }
+  @media (min-width: 520px) { .vd-fila { justify-content: center; overflow: visible; margin: 22px 0 6px; padding: 4px 0 12px; } }
   .vd-moldura { position: relative; aspect-ratio: 9 / 16; border-radius: 20px; overflow: hidden; background: var(--navy-fundo); box-shadow: var(--sombra); }
   .vd-moldura img, .vd-moldura iframe { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
   .vd-play { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; border: 0; background: linear-gradient(180deg, rgba(23,35,63,0) 55%, rgba(23,35,63,.45)); cursor: pointer; }
@@ -799,19 +804,28 @@ function telaReal(tipo) {
     '<video autoplay muted loop playsinline preload="auto" poster="' + b + '.jpg"><source src="' + b + '.mp4" type="video/mp4"></video></div>';
 }
 
-/* Vídeo de aluno (Panda). O player só carrega no toque: poster leve até lá, para não pesar a tela. */
-var DEPO_PANDA = 'https://player-vz-7867cfdb-be1.tv.pandavideo.com.br/embed/?v=d8614e2c-f9bc-4c83-8373-de2d66e05b15';
+/* Vídeos de aluno (Panda). O player só carrega no toque: poster leve até lá, para não pesar a tela.
+   Mesmos dois vídeos das páginas de venda e da /black (Antônio Sombra e Tallys). */
+var PANDA = 'https://player-vz-7867cfdb-be1.tv.pandavideo.com.br/embed/?v=';
+var DEPO_VIDEOS = [
+  { id: '386fd537-c0c7-4af3-a6e1-2dde6eae8ec1', aluno: 'antonio-sombra', nome: 'Antônio Sombra', img: 'assets/depoimentos/video/antonio-sombra.jpg',
+    frase: 'Comecei a achar contabilidade fácil e comecei a perder o medo de estudar aquele monte de CPC.', quem: 'Antônio Sombra · Auditor do TCU' },
+  { id: 'd8614e2c-f9bc-4c83-8373-de2d66e05b15', aluno: 'tallys', nome: 'Tallys', img: 'assets/quiz/depo/tallys.jpg',
+    frase: 'Direta, sem enrolação e focada naquilo que realmente cai na prova.', quem: 'Tallys · aprovado em Auditor Fiscal, 2026' }
+];
 function videoAluno() {
-  return '<div class="vd"><div class="vd-moldura"><img src="assets/quiz/depo/tallys.jpg" alt="" width="540" height="960" loading="lazy">' +
-    '<button type="button" class="vd-play" data-acao="vd-play" aria-label="Assistir ao depoimento do Tallys"><i><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></i></button></div>' +
-    '<p class="vd-leg">“Direta, sem enrolação e focada naquilo que realmente cai na prova.”<b>Tallys · aprovado em Auditor Fiscal, 2026</b></p></div>';
+  return '<div class="vd-fila">' + DEPO_VIDEOS.map(function (v) {
+    return '<div class="vd" data-panda="' + v.id + '" data-aluno="' + v.aluno + '" data-nome="' + esc(v.nome) + '"><div class="vd-moldura"><img src="' + v.img + '" alt="" width="540" height="960" loading="lazy">' +
+      '<button type="button" class="vd-play" data-acao="vd-play" aria-label="Assistir ao depoimento de ' + esc(v.nome) + '"><i><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></i></button></div>' +
+      '<p class="vd-leg">“' + esc(v.frase) + '”<b>' + esc(v.quem) + '</b></p></div>';
+  }).join('') + '</div>';
 }
 document.addEventListener('click', function (ev) {
   var b = ev.target.closest && ev.target.closest('[data-acao="vd-play"]'); if (!b) return;
   var box = b.closest('.vd'), m = box.querySelector('.vd-moldura');
-  m.insertAdjacentHTML('beforeend', '<iframe src="' + DEPO_PANDA + '&autoplay=true" title="Depoimento do Tallys" style="border:none" allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture" allowfullscreen></iframe>');
+  m.insertAdjacentHTML('beforeend', '<iframe src="' + PANDA + box.getAttribute('data-panda') + '&autoplay=true" title="Depoimento de ' + esc(box.getAttribute('data-nome')) + '" style="border:none" allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture" allowfullscreen></iframe>');
   box.classList.add('tocando');
-  track('depo_video_play', { aluno: 'tallys' });
+  track('depo_video_play', { aluno: box.getAttribute('data-aluno') });
 });
 
 /* Carrossel de depoimentos girando (mesmo padrão da assinatura.html). O grupo aparece duas vezes para o giro não ter emenda. */
