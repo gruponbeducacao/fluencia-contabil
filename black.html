@@ -187,7 +187,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .cta-meio small{display:block;margin-top:12px;font-size:12.5px;color:var(--branco-2)}
 
   /* ---------- quem já está por dentro ---------- */
-  .prova{display:grid;grid-template-columns:300px 1fr;gap:48px;align-items:center;margin-top:36px}
+  .prova{display:grid;grid-template-columns:auto 1fr;gap:48px;align-items:center;margin-top:36px}
+  .prova-vds{display:flex;gap:22px}
+  .prova-vds .vd{width:250px}
   .vd-moldura{position:relative;aspect-ratio:9/16;border-radius:20px;overflow:hidden;background:var(--azul);
     border:1px solid #c8a84b66;box-shadow:0 24px 60px #000b}
   .vd-moldura img,.vd-moldura iframe{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;border:0}
@@ -285,7 +287,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .prof{grid-template-columns:1fr;gap:24px}
     .prof img{width:170px}
     .prova{grid-template-columns:1fr;gap:28px}
-    .vd{width:min(78%,290px);margin-inline:auto}
+    /* os dois vídeos viram uma fileira que rola de lado; o 2º aparece pela metade */
+    .prova-vds{overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 20px 14px;margin:0 -20px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+    .prova-vds::-webkit-scrollbar{display:none}
+    .prova-vds .vd{flex:0 0 min(72vw,270px);width:auto;scroll-snap-align:center}
     .tela{grid-template-columns:1fr;gap:20px}
     .raiox-in{grid-template-columns:1fr;gap:40px}
     .raiox-pags{order:-1;height:auto;aspect-ratio:1.15;max-width:520px;width:100%;margin-inline:auto}
@@ -470,12 +475,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="eyebrow">Quem já está por dentro</span>
     <h2>O que os alunos dizem, <span class="it">nas palavras deles.</span></h2>
     <div class="prova">
-      <div class="vd">
-        <div class="vd-moldura">
-          <img src="assets/quiz/depo/tallys.jpg" alt="" width="540" height="960" loading="lazy">
-          <button type="button" class="vd-play" id="vd-play" aria-label="Assistir ao depoimento do Tallys"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4l14 8-14 8z"/></svg></i></button>
+      <div class="prova-vds">
+        <div class="vd" data-panda="386fd537-c0c7-4af3-a6e1-2dde6eae8ec1" data-aluno="antonio-sombra" data-nome="Antônio Sombra">
+          <div class="vd-moldura">
+            <img src="assets/depoimentos/video/antonio-sombra.jpg" alt="" width="540" height="960" loading="lazy">
+            <button type="button" class="vd-play" aria-label="Assistir ao depoimento de Antônio Sombra"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4l14 8-14 8z"/></svg></i></button>
+          </div>
+          <p class="vd-leg">“Comecei a achar contabilidade fácil e comecei a perder o medo de estudar aquele monte de CPC.”<b>Antônio Sombra · Auditor do TCU</b></p>
         </div>
-        <p class="vd-leg">“Direta, sem enrolação e focada naquilo que realmente cai na prova.”<b>Tallys · aprovado em Auditor Fiscal, 2026</b></p>
+        <div class="vd" data-panda="d8614e2c-f9bc-4c83-8373-de2d66e05b15" data-aluno="tallys" data-nome="Tallys">
+          <div class="vd-moldura">
+            <img src="assets/quiz/depo/tallys.jpg" alt="" width="540" height="960" loading="lazy">
+            <button type="button" class="vd-play" aria-label="Assistir ao depoimento de Tallys"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4l14 8-14 8z"/></svg></i></button>
+          </div>
+          <p class="vd-leg">“Direta, sem enrolação e focada naquilo que realmente cai na prova.”<b>Tallys · aprovado em Auditor Fiscal, 2026</b></p>
+        </div>
       </div>
       <div class="prova-txt">
         <div class="numero">3.000+<small>alunos ao longo de 40 turmas</small></div>
@@ -735,18 +749,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   fileira('dep-a', FILEIRA_A);
   fileira('dep-b', FILEIRA_B);
 
-  /* Vídeo do Tallys (Panda). O player só carrega no toque. A biblioteca do
-     Panda libera por domínio: fora de fluenciacontabil.com.br ele não toca. */
-  var DEPO_PANDA = 'https://player-vz-7867cfdb-be1.tv.pandavideo.com.br/embed/?v=d8614e2c-f9bc-4c83-8373-de2d66e05b15';
-  el('vd-play').addEventListener('click', function(){
-    var box = this.closest('.vd'), m = box.querySelector('.vd-moldura');
-    var f = document.createElement('iframe');
-    f.src = DEPO_PANDA + '&autoplay=true';
-    f.title = 'Depoimento do Tallys';
-    f.allow = 'accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture';
-    f.allowFullscreen = true;
-    m.appendChild(f);
-    box.classList.add('tocando');
+  /* Vídeos de aluno (Panda: Antônio Sombra e Tallys). O player só carrega no toque; o id da Panda vem do
+     data-panda de cada .vd. A biblioteca do Panda libera por domínio: fora de fluenciacontabil.com.br ele não toca. */
+  var PANDA = 'https://player-vz-7867cfdb-be1.tv.pandavideo.com.br/embed/?v=';
+  document.querySelectorAll('.vd-play').forEach(function(b){
+    b.addEventListener('click', function(){
+      var box = this.closest('.vd'), m = box.querySelector('.vd-moldura');
+      var f = document.createElement('iframe');
+      f.src = PANDA + box.getAttribute('data-panda') + '&autoplay=true';
+      f.title = 'Depoimento de ' + box.getAttribute('data-nome');
+      f.allow = 'accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture';
+      f.allowFullscreen = true;
+      m.appendChild(f);
+      box.classList.add('tocando');
+      try { window.dataLayer = window.dataLayer || []; window.dataLayer.push({event: 'depo_video_play', aluno: box.getAttribute('data-aluno'), pagina: location.pathname}); } catch (e) {}
+    });
   });
 
   // ───────────── a plataforma por dentro ─────────────
