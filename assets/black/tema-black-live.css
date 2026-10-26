@@ -1,0 +1,80 @@
+/* ═══════════════════════════════════════════════════════════════
+   Black da Fluência na página aula-ao-vivo.html (pedido do Vinícius em 24/10/2026: "atualizar a página de
+   aulas ao vivo para o estilo Black").
+
+   Camada TEMPORÁRIA, como o resto do tema: só vale com html.tema-black, que o assets/black/tema-black.js liga
+   de 24/10 a 28/11/2026 0h. Fora da janela a página volta sozinha ao visual claro de sempre.
+
+   O tema-black.css já deixa topo, hero, faixa e selo no preto. Aqui as seções que ficavam em creme e branco
+   (argumento, regra da casa, professor, FAQ) e o modal de captura entram no preto da Black, com dourado no
+   destaque e vermelho só nos botões de ação. Sem sidebar nem filete colorido no card.
+   ═══════════════════════════════════════════════════════════════ */
+
+html.tema-black{
+  --creme:#0F1522;
+  --txt:#E9EDF5;
+  --cinza:#B6BFD0;
+  --borda:rgba(200,168,75,.28);
+  --dourado-ink:#D4B860;
+}
+html.tema-black body{background:#0B0E14;color:var(--txt)}
+html.tema-black h1,
+html.tema-black h2,
+html.tema-black h3{color:#fff}
+html.tema-black .eyebrow{color:#D4B860}
+
+/* todas as seções no preto; duas no azul-noite da Black para separar os blocos */
+html.tema-black .sec{background:#0B0E14}
+html.tema-black .argumento,
+html.tema-black .faq{background:#0F1522}
+html.tema-black .argumento,
+html.tema-black .faq,
+html.tema-black .fecho{position:relative;isolation:isolate}
+html.tema-black .argumento::before,
+html.tema-black .faq::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background-image:linear-gradient(rgba(200,168,75,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(200,168,75,.045) 1px,transparent 1px);
+  background-size:46px 46px;-webkit-mask-image:radial-gradient(ellipse 75% 70% at 30% 20%,#000 25%,transparent 100%);mask-image:radial-gradient(ellipse 75% 70% at 30% 20%,#000 25%,transparent 100%)}
+
+/* argumento */
+html.tema-black .destaque{color:#fff}
+html.tema-black .passo{background:rgba(27,42,74,.55);border-color:rgba(200,168,75,.32)}
+html.tema-black .passo .n{background:#D4B860;color:#0B0E14}
+
+/* a regra da casa */
+html.tema-black .criterio{background:rgba(27,42,74,.45);border-color:rgba(200,168,75,.32)}
+html.tema-black .criterio .tag{background:rgba(200,168,75,.12);border-color:rgba(200,168,75,.45);color:#D4B860}
+
+/* professor: a foto de fundo cinza dá lugar ao recorte, com a luz dourada das peças da Black */
+.prof-black{display:none}
+html.tema-black .prof picture{display:none}
+html.tema-black .prof .prof-black{display:block;width:220px;height:auto;border:0;border-radius:0;
+  background:radial-gradient(closest-side at 50% 42%,rgba(212,184,96,.34),rgba(212,184,96,0) 78%);
+  filter:drop-shadow(0 0 2px rgba(212,184,96,.85));
+  -webkit-mask-image:linear-gradient(#000 66%,transparent 99%);mask-image:linear-gradient(#000 66%,transparent 99%)}
+@media (max-width:920px){html.tema-black .prof .prof-black{width:170px}}
+
+/* FAQ */
+html.tema-black .faq details{border-bottom-color:rgba(255,255,255,.12)}
+html.tema-black .faq summary{color:#fff}
+html.tema-black .faq summary::after{color:#D4B860}
+
+/* fecho e rodapé */
+html.tema-black .fecho{background:radial-gradient(ellipse 70% 90% at 50% 0%,rgba(200,168,75,.2),transparent 60%),#0B0E14}
+html.tema-black footer{background:#07090D}
+
+/* modal de captura: o creme vira o cartão escuro da Black */
+html.tema-black dialog.captura{background:#101624;border-color:rgba(200,168,75,.55);color:var(--txt);box-shadow:0 30px 100px #000c}
+html.tema-black dialog.captura::backdrop{background:rgba(5,7,11,.88)}
+html.tema-black .cap-arte{background:radial-gradient(ellipse at 20% 20%,rgba(200,168,75,.26),transparent 70%),#0B0E14}
+html.tema-black .cap-fechar{background:#1B2A4A;border-color:rgba(200,168,75,.5);color:#fff}
+html.tema-black #cap-form label{color:#D4B860}
+html.tema-black #cap-email{background:#0B0E14;border-color:rgba(200,168,75,.6);color:#fff}
+html.tema-black #cap-email::placeholder{color:#7f8aa1}
+html.tema-black #cap-email:focus{border-color:#D4B860}
+html.tema-black .cap-privacidade{color:#9aa6bd}
+html.tema-black .cap-privacidade a,
+html.tema-black .cap-nota a{color:#D4B860}
+html.tema-black .cap-ok-titulo{color:#7AD6A0}
+html.tema-black .btn-agenda{background:transparent;border-color:rgba(200,168,75,.6);color:#fff}
+html.tema-black .btn-agenda:hover,
+html.tema-black .btn-agenda:focus-visible{background:#D4B860;color:#0B0E14}
