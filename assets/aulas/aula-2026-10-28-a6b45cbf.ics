@@ -1,0 +1,23 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Fluencia Contabil//Aula ao vivo//PT
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:aula_ao_vivo_2026_10_28@fluenciacontabil.com.br
+DTSTAMP:20261026T215608Z
+DTSTART:20261028T230000Z
+DTEND:20261029T010000Z
+SUMMARY:Aula ao vivo: DVA — Demonstração do Valor Adicionado (CPC 09)
+DESCRIPTION:Ao vivo e gratuita no YouTube: https://www.youtube.com/live/Zpi
+ mv_t7-zQ
+LOCATION:https://www.youtube.com/live/Zpimv_t7-zQ
+URL:https://www.youtube.com/live/Zpimv_t7-zQ
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Aula ao vivo: DVA — Demonstração do Valor Adicionado (CPC 0
+ 9)
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+END:VCALENDAR
