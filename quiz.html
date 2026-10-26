@@ -805,15 +805,15 @@ function telaReal(tipo) {
 }
 
 /* Vídeos de aluno (Panda). O player só carrega no toque: poster leve até lá, para não pesar a tela.
-   Mesmos vídeos das páginas de venda e da /black (Antônio Sombra, Tallys e Jorge Henriquez). */
+   Mesmos vídeos das páginas de venda e da /black (Antônio Sombra, Tallys e Jorge Henriques). */
 var PANDA = 'https://player-vz-7867cfdb-be1.tv.pandavideo.com.br/embed/?v=';
 var DEPO_VIDEOS = [
   { id: '386fd537-c0c7-4af3-a6e1-2dde6eae8ec1', aluno: 'antonio-sombra', nome: 'Antônio Sombra', img: 'assets/depoimentos/video/antonio-sombra.jpg',
     frase: 'Comecei a achar contabilidade fácil e comecei a perder o medo de estudar aquele monte de CPC.', quem: 'Antônio Sombra · Auditor do TCU' },
   { id: 'd8614e2c-f9bc-4c83-8373-de2d66e05b15', aluno: 'tallys', nome: 'Tallys', img: 'assets/quiz/depo/tallys.jpg',
     frase: 'Direta, sem enrolação e focada naquilo que realmente cai na prova.', quem: 'Tallys · aprovado em Auditor Fiscal, 2026' },
-  { id: 'f18d5b53-db35-410e-a384-0071fd7bf9c3', aluno: 'jorge-henriquez', nome: 'Jorge Henriquez', img: 'assets/depoimentos/video/jorge-henriquez.jpg',
-    frase: 'Era um CPC que eu não conseguia entender em nenhuma outra aula, e eu só consegui aprender com ele.', quem: 'Jorge Henriquez · Auditor Fiscal do Rio de Janeiro, 2º lugar' }
+  { id: '89779efb-8bbf-4af1-b544-5d7cf01c8204', aluno: 'jorge-henriques', nome: 'Jorge Henriques', img: 'assets/depoimentos/video/jorge-henriques.jpg',
+    frase: 'Era um CPC que eu não conseguia entender em nenhuma outra aula, e eu só consegui aprender com ele.', quem: 'Jorge Henriques · Auditor Fiscal do Rio de Janeiro, 2º lugar' }
 ];
 function videoAluno() {
   return '<div class="vd-fila">' + DEPO_VIDEOS.map(function (v) {
