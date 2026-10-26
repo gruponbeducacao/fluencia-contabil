@@ -1,6 +1,6 @@
 {
   "versao": 1,
-  "gerado_em": "2026-10-14T20:08",
+  "gerado_em": "2026-10-24T11:59",
   "gerado_por": "_LIVES/_semanal/publicar_semana_lp.py",
   "aulas": [
     {
@@ -67,6 +67,23 @@
       "ics": "assets/aulas/aula-2026-10-21-0cdc0892.ics",
       "agenda_google": "https://calendar.google.com/calendar/render?action=TEMPLATE&text=Aula+ao+vivo%3A+DFC+%E2%80%94+Demonstra%C3%A7%C3%A3o+dos+Fluxos+de+Caixa+%28CPC+03%29&dates=20261021T230000Z%2F20261022T010000Z&details=Ao+vivo+e+gratuita+no+YouTube%3A+https%3A%2F%2Fwww.youtube.com%2Flive%2FBO3dhLv8Uoc&location=https%3A%2F%2Fwww.youtube.com%2Flive%2FBO3dhLv8Uoc",
       "questoes_folha": 23
+    },
+    {
+      "data": "2026-10-28",
+      "origem": "aula_ao_vivo_2026_10_28",
+      "campanha": "Live Semanal 28/10 — DVA",
+      "tema": "DVA — Demonstração do Valor Adicionado (CPC 09)",
+      "ancora": "FGV, FCC e CEBRASPE",
+      "titulo": "DVA: a demonstração inteira em <em>22 questões</em>.",
+      "sub": "Quarta, 28/10, às 20h, eu resolvo 22 questões de Demonstração do Valor Adicionado, em ordem de dificuldade: do reconhecimento da demonstração ao cálculo completo, com a amarração fechando. <strong>Pegue o caderno de questões, resolva antes e receba as resoluções por e-mail depois da aula.</strong>",
+      "questoes": 22,
+      "paginas": 33,
+      "pdf": "assets/aulas/folha-2026-10-28-d97ded1f.pdf",
+      "capa_jpg": "assets/aulas/live-2026-10-28-capa-9430b2cd.jpg",
+      "capa_webp": "assets/aulas/live-2026-10-28-capa-9430b2cd.webp",
+      "youtube": null,
+      "ics": null,
+      "agenda_google": null
     }
   ]
 }
