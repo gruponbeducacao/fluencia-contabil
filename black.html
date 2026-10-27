@@ -316,7 +316,23 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .demo-moldura iframe{height:520px}
     .prova-txt .numero{font-size:44px}
   }
+  /* mensagem do Raio-X (html[data-rx]): no celular o formulário sobe para a primeira tela */
+  @media (max-width:920px){
+    html[data-rx] .selo-hero,html[data-rx] .quando,html[data-rx] .contagem,html[data-rx] .contagem-fim{display:none}
+    html[data-rx] .hero-in{gap:22px;padding-top:22px}
+    html[data-rx] .hero p.sub{font-size:16px;line-height:1.6;margin-top:12px}
+    html[data-rx] .cartao{display:flex;flex-direction:column;padding:24px 20px 22px}
+    html[data-rx] .cartao .eyebrow,html[data-rx] #vip-sub{display:none}
+    html[data-rx] #vip-form{order:1}
+    html[data-rx] #vip-bonus{order:2;margin-top:18px}
+    html[data-rx] #vip-ok{order:3}
+    html[data-rx] .cartao noscript{order:4}
+  }
 </style>
+<script>
+/* Tráfego dos anúncios do Raio-X (utm_content ou src começando por "rx-"): a primeira tela troca a mensagem para casar com o anúncio. */
+(function(){try{var q=new URLSearchParams(location.search),c=(q.get('utm_content')||q.get('src')||'').toLowerCase();if(c.indexOf('rx-')===0)document.documentElement.setAttribute('data-rx','1');}catch(e){}})();
+</script>
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
@@ -401,6 +417,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
   </div>
 </section>
+<script>
+/* Quem vem dos anúncios do Raio-X (html[data-rx], marcado no <head>) vê a promessa do anúncio na primeira tela. */
+(function(){
+  if(!document.documentElement.hasAttribute('data-rx'))return;
+  function t(sel,html){var e=document.querySelector(sel);if(e)e.innerHTML=html;}
+  t('.topbar .cta','Quero o Raio-X');
+  t('.hero h1','Receba <span class="it">grátis</span> o <span style="white-space:nowrap">Raio-X da Banca</span>.');
+    t('.hero p.sub','PDF grátis com o que FGV, CEBRASPE, FCC, VUNESP e CESGRANRIO mais cobram em Contabilidade. Você também entra na lista VIP da <strong>Black da Fluência</strong>: 11/11, 20h, ao vivo.');
+  t('.cartao .eyebrow','Raio-X da Banca · PDF grátis');
+  t('#vip-titulo','Receba o <span style="white-space:nowrap">Raio-X da Banca</span>');
+  t('#vip-sub','Deixe seus dados e baixe <strong>na hora o PDF do Raio-X da Banca</strong>. Você também recebe o link da live antes de todo mundo.');
+  window.__rotuloEnviar='Quero o Raio-X da Banca';
+  t('#vip-enviar',window.__rotuloEnviar);
+})();
+</script>
 
 <div class="autoridade">
   <div class="wrap">
@@ -851,7 +882,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   function falhar(msg, campo){
     erro.textContent = msg; erro.hidden = false;
-    enviar.disabled = false; enviar.textContent = 'Entrar na lista VIP';
+    enviar.disabled = false; enviar.textContent = (window.__rotuloEnviar || 'Entrar na lista VIP');
     [nome, tel, email].forEach(function(c){ c.readOnly = false; });
     (campo || enviar).focus();
   }
