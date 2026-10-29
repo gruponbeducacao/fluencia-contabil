@@ -522,7 +522,7 @@ function syncPendingToSES() {
           processed++;
           continue;
         }
-        var topic = topicOfRow_(cfg, row, cols);
+        var topic = topicOfRow_(cfg, row, cols, cfg.topicCol ? aulasConfigDaExecucao_() : null);
         if (!topic) {
           // Campanha fora da Config Aulas (ou inativa). Marca e segue — o lead
           // fica na planilha, e limpar a célula faz o worker reprocessar.
@@ -898,6 +898,22 @@ function lerSegmento_(codigo, nomesOut) {
 }
 
 /**
+ * As campanhas da Config Aulas, lidas UMA vez por execução.
+ *
+ * ⚠️ O `topicOfRow_` que vale no projeto é o do captura_correcao.gs (mesmo nome,
+ * escopo global, o último arquivo ganha). Ele espera as campanhas no 4º
+ * parâmetro e, sem ele, chama `loadAulasConfig_()` a CADA LINHA — e essa
+ * leitura passa pela API do Sheets (`getByDataFilter`). Na aba Aulas ao Vivo
+ * isso estourou a cota de leituras por minuto e derrubou os três convites da
+ * Black por tópico (24, 25 e 29/10/2026). Passar a lista daqui resolve.
+ */
+var AULAS_CFG_EXECUCAO_ = null;
+function aulasConfigDaExecucao_() {
+  if (!AULAS_CFG_EXECUCAO_) AULAS_CFG_EXECUCAO_ = loadAulasConfig_();
+  return AULAS_CFG_EXECUCAO_;
+}
+
+/**
  * Coleta destinatários únicos das abas cujos tópicos foram pedidos (1º registro
  * ganha o nome/tópico).
  *
@@ -923,7 +939,7 @@ function collectRecipients_(topicos, segmentoCodigo) {
       // ⚠️ O tópico é da LINHA, não da aba. Sem isto, um broadcast para a
       // campanha X levaria junto todo mundo da campanha Y, que mora na mesma
       // aba "Aulas ao Vivo".
-      var topic = topicOfRow_(cfg, row, cols);
+      var topic = topicOfRow_(cfg, row, cols, cfg.topicCol ? aulasConfigDaExecucao_() : null);
       if (!topic || topicos.indexOf(topic) === -1) return;
       var email = String(row[cols['E-mail'] - 1] || '').trim().toLowerCase();
       if (!isValidEmail(email) || seen[email]) return;
