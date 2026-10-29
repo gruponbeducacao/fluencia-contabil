@@ -1,0 +1,23 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Fluencia Contabil//Aula ao vivo//PT
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:aula_ao_vivo_2026_11_04@fluenciacontabil.com.br
+DTSTAMP:20261029T142321Z
+DTSTART:20261104T230000Z
+DTEND:20261105T010000Z
+SUMMARY:Aula ao vivo: MEP — Método de Equivalência Patrimonial (CPC 18)
+DESCRIPTION:Ao vivo e gratuita no YouTube: https://www.youtube.com/live/Li6
+ zhNyCY5g
+LOCATION:https://www.youtube.com/live/Li6zhNyCY5g
+URL:https://www.youtube.com/live/Li6zhNyCY5g
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Aula ao vivo: MEP — Método de Equivalência Patrimonial (CPC
+  18)
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+END:VCALENDAR

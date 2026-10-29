@@ -1,6 +1,6 @@
 {
   "versao": 1,
-  "gerado_em": "2026-10-29T11:17",
+  "gerado_em": "2026-10-29T11:23",
   "gerado_por": "_LIVES/_semanal/publicar_semana_lp.py",
   "aulas": [
     {
@@ -98,9 +98,9 @@
       "pdf": "assets/aulas/folha-2026-11-04-2ed99e56.pdf",
       "capa_jpg": "assets/aulas/live-2026-11-04-capa-40d24484.jpg",
       "capa_webp": "assets/aulas/live-2026-11-04-capa-40d24484.webp",
-      "youtube": null,
-      "ics": null,
-      "agenda_google": null
+      "youtube": "https://www.youtube.com/live/Li6zhNyCY5g",
+      "ics": "assets/aulas/aula-2026-11-04-08f7cc85.ics",
+      "agenda_google": "https://calendar.google.com/calendar/render?action=TEMPLATE&text=Aula+ao+vivo%3A+MEP+%E2%80%94+M%C3%A9todo+de+Equival%C3%AAncia+Patrimonial+%28CPC+18%29&dates=20261104T230000Z%2F20261105T010000Z&details=Ao+vivo+e+gratuita+no+YouTube%3A+https%3A%2F%2Fwww.youtube.com%2Flive%2FLi6zhNyCY5g&location=https%3A%2F%2Fwww.youtube.com%2Flive%2FLi6zhNyCY5g"
     }
   ]
 }
