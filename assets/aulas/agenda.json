@@ -1,6 +1,6 @@
 {
   "versao": 1,
-  "gerado_em": "2026-10-29T11:05",
+  "gerado_em": "2026-10-29T11:17",
   "gerado_por": "_LIVES/_semanal/publicar_semana_lp.py",
   "aulas": [
     {
@@ -96,8 +96,8 @@
       "questoes": 20,
       "paginas": 23,
       "pdf": "assets/aulas/folha-2026-11-04-2ed99e56.pdf",
-      "capa_jpg": "assets/aulas/live-2026-11-04-capa-dd091913.jpg",
-      "capa_webp": "assets/aulas/live-2026-11-04-capa-dd091913.webp",
+      "capa_jpg": "assets/aulas/live-2026-11-04-capa-40d24484.jpg",
+      "capa_webp": "assets/aulas/live-2026-11-04-capa-40d24484.webp",
       "youtube": null,
       "ics": null,
       "agenda_google": null
