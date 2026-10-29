@@ -1,6 +1,6 @@
 {
   "versao": 1,
-  "gerado_em": "2026-10-26T18:56",
+  "gerado_em": "2026-10-29T11:05",
   "gerado_por": "_LIVES/_semanal/publicar_semana_lp.py",
   "aulas": [
     {
@@ -84,6 +84,23 @@
       "youtube": "https://www.youtube.com/live/Zpimv_t7-zQ",
       "ics": "assets/aulas/aula-2026-10-28-a6b45cbf.ics",
       "agenda_google": "https://calendar.google.com/calendar/render?action=TEMPLATE&text=Aula+ao+vivo%3A+DVA+%E2%80%94+Demonstra%C3%A7%C3%A3o+do+Valor+Adicionado+%28CPC+09%29&dates=20261028T230000Z%2F20261029T010000Z&details=Ao+vivo+e+gratuita+no+YouTube%3A+https%3A%2F%2Fwww.youtube.com%2Flive%2FZpimv_t7-zQ&location=https%3A%2F%2Fwww.youtube.com%2Flive%2FZpimv_t7-zQ"
+    },
+    {
+      "data": "2026-11-04",
+      "origem": "aula_ao_vivo_2026_11_04",
+      "campanha": "Live Semanal 04/11 — MEP",
+      "tema": "MEP — Método de Equivalência Patrimonial (CPC 18)",
+      "ancora": "FGV, FCC e CEBRASPE",
+      "titulo": "Equivalência patrimonial em <em>20 questões</em>.",
+      "sub": "Quarta, 04/11, às 20h, eu resolvo 20 questões de Método de Equivalência Patrimonial, em ordem de dificuldade: de quando o método se aplica até o lucro não realizado entre investidora e investida. <strong>Pegue o caderno de questões, resolva antes e receba as resoluções por e-mail depois da aula.</strong>",
+      "questoes": 20,
+      "paginas": 23,
+      "pdf": "assets/aulas/folha-2026-11-04-2ed99e56.pdf",
+      "capa_jpg": "assets/aulas/live-2026-11-04-capa-dd091913.jpg",
+      "capa_webp": "assets/aulas/live-2026-11-04-capa-dd091913.webp",
+      "youtube": null,
+      "ics": null,
+      "agenda_google": null
     }
   ]
 }
