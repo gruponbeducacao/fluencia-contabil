@@ -64,6 +64,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/black/estados.css?v=20261029">
 
 <style>
   /* Identidade da Black (plano v3): preto no fundo, dourado no destaque.
@@ -333,6 +334,22 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 /* Tráfego dos anúncios do Raio-X (utm_content ou src começando por "rx-"): a primeira tela troca a mensagem para casar com o anúncio. */
 (function(){try{var q=new URLSearchParams(location.search),c=(q.get('utm_content')||q.get('src')||'').toLowerCase();if(c.indexOf('rx-')===0)document.documentElement.setAttribute('data-rx','1');}catch(e){}})();
 </script>
+<script>
+/* Estado da /black pela hora de Brasília: ao vivo (11/11 20h), condição da noite (20h50),
+   carrinho (12/11 0h) e encerrado (28/11 0h). Decidido aqui para a página não piscar.
+   ?estado=ao-vivo|condicao|carrinho|encerrado força, para homologar. Ver assets/black/estados.css. */
+window.__black={estado:function(){
+  var q=null,V=['ao-vivo','condicao','carrinho','encerrado'],t=Date.now();
+  try{q=new URLSearchParams(location.search).get('estado');}catch(e){}
+  if(q&&V.indexOf(q)>=0)return q;
+  if(t>=Date.parse('2026-11-28T00:00:00-03:00'))return 'encerrado';
+  if(t>=Date.parse('2026-11-12T00:00:00-03:00'))return 'carrinho';
+  if(t>=Date.parse('2026-11-11T20:50:00-03:00'))return 'condicao';
+  if(t>=Date.parse('2026-11-11T20:00:00-03:00'))return 'ao-vivo';
+  return null;
+}};
+(function(){var e=window.__black.estado();if(e)document.documentElement.setAttribute('data-estado',e);})();
+</script>
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
@@ -350,8 +367,144 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </header>
 
+<!-- ══════════════════ ESTADOS DA NOITE DE 11/11 E DO CARRINHO ══════════════════
+     Escondidos até a hora (html[data-estado], decidido no <head>). Mock aprovado em 29/10/2026:
+     ao vivo sem preço até 20h50; bônus só na vitalícia; garantia de 7 dias; parcela sempre com
+     total e juros (3,49% a.m., 50,93% a.a.). Os checkouts da Kiwify ficam desativados até a hora. -->
+<div class="st" id="st-ao-vivo">
+  <section class="st-hero">
+    <div class="wrap">
+      <span class="st-ao-vivo"><i></i>Ao vivo agora</span>
+      <h1>A live da Black <span class="it">está no ar.</span></h1>
+      <p class="sub">Entra agora: a condição da Black da Fluência é revelada durante a transmissão e vale até 23h59 de hoje.</p>
+      <div class="st-player" id="st-player"></div>
+      <div class="st-acoes"><a class="btn" href="https://youtu.be/h02aFYBvoQ0" target="_blank" rel="noopener">Assistir no YouTube</a></div>
+    </div>
+  </section>
+</div>
+
+<div class="st" id="st-condicao">
+  <section class="st-hero">
+    <div class="wrap">
+      <span class="st-ao-vivo"><i></i>Só hoje · até 23h59</span>
+      <h1>A vitalícia da Fluência <span class="it">por R$ 537.</span></h1>
+      <p class="sub">É a condição que eu revelei na live: acesso vitalício à assinatura de Contabilidade, com os bônus da Black. Vale só até 23h59 de hoje.</p>
+      <div class="st-relogio" data-relogio="condicao" aria-label="Tempo até 23h59 de 11/11">
+        <div><b data-r="horas">--</b><span>horas</span></div>
+        <div><b data-r="min">--</b><span>min</span></div>
+        <div><b data-r="seg">--</b><span>seg</span></div>
+      </div>
+    </div>
+  </section>
+  <section class="st-sec noite" id="oferta">
+    <div class="wrap">
+      <div class="st-oferta">
+        <div class="st-nome">Vitalícia · noite da live</div>
+        <div class="st-preco">R$ 537 <small>à vista</small></div>
+        <div class="st-parc">ou 12× de R$ 55,54 no cartão</div>
+        <div class="st-legal">Total parcelado R$ 666,48 (juros de 3,49% ao mês, 50,93% ao ano).</div>
+        <ul class="st-lista">
+          <li>Todas as aulas da assinatura de Contabilidade, em vídeo e PDF</li>
+          <li>Banco de questões com resolução comentada</li>
+          <li>Mapa de Incidência e Meu Edital</li>
+          <li>Plano de estudos e as atualizações que vierem</li>
+        </ul>
+        <a class="btn" href="https://pay.kiwify.com.br/cZ3fQn9">Garantir a vitalícia por R$ 537</a>
+      </div>
+      <div class="st-bonus">
+        <div><b>Dicionário Contábil</b><span>Bônus da Black</span></div>
+        <div><b>Lançamentos Essenciais</b><span>Bônus da Black</span></div>
+        <div><b>Simulado</b><span>Bônus da Black</span></div>
+      </div>
+      <div class="st-cash"><p><b>Já pagou um plano da Fluência?</b> O que você pagou vira cashback e abate na vitalícia. Veja o seu valor na plataforma.</p>
+        <a href="https://portal.fluenciacontabil.com.br/minha-vitalicia">Ver meu cashback</a></div>
+      <p class="st-letras">Vitalícia é o acesso enquanto a plataforma existir, nos termos do
+        <a href="https://portal.fluenciacontabil.com.br/vitalicio" target="_blank" rel="noopener">Aditivo de Acesso Vitalício</a>.
+        Garantia de 7 dias. Pagamento por cartão, Pix ou boleto na Kiwify.</p>
+      <div class="st-centro"><a class="st-voltar" href="https://youtu.be/h02aFYBvoQ0" target="_blank" rel="noopener">Voltar para a live</a></div>
+    </div>
+  </section>
+  <section class="st-sec">
+    <div class="wrap">
+      <h2>Dúvidas da noite</h2>
+      <div class="st-faq">
+        <details open><summary>O que é a vitalícia?</summary><p>É o acesso à assinatura de Contabilidade enquanto a plataforma existir, sem renovação. As regras estão no Aditivo de Acesso Vitalício.</p></details>
+        <details><summary>E depois de hoje?</summary><p>De 12 a 27/11 a Black continua com duas condições: 12 meses por R$ 517 ou a vitalícia por R$ 814,80. Os R$ 537 são só desta noite.</p></details>
+        <details><summary>Sou Aluno Fundador. Preciso fazer alguma coisa?</summary><p>Não. Os Fundadores já são vitalícios, sem pagar nada. Está na sua página "Minha vitalícia".</p></details>
+        <details><summary>Já paguei um plano. Pago de novo?</summary><p>Não o valor inteiro: o que você pagou vira cashback e abate na vitalícia. O valor exato aparece em "Minha vitalícia", na plataforma.</p></details>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="st" id="st-carrinho">
+  <section class="st-hero">
+    <div class="wrap">
+      <span class="eyebrow">Black da Fluência · até 27/11, 23h59</span>
+      <h1>Duas condições, <span class="it">até 27/11.</span></h1>
+      <p class="sub">Escolha como quer estudar: 12 meses de acesso, ou a vitalícia, que sai do ar quando a Black terminar.</p>
+      <div class="st-relogio" data-relogio="carrinho" aria-label="Tempo até 23h59 de 27/11">
+        <div><b data-r="dias">--</b><span>dias</span></div>
+        <div><b data-r="horas">--</b><span>horas</span></div>
+        <div><b data-r="min">--</b><span>min</span></div>
+      </div>
+    </div>
+  </section>
+  <section class="st-sec noite" id="oferta-carrinho">
+    <div class="wrap">
+      <div class="st-ofertas">
+        <div class="st-oferta">
+          <div class="st-nome">12 meses</div>
+          <div class="st-preco">R$ 517 <small>à vista</small></div>
+          <div class="st-parc">ou 12× de R$ 53,47 no cartão</div>
+          <div class="st-legal">Total parcelado R$ 641,64 (juros de 3,49% ao mês, 50,93% ao ano).</div>
+          <div class="st-depois">Depois de 27/11, o plano anual passa a R$ 587.</div>
+          <ul class="st-lista"><li>12 meses de acesso à assinatura de Contabilidade</li></ul>
+          <a class="btn" href="https://pay.kiwify.com.br/aupgxRl">Quero 12 meses por R$ 517</a>
+        </div>
+        <div class="st-oferta">
+          <div class="st-nome">Vitalícia</div>
+          <div class="st-preco">R$ 814,80 <small>à vista</small></div>
+          <div class="st-parc">ou 12× de R$ 84,27 no cartão</div>
+          <div class="st-legal">Total parcelado R$ 1.011,24 (juros de 3,49% ao mês, 50,93% ao ano).</div>
+          <div class="st-depois">Depois de 27/11, a vitalícia sai do ar.</div>
+          <ul class="st-lista"><li>Acesso enquanto a plataforma existir, sem renovação</li><li>Bônus da Black: Dicionário, Lançamentos Essenciais e Simulado</li></ul>
+          <a class="btn" href="https://pay.kiwify.com.br/BAg54fd">Quero a vitalícia</a>
+        </div>
+      </div>
+      <div class="st-cash"><p><b>Já pagou um plano da Fluência?</b> Até 27/11, o que você pagou vira cashback e abate na vitalícia. Veja o seu valor na plataforma.</p>
+        <a href="https://portal.fluenciacontabil.com.br/minha-vitalicia">Ver meu cashback</a></div>
+      <p class="st-letras">Vitalícia nos termos do
+        <a href="https://portal.fluenciacontabil.com.br/vitalicio" target="_blank" rel="noopener">Aditivo de Acesso Vitalício</a>.
+        Garantia de 7 dias. Pagamento por cartão, Pix ou boleto na Kiwify.</p>
+    </div>
+  </section>
+  <section class="st-sec">
+    <div class="wrap">
+      <h2>Dúvidas</h2>
+      <div class="st-faq">
+        <details open><summary>Qual a diferença entre as duas?</summary><p>Os 12 meses dão um ano de acesso; depois, você renova pelo preço do momento. A vitalícia não tem renovação: o acesso vale enquanto a plataforma existir.</p></details>
+        <details><summary>E a condição de R$ 537?</summary><p>Valeu só na noite da live, até 23h59 de 11/11.</p></details>
+        <details><summary>O trimestral e o semestral estão na Black?</summary><p>Não. Na Black ficam só os 12 meses e a vitalícia.</p></details>
+        <details><summary>Já paguei um plano. Pago de novo?</summary><p>Não o valor inteiro: o que você pagou vira cashback e abate na vitalícia, até 27/11. O valor aparece em "Minha vitalícia".</p></details>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="st" id="st-encerrado">
+  <section class="st-hero">
+    <div class="wrap">
+      <span class="eyebrow">Black da Fluência 2026</span>
+      <h1>A Black terminou <span class="it">em 27/11.</span></h1>
+      <p class="sub">A vitalícia saiu do ar. A assinatura de Contabilidade continua aberta, com os planos de sempre.</p>
+      <div class="st-acoes"><a class="btn" href="assinatura.html">Ver os planos da assinatura</a></div>
+    </div>
+  </section>
+</div>
+
 <!-- ══════════════════ HERO ══════════════════ -->
-<section class="hero">
+<section class="hero so-lista">
   <div class="wrap hero-in">
     <div>
       <img class="selo-hero" src="assets/email/logo-black-selo.png" width="440" height="440"
@@ -445,7 +598,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
      O PDF é gerado fora do site (_MARKETING/_campanhas/_black_friday_2026/raio-x/).
      Os números vêm do banco de questões da Fluência: a página diz isso, nunca
      "todas as provas". -->
-<section class="sec" id="raio-x">
+<section class="sec so-lista" id="raio-x">
   <div class="wrap raiox-in">
     <div class="raiox-txt">
       <span class="eyebrow">Bônus da inscrição · PDF gratuito</span>
@@ -473,7 +626,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </section>
 
 <!-- ══════════════════ O QUE A LISTA RECEBE ══════════════════ -->
-<section class="sec">
+<section class="sec so-lista">
   <div class="wrap">
     <span class="eyebrow">Por que entrar na lista</span>
     <h2>Quem está na lista chega <span class="it">primeiro.</span></h2>
@@ -591,7 +744,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </section>
 
 <!-- ══════════════════ COMO VAI SER ══════════════════ -->
-<section class="sec">
+<section class="sec so-lista">
   <div class="wrap">
     <span class="eyebrow">Até lá</span>
     <h2>Como vai ser.</h2>
@@ -644,7 +797,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </section>
 
 <!-- ══════════════════ FAQ ══════════════════ -->
-<section class="sec faq">
+<section class="sec faq so-lista">
   <div class="wrap">
     <span class="eyebrow">Dúvidas</span>
     <h2>O que costumam perguntar</h2>
@@ -675,7 +828,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </section>
 
 <!-- ══════════════════ FECHO ══════════════════ -->
-<section class="sec fecho">
+<section class="sec fecho so-lista">
   <div class="wrap">
     <img src="assets/email/logo-black-selo.png" alt="" width="440" height="440" loading="lazy">
     <h2>Quarta, 11/11, 20h.</h2>
@@ -984,6 +1137,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   });
 })();
 </script>
+<script src="assets/black/estados.js?v=20261029" defer></script>
 <script src="assets/origem.js?v=20260909" defer></script>
 </body>
 </html>
