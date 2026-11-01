@@ -22,7 +22,7 @@
   // Checkout do semestral da Black (R$ 297): o ÚNICO lugar do link. Fica no script e não
   // nos botões do HTML, que levam data-checkout="semestral". Roda antes do origem.js
   // (os dois são defer, nesta ordem), então as UTMs da visita entram nele também.
-  var CHECKOUT_SEMESTRAL = 'https://pay.kiwify.com.br/SEMESTRAL-BLACK-PENDENTE';
+  var CHECKOUT_SEMESTRAL = 'https://pay.kiwify.com.br/ihVM6ra';
   document.querySelectorAll('a[data-checkout="semestral"]').forEach(function (a) {
     a.setAttribute('href', CHECKOUT_SEMESTRAL);
   });
