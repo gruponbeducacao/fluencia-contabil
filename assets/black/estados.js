@@ -19,6 +19,14 @@
     carrinho: { txt: 'Ver as condições', href: '#oferta-carrinho' },
     encerrado: { txt: 'Ver os planos', href: 'assinatura.html' }
   };
+  // Checkout do semestral da Black (R$ 297): o ÚNICO lugar do link. Fica no script e não
+  // nos botões do HTML, que levam data-checkout="semestral". Roda antes do origem.js
+  // (os dois são defer, nesta ordem), então as UTMs da visita entram nele também.
+  var CHECKOUT_SEMESTRAL = 'https://pay.kiwify.com.br/ihVM6ra';
+  document.querySelectorAll('a[data-checkout="semestral"]').forEach(function (a) {
+    a.setAttribute('href', CHECKOUT_SEMESTRAL);
+  });
+
   var FIM = {
     condicao: new Date('2026-11-11T23:59:59-03:00'),
     carrinho: new Date('2026-11-27T23:59:59-03:00')
