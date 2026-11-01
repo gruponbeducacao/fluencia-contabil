@@ -50,10 +50,9 @@ html[data-estado="ao-vivo"] .hero-in > div:first-child{display:none}
 .st-sec{padding:64px 0;border-top:1px solid var(--linha)}
 .st-sec.noite{background:#0F1522}
 .st-oferta{max-width:640px;margin:0 auto;background:var(--azul);border:1px solid var(--dourado);border-radius:16px;padding:30px 30px 28px}
-.st-ofertas{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1080px;margin:0 auto}
+.st-ofertas{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:940px;margin:0 auto}
 .st-ofertas .st-oferta{max-width:none;margin:0;display:flex;flex-direction:column}
 .st-ofertas .st-oferta .btn{margin-top:auto}
-.st-ofertas .st-preco{font-size:40px}
 .st-preco small{white-space:nowrap}
 .st-nome{font-size:11px;font-weight:800;letter-spacing:2.6px;text-transform:uppercase;color:var(--dourado-claro)}
 .st-preco{font-size:48px;font-weight:900;line-height:1;margin-top:12px;letter-spacing:-1px}
