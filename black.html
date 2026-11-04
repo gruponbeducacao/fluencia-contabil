@@ -191,6 +191,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .prova{display:grid;grid-template-columns:auto 1fr;gap:48px;align-items:center;margin-top:36px}
   .prova-vds{display:flex;gap:22px}
   .prova-vds .vd{width:250px}
+  /* 4 vídeos (desde 04/11): no desktop o texto sobe e os vídeos ficam numa fileira só, até 240 px cada */
+  @media (min-width:921px){
+    .prova{grid-template-columns:1fr;gap:30px}
+    .prova-txt{order:-1;text-align:center}
+    .prova-txt .lead{margin-inline:auto}
+    .prova-vds{justify-content:center}
+    .prova-vds .vd{width:calc((100% - 66px) / 4);max-width:240px}
+  }
   .vd-moldura{position:relative;aspect-ratio:9/16;border-radius:20px;overflow:hidden;background:var(--azul);
     border:1px solid #c8a84b66;box-shadow:0 24px 60px #000b}
   .vd-moldura img,.vd-moldura iframe{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;border:0}
@@ -668,6 +676,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <h2>O que os alunos dizem, <span class="it">nas palavras deles.</span></h2>
     <div class="prova">
       <div class="prova-vds">
+        <div class="vd" data-panda="acc402b3-c364-4b45-81af-77741481716e" data-aluno="ransley-moreira-alves" data-nome="Ransley Moreira Alves">
+          <div class="vd-moldura">
+            <img src="assets/depoimentos/video/ransley-moreira-alves.jpg" alt="" width="540" height="960" loading="lazy">
+            <button type="button" class="vd-play" aria-label="Assistir ao depoimento de Ransley Moreira Alves"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4l14 8-14 8z"/></svg></i></button>
+          </div>
+          <p class="vd-leg">“O professor já faz questão de te explicar os conceitos lá dos CPCs. Isso te dá fluência na matéria desde o começo.”<b>Ransley Moreira Alves · 1º lugar na lista PcD, Senador Canedo (GO)</b></p>
+        </div>
         <div class="vd" data-panda="386fd537-c0c7-4af3-a6e1-2dde6eae8ec1" data-aluno="antonio-sombra" data-nome="Antônio Sombra">
           <div class="vd-moldura">
             <img src="assets/depoimentos/video/antonio-sombra.jpg" alt="" width="540" height="960" loading="lazy">

@@ -424,7 +424,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .vd-fila { display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; margin: 22px -20px 6px; padding: 4px 20px 12px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
   .vd-fila::-webkit-scrollbar { display: none; }
   .vd-fila .vd { flex: 0 0 min(62vw, 225px); width: auto; margin: 0; scroll-snap-align: center; }
-  @media (min-width: 520px) { .vd-fila { justify-content: center; overflow: visible; margin: 22px 0 6px; padding: 4px 0 12px; } }
+  /* a partir de 520 px: grade 2 x 2 (4 vídeos x 225 px não cabem na coluna de 480 px) */
+  @media (min-width: 520px) { .vd-fila { display: grid; grid-template-columns: repeat(2, minmax(0, 225px)); justify-content: center; gap: 20px 16px; overflow: visible; margin: 22px 0 6px; padding: 4px 0 12px; } }
   .vd-moldura { position: relative; aspect-ratio: 9 / 16; border-radius: 20px; overflow: hidden; background: var(--navy-fundo); box-shadow: var(--sombra); }
   .vd-moldura img, .vd-moldura iframe { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
   .vd-play { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; border: 0; background: linear-gradient(180deg, rgba(23,35,63,0) 55%, rgba(23,35,63,.45)); cursor: pointer; }
@@ -805,9 +806,11 @@ function telaReal(tipo) {
 }
 
 /* Vídeos de aluno (Panda). O player só carrega no toque: poster leve até lá, para não pesar a tela.
-   Mesmos vídeos das páginas de venda e da /black (Antônio Sombra, Tallys e Jorge Henriques). */
+   Mesmos vídeos das páginas de venda e da /black (Ransley Moreira Alves, Antônio Sombra, Tallys e Jorge Henriques). */
 var PANDA = 'https://player-vz-7867cfdb-be1.tv.pandavideo.com.br/embed/?v=';
 var DEPO_VIDEOS = [
+  { id: 'acc402b3-c364-4b45-81af-77741481716e', aluno: 'ransley-moreira-alves', nome: 'Ransley Moreira Alves', img: 'assets/depoimentos/video/ransley-moreira-alves.jpg',
+    frase: 'O professor já faz questão de te explicar os conceitos lá dos CPCs. Isso te dá fluência na matéria desde o começo.', quem: 'Ransley Moreira Alves · 1º lugar na lista PcD, Senador Canedo (GO)' },
   { id: '386fd537-c0c7-4af3-a6e1-2dde6eae8ec1', aluno: 'antonio-sombra', nome: 'Antônio Sombra', img: 'assets/depoimentos/video/antonio-sombra.jpg',
     frase: 'Comecei a achar contabilidade fácil e comecei a perder o medo de estudar aquele monte de CPC.', quem: 'Antônio Sombra · Auditor do TCU' },
   { id: 'd8614e2c-f9bc-4c83-8373-de2d66e05b15', aluno: 'tallys', nome: 'Tallys', img: 'assets/quiz/depo/tallys.jpg',
