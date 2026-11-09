@@ -42,8 +42,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   Base visual e de código: only-fiscais.html, copiada em 09/11/2026 (que parte da black.html
   no estado de carrinho, assets/black/estados.css).
   Links da Kiwify, cupom e WhatsApp: bloco CONFIGURAÇÃO no script do fim da página. Os links
-  da Kiwify são os mesmos das três páginas de parceiro (only-fiscais, fiscal-de-resenha e
-  evoluiu): link novo entra nas três.
+  da Kiwify são os mesmos em todas as páginas de parceiro (only-fiscais, fiscal-de-resenha,
+  evoluiu e guruja): link novo entra em todas.
   Rastreio: o mesmo da /black (GTM-MGQFHR5J + assets/origem.js, que leva utm/src/sck e
   o _fbp/_fbc/página em s1/s2/s3 até a Kiwify e manda checkout_click). Os links já saem
   com src e utm_campaign = evoluiu (a origem do rastreio do parceiro); a visita que
@@ -407,6 +407,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .cupom-cod{font-size:16px}
     .cartao .cupom-cod{font-size:19px}
     .resumo .nome{font-size:12px;letter-spacing:1px}
+  }
+  /* de 320 a 374 px, o cartão escuro da co-marca encolhe para caber (a 320 px ele passava da tela) */
+  @media (max-width:374px){
+    .comarca{gap:8px;padding:10px}
+    .comarca-fc{gap:7px}
+    .comarca-fc img{height:28px}
+    .comarca-nome{font-size:10px;letter-spacing:1.4px}
+    .comarca-div{height:34px}
+    .comarca-logo{height:30px}
   }
 </style>
 <script>
@@ -951,13 +960,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
      TODO(evoluiu): trocar pelos links das ofertas EXCLUSIVAS dos parceiros, que fecham em
      04/12, 23h59. Hoje são os da Black pública (12 a 27/11): o BAg54fd está previsto para
      sair do ar em 27/11, 23h59, e daí até 04/12 o botão da vitalícia cairia em
-     "Produto Indisponível". Os links são os mesmos da only-fiscais.html: trocar nas três páginas. */
+     "Produto Indisponível". Os links são os mesmos da only-fiscais.html: trocar em todas as páginas de parceiro. */
   var LINK_VITALICIA = 'https://pay.kiwify.com.br/BAg54fd';
   var LINK_12_MESES  = 'https://pay.kiwify.com.br/aupgxRl';
 
   /* Fase regular (de 05/12 em diante): trimestral R$ 297, semestral R$ 397, anual R$ 587.
      TODO(evoluiu): preencher com os links da Kiwify dos planos depois da Black
-     (os mesmos da only-fiscais.html: preencher nas três páginas).
+     (os mesmos da only-fiscais.html: preencher em todas as páginas de parceiro).
      Vazio = o botão daquele plano leva ao WhatsApp do atendimento, com a mensagem pronta. */
   var LINK_TRIMESTRAL = '';
   var LINK_SEMESTRAL  = '';
