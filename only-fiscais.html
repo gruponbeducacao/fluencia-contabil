@@ -129,13 +129,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .hero p.sub{font-size:18px;line-height:1.72;color:var(--branco-2);margin-top:20px;max-width:54ch}
   .hero p.sub strong{color:var(--branco)}
 
-  /* co-marca: a logo do grupo é azul e ciano, e pede fundo claro (pastilha) */
-  .comarca{display:flex;align-items:center;gap:14px;margin-bottom:22px}
-  .comarca-selo{width:72px;height:72px;filter:drop-shadow(0 10px 24px #0009)}
-  .comarca-fc{width:auto;height:72px;border-radius:12px;box-shadow:0 10px 24px #0009}
-  .comarca-x{font-size:20px;font-weight:800;color:var(--dourado)}
-  .comarca-parceiro{display:inline-flex;align-items:center;background:#fff;border-radius:12px;padding:10px 16px;box-shadow:0 12px 30px #0007}
-  .comarca-parceiro img{width:170px;height:auto}
+  /* co-marca (opção B, escolhida em 09/11): Fluência | divisor dourado | OnlyFiscais,
+     num cartão creme, porque a logo do grupo (azul e ciano) pede fundo claro */
+  .comarca{display:inline-flex;align-items:center;gap:22px;background:var(--cream,#FBF6E9);border-radius:14px;padding:16px 24px;margin-bottom:24px;box-shadow:0 14px 34px #0008}
+  .comarca-fc{display:inline-flex;align-items:center;gap:11px}
+  .comarca-fc img{height:50px;width:auto}
+  .comarca-nome{display:flex;flex-direction:column;line-height:1.02;font-weight:800;letter-spacing:2.6px;font-size:17px;text-align:left}
+  .comarca-nome .f{color:#1B2A4A}
+  .comarca-nome .c{color:#C8A84B}
+  .comarca-tag{font-family:'Source Serif 4',Georgia,serif;font-style:italic;font-weight:400;letter-spacing:0;font-size:11.5px;color:#5b6475;margin-top:5px}
+  .comarca-div{width:1.5px;height:62px;background:#C8A84B}
+  .comarca-of{height:62px;width:auto}
 
   .contagem-tit{margin-top:28px;font-size:11px;font-weight:800;letter-spacing:1.8px;text-transform:uppercase;color:var(--dourado)}
   .contagem{display:flex;gap:10px;margin-top:10px}
@@ -330,7 +334,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
   /* ---------- fecho ---------- */
   .fecho{text-align:center;background:radial-gradient(ellipse 60% 80% at 50% 0%,#c8a84b1f,transparent 70%),var(--preto)}
-  .fecho .comarca{justify-content:center}
   .fecho p{font-size:17px;line-height:1.7;color:var(--branco-2);margin:16px auto 0;max-width:54ch}
   .fecho .btn{width:auto;margin-top:30px;min-width:300px}
 
@@ -353,11 +356,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   }
   @media (max-width:760px){
     .sec{padding:60px 0}
-    .comarca{gap:10px}
-    .comarca-selo{width:58px;height:58px}
-    .comarca-fc{height:58px}
-    .comarca-parceiro{padding:8px 12px}
-    .comarca-parceiro img{width:142px}
+    .comarca{gap:12px;padding:12px 14px}
+    .comarca-fc img{height:34px}
+    .comarca-nome{font-size:11.5px;letter-spacing:1.8px}
+    .comarca-tag{display:none}
+    .comarca-div,.comarca-of{height:42px}
     .contagem div{min-width:0;flex:1}
     .contagem b{font-size:26px}
     .hero-acoes .btn{width:100%;min-width:0}
@@ -442,12 +445,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="wrap hero-in">
     <div>
       <div class="comarca">
-        <img class="comarca-selo so-black" src="assets/email/logo-black-selo.png" alt="Black da Fluência" width="440" height="440">
-        <img class="comarca-fc so-regular" src="assets/logo-fc-192.webp" alt="Fluência Contábil" width="192" height="149">
-        <span class="comarca-x" aria-hidden="true">×</span>
-        <span class="comarca-parceiro"><img src="assets/parceiros/only-fiscais-logo-360.webp"
-          srcset="assets/parceiros/only-fiscais-logo-360.webp 360w, assets/parceiros/only-fiscais-logo.webp 560w"
-          sizes="(max-width:760px) 142px, 170px" alt="Comunidade OnlyFiscais" width="560" height="206"></span>
+        <span class="comarca-fc"><img src="assets/parceiros/fc-simbolo-claro.webp" alt="" width="240" height="177"><span class="comarca-nome"><span class="f">FLUÊNCIA</span><span class="c">CONTÁBIL</span><span class="comarca-tag">Contabilidade para quem quer ser fluente</span></span></span>
+        <span class="comarca-div" aria-hidden="true"></span>
+        <img class="comarca-of" src="assets/parceiros/only-fiscais-logo-360.webp" alt="Comunidade OnlyFiscais" width="560" height="206">
       </div>
 
       <div class="so-black">
@@ -883,12 +883,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <section class="sec fecho">
   <div class="wrap">
     <div class="comarca">
-      <img class="comarca-selo so-black" src="assets/email/logo-black-selo.png" alt="Black da Fluência" width="440" height="440" loading="lazy">
-      <img class="comarca-fc so-regular" src="assets/logo-fc-192.webp" alt="Fluência Contábil" width="192" height="149" loading="lazy">
-      <span class="comarca-x" aria-hidden="true">×</span>
-      <span class="comarca-parceiro"><img src="assets/parceiros/only-fiscais-logo-360.webp"
-        srcset="assets/parceiros/only-fiscais-logo-360.webp 360w, assets/parceiros/only-fiscais-logo.webp 560w"
-        sizes="(max-width:760px) 142px, 170px" alt="Comunidade OnlyFiscais" width="560" height="206" loading="lazy"></span>
+      <span class="comarca-fc"><img src="assets/parceiros/fc-simbolo-claro.webp" alt="" width="240" height="177" loading="lazy"><span class="comarca-nome"><span class="f">FLUÊNCIA</span><span class="c">CONTÁBIL</span><span class="comarca-tag">Contabilidade para quem quer ser fluente</span></span></span>
+      <span class="comarca-div" aria-hidden="true"></span>
+      <img class="comarca-of" src="assets/parceiros/only-fiscais-logo-360.webp" alt="Comunidade OnlyFiscais" width="560" height="206" loading="lazy">
     </div>
     <div class="so-black">
       <h2>Até 04/12, <span class="it">às 23h59.</span></h2><!-- RASCUNHO -->
