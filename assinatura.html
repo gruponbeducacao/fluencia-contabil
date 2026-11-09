@@ -1954,13 +1954,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <p class="hero-note">7 dias de garantia incondicional · Pix, boleto ou cartão em até 12×</p>
         <div class="hero-degusta">
           <button class="hero-degusta-btn" id="btnAmostraAula01" type="button"
-             data-fc-pdf="aulas/aula-01-partidas-dobradas.pdf?v=20260813"
-             data-fc-download="Fluencia-Contabil-Aula-01-Partidas-Dobradas.pdf"
+             data-fc-pdf="aulas/aula-00-introducao-a-contabilidade.pdf?v=20261109"
+             data-fc-download="Fluencia-Contabil-Aula-00-Introducao-a-Contabilidade.pdf"
              data-fc-cta="amostra-aula01" data-fc-local="hero" data-fc-lp="a" data-fc-capture="aula01">
             <span class="hd-ico" aria-hidden="true">📄</span>
             <span class="hd-txt">
-              <b>Baixar grátis a Aula 01 completa</b>
-              <i><span class="hd-full">PDF · 73 páginas · teoria + 30 questões comentadas · 4,7 MB</span><span class="hd-short">PDF · 73 páginas · 4,7 MB</span></i>
+              <b>Baixar grátis a Aula 00 completa</b>
+              <i><span class="hd-full">PDF · 50 páginas · teoria + 30 questões comentadas · 5,0 MB</span><span class="hd-short">PDF · 50 páginas · 5,0 MB</span></i>
             </span>
             <span class="hd-seta" aria-hidden="true">↓</span>
           </button>
@@ -3406,12 +3406,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="fc-cap-modal">
     <button class="fc-cap-close" type="button" id="fcCapClose" aria-label="Fechar">×</button>
     <div class="fc-cap-ico" aria-hidden="true">📄</div>
-    <h3 id="fcCapTitle">Aula 01 completa, em PDF</h3>
-    <p>73 páginas: o Método das Partidas Dobradas, com 30 questões comentadas. Deixe seu e-mail e o download começa na hora.</p>
+    <h3 id="fcCapTitle">Aula 00 completa, em PDF</h3>
+    <p>50 páginas: a Introdução à Contabilidade, com 30 questões comentadas. Deixe seu e-mail e o download começa na hora.</p>
     <form class="fc-cap-form" id="fcCapForm" novalidate>
       <input type="email" id="fcCapEmail" name="email" placeholder="seu@email.com" required autocomplete="email" inputmode="email" aria-label="Seu e-mail">
       <p class="fc-cap-erro" id="fcCapErro">Confere o e-mail? Ele não parece válido.</p>
-      <button type="submit" class="btn" id="fcCapBtn">Baixar a Aula 01</button>
+      <button type="submit" class="btn" id="fcCapBtn">Baixar a Aula 00</button>
     </form>
     <p class="fc-cap-ok" id="fcCapOk">✅ Pronto — o download começou. Bons estudos!</p>
     <p class="fc-cap-legal">Sem spam. Você entra na newsletter da Fluência Contábil e pode sair quando quiser.</p>
@@ -4220,6 +4220,8 @@ document.querySelectorAll('.dep-anexo-btn[aria-controls]').forEach(function (btn
   tick();
 })();
 
+/* O PDF da degustação passou a ser a Aula 00 (09/11/2026). Os identificadores "aula01" (evento download_aula01,
+   origem assinatura_aula01, ids e funções) ficaram como estavam, para não quebrar o GTM nem a planilha de leads. */
 /* ===== CAPTURA DE E-MAIL — AULA 01 =====
    Mesmo endpoint e mesmos campos do assets/email-capture.js (que esta LP nao carrega).
    Quem ja' e' lead (localStorage fc_ec_subscribed, a chave do email-capture) baixa direto. */
@@ -4279,7 +4281,7 @@ document.querySelectorAll('.dep-anexo-btn[aria-controls]').forEach(function (btn
       setTimeout(fecharModal, 1800);
     };
     var failed = function () {
-      btn.disabled = false; btn.textContent = 'Baixar a Aula 01';
+      btn.disabled = false; btn.textContent = 'Baixar a Aula 00';
       erro.textContent = 'Não foi possível enviar agora. Confira sua conexão e tente novamente.';
       erro.classList.add('on');
     };
