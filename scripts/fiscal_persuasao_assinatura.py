@@ -164,8 +164,10 @@ ok("slot fica dentro da hero e antes de O CURSO", s.index('id="heroVsl"') < i_cu
 ok("botão da Aula 01 marcado com data-fc-capture", 'data-fc-capture="aula01"' in s)
 ok("modal de captura presente e oculto", 'id="fcCapOverlay" hidden' in s)
 ok("origem assinatura_aula01 no POST", "'origem', 'assinatura_aula01'" in s)
-ok("amostra exige captura e preserva o PDF existente",
-   'data-fc-pdf="aulas/aula-01-partidas-dobradas.pdf?v=20260813"' in s and "fcCapSkip" not in s)
+# o PDF da degustação passou a ser a Aula 00 em 09/11/2026 (os identificadores aula01 ficaram)
+ok("amostra exige captura e aponta para o PDF da degustação, que existe no repo",
+   'data-fc-pdf="aulas/aula-00-introducao-a-contabilidade.pdf?v=20261109"' in s and "fcCapSkip" not in s
+   and (ROOT / "aulas" / "aula-00-introducao-a-contabilidade.pdf").is_file())
 ok("email-capture.js continua NÃO carregado", not re.search(r'<(script|link)[^>]+email-capture', s))
 
 # ---------------------------------------------- J. estrutura e EOL
