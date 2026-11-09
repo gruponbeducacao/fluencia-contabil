@@ -48,13 +48,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   /* RASCUNHO */).
 -->
 
-<!-- TODO(only-fiscais): OG própria. Por enquanto a imagem da Black (fala em 11/11 e lista VIP). -->
+<!-- OG própria (aprovada em 09/11): Fluência + OnlyFiscais, sem preço nem data, vale nas duas fases. -->
 <meta property="og:type" content="website">
 <!-- RASCUNHO: título e descrição do cartão do link -->
 <meta property="og:title" content="Comunidade OnlyFiscais · 20% na Fluência Contábil">
 <meta property="og:description" content="Só para o grupo: 20% em qualquer plano da Fluência Contábil com o cupom ONLYFISCAIS20. Até 04/12, sobre o preço da Black.">
 <meta property="og:url" content="https://fluenciacontabil.com.br/only-fiscais">
-<meta property="og:image" content="https://fluenciacontabil.com.br/assets/black/black-og.jpg">
+<meta property="og:image" content="https://fluenciacontabil.com.br/assets/parceiros/only-fiscais-og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:locale" content="pt_BR">
@@ -140,6 +140,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .comarca-tag{font-family:'Source Serif 4',Georgia,serif;font-style:italic;font-weight:400;letter-spacing:0;font-size:11.5px;color:#5b6475;margin-top:5px}
   .comarca-div{width:1.5px;height:62px;background:#C8A84B}
   .comarca-of{height:62px;width:auto}
+
+  /* aviso da liberação dos módulos, abaixo dos botões de compra */
+  .aviso-modulos{font-size:13.5px;color:var(--branco);margin-top:10px}
+  .aviso-modulos strong{color:var(--dourado)}
 
   .contagem-tit{margin-top:28px;font-size:11px;font-weight:800;letter-spacing:1.8px;text-transform:uppercase;color:var(--dourado)}
   .contagem{display:flex;gap:10px;margin-top:10px}
@@ -668,6 +672,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <a href="https://portal.fluenciacontabil.com.br/vitalicio" target="_blank" rel="noopener">Aditivo de Acesso Vitalício</a>. </span>Garantia de 7 dias.
       Pagamento por cartão, Pix ou boleto na Kiwify.
       No cartão, o valor de cada parcela aparece no checkout.</p><!-- RASCUNHO (última frase) -->
+    <!-- Aviso pedido pelo Vinícius em 09/11. Conferido em produção: Module.unlocksAfterDays = 0 nas
+         Boas-vindas e no Módulo 1, e 7 nos módulos 2 a 5, contados do início da assinatura paga. -->
+    <p class="st-letras aviso-modulos"><strong>Atenção:</strong> as Boas-vindas e o Módulo 1 abrem no dia da compra. <!-- RASCUNHO -->
+      Os módulos 2 a 5 abrem 7 dias depois da compra.</p><!-- RASCUNHO -->
   </div>
 </section>
 
@@ -870,7 +878,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <details><summary>Estou na semana grátis. Se eu comprar agora, perco algo?</summary><!-- RASCUNHO -->
       <p>Não. Compre com o mesmo e-mail da semana grátis: o acesso da assinatura entra na mesma conta, e o que você <!-- RASCUNHO -->
-        já fez continua lá. A partir da compra, o limite de 4 PDFs da semana deixa de valer.</p></details><!-- RASCUNHO -->
+        já fez continua lá. A partir da compra, o limite de 4 PDFs da semana deixa de valer. <!-- RASCUNHO -->
+        Os módulos 2 a 5 abrem 7 dias depois da compra, como para todo assinante: a contagem começa no dia <!-- RASCUNHO -->
+        da compra, não no início da semana grátis.</p></details><!-- RASCUNHO -->
+
+    <details><summary>O curso inteiro abre no dia da compra?</summary><!-- RASCUNHO -->
+      <p>As Boas-vindas e o Módulo 1 abrem na hora. Os módulos 2 a 5 abrem 7 dias depois da compra. <!-- RASCUNHO -->
+        As aulas restantes da edição 2026 são liberadas conforme o cronograma público da edição.</p></details>
 
     <div class="faq-zap">
       <p>Ficou alguma dúvida? Fale com a gente no WhatsApp.</p><!-- RASCUNHO -->
