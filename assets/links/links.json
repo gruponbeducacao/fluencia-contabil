@@ -1,6 +1,13 @@
 {
   "versao": 1,
-  "leiame": "Vídeos da página links.html (o link da bio). Quem escreve aqui é scripts/links_video.py; a rotina está em scripts/LINKS.md. Um item por vídeo: id (minúsculas, números e hífen; vira o nome do botão no rastreamento), tipo (video), data (AAAA-MM-DD, ou AAAA-MM-DDTHH:MM quando o vídeo está agendado), titulo e url do YouTube. Item com data futura só aparece na hora marcada; com \"estreia\": true aparece antes, como estreia. A miniatura vem do YouTube. A página mostra os dois vídeos mais recentes, então o histórico pode ficar. NÃO entram aqui: a aula ao vivo e a gravação (vêm de assets/aulas/agenda.json) e os artigos (vêm de blog/feed.xml). Um artigo só entra aqui, com tipo artigo e img em assets/links/, para trocar o título ou a imagem que o feed traria. Conferir com: node --test scripts/links.test.mjs",
+  "leiame": "Vídeos da página links.html (o link da bio). Quem escreve aqui é scripts/links_video.py; a rotina está em scripts/LINKS.md. Um item por vídeo: id (minúsculas, números e hífen; vira o nome do botão no rastreamento), tipo (video), data (AAAA-MM-DD, ou AAAA-MM-DDTHH:MM quando o vídeo está agendado), titulo e url do YouTube. Item com data futura só aparece na hora marcada; com \"estreia\": true aparece antes, como estreia. A miniatura vem do YouTube. A página mostra os dois vídeos mais recentes, então o histórico pode ficar. NÃO entram aqui: a aula ao vivo e a gravação (vêm de assets/aulas/agenda.json) e os artigos (vêm de blog/feed.xml). Um artigo só entra aqui, com tipo artigo e img em assets/links/, para trocar o título ou a imagem que o feed traria. Live fora da agenda das quartas (a da Black, por exemplo) entra em \"destaque\": id, titulo, url do YouTube, inicio e fim (AAAA-MM-DDTHH:MM); ela ocupa o topo da página até o fim e depois sai sozinha. Conferir com: node --test scripts/links.test.mjs",
+  "destaque": {
+    "id": "live-black",
+    "titulo": "Live da Black: a melhor condição que a Fluência já fez",
+    "url": "https://youtu.be/h02aFYBvoQ0",
+    "inicio": "2026-11-11T20:00",
+    "fim": "2026-11-11T23:59"
+  },
   "novidades": [
     {
       "id": "video-2026-10-29",

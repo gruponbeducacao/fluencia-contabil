@@ -169,6 +169,34 @@ test('no dia da aula o destaque diz hoje; sem aula marcada, o destaque é a grav
   assert.deepEqual(campo(depois.novidades, 'id'), []);
 });
 
+test('live avulsa do links.json toma o topo até o fim e depois a aula da agenda volta', () => {
+  const avulsa = { id: 'live-black', titulo: 'Live da Black', url: 'https://youtu.be/h02aFYBvoQ0', inicio: '2026-10-13T20:00', fim: '2026-10-13T23:59' };
+  const links = { destaque: avulsa, novidades: [] };
+  const antes = L.montar(agenda, links, new Date(2026, 9, 12, 22, 0));
+  assert.deepEqual(copia(antes.destaque), {
+    botao: 'live-black', kicker: 'Ao vivo · ter, 13/10 · 20h', titulo: 'Live da Black',
+    cta: 'Ativar lembrete no YouTube', url: 'https://youtu.be/h02aFYBvoQ0', video: 'h02aFYBvoQ0', avulso: true,
+  });
+  const durante = L.montar(agenda, links, new Date(2026, 9, 13, 20, 30));
+  assert.equal(durante.destaque.kicker, 'Ao vivo · hoje, 20h');
+  assert.equal(durante.destaque.cta, 'Entrar na live');
+  // Passado o fim, o topo volta à aula da agenda, sem ninguém mexer no arquivo.
+  const depois = L.montar(agenda, links, new Date(2026, 9, 14, 0, 0));
+  assert.equal(depois.destaque.botao, 'live');
+  assert.equal(depois.destaque.kicker, 'Ao vivo · hoje, 20h');
+});
+
+test('live avulsa malformada é ignorada e o topo segue a agenda', () => {
+  const agora = new Date(2026, 9, 12, 22, 0);
+  const ok = { id: 'live-black', titulo: 'Live', url: 'https://youtu.be/h02aFYBvoQ0', inicio: '2026-10-13T20:00', fim: '2026-10-13T23:59' };
+  for (const ruim of [
+    { ...ok, url: 'https://exemplo.com/live' }, { ...ok, id: 'Live Black' }, { ...ok, titulo: '' },
+    { ...ok, inicio: '2026-10-13' }, { ...ok, fim: '2026-10-13T19:00' }, null, 'live',
+  ]) {
+    assert.equal(L.montar(agenda, { destaque: ruim, novidades: [] }, agora).destaque.botao, 'live', JSON.stringify(ruim));
+  }
+});
+
 test('o id do vídeo sai de qualquer formato de endereço do YouTube, e só dele', () => {
   for (const url of ['https://www.youtube.com/live/BO3dhLv8Uoc', 'https://youtu.be/BO3dhLv8Uoc', 'https://www.youtube.com/watch?v=BO3dhLv8Uoc&t=30s',
     'https://www.youtube.com/watch?feature=share&v=BO3dhLv8Uoc', 'https://youtube.com/shorts/BO3dhLv8Uoc', 'https://www.youtube.com/live/BO3dhLv8Uoc?si=abc']) {
@@ -315,6 +343,13 @@ test('o que está publicado hoje monta sem erro e aponta para arquivo que existe
     if (!/^https:/.test(n.url)) assert.ok(existsSync(new URL(n.url.split('#')[0], raiz)), `${n.id}: ${n.url} não existe`);
   }
   assert.equal(new Set(linksReal.novidades.map((n) => n.id)).size, linksReal.novidades.length);
+  // A live avulsa, quando há, tem de ser aceita pela página antes de começar.
+  if (linksReal.destaque) {
+    const d = linksReal.destaque, inicio = new Date(d.inicio);
+    assert.equal(fixos.has(d.id), false, `${d.id}: nome já usado por um botão fixo`);
+    const antes = L.montar({ aulas: [] }, linksReal, new Date(inicio.getTime() - 60 * 60 * 1000));
+    assert.equal(antes.destaque && antes.destaque.botao, d.id, 'destaque avulso do links.json descartado pela página');
+  }
   for (const n of m.novidades) assert.ok(n.kicker && n.titulo && n.url);
   for (const a of ancoras.filter((x) => x.url.hostname === 'fluenciacontabil.com.br')) {
     assert.ok(existsSync(new URL(a.url.pathname.slice(1) || 'index.html', raiz)), `${a.bio}: ${a.url.pathname} não existe`);
