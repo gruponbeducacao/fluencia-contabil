@@ -33,6 +33,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   A imagem do destaque é a miniatura que o YouTube mostra para a transmissão,
   buscada pelo campo `youtube` da agenda: trocar a miniatura lá troca aqui. Entre o
   fim de uma aula e a publicação da próxima, o destaque é a gravação da última.
+  Live fora da agenda das quartas (a da Black, por exemplo): o campo `destaque` do
+  links.json (id, titulo, url do YouTube, inicio e fim com hora) toma o topo até o
+  fim e depois sai sozinho. Não vai para a agenda, que alimenta a aula-ao-vivo.html.
 
   Sem os dois arquivos a página continua de pé: o destaque cai no texto fixo
   ("Toda quarta, 20h"), com o símbolo da marca na faixa, e a lista de novidades
@@ -357,6 +360,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       // Da quarta à noite até o kit publicar a próxima aula: a gravação sobe para o destaque.
       destaque = { botao: 'gravacao', kicker: gravacao.kicker, titulo: gravacao.titulo, cta: 'Assistir à gravação', url: gravacao.url, video: gravacao.video };
     }
+    // Live avulsa (a da Black, por exemplo), fora da agenda das quartas: o links.json
+    // a põe no topo até a hora de fim, e depois a página volta sozinha ao de sempre.
+    var av = links && links.destaque, ini = av && quando(av.inicio), fim = av && quando(av.fim);
+    if (ini && fim && ini.hora && fim.hora && fim.d > ini.d && agora < fim.d && NOME.test(texto(av.id)) && limpo(av.titulo) && video(av.url)) {
+      destaque = {
+        botao: av.id,
+        kicker: 'Ao vivo · ' + (mesmoDia(ini.d, agora) ? 'hoje, ' : DIAS[ini.d.getDay()] + ', ' + ddmm(ini.d) + ' · ') + ini.d.getHours() + 'h' + (ini.d.getMinutes() ? dois(ini.d.getMinutes()) : ''),
+        titulo: limpo(av.titulo),
+        cta: agora < ini.d ? 'Ativar lembrete no YouTube' : 'Entrar na live',
+        url: av.url, video: video(av.url), avulso: true
+      };
+    }
 
     var candidatos = [], jaTem = {};
     ((links && links.novidades) || []).forEach(function (n) {
@@ -445,7 +460,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     if (d) {
       var cartao = el('dest'), k = el('dest-k');
       k.textContent = '';
-      if (d.botao === 'live') {
+      if (d.botao === 'live' || d.avulso) {
         var ponto = document.createElement('i');
         ponto.className = 'pulso';
         k.appendChild(ponto);

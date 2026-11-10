@@ -59,6 +59,20 @@ Depois, commit de `assets/links/links.json` e PR.
 - Rodar de novo com o mesmo vídeo corrige o item, não duplica.
 - A miniatura vem do YouTube. Não há arquivo de imagem para gerar.
 
+### Live fora da agenda (Black, evento avulso)
+
+Não vai para a agenda: ela alimenta também a `aula-ao-vivo.html`, que é das aulas de
+quarta. Escreva à mão o campo `destaque` do `assets/links/links.json`:
+
+```
+"destaque": {"id": "live-black", "titulo": "...", "url": "https://youtu.be/<id>",
+             "inicio": "2026-11-11T20:00", "fim": "2026-11-11T23:59"}
+```
+
+Do PR até o `fim`, o cartão do topo é a live: "Ativar lembrete no YouTube" antes do
+início, "Entrar na live" depois. Passado o `fim`, a página volta sozinha à aula da
+agenda; o campo pode ficar no arquivo até a próxima live avulsa.
+
 ## Conferência
 
 `node --test scripts/links.test.mjs` roda no CI a cada PR. Ele reprova, entre outras
