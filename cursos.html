@@ -265,6 +265,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 .ps-print img{display:block;width:100%;height:auto;}
 .ps-print figcaption{font-size:11.5px;color:#667;padding:8px 12px;line-height:1.5;}
 .ps-cards{display:flex;flex-direction:column;gap:14px;}
+/* 14/11/2026: com 9 cards a coluna ficou bem mais alta que o destaque; ele acompanha a rolagem no desktop */
+@media(min-width:769px){.ps-destaque{position:sticky;top:96px;}}
 .ps-card{background:var(--branco);border:1.5px solid rgba(27,42,74,0.1);border-radius:6px;padding:20px 22px;position:relative;}
 .ps-card .aspas{position:absolute;top:8px;right:16px;font-family:'Source Serif 4',serif;font-size:44px;color:rgba(200,168,75,.35);line-height:1;}
 .ps-card p{font-family:'Source Serif 4',serif;font-size:14.5px;line-height:1.65;color:#333;margin-bottom:10px;}
@@ -475,6 +477,31 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <div class="aspas" aria-hidden="true">“</div>
           <p>Suas aulas são maravilhosas e nenhum professor explica questões como você. Impossível não aprender.</p>
           <div class="ps-autor">Gisele C. <span>· mensagem no Instagram</span></div>
+        </div>
+        <div class="ps-card ps-card--extra reveal">
+          <div class="aspas" aria-hidden="true">“</div>
+          <p>Didática do professor, consegue transmitir muito bem algo bem complicado e isso é uma habilidade pra poucos.</p>
+          <div class="ps-autor">Carlos Eduardo B. <span>· Plataforma</span></div>
+        </div>
+        <div class="ps-card ps-card--extra reveal">
+          <div class="aspas" aria-hidden="true">“</div>
+          <p>O curso é excelente, tem sido uma experiência de muito aprendizado.</p>
+          <div class="ps-autor">Laryssa M. <span>· WhatsApp</span></div>
+        </div>
+        <div class="ps-card ps-card--extra reveal">
+          <div class="aspas" aria-hidden="true">“</div>
+          <p>Professor, vc além de ser competente e generoso. Muito obrigada por desfrutar desses seus atributos.</p>
+          <div class="ps-autor">Luciana G. <span>· WhatsApp</span></div>
+        </div>
+        <div class="ps-card ps-card--extra reveal">
+          <div class="aspas" aria-hidden="true">“</div>
+          <p>Você é SENSACIONAL</p>
+          <div class="ps-autor">José Heberton A. <span>· WhatsApp</span></div>
+        </div>
+        <div class="ps-card ps-card--extra reveal">
+          <div class="aspas" aria-hidden="true">“</div>
+          <p>Só tenho agradecer ao professor Vinicius e sua equipe pela generosidade e empatia. É uma disciplina desafiadora e que demanda tempo e dedicação para sua perfeita compreensão.</p>
+          <div class="ps-autor">Aluno(a) <span>· WhatsApp</span></div>
         </div>
       </div>
     </div>
