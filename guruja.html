@@ -975,19 +975,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
      O único lugar dos links, do cupom e do WhatsApp. A virada de fase (FIM_BLACK) fica no
      <head>, em window.__cond, porque a fase precisa ser decidida antes da primeira pintura. */
 
-  /* Fase black (até 04/12, 23h59).
-     TODO(guruja): trocar pelos links das ofertas EXCLUSIVAS dos parceiros, que fecham em
-     04/12, 23h59. Hoje são os da Black pública (12 a 27/11): o BAg54fd está previsto para
-     sair do ar em 27/11, 23h59, e daí até 04/12 o botão da vitalícia cairia em
-     "Produto Indisponível". Os links são os mesmos da only-fiscais.html: trocar em todas as páginas de parceiro. */
-  var LINK_VITALICIA = 'https://pay.kiwify.com.br/BAg54fd';
-  var LINK_12_MESES  = 'https://pay.kiwify.com.br/aupgxRl';
+  /* Fase black (até 04/12, 23h59): ofertas EXCLUSIVAS dos parceiros na Kiwify, criadas em
+     14/11/2026. Vitalícia R$ 814,80 (hHujZDQ, Plano Vitalício) e 12 meses R$ 517 (z9HlrBh,
+     Plano Anual). Os cupons dos parceiros valem só nelas. */
+  var LINK_VITALICIA = 'https://pay.kiwify.com.br/hHujZDQ';
+  var LINK_12_MESES  = 'https://pay.kiwify.com.br/z9HlrBh';
 
   /* Sub-fase 2a (Black segunda chance, até 27/11, 23h59): vitalícia de R$ 537 com o cupom.
-     TODO(parceiros): link da oferta "Parceiros · Vitalícia 537" do Plano Vitalício na Kiwify,
-     com o cupom do grupo valendo nela. Vazio = o botão da vitalícia leva ao WhatsApp do
-     atendimento, com a mensagem pronta. */
-  var LINK_VITALICIA_2A = '';
+     Oferta "Parceiros Vitalícia 537" do Plano Vitalício na Kiwify (8qcRPfk), com o cupom do
+     parceiro valendo nela. */
+  var LINK_VITALICIA_2A = 'https://pay.kiwify.com.br/8qcRPfk';
 
   /* Fase regular (de 05/12 em diante): trimestral R$ 297, semestral R$ 397, anual R$ 587.
      TODO(guruja): preencher com os links da Kiwify dos planos depois da Black
@@ -999,9 +996,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   /* Cupom de 20% do parceiro (vale nas duas fases). PARAM_CUPOM é o nome do parâmetro que aplica
      o cupom pela URL do checkout; vazio = o botão abre o checkout sem cupom e a página pede
-     para colar. Só preencher depois de conferir na Kiwify que o parâmetro funciona. */
+     para colar. Conferido na Kiwify em 14/11/2026: ?coupon=CODIGO aplica os 20% direto. */
   var CUPOM = 'GURUJA20';
-  var PARAM_CUPOM = '';
+  var PARAM_CUPOM = 'coupon';
 
   /* Etiqueta padrão dos links do checkout (a origem do rastreio é "guruja"). A visita
      que chega com etiqueta própria troca src e utm_* pelas dela (assets/origem.js). */
