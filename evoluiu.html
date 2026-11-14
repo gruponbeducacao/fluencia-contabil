@@ -29,6 +29,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     black    até 04/12/2026, 23h59: as duas ofertas da Black (12 meses R$ 517 e vitalícia
              R$ 814,80 com os bônus), com o cupom EVOLUIU20 (R$ 413,60 e R$ 651,84),
              e a contagem regressiva até 04/12, 23h59.
+             Sub-fase 2a (html[data-sub="2a"], dentro da black, até 27/11/2026 23h59;
+             Black segunda chance, decisão do Vinícius em 14/11): a vitalícia do grupo
+             sai de R$ 537 (R$ 429,60 com o cupom) pelo link LINK_VITALICIA_2A. Os
+             elementos .so-2a só aparecem nela e os .nao-2a só fora dela. ?fase=2a força.
     regular  de 05/12/2026, 0h, em diante, sem fim: os planos do site depois da Black
              (plano mestre da Black, "preço permanente": trimestral R$ 297, semestral R$ 397,
              anual R$ 587), com os 20% do cupom (R$ 237,60, R$ 317,60 e R$ 469,60). Sem
@@ -65,9 +69,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta property="og:locale" content="pt_BR">
 <meta name="twitter:card" content="summary_large_image">
 
-<link rel="icon" type="image/png" sizes="64x64" href="assets/black/favicon-black-64.png">
-<link rel="icon" type="image/png" sizes="192x192" href="assets/black/favicon-black-192.png">
-<link rel="apple-touch-icon" href="assets/black/apple-touch-black.png">
+<link rel="icon" type="image/png" sizes="64x64" href="assets/black/favicon-black-64.png?v=2">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/black/favicon-black-192.png?v=2">
+<link rel="apple-touch-icon" href="assets/black/apple-touch-black.png?v=2">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Source+Serif+4:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
@@ -96,6 +100,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   /* ---------- fases (html[data-fase], decidido no <head>) ---------- */
   html[data-fase="regular"] .so-black{display:none!important}
   html:not([data-fase="regular"]) .so-regular{display:none!important}
+  html[data-sub="2a"] .nao-2a{display:none!important}
+  html:not([data-sub="2a"]) .so-2a{display:none!important}
   /* fase regular com algum plano ainda sem link da Kiwify: some o passo a passo do checkout */
   html[data-sem-checkout] .so-checkout{display:none!important}
 
@@ -425,6 +431,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
    vira estão no script do fim da página. */
 window.__cond={
   FIM_BLACK:Date.parse('2026-12-05T00:00:00-03:00'),
+  FIM_2A:Date.parse('2026-11-28T00:00:00-03:00'),
+  sub:function(){
+    var q=null;
+    try{q=new URLSearchParams(location.search).get('fase');}catch(e){}
+    if(q==='2a')return '2a';
+    if(q==='black'||q==='regular')return '';
+    return Date.now()<window.__cond.FIM_2A?'2a':'';
+  },
   fase:function(){
     var q=null;
     try{q=new URLSearchParams(location.search).get('fase');}catch(e){}
@@ -435,6 +449,7 @@ window.__cond={
 (function(){
   var f=window.__cond.fase();
   document.documentElement.setAttribute('data-fase',f);
+  if(f==='black'&&window.__cond.sub()==='2a')document.documentElement.setAttribute('data-sub','2a');
   /* Depois da Black, o ícone da aba volta a ser o da Fluência. */
   if(f==='regular'){
     var l=document.querySelectorAll('link[rel="icon"]');
@@ -454,7 +469,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <header class="topbar">
   <div class="wrap nav">
     <a class="marca" href="https://fluenciacontabil.com.br/" aria-label="Fluência Contábil">
-      <img class="so-black" src="assets/email/logo-black-selo.png" alt="" width="46" height="46">
+      <img class="so-black" src="assets/black/selo-2a-chance.png" alt="" width="46" height="46">
       <img class="so-regular logo-fc" src="assets/logo-fc-192.webp" alt="" width="59" height="46">
       <span><span class="so-black">Black da Fluência</span><span class="so-regular">Fluência Contábil</span> <i>· Evoluiu Concursos</i></span><!-- RASCUNHO -->
     </a>
@@ -510,7 +525,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
       <ul class="resumo so-black">
         <li><span class="nome">12 meses</span><span class="val">de <s>R$ 517</s> por <b>R$ 413,60</b></span></li>
-        <li><span class="nome">Vitalícia</span><span class="val">de <s>R$ 814,80</s> por <b>R$ 651,84</b></span></li>
+        <li><span class="nome">Vitalícia</span><span class="val"><span class="so-2a">de <s>R$ 537</s> por <b>R$ 429,60</b></span><span class="nao-2a">de <s>R$ 814,80</s> por <b>R$ 651,84</b></span></span></li>
       </ul>
       <ul class="resumo so-regular">
         <li><span class="nome">Trimestral</span><span class="val">de <s>R$ 297</s> por <b>R$ 237,60</b></span></li>
@@ -575,10 +590,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         <div class="st-oferta">
           <div class="st-nome">Vitalícia <span class="st-tag">Com os bônus</span></div><!-- RASCUNHO (selo "Com os bônus") -->
-          <div class="st-de">de <s>R$ 814,80</s> por</div>
-          <div class="st-preco">R$ 651,84 <small>à vista</small></div>
+          <div class="st-de">de <s class="so-2a">R$ 537</s><s class="nao-2a">R$ 814,80</s> por</div>
+          <div class="st-preco"><span class="so-2a">R$ 429,60</span><span class="nao-2a">R$ 651,84</span> <small>à vista</small></div>
           <div class="st-comcupom">com o cupom <span data-cupom>EVOLUIU20</span></div>
           <div class="st-parc">ou em até 12× no cartão</div>
+          <div class="st-legal so-2a">Até 27/11, às 23h59. De 28/11 a 04/12, a vitalícia do grupo volta a R$ 814,80 (R$ 651,84 com o cupom).</div><!-- RASCUNHO -->
           <ul class="st-lista">
             <li>Acesso enquanto a plataforma existir, sem renovação</li>
             <li>35 aulas, mais de 65 horas em vídeo e aulas em PDF</li>
@@ -864,10 +880,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <details open><summary>Como eu uso o cupom?</summary><!-- RASCUNHO -->
       <p>Copie o cupom <strong data-cupom>EVOLUIU20</strong> aqui na página, toque no botão da condição que você <!-- RASCUNHO -->
         escolheu e cole o código no campo de cupom do checkout da Kiwify. Confira o preço com os 20% antes de pagar: <!-- RASCUNHO -->
-        <span class="so-black">12 meses por R$ 413,60 e a vitalícia por R$ 651,84.</span><span class="so-regular">trimestral por R$ 237,60, semestral por R$ 317,60 e anual por R$ 469,60.</span></p></details><!-- RASCUNHO -->
+        <span class="so-black">12 meses por R$ 413,60 e a vitalícia por <span class="so-2a">R$ 429,60 até 27/11 (R$ 651,84 de 28/11 a 04/12)</span><span class="nao-2a">R$ 651,84</span>.</span><span class="so-regular">trimestral por R$ 237,60, semestral por R$ 317,60 e anual por R$ 469,60.</span></p></details><!-- RASCUNHO -->
 
     <details><summary>Até quando vale?</summary><!-- RASCUNHO -->
-      <p class="so-black">O preço da Black para os alunos da Evoluiu, 12 meses por R$ 413,60 e a vitalícia por R$ 651,84 já com o cupom, <!-- RASCUNHO -->
+      <p class="so-black">O preço da Black para os alunos da Evoluiu, 12 meses por R$ 413,60 e a vitalícia por <span class="so-2a">R$ 429,60 até 27/11 e R$ 651,84 de 28/11 a 04/12</span><span class="nao-2a">R$ 651,84</span> já com o cupom, <!-- RASCUNHO -->
         vale até 04/12/2026, às 23h59, no horário de Brasília. Para todo mundo, a Black termina em 27/11. <!-- RASCUNHO -->
         Depois de 04/12, os 20% do cupom continuam valendo para os alunos da Evoluiu, sobre os planos normais da Fluência: <!-- RASCUNHO -->
         trimestral, semestral e anual.</p>
@@ -964,6 +980,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   var LINK_VITALICIA = 'https://pay.kiwify.com.br/BAg54fd';
   var LINK_12_MESES  = 'https://pay.kiwify.com.br/aupgxRl';
 
+  /* Sub-fase 2a (Black segunda chance, até 27/11, 23h59): vitalícia de R$ 537 com o cupom.
+     TODO(parceiros): link da oferta "Parceiros · Vitalícia 537" do Plano Vitalício na Kiwify,
+     com o cupom do grupo valendo nela. Vazio = o botão da vitalícia leva ao WhatsApp do
+     atendimento, com a mensagem pronta. */
+  var LINK_VITALICIA_2A = '';
+
   /* Fase regular (de 05/12 em diante): trimestral R$ 297, semestral R$ 397, anual R$ 587.
      TODO(evoluiu): preencher com os links da Kiwify dos planos depois da Black
      (os mesmos da only-fiscais.html: preencher em todas as páginas de parceiro).
@@ -1018,7 +1040,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
      origem.js (defer), que depois leva a origem da visita e o _fbp/_fbc/página até a Kiwify
      e manda checkout_click, como na /black. Plano sem link vai para o WhatsApp. */
   var CHECKOUT = {
-    '12-meses': LINK_12_MESES, 'vitalicia': LINK_VITALICIA,
+    '12-meses': LINK_12_MESES, 'vitalicia': (document.documentElement.getAttribute('data-sub') === '2a' ? LINK_VITALICIA_2A : LINK_VITALICIA),
     'trimestral': LINK_TRIMESTRAL, 'semestral': LINK_SEMESTRAL, 'anual': LINK_ANUAL
   };
   function linkCheckout(base, posicao){
@@ -1102,6 +1124,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       if (fase === 'regular' && semCheckout) raiz.setAttribute('data-sem-checkout', ''); else raiz.removeAttribute('data-sem-checkout');
       atual = fase;
     }
+    /* Na virada de 28/11, 0h, a sub-fase 2a sai sozinha (o link da vitalícia só troca ao recarregar). */
+    if (raiz.hasAttribute('data-sub') && (fase !== 'black' || O.sub() !== '2a')) raiz.removeAttribute('data-sub');
     if (fase === 'black') relogio();
     else if (timer) { clearInterval(timer); timer = null; }
   }

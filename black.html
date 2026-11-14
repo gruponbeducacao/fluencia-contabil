@@ -11,16 +11,19 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <!-- End Google Tag Manager -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0B0E14">
-<title>Black da Fluência · 11/11, 20h · Lista VIP</title>
-<meta name="description" content="Quarta, 11 de novembro, 20h: na live eu revelo a condição da Black da Fluência. Entre na lista VIP e receba o link 10 minutos antes de todo mundo.">
+<title>Black da Fluência · 2ª chance · 25/11, 20h · Lista VIP</title>
+<meta name="description" content="Vocês pediram e a Black da Fluência voltou: quarta, 25 de novembro, 20h, ao vivo. Entre na lista VIP e receba o link 10 minutos antes de todo mundo.">
 <link rel="canonical" href="https://fluenciacontabil.com.br/black">
 
 <!--
-  /black — Black da Fluência 2026. ESTADO 1: CAPTAÇÃO (21/10 a 11/11, 19h50).
+  /black — Black da Fluência 2026, SEGUNDA CHANCE (live de 25/11, 20h).
+  Até 25/11 às 20h: captação para a live (lista VIP → grupo "Black da Fluência ·
+  2ª Chance"); depois, os estados da noite, do carrinho (26 e 27/11) e encerrado,
+  decididos por data no <head> (window.__black) e cobertos por
+  scripts/black-estados.test.mjs. A primeira live foi em 11/11 (mesmos estados).
 
-  Plano: _MARKETING/_campanhas/_black_friday_2026/plano-black-2026.html.
-  Os estados 2 a 5 (ao vivo, noite, carrinho, encerrada) entram depois, fora
-  deste repositório público até a revelação: nada com preço sobe antes de 11/11.
+  Plano: _MARKETING/_campanhas/_black_friday_2026/plano-black-2026.html e o plano
+  da segunda chance (14/11/2026).
 
   ⚠️ CAPTURA — como se amarra:
 
@@ -28,43 +31,44 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
      rótulo e tópico pela ORIGEM na aba "Config Aulas". As duas linhas abaixo
      precisam existir ANTES da página ir ao ar, senão o lead entra como
      "DESCONHECIDA":
-       aula_black_2026            Black da Fluência 2026  black-2026  11/11/2026 20:00:00  sim
-       aula_black_2026_whatsapp   Black da Fluência 2026  black-2026  11/11/2026 20:00:00  sim
-     Depois, rodar setupAulasAoVivo() para o tópico `black-2026` existir no SES.
+       aula_black_2026_segunda_chance_whatsapp   Black da Fluência 2026 · 2ª chance  black-2026-segunda-chance  25/11/2026 20:00:00  sim
+     Depois, rodar setupAulasAoVivo() para o tópico `black-2026-segunda-chance`
+     existir no SES. As linhas da live de 11/11 (aula_black_2026 e
+     aula_black_2026_whatsapp, tópico black-2026) continuam lá.
 
   2. A aba "Aulas ao Vivo" não tem coluna de aceite. O aceite de WhatsApp fica
      registrado na ORIGEM: `_whatsapp` no fim = aceitou. Até 20/10/2026 à tarde
      era uma caixa; desde então (pedido do Vinícius) o aceite é o aviso logo
-     abaixo do botão, e toda inscrição vai com `aula_black_2026_whatsapp`.
-     Quem entrou com `aula_black_2026` não marcou a caixa: o Mensageiro não
-     escreve para essa pessoa. Se o aviso sair da página, a origem volta a ser
-     `aula_black_2026`.
+     abaixo do botão, e toda inscrição vai com a origem terminada em `_whatsapp`
+     (na segunda chance, `aula_black_2026_segunda_chance_whatsapp`). Se o aviso
+     sair da página, a origem perde o `_whatsapp`.
 
   3. O container GTM-MGQFHR5J escuta `lead_capturado` e manda o Lead para a
      Meta. NÃO chamar fbq('track','Lead') aqui: o Lead contaria duas vezes.
 
-  4. Depois da inscrição a página vai para black-obrigado (convite do grupo VIP).
+  4. Depois da inscrição a página vai para black-obrigado (convite do grupo
+     "Black da Fluência · 2ª Chance", criado em 14/11/2026).
      GRUPO_VIP vazio esconde o botão do grupo no cartão de "Pronto", que só
      aparece para quem volta à página ou se o redirecionamento falhar.
 -->
 
 <meta property="og:type" content="website">
-<meta property="og:title" content="Black da Fluência · 11/11, 20h">
-<meta property="og:description" content="Na live de 11/11 eu revelo a maior condição que a Fluência já fez. Entre na lista VIP e receba o link 10 minutos antes.">
+<meta property="og:title" content="Black da Fluência · 2ª chance · 25/11, 20h">
+<meta property="og:description" content="Vocês pediram e a Black voltou: na live de 25/11, às 20h, a maior condição que a Fluência já fez volta por uma noite. Entre na lista VIP e receba o link 10 minutos antes.">
 <meta property="og:url" content="https://fluenciacontabil.com.br/black">
-<meta property="og:image" content="https://fluenciacontabil.com.br/assets/black/black-og.jpg">
+<meta property="og:image" content="https://fluenciacontabil.com.br/assets/black/black-og-2a-chance.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:locale" content="pt_BR">
 <meta name="twitter:card" content="summary_large_image">
 
-<link rel="icon" type="image/png" sizes="64x64" href="assets/black/favicon-black-64.png">
-<link rel="icon" type="image/png" sizes="192x192" href="assets/black/favicon-black-192.png">
-<link rel="apple-touch-icon" href="assets/black/apple-touch-black.png">
+<link rel="icon" type="image/png" sizes="64x64" href="assets/black/favicon-black-64.png?v=2">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/black/favicon-black-192.png?v=2">
+<link rel="apple-touch-icon" href="assets/black/apple-touch-black.png?v=2">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/black/estados.css?v=20261101b">
+<link rel="stylesheet" href="assets/black/estados.css?v=20261114">
 
 <style>
   /* Identidade da Black (plano v3): preto no fundo, dourado no destaque.
@@ -343,18 +347,22 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 (function(){try{var q=new URLSearchParams(location.search),c=(q.get('utm_content')||q.get('src')||'').toLowerCase();if(c.indexOf('rx-')===0)document.documentElement.setAttribute('data-rx','1');}catch(e){}})();
 </script>
 <script>
-/* Estado da /black pela hora de Brasília: ao vivo (11/11 20h), condição da noite (20h50),
-   carrinho (12/11 0h) e encerrado (28/11 0h). Decidido aqui para a página não piscar.
-   ?estado=ao-vivo|condicao|carrinho|encerrado força, para homologar. Ver assets/black/estados.css. */
-window.__black={estado:function(){
-  var q=null,V=['ao-vivo','condicao','carrinho','encerrado'],t=Date.now();
+/* Estado da /black pela hora de Brasília, na segunda chance: lista até 25/11 20h, ao vivo
+   (25/11 20h), condição da noite (20h50), carrinho (26/11 0h) e encerrado (28/11 0h).
+   Decidido aqui para a página não piscar. estadoEm(ms) é pura, para o teste
+   (scripts/black-estados.test.mjs). ?estado=ao-vivo|condicao|carrinho|encerrado força,
+   para homologar. Ver assets/black/estados.css. */
+window.__black={estadoEm:function(t){
+  if(t>=Date.parse('2026-11-28T00:00:00-03:00'))return 'encerrado';
+  if(t>=Date.parse('2026-11-26T00:00:00-03:00'))return 'carrinho';
+  if(t>=Date.parse('2026-11-25T20:50:00-03:00'))return 'condicao';
+  if(t>=Date.parse('2026-11-25T20:00:00-03:00'))return 'ao-vivo';
+  return null;
+},estado:function(){
+  var q=null,V=['ao-vivo','condicao','carrinho','encerrado'];
   try{q=new URLSearchParams(location.search).get('estado');}catch(e){}
   if(q&&V.indexOf(q)>=0)return q;
-  if(t>=Date.parse('2026-11-28T00:00:00-03:00'))return 'encerrado';
-  if(t>=Date.parse('2026-11-12T00:00:00-03:00'))return 'carrinho';
-  if(t>=Date.parse('2026-11-11T20:50:00-03:00'))return 'condicao';
-  if(t>=Date.parse('2026-11-11T20:00:00-03:00'))return 'ao-vivo';
-  return null;
+  return window.__black.estadoEm(Date.now());
 }};
 (function(){var e=window.__black.estado();if(e)document.documentElement.setAttribute('data-estado',e);})();
 </script>
@@ -368,14 +376,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <header class="topbar">
   <div class="wrap nav">
     <a class="marca" href="https://fluenciacontabil.com.br/" aria-label="Fluência Contábil">
-      <img src="assets/email/logo-black-selo.png" alt="" width="46" height="46">
+      <img src="assets/black/selo-2a-chance.png" alt="" width="46" height="46">
       <span>Black da Fluência</span>
     </a>
     <a class="cta" href="#lista">Entrar na lista VIP</a>
   </div>
 </header>
 
-<!-- ══════════════════ ESTADOS DA NOITE DE 11/11 E DO CARRINHO ══════════════════
+<!-- ══════════════════ ESTADOS DA NOITE DE 25/11 E DO CARRINHO (26 e 27/11) ══════════════════
      Escondidos até a hora (html[data-estado], decidido no <head>). Mock aprovado em 29/10/2026:
      ao vivo sem preço até 20h50; bônus só na vitalícia; garantia de 7 dias; parcela sempre com
      total e juros (3,49% a.m., 50,93% a.a.). Os checkouts da Kiwify ficam desativados até a hora. -->
@@ -386,7 +394,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <h1>A live da Black <span class="it">está no ar.</span></h1>
       <p class="sub">Entra agora: a condição da Black da Fluência é revelada durante a transmissão e vale até 23h59 de hoje.</p>
       <div class="st-player" id="st-player"></div>
-      <div class="st-acoes"><a class="btn" href="https://youtu.be/h02aFYBvoQ0" target="_blank" rel="noopener">Assistir no YouTube</a></div>
+      <div class="st-acoes"><a class="btn" data-live href="https://www.youtube.com/@prof.viniciusferraz/live" target="_blank" rel="noopener">Assistir no YouTube</a></div>
     </div>
   </section>
 </div>
@@ -397,7 +405,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <span class="st-ao-vivo"><i></i>Só hoje · até 23h59</span>
       <h1>A vitalícia da Fluência <span class="it">por R$ 537.</span></h1>
       <p class="sub">É a condição que eu revelei na live: acesso vitalício à assinatura de Contabilidade, com os bônus da Black. Vale só até 23h59 de hoje.</p>
-      <div class="st-relogio" data-relogio="condicao" aria-label="Tempo até 23h59 de 11/11">
+      <div class="st-relogio" data-relogio="condicao" aria-label="Tempo até 23h59 de 25/11">
         <div><b data-r="horas">--</b><span>horas</span></div>
         <div><b data-r="min">--</b><span>min</span></div>
         <div><b data-r="seg">--</b><span>seg</span></div>
@@ -434,7 +442,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <p class="st-letras">Vitalícia é o acesso enquanto a plataforma existir, nos termos do
         <a href="https://portal.fluenciacontabil.com.br/vitalicio" target="_blank" rel="noopener">Aditivo de Acesso Vitalício</a>.
         Garantia de 7 dias. Pagamento por cartão, Pix ou boleto na Kiwify.</p>
-      <div class="st-centro"><a class="st-voltar" href="https://youtu.be/h02aFYBvoQ0" target="_blank" rel="noopener">Voltar para a live</a></div>
+      <div class="st-centro"><a class="st-voltar" data-live href="https://www.youtube.com/@prof.viniciusferraz/live" target="_blank" rel="noopener">Voltar para a live</a></div>
     </div>
   </section>
   <section class="st-sec">
@@ -442,7 +450,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <h2>Dúvidas da noite</h2>
       <div class="st-faq">
         <details open><summary>O que é a vitalícia?</summary><p>É o acesso à assinatura de Contabilidade enquanto a plataforma existir, sem renovação. As regras estão no Aditivo de Acesso Vitalício.</p></details>
-        <details><summary>E depois de hoje?</summary><p>De 12 a 27/11 a Black continua com duas condições: 12 meses por R$ 517 ou a vitalícia por R$ 814,80. Os R$ 537 da vitalícia e os R$ 297 do semestral são só desta noite.</p></details>
+        <details><summary>E depois de hoje?</summary><p>Em 26 e 27/11 a Black continua com duas condições: 12 meses por R$ 517 ou a vitalícia por R$ 814,80. Os R$ 537 da vitalícia e os R$ 297 do semestral são só desta noite.</p></details>
         <details><summary>Sou Aluno Fundador. Preciso fazer alguma coisa?</summary><p>Não. Os Fundadores já são vitalícios, sem pagar nada. Está na sua página "Minha vitalícia".</p></details>
         <details><summary>Já paguei um plano. Pago de novo?</summary><p>Não o valor inteiro: o que você pagou vira cashback e abate na vitalícia. O valor exato aparece em "Minha vitalícia", na plataforma.</p></details>
         <details><summary>Comprei o semestral na Black. Vale como cashback para a vitalícia?</summary><p>Não. O cashback vale para planos pagos até 09/11.</p></details>
@@ -498,9 +506,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <h2>Dúvidas</h2>
       <div class="st-faq">
         <details open><summary>Qual a diferença entre as duas?</summary><p>Os 12 meses dão um ano de acesso; depois, você renova pelo preço do momento. A vitalícia não tem renovação: o acesso vale enquanto a plataforma existir.</p></details>
-        <details><summary>E a condição de R$ 537?</summary><p>Valeu só na noite da live, até 23h59 de 11/11.</p></details>
-        <details><summary>E o semestral de R$ 297?</summary><p>Valeu só na noite da live, até 23h59 de 11/11.</p></details>
-        <details><summary>O trimestral está na Black?</summary><p>Não. De 12 a 27/11 ficam só os 12 meses e a vitalícia.</p></details>
+        <details><summary>E a condição de R$ 537?</summary><p>Valeu só na noite da live, até 23h59 de 25/11.</p></details>
+        <details><summary>E o semestral de R$ 297?</summary><p>Valeu só na noite da live, até 23h59 de 25/11.</p></details>
+        <details><summary>O trimestral está na Black?</summary><p>Não. Em 26 e 27/11 ficam só os 12 meses e a vitalícia.</p></details>
         <details><summary>Já paguei um plano. Pago de novo?</summary><p>Não o valor inteiro: o que você pagou vira cashback e abate na vitalícia, até 27/11. O valor aparece em "Minha vitalícia".</p></details>
         <details><summary>Comprei o semestral na noite da live. Vale como cashback para a vitalícia?</summary><p>Não. O cashback vale para planos pagos até 09/11.</p></details>
       </div>
@@ -523,21 +531,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <section class="hero so-lista">
   <div class="wrap hero-in">
     <div>
-      <img class="selo-hero" src="assets/email/logo-black-selo.png" width="440" height="440"
-           alt="Selo da Black da Fluência: 11.11.2026, pra sempre">
-      <div class="quando"><span>Quarta, 11 de novembro</span><i></i><span>20h</span><i></i><span>Ao vivo no YouTube</span></div>
-      <h1>11/11, 20h. A maior condição que a Fluência <span class="it">já fez.</span></h1>
-      <p class="sub">Na live de 11 de novembro eu revelo a condição da Black da Fluência, e ela vale
+      <img class="selo-hero" src="assets/black/selo-2a-chance.png" width="440" height="440"
+           alt="Selo da Black da Fluência: 2ª chance, 25.11.2026">
+      <div class="quando"><span>Quarta, 25 de novembro</span><i></i><span>20h</span><i></i><span>Ao vivo no YouTube</span></div>
+      <h1>Vocês pediram. A Black da Fluência <span class="it">voltou.</span></h1>
+      <p class="sub">Em 25 de novembro, às 20h, ao vivo, a maior condição que a Fluência já fez volta
         por uma noite. Quem está na lista VIP recebe o link <strong>10 minutos antes de todo mundo</strong>
         e fica sabendo primeiro quando a condição abrir.</p>
 
-      <div class="contagem" id="contagem" aria-label="Tempo até a live de 11/11, 20h">
+      <div class="contagem" id="contagem" aria-label="Tempo até a live de 25/11, 20h">
         <div><b id="c-dias">--</b><span>dias</span></div>
         <div><b id="c-horas">--</b><span>horas</span></div>
         <div><b id="c-min">--</b><span>min</span></div>
         <div><b id="c-seg">--</b><span>seg</span></div>
       </div>
-      <p class="contagem-fim" id="contagem-fim" hidden>A live de 11/11 já começou.</p>
+      <p class="contagem-fim" id="contagem-fim" hidden>A live de 25/11 já começou.</p>
     </div>
 
     <div class="cartao" id="lista">
@@ -573,12 +581,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       <div id="vip-ok" hidden>
         <p class="ok-titulo" id="vip-ok-titulo">Pronto! Você está na lista VIP.</p>
-        <p>Em 11/11, às 19h50, o link da live chega no seu e-mail, 10 minutos antes do aviso geral.</p>
+        <p>Em 25/11, às 19h50, o link da live chega no seu e-mail, 10 minutos antes do aviso geral.</p>
         <div class="acoes">
           <a class="btn" id="vip-raiox" href="assets/black/raio-x-da-banca-2026.pdf" target="_blank" rel="noopener">Baixar o Raio-X da Banca (PDF)</a>
           <a class="btn" id="vip-grupo" target="_blank" rel="noopener" hidden>Entrar no grupo VIP do WhatsApp</a>
           <a class="btn btn-contorno" id="vip-agenda" target="_blank" rel="noopener"
-             aria-label="Pôr a live de 11/11 no Google Agenda (abre em nova aba)">Pôr 11/11, 20h na agenda</a>
+             aria-label="Pôr a live de 25/11 no Google Agenda (abre em nova aba)">Pôr 25/11, 20h na agenda</a>
         </div>
       </div>
 
@@ -593,7 +601,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   function t(sel,html){var e=document.querySelector(sel);if(e)e.innerHTML=html;}
   t('.topbar .cta','Quero o Raio-X');
   t('.hero h1','Receba <span class="it">grátis</span> o <span style="white-space:nowrap">Raio-X da Banca</span>.');
-    t('.hero p.sub','PDF grátis com o que FGV, CEBRASPE, FCC, VUNESP e CESGRANRIO mais cobram em Contabilidade. Você também entra na lista VIP da <strong>Black da Fluência</strong>: 11/11, 20h, ao vivo.');
+    t('.hero p.sub','PDF grátis com o que FGV, CEBRASPE, FCC, VUNESP e CESGRANRIO mais cobram em Contabilidade. Você também entra na lista VIP da <strong>Black da Fluência</strong>, que voltou: 25/11, 20h, ao vivo.');
   t('.cartao .eyebrow','Raio-X da Banca · PDF grátis');
   t('#vip-titulo','Receba o <span style="white-space:nowrap">Raio-X da Banca</span>');
   t('#vip-sub','Deixe seus dados e baixe <strong>na hora o PDF do Raio-X da Banca</strong>. Você também recebe o link da live antes de todo mundo.');
@@ -646,13 +654,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="wrap">
     <span class="eyebrow">Por que entrar na lista</span>
     <h2>Quem está na lista chega <span class="it">primeiro.</span></h2>
-    <p class="lead">A condição de 11/11 vale por uma noite. A lista VIP existe para você não depender
+    <p class="lead">A condição de 25/11 vale por uma noite. A lista VIP existe para você não depender
       de ver um story na hora certa.</p>
     <div class="trinca">
       <article class="item">
         <div class="n">1</div>
         <h3>O link 10 minutos antes</h3>
-        <p>Às 19h50 de 11/11, o link da live chega no seu e-mail e no grupo, antes do aviso para
+        <p>Às 19h50 de 25/11, o link da live chega no seu e-mail e no grupo, antes do aviso para
           todo mundo.</p>
       </article>
       <article class="item">
@@ -662,8 +670,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </article>
       <article class="item">
         <div class="n">3</div>
-        <h3>Um grupo sem barulho</h3>
-        <p>No grupo VIP do WhatsApp só a equipe escreve. Avisos da Black, sem conversa paralela.</p>
+        <h3>Dúvidas no grupo</h3>
+        <p>No grupo VIP do WhatsApp chegam os avisos da Black, e você tira as suas dúvidas sobre a
+          condição e a plataforma com a equipe.</p>
       </article>
     </div>
   </div>
@@ -716,7 +725,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="dep-carrossel volta" tabindex="0" aria-label="Depoimentos de alunos, segunda fileira (passe o mouse para pausar)"><div class="dep-trilho" id="dep-b"></div></div>
   <div class="wrap cta-meio">
     <a class="btn" href="#lista">Entrar na lista VIP</a>
-    <small>Gratuito. O Raio-X da Banca chega na hora, e o link da live de 11/11, 10 minutos antes.</small>
+    <small>Gratuito. O Raio-X da Banca chega na hora, e o link da live de 25/11, 10 minutos antes.</small>
   </div>
 </section>
 
@@ -773,25 +782,25 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <h2>Como vai ser.</h2>
     <div class="tempo">
       <div class="marco">
-        <div class="data">Toda quarta<br>até 04/11</div>
-        <div><h3>Aula ao vivo, 20h</h3>
-          <p>As aulas de quarta seguem normais no YouTube: questão de prova resolvida do zero, com a
+        <div class="data">18/11 · 20h</div>
+        <div><h3>Aula ao vivo de quarta</h3>
+          <p>A aula de quarta segue normal no YouTube: questão de prova resolvida do zero, com a
             norma que sustenta o gabarito.</p></div>
       </div>
       <div class="marco">
-        <div class="data">11/11 · 19h50</div>
+        <div class="data">25/11 · 19h50</div>
         <div><h3>O link chega para a lista VIP</h3>
           <p>No seu e-mail e no grupo, 10 minutos antes do aviso geral.</p></div>
       </div>
       <div class="marco">
-        <div class="data">11/11 · 20h</div>
-        <div><h3>A live da revelação</h3>
+        <div class="data">25/11 · 20h</div>
+        <div><h3>A live da Black, de novo</h3>
           <p>A condição da Black da Fluência é revelada durante a transmissão.</p></div>
       </div>
       <div class="marco">
-        <div class="data">11/11 · até 23h59</div>
+        <div class="data">25/11 · até 23h59</div>
         <div><h3>Uma noite só</h3>
-          <p>A condição da noite vale até 23h59 de 11/11 e não volta depois.</p></div>
+          <p>A condição da noite vale até 23h59 de 25/11.</p></div>
       </div>
     </div>
   </div>
@@ -836,25 +845,29 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         amostra pequena (88 questões): a ficha dela serve como direção, não como regra.</p></details>
 
     <details><summary>O que é a Black da Fluência?</summary>
-      <p>É a campanha de novembro da Fluência Contábil. A condição é revelada na live de 11/11, às
-        20h. A da noite vale até 23h59 de 11/11, e o que é só da Black termina em 27/11.</p></details>
+      <p>É a campanha de novembro da Fluência Contábil. A primeira live foi em 11/11; vocês pediram,
+        e a Black volta na live de 25/11, às 20h. A condição da noite vale até 23h59 de 25/11, e o
+        que é só da Black termina em 27/11.</p></details>
+
+    <details><summary>Perdi a live de 11/11. A condição é a mesma?</summary>
+      <p>Sim: a noite de 25/11 repete a condição da live de 11/11, e ela vale só até 23h59 de 25/11.</p></details>
 
     <details><summary>Não vou conseguir assistir ao vivo. Perco a condição?</summary>
       <p>Não precisa estar na live para aproveitar: depois da transmissão, a condição chega no seu
-        e-mail e vale até 23h59 de 11/11. Mas ao vivo dá para perguntar o que quiser na hora.</p></details>
+        e-mail e vale até 23h59 de 25/11. Mas ao vivo dá para perguntar o que quiser na hora.</p></details>
 
     <details><summary>Vou receber muita mensagem?</summary>
       <p>Por e-mail, os avisos da Black até 27/11. No WhatsApp, no máximo 4 mensagens
-        individuais, e o grupo VIP, em que só a equipe escreve. Você sai de qualquer um deles
-        quando quiser.</p></details>
+        individuais, e o grupo VIP, com os avisos da Black e as dúvidas respondidas pela equipe.
+        Você sai de qualquer um deles quando quiser.</p></details>
   </div>
 </section>
 
 <!-- ══════════════════ FECHO ══════════════════ -->
 <section class="sec fecho so-lista">
   <div class="wrap">
-    <img src="assets/email/logo-black-selo.png" alt="" width="440" height="440" loading="lazy">
-    <h2>Quarta, 11/11, 20h.</h2>
+    <img src="assets/black/selo-2a-chance.png" alt="" width="440" height="440" loading="lazy">
+    <h2>Quarta, 25/11, 20h.</h2>
     <p>Entre na lista VIP, receba o Raio-X da Banca na hora, o link antes de todo mundo e fique
       sabendo primeiro quando a condição abrir.</p>
     <a class="btn" href="#lista">Entrar na lista VIP</a>
@@ -878,19 +891,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   var ENDPOINT = 'https://script.google.com/macros/s/AKfycbx8lWrX5F0IByv0JEJ0iBGPjtLto7f2VxDHIh0uT0gZtvoj8EDVx0NFiriou-Dt0cxh/exec';
   /* Linha da Config Aulas (ver o comentário no topo). A outra linha,
      `aula_black_2026`, ficou para as inscrições feitas com a caixa desmarcada. */
-  var ORIGEM_COM_WHATSAPP = 'aula_black_2026_whatsapp';
-  /* Link de convite do grupo "Black da Fluência · Lista VIP" (criado em 20/10/2026).
-     Vazio = botão escondido. O mesmo link está na black-obrigado.html. */
-  var GRUPO_VIP = 'https://chat.whatsapp.com/E1g998o4J2H8ZOD7RoeHxZ';
+  var ORIGEM_COM_WHATSAPP = 'aula_black_2026_segunda_chance_whatsapp';
+  /* Link de convite do grupo "Black da Fluência · 2ª Chance" (criado em 14/11/2026; o da
+     live de 11/11 era o "Lista VIP"). Vazio = botão escondido. O mesmo link está na
+     black-obrigado.html. */
+  var GRUPO_VIP = 'https://chat.whatsapp.com/BzlKP4F3XXz0EeeArtFtAS';
 
-  /* 11/11/2026, 20h de Brasília. */
-  var LIVE = new Date('2026-11-11T20:00:00-03:00').getTime();
-  var CHAVE_LOCAL = 'fc_black_2026_vip';
+  /* 25/11/2026, 20h de Brasília. */
+  var LIVE = new Date('2026-11-25T20:00:00-03:00').getTime();
+  /* Chave nova: quem se inscreveu para 11/11 vê o formulário de novo e entra no grupo novo. */
+  var CHAVE_LOCAL = 'fc_black_2026_2a_chance';
   /* Google Agenda: 20h às 22h de Brasília = 23h às 01h UTC. */
   var AGENDA = 'https://calendar.google.com/calendar/render?action=TEMPLATE'
-    + '&text=' + encodeURIComponent('Live da Black da Fluência')
-    + '&dates=20261111T230000Z/20261112T010000Z'
-    + '&details=' + encodeURIComponent('Ao vivo no YouTube. O link chega no seu e-mail às 19h50 de 11/11.')
+    + '&text=' + encodeURIComponent('Live da Black da Fluência · 2ª chance')
+    + '&dates=20261125T230000Z/20261126T010000Z'
+    + '&details=' + encodeURIComponent('Ao vivo no YouTube. O link chega no seu e-mail às 19h50 de 25/11.')
     + '&location=' + encodeURIComponent('fluenciacontabil.com.br/black');
 
   function el(id){ return document.getElementById(id); }
@@ -1160,7 +1175,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   });
 })();
 </script>
-<script src="assets/black/estados.js?v=20261101" defer></script>
+<script src="assets/black/estados.js?v=20261114" defer></script>
 <script src="assets/origem.js?v=20260909" defer></script>
 </body>
 </html>

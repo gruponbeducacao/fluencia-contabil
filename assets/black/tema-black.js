@@ -1,14 +1,19 @@
 /* ═══════════════════════════════════════════════════════════════
    Tema da Black da Fluência — camada TEMPORÁRIA sobre o site.
    Fica no ar até 28/11/2026 0h (Brasília); depois não faz nada, e para
-   desfazer basta deixar a data passar. Três fases:
+   desfazer basta deixar a data passar. Três fases, em duas janelas:
      pré-virada  até 24/10 0h: só o visual (topo preto, selo, faixa "11/11,
                  20h · lista VIP", destaque da Black nos links). As vendas
                  estão abertas: preço, botões, assinatura e quiz intactos.
                  Pedido do Vinícius em 20/10 ("ligar o visual já").
      fechado     24/10 0h a 11/11 20h: vendas da assinatura fechadas.
-     condição    11/11 20h a 27/11: os botões levam à condição, na /black.
+     condição    11/11 20h a 14/11: os botões levam à condição, na /black.
+   Segunda chance (decisão do Vinícius em 14/11, a virada entra no merge):
+     fechado     14/11 0h a 25/11 20h: vendas fechadas de novo; a faixa e os
+                 botões chamam para a lista da live de 25/11 ("vocês pediram").
+     condição    25/11 20h a 27/11: a noite de 25/11 e o carrinho de 26 e 27/11.
    ?tema=black no endereço força a fase de vendas fechadas, para homologar.
+   As datas estão todas em faseEm(), coberta por scripts/black-estados.test.mjs.
 
    Vai no <head>, de forma síncrona, logo depois do assets/black/tema-black.css,
    para a classe html.tema-black existir antes da primeira pintura.
@@ -30,14 +35,25 @@
    Black mora na própria /black, então os botões continuam indo para lá. */
 (function () {
   'use strict';
-  var VISUAL = Date.parse('2026-10-20T00:00:00-03:00');
-  var FECHA = Date.parse('2026-10-24T00:00:00-03:00');
-  var REABRE = Date.parse('2026-11-11T20:00:00-03:00');
-  var FIM = Date.parse('2026-11-28T00:00:00-03:00');
-  var agora = Date.now();
+  /* Fase do tema num instante (ms). null = tema desligado. Pura, para o teste. */
+  function faseEm(agora, forcado) {
+    var VISUAL = Date.parse('2026-10-20T00:00:00-03:00');
+    var FECHA = Date.parse('2026-10-24T00:00:00-03:00');
+    var REABRE = Date.parse('2026-11-11T20:00:00-03:00');
+    var FECHA2 = Date.parse('2026-11-14T00:00:00-03:00');
+    var REABRE2 = Date.parse('2026-11-25T20:00:00-03:00');
+    var FIM = Date.parse('2026-11-28T00:00:00-03:00');
+    if (forcado) return 'fechado';
+    if (agora < VISUAL || agora >= FIM) return null;
+    if (agora >= REABRE2) return 'condicao';
+    if (agora >= FECHA2) return 'fechado';
+    if (agora >= REABRE) return 'condicao';
+    return agora >= FECHA ? 'fechado' : 'pre';
+  }
+  window.__temaBlackFase = faseEm;
   var forcado = /[?&]tema=black(?:&|$)/.test(location.search);
-  if (!forcado && (agora < VISUAL || agora >= FIM)) return;
-  var fase = agora >= REABRE ? 'condicao' : (agora >= FECHA || forcado) ? 'fechado' : 'pre';
+  var fase = faseEm(Date.now(), forcado);
+  if (!fase) return;
 
   var script = document.currentScript;
   var modo = (script && script.getAttribute('data-black')) || 'site';
@@ -51,13 +67,13 @@
   raiz.classList.add('tema-black');
   if (fechado) raiz.classList.add('tema-black-fechado');
 
-  var SELO = '/assets/email/logo-black-selo.png';
+  var SELO = '/assets/black/selo-2a-chance.png';
   var DESTINO = '/black';
   var BOTAO = fase === 'condicao' ? 'Ver a condição da Black' : 'Entrar na lista VIP';
   var AVISO = {
     pre: 'Black da Fluência · 11/11, 20h, ao vivo · a maior condição que a Fluência já fez ',
-    fechado: 'Black da Fluência · vendas fechadas até 11/11 · 11/11, 20h, ao vivo ',
-    condicao: 'Black da Fluência · a condição vale até 27/11 '
+    fechado: 'Black da Fluência · 2ª chance · vocês pediram e a Black voltou: 25/11, 20h, ao vivo ',
+    condicao: 'Black da Fluência · 2ª chance · a condição vale até 27/11 '
   }[fase];
 
   function el(tag, attrs, texto) {
@@ -121,8 +137,8 @@
 
   // "Matrículas abertas" e o preço da assinatura não podem aparecer com as vendas fechadas
   function vendasFechadas() {
-    var trocas = [[/As matrículas estão abertas\./, 'As matrículas reabrem em 11/11, às 20h.'],
-                  [/Matrículas abertas/, 'Vendas fechadas até 11/11']];
+    var trocas = [[/As matrículas estão abertas\./, 'As matrículas reabrem em 25/11, às 20h.'],
+                  [/Matrículas abertas/, 'Vendas fechadas até 25/11']];
     var preco = /R\$\s?(427|547|697|44,16|56,57)\b/;
     var comPreco = [];
     var anda = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
@@ -136,7 +152,7 @@
       if (!e.isConnected) return;
       var p = e.closest('p');
       if (p) {
-        p.textContent = 'A assinatura reabre em 11/11, às 20h, ao vivo, por uma noite, na maior condição que a Fluência já fez.';
+        p.textContent = 'Vocês pediram e a Black voltou: a assinatura reabre em 25/11, às 20h, ao vivo, por uma noite, na maior condição que a Fluência já fez.';
         return;
       }
       var bloco = e.closest('li, span, small, div');
@@ -146,16 +162,16 @@
     var fixa = document.querySelector('.cta-fixa-txt');
     if (fixa) {
       fixa.textContent = '';
-      fixa.appendChild(el('b', {}, 'Vendas fechadas até 11/11'));
-      fixa.appendChild(el('span', {}, '11/11, 20h, ao vivo · lista VIP'));
+      fixa.appendChild(el('b', {}, 'Vendas fechadas até 25/11'));
+      fixa.appendChild(el('span', {}, 'A Black voltou: 25/11, 20h, ao vivo · lista VIP'));
     }
 
     var planos = document.getElementById('assinar');
     if (planos) {
       var bloco = el('div', { 'class': 'fc-black-fechado' });
       bloco.appendChild(el('img', { src: SELO, alt: '' }));
-      bloco.appendChild(el('span', { 'class': 'k' }, 'Vendas fechadas até 11/11'));
-      var h = el('h2', {}, 'A assinatura reabre em 11/11, às 20h, ');
+      bloco.appendChild(el('span', { 'class': 'k' }, 'Black da Fluência · 2ª chance · vendas fechadas até 25/11'));
+      var h = el('h2', {}, 'Vocês pediram e a Black voltou: a assinatura reabre em 25/11, às 20h, ');
       h.appendChild(el('em', {}, 'na maior condição que a Fluência já fez.'));
       bloco.appendChild(h);
       bloco.appendChild(el('p', {}, 'É uma noite só, ao vivo no YouTube. Quem está na lista VIP recebe o link 10 minutos ' +
@@ -180,8 +196,8 @@
       card.appendChild(el('img', { src: SELO, alt: '' }));
       var txt = el('span', { 'class': 'txt' });
       var lista = fase !== 'condicao';
-      txt.appendChild(el('span', { 'class': 'k' }, lista ? 'Black da Fluência · 11/11, 20h' : 'Black da Fluência · até 27/11'));
-      txt.appendChild(el('strong', {}, lista ? 'Entre na lista VIP e ganhe o Raio-X da Banca' : 'A maior condição que a Fluência já fez'));
+      txt.appendChild(el('span', { 'class': 'k' }, lista ? 'Black da Fluência · 2ª chance · 25/11, 20h' : 'Black da Fluência · 2ª chance · até 27/11'));
+      txt.appendChild(el('strong', {}, lista ? 'A Black voltou: entre na lista VIP e ganhe o Raio-X da Banca' : 'A maior condição que a Fluência já fez'));
       txt.appendChild(el('span', { 'class': 'go' }, BOTAO + ' →'));
       card.appendChild(txt);
       dest.parentNode.insertBefore(card, dest);
@@ -200,8 +216,8 @@
     }
     // o robô de dúvidas do contato (variável global res) não pode prometer matrícula aberta nem preço
     if (modo === 'site' && fechado && window.res && typeof window.res.preco === 'string') {
-      var lista = 'As vendas da assinatura estão fechadas até 11/11. Nesse dia, às 20h, ao vivo, abro por uma noite a maior ' +
-        'condição que a Fluência já fez. Entre na <a href="/black" style="color:var(--dourado);font-weight:700">lista VIP</a> para saber primeiro.';
+      var lista = 'As vendas da assinatura estão fechadas até 25/11. Vocês pediram e a Black voltou: nesse dia, às 20h, ao vivo, ' +
+        'abro por uma noite a maior condição que a Fluência já fez. Entre na <a href="/black" style="color:var(--dourado);font-weight:700">lista VIP</a> para saber primeiro.';
       window.res.lista = lista;
       window.res.lance = lista;
       window.res.preco = lista;
