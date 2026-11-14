@@ -1,10 +1,10 @@
 /* ═══════════════════════════════════════════════════════════════
-   /black · estados da noite de 11/11 e do carrinho. O estado já vem decidido no
+   /black · estados da noite de 25/11 (segunda chance) e do carrinho. O estado já vem decidido no
    <head> (html[data-estado], ver black.html); aqui só o que depende dele:
    - relógio de cada estado;
    - player da live, carregado só no estado ao vivo;
    - os botões "Entrar na lista VIP" do resto da página passam a levar à oferta;
-   - a página troca sozinha de estado quando a hora vira (20h50, 0h de 12/11 e de 28/11),
+   - a página troca sozinha de estado quando a hora vira (20h, 20h50, 0h de 26/11 e de 28/11),
      sem precisar recarregar.
    ═══════════════════════════════════════════════════════════════ */
 (function () {
@@ -12,9 +12,13 @@
   var B = window.__black;
   if (!B) return;
 
-  var VIDEO = 'h02aFYBvoQ0';
+  // Id do vídeo da live de 25/11 no YouTube. Vazio até o evento ser criado: os links levam à
+  // página /live do canal (abre a transmissão do momento) e o player embutido não aparece.
+  var VIDEO = '';
+  var LINK_LIVE = VIDEO ? 'https://youtu.be/' + VIDEO : 'https://www.youtube.com/@prof.viniciusferraz/live';
+  document.querySelectorAll('a[data-live]').forEach(function (a) { a.setAttribute('href', LINK_LIVE); });
   var BOTAO = {
-    'ao-vivo': { txt: 'Assistir à live', href: 'https://youtu.be/' + VIDEO, fora: true },
+    'ao-vivo': { txt: 'Assistir à live', href: LINK_LIVE, fora: true },
     condicao: { txt: 'Garantir a vitalícia', href: '#oferta' },
     carrinho: { txt: 'Ver as condições', href: '#oferta-carrinho' },
     encerrado: { txt: 'Ver os planos', href: 'assinatura.html' }
@@ -28,7 +32,7 @@
   });
 
   var FIM = {
-    condicao: new Date('2026-11-11T23:59:59-03:00'),
+    condicao: new Date('2026-11-25T23:59:59-03:00'),
     carrinho: new Date('2026-11-27T23:59:59-03:00')
   };
 
@@ -48,10 +52,10 @@
 
   function player() {
     var caixa = document.getElementById('st-player');
-    if (!caixa || caixa.firstChild) return;
+    if (!caixa || caixa.firstChild || !VIDEO) return;
     var f = document.createElement('iframe');
     f.src = 'https://www.youtube.com/embed/' + VIDEO + '?autoplay=1&mute=1&rel=0';
-    f.title = 'Live da Black da Fluência, 11/11, 20h';
+    f.title = 'Live da Black da Fluência, 2ª chance, 25/11, 20h';
     f.allow = 'autoplay; encrypted-media; picture-in-picture';
     f.allowFullscreen = true;
     caixa.appendChild(f);
