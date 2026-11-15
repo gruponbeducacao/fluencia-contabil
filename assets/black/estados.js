@@ -14,7 +14,7 @@
 
   // Id do vídeo da live de 25/11 no YouTube. Vazio até o evento ser criado: os links levam à
   // página /live do canal (abre a transmissão do momento) e o player embutido não aparece.
-  var VIDEO = '';
+  var VIDEO = 'sC0MeGlg6t0';
   var LINK_LIVE = VIDEO ? 'https://youtu.be/' + VIDEO : 'https://www.youtube.com/@prof.viniciusferraz/live';
   document.querySelectorAll('a[data-live]').forEach(function (a) { a.setAttribute('href', LINK_LIVE); });
   var BOTAO = {
