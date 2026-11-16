@@ -31,7 +31,7 @@ function relogioEm(t) {
 const black = ler('black.html');
 const obrigado = ler('black-obrigado.html');
 const tema = ler('assets/black/tema-black.js');
-const PARCEIROS = ['only-fiscais', 'fiscal-de-resenha', 'evoluiu', 'guruja'];
+const PARCEIROS = ['only-fiscais'];
 
 function estadoDaBlack() {
   const window = {};
