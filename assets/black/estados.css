@@ -4,7 +4,9 @@
 
    O estado vem do <head> da black.html, em html[data-estado], pela hora de Brasília:
      ao-vivo     25/11 20h00 a 20h50  · chama para a live, sem preço
-     condicao    25/11 20h50 a 26/11 12h · vitalícia R$ 537 (checkout da live)
+     condicao    25/11 20h50 a 23h59  · vitalícia R$ 537 (checkout da noite)
+     prorrogacao 26/11 0h a 12h       · o mesmo cartão da condição, com os textos .so-prorr
+                                        (a prorrogação só aparece a partir de 0h)
      carrinho    26/11 12h a 27/11 23h59 · 12 meses R$ 517 e vitalícia R$ 814,80
      encerrado   28/11 0h em diante
    Sem o atributo, a página é a de sempre (lista VIP). ?estado=<nome> força, para homologar.
@@ -14,12 +16,17 @@
 .st{display:none}
 html[data-estado="ao-vivo"]  #st-ao-vivo,
 html[data-estado="condicao"] #st-condicao,
+html[data-estado="prorrogacao"] #st-condicao,
 html[data-estado="carrinho"] #st-carrinho,
 html[data-estado="encerrado"] #st-encerrado{display:block}
 
 /* o que é só da fase de lista VIP sai quando a condição abre */
 html[data-estado="condicao"] .so-lista,
+html[data-estado="prorrogacao"] .so-lista,
 html[data-estado="carrinho"] .so-lista{display:none}
+/* o bloco da condição serve à noite (.so-noite) e à prorrogação de 26/11 (.so-prorr) */
+html:not([data-estado="prorrogacao"]) .so-prorr,
+html[data-estado="prorrogacao"] .so-noite{display:none!important}
 /* encerrado: só o aviso, o topo e o rodapé */
 html[data-estado="encerrado"] .hero,
 html[data-estado="encerrado"] .autoridade,

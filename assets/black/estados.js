@@ -4,7 +4,7 @@
    - relógio de cada estado;
    - player da live, carregado só no estado ao vivo;
    - os botões "Entrar na lista VIP" do resto da página passam a levar à oferta;
-   - a página troca sozinha de estado quando a hora vira (20h, 20h50, 12h de 26/11 e 0h de 28/11),
+   - a página troca sozinha de estado quando a hora vira (20h, 20h50, 0h e 12h de 26/11 e 0h de 28/11),
      sem precisar recarregar.
    ═══════════════════════════════════════════════════════════════ */
 (function () {
@@ -20,11 +20,13 @@
   var BOTAO = {
     'ao-vivo': { txt: 'Assistir à live', href: LINK_LIVE, fora: true },
     condicao: { txt: 'Garantir a vitalícia', href: '#oferta' },
+    prorrogacao: { txt: 'Garantir a vitalícia', href: '#oferta' },
     carrinho: { txt: 'Ver as condições', href: '#oferta-carrinho' },
     encerrado: { txt: 'Ver os planos', href: 'assinatura.html' }
   };
   var FIM = {
-    condicao: new Date('2026-11-26T12:00:00-03:00'), // o carrinho começa neste instante
+    condicao: new Date('2026-11-25T23:59:59-03:00'),
+    prorrogacao: new Date('2026-11-26T12:00:00-03:00'), // o carrinho começa neste instante
     carrinho: new Date('2026-11-27T23:59:59-03:00')
   };
 

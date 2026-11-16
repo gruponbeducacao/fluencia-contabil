@@ -348,18 +348,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </script>
 <script>
 /* Estado da /black pela hora de Brasília, na segunda chance: lista até 25/11 20h, ao vivo
-   (25/11 20h), condição da live (20h50, até 26/11 12h), carrinho (26/11 12h) e encerrado (28/11 0h).
+   (25/11 20h), condição da noite (20h50 a 23h59), prorrogação (26/11 0h a 12h, só anunciada
+   a partir de 0h), carrinho (26/11 12h) e encerrado (28/11 0h).
    Decidido aqui para a página não piscar. estadoEm(ms) é pura, para o teste
-   (scripts/black-estados.test.mjs). ?estado=ao-vivo|condicao|carrinho|encerrado força,
+   (scripts/black-estados.test.mjs). ?estado=ao-vivo|condicao|prorrogacao|carrinho|encerrado força,
    para homologar. Ver assets/black/estados.css. */
 window.__black={estadoEm:function(t){
   if(t>=Date.parse('2026-11-28T00:00:00-03:00'))return 'encerrado';
   if(t>=Date.parse('2026-11-26T12:00:00-03:00'))return 'carrinho';
+  if(t>=Date.parse('2026-11-26T00:00:00-03:00'))return 'prorrogacao';
   if(t>=Date.parse('2026-11-25T20:50:00-03:00'))return 'condicao';
   if(t>=Date.parse('2026-11-25T20:00:00-03:00'))return 'ao-vivo';
   return null;
 },estado:function(){
-  var q=null,V=['ao-vivo','condicao','carrinho','encerrado'];
+  var q=null,V=['ao-vivo','condicao','prorrogacao','carrinho','encerrado'];
   try{q=new URLSearchParams(location.search).get('estado');}catch(e){}
   if(q&&V.indexOf(q)>=0)return q;
   return window.__black.estadoEm(Date.now());
@@ -392,7 +394,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="wrap">
       <span class="st-ao-vivo"><i></i>Ao vivo agora</span>
       <h1>A live da Black <span class="it">está no ar.</span></h1>
-      <p class="sub">Entra agora: a condição da Black da Fluência é revelada durante a transmissão e vale até amanhã, 26/11, ao meio-dia.</p>
+      <p class="sub">Entra agora: a condição da Black da Fluência é revelada durante a transmissão e vale até 23h59 de hoje.</p>
       <div class="st-player" id="st-player"></div>
       <div class="st-acoes"><a class="btn" data-live href="https://www.youtube.com/@prof.viniciusferraz/live" target="_blank" rel="noopener">Assistir no YouTube</a></div>
     </div>
@@ -402,10 +404,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="st" id="st-condicao">
   <section class="st-hero">
     <div class="wrap">
-      <span class="st-ao-vivo"><i></i>Até 26/11 · 12h</span>
+      <span class="st-ao-vivo so-noite"><i></i>Só hoje · até 23h59</span>
+      <span class="st-ao-vivo so-prorr"><i></i>Prorrogado · até 12h de hoje</span>
       <h1>A vitalícia da Fluência <span class="it">por R$ 537.</span></h1>
-      <p class="sub">É a condição que eu revelei na live: acesso vitalício à assinatura de Contabilidade, com os bônus da Black. Vale só até 26/11, ao meio-dia.</p>
-      <div class="st-relogio" data-relogio="condicao" aria-label="Tempo até 12h de 26/11">
+      <p class="sub so-noite">É a condição que eu revelei na live: acesso vitalício à assinatura de Contabilidade, com os bônus da Black. Vale só até 23h59 de hoje.</p>
+      <p class="sub so-prorr">A condição da live foi prorrogada até hoje, 26/11, ao meio-dia. Depois disso, a vitalícia volta a R$ 814,80.</p>
+      <div class="st-relogio so-noite" data-relogio="condicao" aria-label="Tempo até 23h59 de 25/11">
+        <div><b data-r="horas">--</b><span>horas</span></div>
+        <div><b data-r="min">--</b><span>min</span></div>
+        <div><b data-r="seg">--</b><span>seg</span></div>
+      </div>
+      <div class="st-relogio so-prorr" data-relogio="prorrogacao" aria-label="Tempo até 12h de 26/11">
         <div><b data-r="horas">--</b><span>horas</span></div>
         <div><b data-r="min">--</b><span>min</span></div>
         <div><b data-r="seg">--</b><span>seg</span></div>
@@ -415,7 +424,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <section class="st-sec noite" id="oferta">
     <div class="wrap">
       <div class="st-oferta">
-        <div class="st-nome">Vitalícia · noite da live</div>
+        <div class="st-nome"><span class="so-noite">Vitalícia · noite da live</span><span class="so-prorr">Vitalícia · condição da live, prorrogada</span></div>
         <div class="st-preco">R$ 537 <small>à vista</small></div>
         <div class="st-parc">ou 12× de R$ 55,54 no cartão</div>
         <div class="st-legal">Total parcelado R$ 666,48 (juros de 3,49% ao mês, 50,93% ao ano).</div>
@@ -442,10 +451,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </section>
   <section class="st-sec">
     <div class="wrap">
-      <h2>Dúvidas da noite</h2>
+      <h2><span class="so-noite">Dúvidas da noite</span><span class="so-prorr">Dúvidas</span></h2>
       <div class="st-faq">
         <details open><summary>O que é a vitalícia?</summary><p>É o acesso à assinatura de Contabilidade enquanto a plataforma existir, sem renovação. As regras estão no Aditivo de Acesso Vitalício.</p></details>
-        <details><summary>E depois do meio-dia de 26/11?</summary><p>De 26/11, ao meio-dia, até 27/11, às 23h59, a Black continua com duas condições: 12 meses por R$ 517 ou a vitalícia por R$ 814,80. Os R$ 537 da vitalícia valem só até 26/11, ao meio-dia.</p></details>
+        <details class="so-noite"><summary>E depois de hoje?</summary><p>Em 26 e 27/11 a Black continua com duas condições: 12 meses por R$ 517 ou a vitalícia por R$ 814,80. Os R$ 537 da vitalícia são só desta noite.</p></details>
+        <details class="so-prorr"><summary>E depois do meio-dia?</summary><p>Do meio-dia de hoje até 27/11, às 23h59, a Black continua com duas condições: 12 meses por R$ 517 ou a vitalícia por R$ 814,80. Os R$ 537 da vitalícia valem só até o meio-dia de hoje, 26/11.</p></details>
         <details><summary>Sou Aluno Fundador. Preciso fazer alguma coisa?</summary><p>Não. Os Fundadores já são vitalícios, sem pagar nada. Está na sua página "Minha vitalícia".</p></details>
         <details><summary>Já paguei um plano. Pago de novo?</summary><p>Não o valor inteiro: o que você pagou vira cashback e abate na vitalícia. O valor exato aparece em "Minha vitalícia", na plataforma.</p></details>
       </div>
@@ -500,8 +510,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <h2>Dúvidas</h2>
       <div class="st-faq">
         <details open><summary>Qual a diferença entre as duas?</summary><p>Os 12 meses dão um ano de acesso; depois, você renova pelo preço do momento. A vitalícia não tem renovação: o acesso vale enquanto a plataforma existir.</p></details>
-        <details><summary>E a condição de R$ 537?</summary><p>Valeu da live de 25/11 até 26/11, ao meio-dia.</p></details>
-        <details><summary>O trimestral está na Black?</summary><p>Não. Até 27/11 ficam só os 12 meses e a vitalícia.</p></details>
+        <details><summary>E a condição de R$ 537?</summary><p>Valeu na noite da live de 25/11 e foi prorrogada até 26/11, ao meio-dia.</p></details>
+        <details><summary>O trimestral está na Black?</summary><p>Não. Em 26 e 27/11 ficam só os 12 meses e a vitalícia.</p></details>
         <details><summary>Já paguei um plano. Pago de novo?</summary><p>Não o valor inteiro: o que você pagou vira cashback e abate na vitalícia, até 27/11. O valor aparece em "Minha vitalícia".</p></details>
       </div>
     </div>
@@ -790,9 +800,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <p>A condição da Black da Fluência é revelada durante a transmissão.</p></div>
       </div>
       <div class="marco">
-        <div class="data">26/11 · até 12h</div>
-        <div><h3>Última chamada</h3>
-          <p>A condição da live vale até 26/11, ao meio-dia.</p></div>
+        <div class="data">25/11 · até 23h59</div>
+        <div><h3>Uma noite só</h3>
+          <p>A condição da noite vale até 23h59 de 25/11.</p></div>
       </div>
     </div>
   </div>
@@ -838,15 +848,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <details><summary>O que é a Black da Fluência?</summary>
       <p>É a campanha de novembro da Fluência Contábil. A primeira live foi em 11/11; vocês pediram,
-        e a Black volta na live de 25/11, às 20h. A condição da live vale até 26/11, ao meio-dia, e o
+        e a Black volta na live de 25/11, às 20h. A condição da noite vale até 23h59 de 25/11, e o
         que é só da Black termina em 27/11.</p></details>
 
     <details><summary>Perdi a live de 11/11. A condição é a mesma?</summary>
-      <p>Sim: a noite de 25/11 repete a condição da live de 11/11, e ela vale só até 26/11, ao meio-dia.</p></details>
+      <p>Sim: a noite de 25/11 repete a condição da live de 11/11, e ela vale só até 23h59 de 25/11.</p></details>
 
     <details><summary>Não vou conseguir assistir ao vivo. Perco a condição?</summary>
       <p>Não precisa estar na live para aproveitar: depois da transmissão, a condição chega no seu
-        e-mail e vale até 26/11, ao meio-dia. Mas ao vivo dá para perguntar o que quiser na hora.</p></details>
+        e-mail e vale até 23h59 de 25/11. Mas ao vivo dá para perguntar o que quiser na hora.</p></details>
 
     <details><summary>Vou receber muita mensagem?</summary>
       <p>Por e-mail, os avisos da Black até 27/11. No WhatsApp, no máximo 4 mensagens

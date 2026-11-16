@@ -7,8 +7,8 @@ import test from 'node:test';
    (window.__black, no <head> da black.html), a fase do tema do site inteiro
    (faseEm, em assets/black/tema-black.js) e a sub-fase 2a das páginas de parceiros
    (window.__of.sub ou window.__cond.sub, no <head> de cada uma). Segunda chance (decisão de 14/11/2026):
-   lista até 25/11 20h, ao vivo, condição da live das 20h50 até 26/11 12h (decisão de 16/11),
-   carrinho de 26/11 12h a 27/11, encerrado em 28/11; parceiros com a vitalícia de R$ 537 até 27/11, 23h59. */
+   lista até 25/11 20h, ao vivo, condição da noite das 20h50 às 23h59, prorrogação de 26/11 0h a 12h
+   (decisão de 16/11: só anunciada a partir de 0h), carrinho de 26/11 12h a 27/11, encerrado em 28/11; parceiros com a vitalícia de R$ 537 até 27/11, 23h59. */
 const raiz = new URL('../', import.meta.url);
 const ler = (arq) => readFileSync(new URL(arq, raiz), 'utf8');
 const ms = (iso) => Date.parse(iso);
@@ -50,8 +50,8 @@ test('/black: lista até a live de 25/11 e os estados da noite, do carrinho e do
     ['2026-11-25T20:49:59-03:00', 'ao-vivo'],
     ['2026-11-25T20:50:00-03:00', 'condicao'],
     ['2026-11-25T23:59:59-03:00', 'condicao'],
-    ['2026-11-26T00:00:00-03:00', 'condicao'],
-    ['2026-11-26T11:59:59-03:00', 'condicao'],
+    ['2026-11-26T00:00:00-03:00', 'prorrogacao'],
+    ['2026-11-26T11:59:59-03:00', 'prorrogacao'],
     ['2026-11-26T12:00:00-03:00', 'carrinho'],
     ['2026-11-27T23:59:59-03:00', 'carrinho'],
     ['2026-11-28T00:00:00-03:00', 'encerrado'],
@@ -119,12 +119,18 @@ test('segunda chance: grupo novo, live de 25/11 e selo novo em todas as páginas
   assert.ok(tema.includes("var SELO = '/assets/black/selo-2a-chance.png'"));
 });
 
-test('/black: a condição de R$ 537 vai até 26/11 12h e o semestral saiu da página', () => {
+test('/black: condição até 23h59, prorrogação até 26/11 12h e o semestral fora da página', () => {
   const estados = ler('assets/black/estados.js');
-  assert.ok(estados.includes("condicao: new Date('2026-11-26T12:00:00-03:00')"), 'relógio da condição até 26/11 12h');
+  assert.ok(estados.includes("condicao: new Date('2026-11-25T23:59:59-03:00')"), 'relógio da condição até 23h59');
+  assert.ok(estados.includes("prorrogacao: new Date('2026-11-26T12:00:00-03:00')"), 'relógio da prorrogação até 12h');
+  assert.ok(black.includes('data-relogio="prorrogacao"'), 'relógio da prorrogação na página');
   for (const [nome, txt] of [['black.html', black], ['black-obrigado.html', obrigado], ['estados.js', estados],
     ['estados.css', ler('assets/black/estados.css')]]) {
     assert.doesNotMatch(txt, /ihVM6ra|R\$ 297|semestral/i, `${nome}: sem o semestral`);
-    assert.doesNotMatch(txt, /23h59 de (hoje|25\/11)/, `${nome}: sem o prazo antigo`);
   }
+  // a prorrogação só pode aparecer nos textos do estado novo (.so-prorr) e na pergunta do carrinho
+  const semProrr = black.replace(/<(span|p|div|details) class="[^"]*so-prorr[^"]*"[\s\S]*?<\/\1>/g, '')
+    .replace(/<summary>E a condição de R\$ 537\?<\/summary><p>[^<]*<\/p>/, '');
+  assert.doesNotMatch(semProrr.replace(/<script[\s\S]*?<\/script>/g, ''), /prorrog|meio-dia/i, 'prorrogação fora do estado novo');
+  assert.doesNotMatch(obrigado, /prorrog|meio-dia/i, 'black-obrigado sem a prorrogação');
 });
