@@ -186,6 +186,20 @@ test('live avulsa do links.json toma o topo até o fim e depois a aula da agenda
   assert.equal(depois.destaque.kicker, 'Ao vivo · hoje, 20h');
 });
 
+test('live avulsa com arte própria leva a arte para a faixa; caminho estranho é ignorado', () => {
+  const base = { id: 'podcast-fiscal-de-resenha', titulo: 'Podcast', url: 'https://youtu.be/h02aFYBvoQ0', inicio: '2026-10-13T19:00', fim: '2026-10-13T23:59' };
+  const agora = new Date(2026, 9, 13, 10, 0);
+  const comArte = L.montar(agenda, { destaque: { ...base, img: 'assets/links/podcast.webp' }, novidades: [] }, agora);
+  assert.equal(comArte.destaque.img, 'assets/links/podcast.webp');
+  assert.equal(comArte.destaque.kicker, 'Ao vivo · hoje, 19h');
+  // Sem arte, ou com endereço de fora, fica a miniatura do YouTube, como antes.
+  for (const img of [undefined, 'https://exemplo.com/a.webp', 'assets/links/a.gif', '../x.webp']) {
+    const m = L.montar(agenda, { destaque: { ...base, img }, novidades: [] }, agora);
+    assert.equal(m.destaque.botao, 'podcast-fiscal-de-resenha', String(img));
+    assert.equal(m.destaque.img, undefined, String(img));
+  }
+});
+
 test('live avulsa malformada é ignorada e o topo segue a agenda', () => {
   const agora = new Date(2026, 9, 12, 22, 0);
   const ok = { id: 'live-black', titulo: 'Live', url: 'https://youtu.be/h02aFYBvoQ0', inicio: '2026-10-13T20:00', fim: '2026-10-13T23:59' };
@@ -349,6 +363,10 @@ test('o que está publicado hoje monta sem erro e aponta para arquivo que existe
     assert.equal(fixos.has(d.id), false, `${d.id}: nome já usado por um botão fixo`);
     const antes = L.montar({ aulas: [] }, linksReal, new Date(inicio.getTime() - 60 * 60 * 1000));
     assert.equal(antes.destaque && antes.destaque.botao, d.id, 'destaque avulso do links.json descartado pela página');
+    if (d.img) {
+      assert.equal(antes.destaque.img, d.img, `${d.id}: arte ${d.img} recusada pela página`);
+      assert.ok(existsSync(new URL(d.img, raiz)), `${d.id}: arte ${d.img} não existe`);
+    }
   }
   for (const n of m.novidades) assert.ok(n.kicker && n.titulo && n.url);
   for (const a of ancoras.filter((x) => x.url.hostname === 'fluenciacontabil.com.br')) {
