@@ -811,19 +811,19 @@ function telaReal(tipo) {
 }
 
 /* Vídeos de aluno (Panda). O player só carrega no toque: poster leve até lá, para não pesar a tela.
-   Mesmos vídeos das páginas de venda e da /black (Daniel Matos, Ransley Moreira Alves, Antônio Sombra, Tallys e Jorge Henriques). */
+   Mesmos vídeos das páginas de venda e da /black (Daniel Matos, Antônio Sombra, Jorge Henriques, Ransley Moreira Alves e Tallys). */
 var PANDA = 'https://player-vz-7867cfdb-be1.tv.pandavideo.com.br/embed/?v=';
 var DEPO_VIDEOS = [
   { id: '007de940-d01e-4944-b472-f43a6434fe67', aluno: 'daniel-matos', nome: 'Daniel Matos', img: 'assets/depoimentos/video/daniel-matos.jpg',
     frase: 'A minha jornada como concurseiro foi uma antes de eu conhecer o Vinícius e outra depois.', quem: 'Daniel Matos · Auditor Fiscal da SEFAZ-RJ, 4º lugar' },
-  { id: 'acc402b3-c364-4b45-81af-77741481716e', aluno: 'ransley-moreira-alves', nome: 'Ransley Moreira Alves', img: 'assets/depoimentos/video/ransley-moreira-alves.jpg',
-    frase: 'O professor já faz questão de te explicar os conceitos lá dos CPCs. Isso te dá fluência na matéria desde o começo.', quem: 'Ransley Moreira Alves · 1º lugar na lista PcD, Senador Canedo (GO)' },
   { id: '386fd537-c0c7-4af3-a6e1-2dde6eae8ec1', aluno: 'antonio-sombra', nome: 'Antônio Sombra', img: 'assets/depoimentos/video/antonio-sombra.jpg',
     frase: 'Comecei a achar contabilidade fácil e comecei a perder o medo de estudar aquele monte de CPC.', quem: 'Antônio Sombra · Auditor do TCU' },
-  { id: 'd8614e2c-f9bc-4c83-8373-de2d66e05b15', aluno: 'tallys', nome: 'Tallys', img: 'assets/quiz/depo/tallys.jpg',
-    frase: 'Direta, sem enrolação e focada naquilo que realmente cai na prova.', quem: 'Tallys · aprovado em Auditor Fiscal, 2026' },
   { id: '89779efb-8bbf-4af1-b544-5d7cf01c8204', aluno: 'jorge-henriques', nome: 'Jorge Henriques', img: 'assets/depoimentos/video/jorge-henriques.jpg',
-    frase: 'Era um CPC que eu não conseguia entender em nenhuma outra aula, e eu só consegui aprender com ele.', quem: 'Jorge Henriques · Auditor Fiscal do Rio de Janeiro, 2º lugar' }
+    frase: 'Era um CPC que eu não conseguia entender em nenhuma outra aula, e eu só consegui aprender com ele.', quem: 'Jorge Henriques · Auditor Fiscal do Rio de Janeiro, 2º lugar' },
+  { id: 'acc402b3-c364-4b45-81af-77741481716e', aluno: 'ransley-moreira-alves', nome: 'Ransley Moreira Alves', img: 'assets/depoimentos/video/ransley-moreira-alves.jpg',
+    frase: 'O professor já faz questão de te explicar os conceitos lá dos CPCs. Isso te dá fluência na matéria desde o começo.', quem: 'Ransley Moreira Alves · 1º lugar na lista PcD, Senador Canedo (GO)' },
+  { id: 'd8614e2c-f9bc-4c83-8373-de2d66e05b15', aluno: 'tallys', nome: 'Tallys', img: 'assets/quiz/depo/tallys.jpg',
+    frase: 'Direta, sem enrolação e focada naquilo que realmente cai na prova.', quem: 'Tallys · aprovado em Auditor Fiscal, 2026' }
 ];
 function videoAluno() {
   return '<div class="vd-fila">' + DEPO_VIDEOS.map(function (v) {
