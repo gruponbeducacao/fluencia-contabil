@@ -329,22 +329,24 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .demo-moldura iframe{height:520px}
     .prova-txt .numero{font-size:44px}
   }
-  /* mensagem do Raio-X (html[data-rx]): no celular o formulário sobe para a primeira tela */
+  /* anúncios do Raio-X (html[data-rx]) e motions da 2ª chance (html[data-bp]): no celular o formulário sobe para a primeira tela.
+     O data-bp mantém a mensagem da Black (título, data da live e chamada do cartão); só saem o selo e a contagem. */
   @media (max-width:920px){
-    html[data-rx] .selo-hero,html[data-rx] .quando,html[data-rx] .contagem,html[data-rx] .contagem-fim{display:none}
-    html[data-rx] .hero-in{gap:22px;padding-top:22px}
-    html[data-rx] .hero p.sub{font-size:16px;line-height:1.6;margin-top:12px}
-    html[data-rx] .cartao{display:flex;flex-direction:column;padding:24px 20px 22px}
-    html[data-rx] .cartao .eyebrow,html[data-rx] #vip-sub{display:none}
-    html[data-rx] #vip-form{order:1}
-    html[data-rx] #vip-bonus{order:2;margin-top:18px}
-    html[data-rx] #vip-ok{order:3}
-    html[data-rx] .cartao noscript{order:4}
+    html:is([data-rx],[data-bp]) .selo-hero,html:is([data-rx],[data-bp]) .contagem,html:is([data-rx],[data-bp]) .contagem-fim,html[data-rx] .quando{display:none}
+    html:is([data-rx],[data-bp]) .hero-in{gap:22px;padding-top:22px}
+    html:is([data-rx],[data-bp]) .hero p.sub{font-size:16px;line-height:1.6;margin-top:12px}
+    html:is([data-rx],[data-bp]) .cartao{display:flex;flex-direction:column;padding:24px 20px 22px}
+    html:is([data-rx],[data-bp]) .cartao .eyebrow,html[data-rx] #vip-sub{display:none}
+    html:is([data-rx],[data-bp]) #vip-form{order:1}
+    html:is([data-rx],[data-bp]) #vip-bonus{order:2;margin-top:18px}
+    html:is([data-rx],[data-bp]) #vip-ok{order:3}
+    html:is([data-rx],[data-bp]) .cartao noscript{order:4}
   }
 </style>
 <script>
 /* Tráfego dos anúncios do Raio-X (utm_content ou src começando por "rx-"): a primeira tela troca a mensagem para casar com o anúncio. */
-(function(){try{var q=new URLSearchParams(location.search),c=(q.get('utm_content')||q.get('src')||'').toLowerCase();if(c.indexOf('rx-')===0)document.documentElement.setAttribute('data-rx','1');}catch(e){}})();
+/* Motions da 2ª chance ("bp-"): a mensagem da Black fica; no celular só o formulário sobe (ver html[data-bp] no CSS). */
+(function(){try{var q=new URLSearchParams(location.search),c=(q.get('utm_content')||q.get('src')||'').toLowerCase();if(c.indexOf('rx-')===0)document.documentElement.setAttribute('data-rx','1');else if(c.indexOf('bp-')===0)document.documentElement.setAttribute('data-bp','1');}catch(e){}})();
 </script>
 <script>
 /* Estado da /black pela hora de Brasília, na segunda chance: lista até 25/11 20h, ao vivo
