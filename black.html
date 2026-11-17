@@ -585,8 +585,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <p class="ok-titulo" id="vip-ok-titulo">Pronto! Você está na lista VIP.</p>
         <p>Em 25/11, às 19h50, o link da live chega no seu e-mail, 10 minutos antes do aviso geral.</p>
         <div class="acoes">
-          <a class="btn" id="vip-raiox" href="assets/black/raio-x-da-banca-2026.pdf?v=2511" target="_blank" rel="noopener">Baixar o Raio-X da Banca (PDF)</a>
           <a class="btn" id="vip-grupo" target="_blank" rel="noopener" hidden>Entrar no grupo VIP do WhatsApp</a>
+          <a class="btn" id="vip-raiox" href="assets/black/raio-x-da-banca-2026.pdf?v=2511" target="_blank" rel="noopener">Baixar o Raio-X da Banca (PDF)</a>
           <a class="btn btn-contorno" id="vip-agenda" target="_blank" rel="noopener"
              aria-label="Pôr a live de 25/11 no Google Agenda (abre em nova aba)">Pôr 25/11, 20h na agenda</a>
         </div>
@@ -1103,6 +1103,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     if (/^https:\/\/chat\.whatsapp\.com\/[A-Za-z0-9]+$/.test(GRUPO_VIP)) {
       el('vip-grupo').href = GRUPO_VIP;
       el('vip-grupo').hidden = false;
+      /* O PDF aparece depois do toque no botão do grupo (mesma marca da black-obrigado). Sem link de grupo
+         válido, o PDF fica à mostra. */
+      var tocou = false;
+      try { tocou = localStorage.getItem('fc_black_2026_2a_grupo') === '1'; } catch(e){}
+      if (!tocou) {
+        el('vip-raiox').hidden = true;
+        el('vip-grupo').textContent = 'Entrar no grupo e liberar o Raio-X';
+        el('vip-grupo').addEventListener('click', function(){
+          try { localStorage.setItem('fc_black_2026_2a_grupo', '1'); } catch(e){}
+          el('vip-raiox').hidden = false;
+          el('vip-grupo').textContent = 'Entrar no grupo VIP do WhatsApp';
+        });
+      }
     }
     if (!novo) return;
     try { localStorage.setItem(CHAVE_LOCAL, '1'); } catch(e){}
