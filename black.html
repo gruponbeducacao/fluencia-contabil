@@ -68,7 +68,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/black/estados.css?v=20261114">
+<link rel="stylesheet" href="assets/black/estados.css?v=20261116">
 
 <style>
   /* Identidade da Black (plano v3): preto no fundo, dourado no destaque.
@@ -350,18 +350,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </script>
 <script>
 /* Estado da /black pela hora de Brasília, na segunda chance: lista até 25/11 20h, ao vivo
-   (25/11 20h), condição da noite (20h50), carrinho (26/11 0h) e encerrado (28/11 0h).
+   (25/11 20h), condição da noite (20h50 a 23h59), prorrogação (26/11 0h a 12h, só anunciada
+   a partir de 0h), carrinho (26/11 12h) e encerrado (28/11 0h).
    Decidido aqui para a página não piscar. estadoEm(ms) é pura, para o teste
-   (scripts/black-estados.test.mjs). ?estado=ao-vivo|condicao|carrinho|encerrado força,
+   (scripts/black-estados.test.mjs). ?estado=ao-vivo|condicao|prorrogacao|carrinho|encerrado força,
    para homologar. Ver assets/black/estados.css. */
 window.__black={estadoEm:function(t){
   if(t>=Date.parse('2026-11-28T00:00:00-03:00'))return 'encerrado';
-  if(t>=Date.parse('2026-11-26T00:00:00-03:00'))return 'carrinho';
+  if(t>=Date.parse('2026-11-26T12:00:00-03:00'))return 'carrinho';
+  if(t>=Date.parse('2026-11-26T00:00:00-03:00'))return 'prorrogacao';
   if(t>=Date.parse('2026-11-25T20:50:00-03:00'))return 'condicao';
   if(t>=Date.parse('2026-11-25T20:00:00-03:00'))return 'ao-vivo';
   return null;
 },estado:function(){
-  var q=null,V=['ao-vivo','condicao','carrinho','encerrado'];
+  var q=null,V=['ao-vivo','condicao','prorrogacao','carrinho','encerrado'];
   try{q=new URLSearchParams(location.search).get('estado');}catch(e){}
   if(q&&V.indexOf(q)>=0)return q;
   return window.__black.estadoEm(Date.now());
@@ -404,10 +406,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="st" id="st-condicao">
   <section class="st-hero">
     <div class="wrap">
-      <span class="st-ao-vivo"><i></i>Só hoje · até 23h59</span>
+      <span class="st-ao-vivo so-noite"><i></i>Só hoje · até 23h59</span>
+      <span class="st-ao-vivo so-prorr"><i></i>Prorrogado · até 12h de hoje</span>
       <h1>A vitalícia da Fluência <span class="it">por R$ 537.</span></h1>
-      <p class="sub">É a condição que eu revelei na live: acesso vitalício à assinatura de Contabilidade, com os bônus da Black. Vale só até 23h59 de hoje.</p>
-      <div class="st-relogio" data-relogio="condicao" aria-label="Tempo até 23h59 de 25/11">
+      <p class="sub so-noite">É a condição que eu revelei na live: acesso vitalício à assinatura de Contabilidade, com os bônus da Black. Vale só até 23h59 de hoje.</p>
+      <p class="sub so-prorr">A condição da live foi prorrogada até hoje, 26/11, ao meio-dia. Depois disso, a vitalícia volta a R$ 814,80.</p>
+      <div class="st-relogio so-noite" data-relogio="condicao" aria-label="Tempo até 23h59 de 25/11">
+        <div><b data-r="horas">--</b><span>horas</span></div>
+        <div><b data-r="min">--</b><span>min</span></div>
+        <div><b data-r="seg">--</b><span>seg</span></div>
+      </div>
+      <div class="st-relogio so-prorr" data-relogio="prorrogacao" aria-label="Tempo até 12h de 26/11">
         <div><b data-r="horas">--</b><span>horas</span></div>
         <div><b data-r="min">--</b><span>min</span></div>
         <div><b data-r="seg">--</b><span>seg</span></div>
@@ -417,7 +426,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <section class="st-sec noite" id="oferta">
     <div class="wrap">
       <div class="st-oferta">
-        <div class="st-nome">Vitalícia · noite da live</div>
+        <div class="st-nome"><span class="so-noite">Vitalícia · noite da live</span><span class="so-prorr">Vitalícia · condição da live, prorrogada</span></div>
         <div class="st-preco">R$ 537 <small>à vista</small></div>
         <div class="st-parc">ou 12× de R$ 55,54 no cartão</div>
         <div class="st-legal">Total parcelado R$ 666,48 (juros de 3,49% ao mês, 50,93% ao ano).</div>
@@ -434,11 +443,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div><b>Lançamentos Essenciais</b><span>Bônus da Black</span></div>
         <div><b>Simulado</b><span>Bônus da Black</span></div>
       </div>
-      <div class="st-alt">
-        <div class="st-alt-txt"><b>Semestral · 6 meses de acesso · <span style="white-space:nowrap">só até 23h59</span></b>
-          <span>R$ 297 à vista ou 12× de R$ 30,72 no cartão. Total parcelado R$ 368,64 (juros de 3,49% ao mês, 50,93% ao ano).</span></div>
-        <a class="st-alt-btn" data-checkout="semestral" href="#oferta">Quero o semestral por R$ 297</a>
-      </div>
       <div class="st-cash"><p><b>Já pagou um plano da Fluência?</b> O que você pagou vira cashback e abate na vitalícia. Veja o seu valor na plataforma.</p>
         <a href="https://portal.fluenciacontabil.com.br/minha-vitalicia">Ver meu cashback</a></div>
       <p class="st-letras">Vitalícia é o acesso enquanto a plataforma existir, nos termos do
@@ -449,13 +453,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </section>
   <section class="st-sec">
     <div class="wrap">
-      <h2>Dúvidas da noite</h2>
+      <h2><span class="so-noite">Dúvidas da noite</span><span class="so-prorr">Dúvidas</span></h2>
       <div class="st-faq">
         <details open><summary>O que é a vitalícia?</summary><p>É o acesso à assinatura de Contabilidade enquanto a plataforma existir, sem renovação. As regras estão no Aditivo de Acesso Vitalício.</p></details>
-        <details><summary>E depois de hoje?</summary><p>Em 26 e 27/11 a Black continua com duas condições: 12 meses por R$ 517 ou a vitalícia por R$ 814,80. Os R$ 537 da vitalícia e os R$ 297 do semestral são só desta noite.</p></details>
+        <details class="so-noite"><summary>E depois de hoje?</summary><p>Em 26 e 27/11 a Black continua com duas condições: 12 meses por R$ 517 ou a vitalícia por R$ 814,80. Os R$ 537 da vitalícia são só desta noite.</p></details>
+        <details class="so-prorr"><summary>E depois do meio-dia?</summary><p>Do meio-dia de hoje até 27/11, às 23h59, a Black continua com duas condições: 12 meses por R$ 517 ou a vitalícia por R$ 814,80. Os R$ 537 da vitalícia valem só até o meio-dia de hoje, 26/11.</p></details>
         <details><summary>Sou Aluno Fundador. Preciso fazer alguma coisa?</summary><p>Não. Os Fundadores já são vitalícios, sem pagar nada. Está na sua página "Minha vitalícia".</p></details>
         <details><summary>Já paguei um plano. Pago de novo?</summary><p>Não o valor inteiro: o que você pagou vira cashback e abate na vitalícia. O valor exato aparece em "Minha vitalícia", na plataforma.</p></details>
-        <details><summary>Comprei o semestral na Black. Vale como cashback para a vitalícia?</summary><p>Não. O cashback vale para planos pagos até 09/11.</p></details>
       </div>
     </div>
   </section>
@@ -508,11 +512,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <h2>Dúvidas</h2>
       <div class="st-faq">
         <details open><summary>Qual a diferença entre as duas?</summary><p>Os 12 meses dão um ano de acesso; depois, você renova pelo preço do momento. A vitalícia não tem renovação: o acesso vale enquanto a plataforma existir.</p></details>
-        <details><summary>E a condição de R$ 537?</summary><p>Valeu só na noite da live, até 23h59 de 25/11.</p></details>
-        <details><summary>E o semestral de R$ 297?</summary><p>Valeu só na noite da live, até 23h59 de 25/11.</p></details>
+        <details><summary>E a condição de R$ 537?</summary><p>Valeu na noite da live de 25/11 e foi prorrogada até 26/11, ao meio-dia.</p></details>
         <details><summary>O trimestral está na Black?</summary><p>Não. Em 26 e 27/11 ficam só os 12 meses e a vitalícia.</p></details>
         <details><summary>Já paguei um plano. Pago de novo?</summary><p>Não o valor inteiro: o que você pagou vira cashback e abate na vitalícia, até 27/11. O valor aparece em "Minha vitalícia".</p></details>
-        <details><summary>Comprei o semestral na noite da live. Vale como cashback para a vitalícia?</summary><p>Não. O cashback vale para planos pagos até 09/11.</p></details>
       </div>
     </div>
   </section>
@@ -1202,7 +1204,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   });
 })();
 </script>
-<script src="assets/black/estados.js?v=20261115" defer></script>
+<script src="assets/black/estados.js?v=20261116" defer></script>
 <script src="assets/origem.js?v=20260909" defer></script>
 </body>
 </html>
