@@ -83,7 +83,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .contagem span{display:block;margin-top:7px;font-size:9.5px;font-weight:800;letter-spacing:1.6px;text-transform:uppercase;color:var(--branco-2)}
   .quando{margin-top:12px;text-align:center;font-size:12px;font-weight:800;letter-spacing:1.6px;text-transform:uppercase;color:var(--dourado)}
 
-  /* O bônus da inscrição: a capa do Raio-X e o download, antes dos passos. */
+  /* O bônus da inscrição: a capa do Raio-X e o download, logo depois do passo 1 (grupo), que libera o botão. */
   .raiox{display:grid;grid-template-columns:120px 1fr;gap:22px;align-items:center;margin-top:34px;padding:22px;
     border:1px solid #c8a84b66;border-radius:14px;background:linear-gradient(135deg,#1b2a4a,#0b0e14)}
   .raiox img{width:120px;border-radius:4px;box-shadow:0 14px 30px #000b}
@@ -91,6 +91,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .raiox h2{margin-top:6px;font-size:22px;font-weight:900;line-height:1.25;letter-spacing:-.3px}
   .raiox p{margin-top:8px;font-size:14.5px;line-height:1.6;color:var(--branco-2)}
   .raiox .btn{margin-top:14px}
+  .raiox .trava{margin-top:14px;padding:12px 14px;border:1px dashed #c8a84b66;border-radius:10px;font-size:14.5px;line-height:1.55;color:var(--branco)}
+  .raiox .trava b{color:var(--dourado)}
+  .raiox{margin-top:16px}
 
   .sem-inscricao{margin-top:28px;text-align:center;font-size:14px;color:var(--branco-2)}
   .sem-inscricao a{color:var(--dourado-claro);font-weight:700}
@@ -122,20 +125,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <img src="assets/black/selo-2a-chance.png" width="440" height="440" alt="Selo da Black da Fluência: 2ª chance, 25.11.2026">
     <span class="ok" id="ok">✓ Inscrição confirmada</span>
     <h1 id="titulo">Pronto! Você está na <span class="it">lista VIP.</span></h1>
-    <p class="sub" id="sub">Seu Raio-X da Banca está aqui embaixo. Depois, falta só um passo para não perder
-      nada: entrar no grupo VIP do WhatsApp.</p>
+    <p class="sub" id="sub">Falta só um passo para liberar o seu Raio-X da Banca: entrar no grupo VIP do WhatsApp.</p>
   </header>
-
-  <section class="raiox" id="raiox">
-    <img src="assets/black/raio-x-capa.jpg" width="520" height="736" alt="Capa do Raio-X da Banca">
-    <div>
-      <span class="rotulo">Seu bônus da inscrição</span>
-      <h2>Raio-X da Banca</h2>
-      <p>Onde FGV, CEBRASPE, FCC, VUNESP e CESGRANRIO concentram as questões de Contabilidade, e
-        como cada uma cobra. PDF de 9 páginas; uma cópia também vai para o seu e-mail.</p>
-      <a class="btn" id="baixar" href="assets/black/raio-x-da-banca-2026.pdf?v=2511" target="_blank" rel="noopener">Baixar o Raio-X (PDF)</a>
-    </div>
-  </section>
 
   <div class="passos">
     <section class="passo principal">
@@ -148,12 +139,27 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="acao">
         <a class="btn" id="grupo" href="https://chat.whatsapp.com/BzlKP4F3XXz0EeeArtFtAS" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.4.8 3.2.7.5-.1 1.5-.6 1.8-1.2.2-.6.2-1.1.1-1.2l-.4-.3Z"/></svg>
-          Entrar no grupo VIP
+          <span id="grupo-rotulo">Entrar no grupo VIP</span>
         </a>
         <p class="nota">Abre o WhatsApp no celular ou no computador.</p>
       </div>
     </section>
 
+  </div>
+
+  <section class="raiox" id="raiox">
+    <img src="assets/black/raio-x-capa.jpg" width="520" height="736" alt="Capa do Raio-X da Banca">
+    <div>
+      <span class="rotulo">Seu bônus da inscrição</span>
+      <h2>Raio-X da Banca</h2>
+      <p>Onde FGV, CEBRASPE, FCC, VUNESP e CESGRANRIO concentram as questões de Contabilidade, e
+        como cada uma cobra. PDF de 9 páginas; uma cópia também vai para o seu e-mail.</p>
+      <p class="trava" id="trava">Libera assim que você tocar em <b>Entrar no grupo VIP</b>, no passo 1.</p>
+      <a class="btn" id="baixar" href="assets/black/raio-x-da-banca-2026.pdf?v=2511" target="_blank" rel="noopener" hidden>Baixar o Raio-X (PDF)</a>
+    </div>
+  </section>
+
+  <div class="passos">
     <section class="passo">
       <div class="n">2</div>
       <div>
@@ -230,8 +236,24 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     + '&details=' + encodeURIComponent('Ao vivo no YouTube. O link chega no grupo VIP e no seu e-mail às 19h50 de 25/11.')
     + '&location=' + encodeURIComponent('fluenciacontabil.com.br/black');
 
+  /* O Raio-X só aparece para baixar depois do toque no botão do grupo (o site não tem como saber se a
+     pessoa entrou de fato). A marca fica no navegador, para não travar de novo quem volta. A cópia por
+     e-mail segue igual: quem não usa WhatsApp recebe o PDF por lá. */
+  var CHAVE_GRUPO = 'fc_black_2026_2a_grupo';
+  function liberarRaioX(){
+    el('trava').hidden = true;
+    el('baixar').hidden = false;
+    el('grupo-rotulo').textContent = 'Entrar no grupo VIP';
+  }
+  var jaTocou = false;
+  try { jaTocou = localStorage.getItem(CHAVE_GRUPO) === '1'; } catch(e){}
+  if (jaTocou) liberarRaioX();
+  else if (inscrito || nome) el('grupo-rotulo').textContent = 'Entrar no grupo e liberar o Raio-X';
+
   el('grupo').addEventListener('click', function(){
     try { if (window.dataLayer) window.dataLayer.push({event: 'grupo_vip_click', origem: 'black_obrigado'}); } catch(e){}
+    try { localStorage.setItem(CHAVE_GRUPO, '1'); } catch(e){}
+    liberarRaioX();
   });
 
   var LIVE = new Date('2026-11-25T20:00:00-03:00').getTime(), relogio = null;
