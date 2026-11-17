@@ -36,6 +36,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   Live fora da agenda das quartas (a da Black, por exemplo): o campo `destaque` do
   links.json (id, titulo, url do YouTube, inicio e fim com hora) toma o topo até o
   fim e depois sai sozinho. Não vai para a agenda, que alimenta a aula-ao-vivo.html.
+  Com `img` (arte 16:9 em assets/links/), a faixa mostra essa arte no lugar da
+  miniatura do YouTube: serve para live de outro canal (o podcast de parceiro).
 
   Sem os dois arquivos a página continua de pé: o destaque cai no texto fixo
   ("Toda quarta, 20h"), com o símbolo da marca na faixa, e a lista de novidades
@@ -371,6 +373,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         cta: agora < ini.d ? 'Ativar lembrete no YouTube' : 'Entrar na live',
         url: av.url, video: video(av.url), avulso: true
       };
+      // Arte própria (live de outro canal): ela vai na faixa no lugar da miniatura.
+      if (imagemOk(av.img)) destaque.img = av.img;
     }
 
     var candidatos = [], jaTem = {};
@@ -471,9 +475,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       cartao.href = d.url;
       cartao.setAttribute('data-bio', d.botao);
       if (!daCasa(new URL(cartao.href))) { cartao.target = '_blank'; cartao.rel = 'noopener'; }
-      // A grande em WebP; se a transmissão ainda não tem miniatura em alta, a média.
+      // A arte própria da live avulsa, quando há; senão a miniatura do YouTube, a grande
+      // em WebP e, se a transmissão ainda não tem miniatura em alta, a média.
       // Se nenhuma vier, a faixa fica com o símbolo da marca, que já está no fundo.
-      if (d.video) carregar(el('dest-img'), [YT + 'vi_webp/' + d.video + '/maxresdefault.webp', YT + 'vi/' + d.video + '/hqdefault.jpg'], function () {});
+      var fontes = d.img ? [d.img] : [];
+      if (d.video) fontes.push(YT + 'vi_webp/' + d.video + '/maxresdefault.webp', YT + 'vi/' + d.video + '/hqdefault.jpg');
+      if (fontes.length) carregar(el('dest-img'), fontes, function () {});
     }
     var lista = el('nov-lista');
     m.novidades.forEach(function (n) {
