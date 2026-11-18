@@ -10,6 +10,13 @@
   },
   "novidades": [
     {
+      "id": "podcast-fiscal-de-resenha-ep17",
+      "tipo": "video",
+      "data": "2026-11-17",
+      "titulo": "Podcast Fiscal de Resenha, EP 17: Não há débito sem crédito",
+      "url": "https://www.youtube.com/watch?v=VcntoGsSRXg"
+    },
+    {
       "id": "video-2026-10-29",
       "tipo": "video",
       "data": "2026-10-29T19:00",
