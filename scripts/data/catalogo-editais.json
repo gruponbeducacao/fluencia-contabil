@@ -1,6 +1,6 @@
 {
-  "geradoEm": "2026-11-20T07:24:00.108Z",
-  "total": 27,
+  "geradoEm": "2026-11-21T07:22:43.073Z",
+  "total": 30,
   "editais": [
     {
       "concursoSlug": "secretaria-da-fazenda-do-estado-do-ceara-sefaz-ce",
@@ -32,6 +32,57 @@
         {
           "rotulo": "Contabilidade de Custos (área A01 — Gestão Fazendária)",
           "pct": 0
+        }
+      ]
+    },
+    {
+      "concursoSlug": "unificado-ma-2026",
+      "orgao": "Governo do Estado do Maranhão — Secretaria de Estado da Administração (SEAD) / Secretaria de Estado do Planejamento e Orçamento (SEPLAN)",
+      "cargo": "Assistente Técnico – Técnico em Contabilidade (SEAD, código 42)",
+      "banca": "FCC",
+      "esfera": "ESTADUAL",
+      "uf": "MA",
+      "area": "ADMINISTRACAO_PUBLICA",
+      "dataProva": "2027-04-04",
+      "linkOficial": "https://www.concursosfcc.com.br/concursos/seadm226/",
+      "disciplinas": [
+        {
+          "rotulo": "Contabilidade Geral",
+          "pct": 100
+        }
+      ]
+    },
+    {
+      "concursoSlug": "unificado-ma-2026",
+      "orgao": "Governo do Estado do Maranhão — Secretaria de Estado da Administração (SEAD) / Secretaria de Estado do Planejamento e Orçamento (SEPLAN)",
+      "cargo": "Analista de Planejamento e Finanças Públicas – Finanças e Controle (SEPLAN, código 30)",
+      "banca": "FCC",
+      "esfera": "ESTADUAL",
+      "uf": "MA",
+      "area": "ADMINISTRACAO_PUBLICA",
+      "dataProva": "2027-04-04",
+      "linkOficial": "https://www.concursosfcc.com.br/concursos/seadm226/",
+      "disciplinas": [
+        {
+          "rotulo": "Contabilidade geral",
+          "pct": 65
+        }
+      ]
+    },
+    {
+      "concursoSlug": "trt4-2026",
+      "orgao": "Tribunal Regional do Trabalho da 4ª Região (TRT4)",
+      "cargo": "Analista Judiciário – Área Administrativa – Especialidade Contabilidade (código 04)",
+      "banca": "FCC",
+      "esfera": "FEDERAL",
+      "uf": "RS",
+      "area": "JUDICIARIO",
+      "dataProva": "2027-01-31",
+      "linkOficial": "https://www.concursosfcc.com.br/concursos/trt4r125/",
+      "disciplinas": [
+        {
+          "rotulo": "Contabilidade Geral",
+          "pct": 100
         }
       ]
     },
@@ -267,7 +318,7 @@
     {
       "concursoSlug": "ministerio-da-economia-secretaria-especial-da-receita-federal-do-brasil",
       "orgao": "Ministério da Economia — Secretaria Especial da Receita Federal do Brasil",
-      "cargo": "Auditor-Fiscal da Receita Federal do Brasil",
+      "cargo": "Analista-Tributário da Receita Federal do Brasil",
       "banca": "FGV",
       "esfera": "FEDERAL",
       "uf": null,
@@ -284,7 +335,7 @@
     {
       "concursoSlug": "ministerio-da-economia-secretaria-especial-da-receita-federal-do-brasil",
       "orgao": "Ministério da Economia — Secretaria Especial da Receita Federal do Brasil",
-      "cargo": "Analista-Tributário da Receita Federal do Brasil",
+      "cargo": "Auditor-Fiscal da Receita Federal do Brasil",
       "banca": "FGV",
       "esfera": "FEDERAL",
       "uf": null,
@@ -390,7 +441,7 @@
     {
       "concursoSlug": "governo-do-estado-da-bahia-secretaria-da-administracao-do-estado-da-bahia-saeb-s",
       "orgao": "Governo do Estado da Bahia — Secretaria da Administração do Estado da Bahia (SAEB) / Secretaria da Fazenda do Estado da Bahia (SEFAZ)",
-      "cargo": "Auditor Fiscal — Administração Tributária (C03)",
+      "cargo": "Auditor Fiscal — Administração, Finanças e Controle Interno (A01)",
       "banca": "FCC",
       "esfera": "ESTADUAL",
       "uf": "BA",
@@ -407,7 +458,7 @@
     {
       "concursoSlug": "governo-do-estado-da-bahia-secretaria-da-administracao-do-estado-da-bahia-saeb-s",
       "orgao": "Governo do Estado da Bahia — Secretaria da Administração do Estado da Bahia (SAEB) / Secretaria da Fazenda do Estado da Bahia (SEFAZ)",
-      "cargo": "Auditor Fiscal — Administração, Finanças e Controle Interno (A01)",
+      "cargo": "Auditor Fiscal — Administração Tributária (C03)",
       "banca": "FCC",
       "esfera": "ESTADUAL",
       "uf": "BA",
