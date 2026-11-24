@@ -994,6 +994,8 @@ function aula01Fechar() { $('capOv').hidden = true; if (capFoco && capFoco.focus
       ['utm_source', 'utm_medium', 'utm_campaign'].forEach(function (k) { data.append(k, q.get(k) || ''); });
       data.append('dispositivo', matchMedia('(max-width: 720px)').matches ? 'Mobile' : 'Desktop');
     } catch (e2) {}
+    // Primeiro e último toque, id do clique e página de entrada (assets/origem.js).
+    try { if (window.FC_ORIGEM && window.FC_ORIGEM.anexarCamposDoLead) window.FC_ORIGEM.anexarCamposDoLead(data); } catch (e4) {}
     function feito() {
       capEnviado = true; lsSet('fc_ec_subscribed', '1');
       track('lead_capturado', { origem: 'assinatura_aula01' });
@@ -1029,6 +1031,6 @@ function aula01Fechar() { $('capOv').hidden = true; if (capFoco && capFoco.focus
   ir('abertura', true);
 })();
 </script>
-<script src="assets/origem.js?v=20260909" defer></script>
+<script src="assets/origem.js?v=20261124" defer></script>
 </body>
 </html>

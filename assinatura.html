@@ -4354,6 +4354,8 @@ document.querySelectorAll('.dep-anexo-btn[aria-controls]').forEach(function (btn
       data.append('utm_campaign', q.get('utm_campaign') || '');
       data.append('dispositivo', window.matchMedia('(max-width: 720px)').matches ? 'Mobile' : 'Desktop');
     } catch (e2) {}
+    // Primeiro e último toque, id do clique e página de entrada (assets/origem.js).
+    try { if (window.FC_ORIGEM && window.FC_ORIGEM.anexarCamposDoLead) window.FC_ORIGEM.anexarCamposDoLead(data); } catch (e4) {}
     var done = function () {
       emailEnviadoNestaPagina = true;
       lsSet('fc_ec_subscribed', '1');
@@ -4391,7 +4393,7 @@ document.querySelectorAll('.dep-anexo-btn[aria-controls]').forEach(function (btn
   });
 })();
 </script>
-<script src="assets/origem.js?v=20260909" defer></script>
+<script src="assets/origem.js?v=20261124" defer></script>
 <script src="assets/vsl.js?v=20260910" defer></script>
 <script src="assets/vsl-overlay.js?v=20260929" defer></script>
 

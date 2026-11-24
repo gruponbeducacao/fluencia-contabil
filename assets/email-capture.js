@@ -87,6 +87,14 @@
         window.matchMedia('(max-width: 720px)').matches ? 'Mobile' : 'Desktop');
     } catch (e) {}
 
+    // Primeiro e último toque, id do clique e página de entrada (contrato de
+    // 24/11/2026). Sem origem.js o formulário segue sem esses campos.
+    try {
+      if (window.FC_ORIGEM && typeof window.FC_ORIGEM.anexarCamposDoLead === 'function') {
+        window.FC_ORIGEM.anexarCamposDoLead(data);
+      }
+    } catch (e) {}
+
     // Ref de indicação (se o usuário chegou via ?ref=<hash>)
     var refIn = safeLocalGet(KEYS.refIn);
     if (refIn) data.append('ref', refIn);
@@ -1133,17 +1141,47 @@
         form.dataset.fcEcHijacked = '';
         return;
       }
+      var rotulo = btn ? btn.textContent : '';
       if (btn) { btn.disabled = true; btn.textContent = 'Enviando...'; }
+      avisoNewsletter(form, '');
 
-      submitEmail(email, 'blog_newsletter').finally(function () {
+      // Com no-cors a resposta é opaca: só erro de rede vira falha. Nesse caso
+      // não confirma a inscrição; devolve o formulário para tentar de novo.
+      var envio;
+      try { envio = submitEmail(email, 'blog_newsletter'); } catch (err) { envio = Promise.reject(err); }
+      envio.then(function () {
         markSubscribed();
         // Troca o form inteiro pelo painel de referral (mantém o mesmo
         // visual que a newsletter-section do blog já tem)
         var panel = document.createElement('div');
         form.parentNode.replaceChild(panel, form);
         renderReferralPanel(panel, email);
+      }, function () {
+        if (btn) { btn.disabled = false; btn.textContent = rotulo; }
+        form.dataset.fcEcHijacked = '';
+        avisoNewsletter(form, 'Não foi possível enviar agora. Confira sua conexão e tente de novo.');
       });
     }, true); // capture phase para rodar ANTES do onsubmit inline
+  }
+
+  // Aviso de erro logo abaixo do formulário da newsletter (fora dele, para
+  // não quebrar o layout em linha do campo + botão). Texto vazio remove.
+  function avisoNewsletter(form, texto) {
+    try {
+      var p = form.nextElementSibling;
+      var existe = p && p.classList && p.classList.contains('fc-nl-erro');
+      if (!texto) { if (existe) p.parentNode.removeChild(p); return; }
+      if (!existe) {
+        p = document.createElement('p');
+        p.className = 'fc-nl-erro';
+        p.setAttribute('role', 'alert');
+        p.style.cssText = 'display:block;max-width:460px;margin:0 auto 12px;padding:8px 12px;'
+          + 'border-radius:3px;background:#FDECEA;color:#922B1F;font-size:13px;font-weight:600;'
+          + 'font-style:normal;text-align:center;';
+        form.parentNode.insertBefore(p, form.nextSibling);
+      }
+      p.textContent = texto;
+    } catch (e) {}
   }
 
   /* ================= INIT ================= */

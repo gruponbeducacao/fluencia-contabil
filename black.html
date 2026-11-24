@@ -1179,6 +1179,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       var v = usarSalva ? salva[k] : veio.get(k);
       if (typeof v === 'string' && v && v.length <= 180) corpo.set(k, v);
     });
+    // Primeiro e último toque, id do clique e página de entrada (assets/origem.js).
+    try { if (window.FC_ORIGEM && window.FC_ORIGEM.anexarCamposDoLead) window.FC_ORIGEM.anexarCamposDoLead(corpo); } catch (e) {}
     if (corpo.get('src')) corpo.set('ref', corpo.get('src'));
 
     /* `cors` de propósito: a inscrição só é confirmada depois de LER a resposta.
@@ -1199,6 +1201,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 })();
 </script>
 <script src="assets/black/estados.js?v=20261116" defer></script>
-<script src="assets/origem.js?v=20260909" defer></script>
+<script src="assets/origem.js?v=20261124" defer></script>
 </body>
 </html>

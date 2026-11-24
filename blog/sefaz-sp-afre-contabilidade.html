@@ -168,8 +168,8 @@ footer{background:#0E1929;padding:50px 5% 30px;}
 {"@context":"https://schema.org","@type":"BlogPosting",
   "image": "https://fluenciacontabil.com.br/blog/imgs/share/sefaz-sp-afre-contabilidade-og.jpg","headline":"SEFAZ-SP AFRE 2026 (Gestão Tributária): como a Contabilidade foi cobrada","description":"Análise completa da prova de Contabilidade do concurso AFRE SEFAZ-SP 2026 (Gestão Tributária). 35 questões da FCC mapeadas por CPC.","author":{"@type":"Person","name":"Vinícius Ferraz","jobTitle":"Auditor Fiscal","url":"https://fluenciacontabil.com.br/professor.html"},"datePublished":"2026-04-09","dateModified":"2026-04-10","publisher":{"@type":"Organization","name":"Fluência Contábil","url":"https://fluenciacontabil.com.br"},"url":"https://fluenciacontabil.com.br/blog/sefaz-sp-afre-contabilidade","articleSection":"Concursos","keywords":"SEFAZ-SP, AFRE, Gestão Tributária, FCC, contabilidade concurso, CPC, prova contabilidade, auditor fiscal","wordCount":3500,"inLanguage":"pt-BR","mainEntityOfPage":{"@type":"WebPage","@id":"https://fluenciacontabil.com.br/blog/sefaz-sp-afre-contabilidade"}}
 </script>
-<link rel="stylesheet" href="../assets/email-capture.css?v=20260906">
-<script src="../assets/email-capture.js?v=20260906" defer></script>
+<link rel="stylesheet" href="../assets/email-capture.css?v=20261124">
+<script src="../assets/email-capture.js?v=20261124" defer></script>
 <!-- Tema da Black: só vale de 24/10 a 27/11/2026 (ver assets/black/tema-black.js) -->
 <link rel="stylesheet" href="../assets/black/tema-black.css">
 <script src="../assets/black/tema-black.js"></script>
@@ -452,15 +452,46 @@ document.querySelectorAll('#mobile-menu a').forEach(function(l){
     document.getElementById('mobile-menu').classList.remove('active');
   });
 });
-function subscribeNewsletter(f){
-  var e=f.querySelector('input[type="email"]'),b=f.querySelector('button'),v=e.value.trim();
-  if(!v||!/\S+@\S+\.\S+/.test(v)){alert('Por favor, insira um e-mail válido.');return;}
-  b.textContent='Enviando...';b.disabled=true;
-  fetch('https://script.google.com/macros/s/AKfycbzoQxsRFyD-6PjgBkzR8iC2jCQye6OtkdmYtOuXdrkGnlgkh4m-QaNUrAqZL64YoyM_/exec',{method:'POST',body:new URLSearchParams({email:v,origem:'Blog'}),mode:'no-cors'})
-  .then(function(){f.innerHTML='<p style="color:var(--dourado);font-weight:700;font-size:15px;">&#10003; Inscrito com sucesso!</p>';})
-  .catch(function(){f.innerHTML='<p style="color:var(--dourado);font-weight:700;font-size:15px;">&#10003; Inscrito com sucesso!</p>';});
+function subscribeNewsletter(formEl) {
+  var emailInput = formEl.querySelector('input[type="email"]');
+  var btn = formEl.querySelector('button');
+  var email = emailInput.value.trim();
+  if (!email || !/\S+@\S+\.\S+/.test(email)) { alert('Por favor, insira um e-mail válido.'); return; }
+  var rotulo = btn.textContent;
+  btn.textContent = 'Enviando...';
+  btn.disabled = true;
+  var aviso = formEl.nextElementSibling;
+  if (aviso && aviso.className === 'fc-nl-erro') aviso.parentNode.removeChild(aviso);
+  var data = new URLSearchParams({ email: email, origem: 'Blog' });
+  /* Mesmo contexto do assets/email-capture.js (página, referrer, utm_*, src,
+     dispositivo) e os toques do assets/origem.js. Sem ele, ao menos a URL. */
+  try {
+    var ctx = window.FC_ORIGEM && typeof window.FC_ORIGEM.contextoDoLead === 'function' ? window.FC_ORIGEM.contextoDoLead() : null;
+    if (!ctx) {
+      var q = new URLSearchParams(location.search);
+      ctx = { pagina: location.pathname + location.search, referrer: document.referrer || '' };
+      ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'src'].forEach(function (k) { ctx[k] = q.get(k) || ''; });
+      ctx.dispositivo = window.matchMedia('(max-width: 720px)').matches ? 'Mobile' : 'Desktop';
+    }
+    Object.keys(ctx).forEach(function (k) { if (!data.has(k)) data.append(k, ctx[k]); });
+  } catch (e) {}
+  fetch('https://script.google.com/macros/s/AKfycbzoQxsRFyD-6PjgBkzR8iC2jCQye6OtkdmYtOuXdrkGnlgkh4m-QaNUrAqZL64YoyM_/exec', { method: 'POST', body: data, mode: 'no-cors' })
+  .then(function () {
+    formEl.innerHTML = '<p style="color:var(--dourado);font-weight:700;font-size:15px;">&#10003; Inscrito com sucesso!</p>';
+  })
+  .catch(function () {
+    /* no-cors não deixa ler a resposta: só erro de rede chega aqui. */
+    btn.textContent = rotulo;
+    btn.disabled = false;
+    var p = document.createElement('p');
+    p.className = 'fc-nl-erro';
+    p.setAttribute('role', 'alert');
+    p.style.cssText = 'display:block;max-width:460px;margin:0 auto 12px;padding:8px 12px;border-radius:3px;background:#FDECEA;color:#922B1F;font-size:13px;font-weight:600;font-style:normal;text-align:center;';
+    p.textContent = 'Não foi possível enviar agora. Confira sua conexão e tente de novo.';
+    formEl.parentNode.insertBefore(p, formEl.nextSibling);
+  });
 }
 </script>
-<script src="../assets/origem.js?v=20260909" defer></script>
+<script src="../assets/origem.js?v=20261124" defer></script>
 </body>
 </html>
