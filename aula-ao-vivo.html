@@ -824,6 +824,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       var v = usarSalva ? salva[k] : veio.get(k);
       if (typeof v === 'string' && v && v.length <= 180) corpo.set(k, v);
     });
+    // Primeiro e último toque, id do clique e página de entrada (assets/origem.js).
+    try { if (window.FC_ORIGEM && window.FC_ORIGEM.anexarCamposDoLead) window.FC_ORIGEM.anexarCamposDoLead(corpo); } catch (e) {}
 
     /* `cors` de propósito: é preciso LER a resposta antes de liberar o material.
        O Apps Script responde com Access-Control-Allow-Origin: * (conferido em
@@ -850,6 +852,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   });
 })();
 </script>
-<script src="assets/origem.js?v=20260909" defer></script>
+<script src="assets/origem.js?v=20261124" defer></script>
 </body>
 </html>

@@ -98,7 +98,16 @@ test('acesso direto mantém ID de 18 dígitos e os campos do formulário', async
   assert.equal(body.get('origem'), 'aula_ao_vivo');
   assert.equal(body.get('consentimento'), 'material_e_aviso_semanal_aula_ao_vivo');
   assert.equal(body.get('pagina'), base);
-  for (const k of ['fbclid', 'gclid', 's1', 's2', '_fbp', '_fbc']) assert.equal(body.has(k), false);
+  // Cookies e parâmetros do checkout nunca vão para o formulário.
+  for (const k of ['s1', 's2', '_fbp', '_fbc']) assert.equal(body.has(k), false);
+  // Ids do clique e toques seguem o contrato de 24/11/2026 (assets/origem.js).
+  assert.equal(body.get('fbclid'), 'clique');
+  assert.equal(body.get('gclid'), 'outro');
+  assert.equal(body.get('pt_source'), 'meta');
+  assert.equal(body.get('pt_campaign'), 'ensaio');
+  assert.equal(body.get('pt_pagina'), 'fluenciacontabil.com.br/aula-ao-vivo.html');
+  assert.equal(body.get('entrada'), 'fluenciacontabil.com.br/aula-ao-vivo.html');
+  assert.match(body.get('ut_em'), /^\d{4}-\d{2}-\d{2}T/);
 });
 
 test('campanha nova parcial não herda campos da campanha anterior', async () => {
