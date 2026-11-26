@@ -200,6 +200,23 @@ test('live avulsa com arte própria leva a arte para a faixa; caminho estranho �
   }
 });
 
+test('destaque avulso pode ser uma página do site (captação de lançamento), com o botão do cta', () => {
+  const base = { id: 'operacao-receita', titulo: 'Operação Receita', url: 'receita-federal.html', cta: 'Entrar na Operação Receita',
+    img: 'assets/links/operacao-receita.webp', inicio: '2026-10-13T20:00', fim: '2026-10-13T23:59' };
+  const antes = L.montar(agenda, { destaque: base, novidades: [] }, new Date(2026, 9, 12, 22, 0));
+  assert.deepEqual(copia(antes.destaque), {
+    botao: 'operacao-receita', kicker: 'Ao vivo · ter, 13/10 · 20h', titulo: 'Operação Receita',
+    cta: 'Entrar na Operação Receita', url: 'receita-federal.html', video: '', avulso: true, img: 'assets/links/operacao-receita.webp',
+  });
+  // Na hora da live, a página de captação vira a sala da live: o botão muda sozinho.
+  assert.equal(L.montar(agenda, { destaque: base, novidades: [] }, new Date(2026, 9, 13, 20, 30)).destaque.cta, 'Entrar na live');
+  // Sem cta, um texto neutro; endereço de fora ou caminho com pasta continua recusado.
+  assert.equal(L.montar(agenda, { destaque: { ...base, cta: '' }, novidades: [] }, new Date(2026, 9, 12, 22, 0)).destaque.cta, 'Saiba mais');
+  for (const url of ['https://exemplo.com/x.html', '../receita-federal.html', 'javascript:alert(1)', 'receita-federal']) {
+    assert.equal(L.montar(agenda, { destaque: { ...base, url }, novidades: [] }, new Date(2026, 9, 12, 22, 0)).destaque.botao, 'live', url);
+  }
+});
+
 test('live avulsa malformada é ignorada e o topo segue a agenda', () => {
   const agora = new Date(2026, 9, 12, 22, 0);
   const ok = { id: 'live-black', titulo: 'Live', url: 'https://youtu.be/h02aFYBvoQ0', inicio: '2026-10-13T20:00', fim: '2026-10-13T23:59' };
