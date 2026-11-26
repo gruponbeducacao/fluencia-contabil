@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="op">
 <head>
 <meta charset="UTF-8">
 <!-- Google Tag Manager -->
@@ -243,7 +243,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .btn{width:100%}
   }
 </style>
-<script src="assets/receita-federal/operacao/config.js?v=20261124"></script>
+<script src="assets/receita-federal/operacao/config.js?v=20261126"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="assets/receita-federal/operacao/pagina.css?v=20261126">
 <script>
 /* Estado da /receita-federal pela hora de Brasília (ver o comentário no topo). estadoEm(t, venda) é
    pura, para o teste (scripts/receita-federal-estados.test.mjs). */
@@ -334,10 +336,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="wrap hero-in">
     <div class="hero-txt">
       <span class="apresenta">Fluência Contábil apresenta</span>
+      <div class="palco">
       <picture>
         <source type="image/webp" srcset="assets/receita-federal/operacao/arte-640.webp 640w, assets/receita-federal/operacao/arte-1000.webp 1000w" sizes="(max-width:920px) 260px, 380px">
         <img class="arte" src="assets/receita-federal/operacao/arte-640.jpg" width="640" height="640" alt="Operação Receita: Analista-Tributário, banca FGV, 2026" fetchpriority="high">
       </picture>
+        <div class="folha f1"><small>Raio-X · ficha 01</small><em data-n="cpc25">111</em><b>questões de Provisões (CPC 25)</b><span>FGV, no banco da Fluência</span></div>
+        <div class="folha f2"><small>Raio-X · ficha 02</small><em data-n="cpc00">114</em><b>questões de Estrutura Conceitual (CPC 00)</b><span>FGV, no banco da Fluência</span></div>
+        <div class="carimbo-arte" aria-hidden="true"><small>Operação Receita</small><b>09/12</b><small>20h · ao vivo</small></div>
+        <div class="video"><img src="assets/prof-hero.webp" alt="" width="1200" height="900"><button class="play" type="button" aria-label="Assistir ao convite"></button>
+          <span class="vid-leg">Por que a FGV muda o seu estudo para a Receita</span></div>
+      </div>
       <h1>A FGV vai aplicar a prova da <span class="nw">Receita Federal.</span> <span class="it">Entre na Operação Receita.</span></h1>
       <p class="sub">Na quarta, 09/12, às 20h, ao vivo, o Prof. Vinícius Ferraz Neves mostra como a FGV cobra Contabilidade e o caminho até a prova de Analista-Tributário. No grupo, você recebe grátis o Raio-X FGV.</p>
       <div class="quando"><span><b>Quarta, 09/12</b></span><span><b>20h</b> · ao vivo no YouTube</span><span>Gratuito</span></div>
@@ -394,6 +403,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </section>
 
+<div class="missao so-captacao" id="missao">
+  <div class="wrap missao-in">
+    <span class="m-tag">Missão em andamento</span>
+    <div class="m-cont" aria-label="Tempo até a live"><span>Faltam</span><b id="m-dias">--</b><i>dias</i><b id="m-horas">--</b><i>h</i><b id="m-min">--</b><i>min</i><b id="m-seg">--</b><i>s</i></div>
+    <span class="m-quando">para a live · <b>quarta, 09/12, 20h</b></span>
+  </div>
+</div>
+
 <div class="autoridade">
   <div class="wrap">
     <div><b>Prof. Vinícius Ferraz Neves</b></div>
@@ -401,6 +418,24 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div>Mais de <b>3.000 alunos</b> ao longo de <b>40 turmas</b></div>
   </div>
 </div>
+
+<section class="sec numeros so-captacao" id="numeros">
+  <div class="wrap">
+    <span class="eyebrow">A FGV em números</span>
+    <h2>O que a banca já mostrou, contado questão por questão.</h2>
+    <div class="num-grade">
+      <div class="num"><b data-conta="1222" data-n="fgv_total">1.222</b><span>questões da FGV no banco da Fluência</span></div>
+      <div class="num"><b data-conta="116" data-n="vagas_analista">116</b><span>vagas de Analista-Tributário, mais <span data-n="vagas_auditor">30</span> de Auditor-Fiscal</span></div>
+      <div class="num"><span class="fav-t">Os 3 favoritos da FGV</span>
+        <ul class="favs">
+          <li data-nv="cpc00" style="--v:114"><span>CPC 00 · Estrutura Conceitual</span><b data-n="cpc00">114</b><i></i></li>
+          <li data-nv="cpc25" style="--v:111"><span>CPC 25 · Provisões</span><b data-n="cpc25">111</b><i></i></li>
+          <li data-nv="cpc09" style="--v:98"><span>CPC 09 · DVA</span><b data-n="cpc09">98</b><i></i></li>
+        </ul></div>
+    </div>
+    <p class="fonte">Questões da FGV publicadas no banco da Fluência em <span data-n="data">24/11/2026</span>. Vagas: Portaria MGI nº 5.505, de 03/07/2026.</p>
+  </div>
+</section>
 
 <section class="sec clara so-captacao" id="por-que">
   <div class="wrap">
@@ -412,6 +447,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="fato"><b>146 vagas</b><span>116 de Analista-Tributário e 30 de Auditor-Fiscal (Portaria MGI nº 5.505, de 03/07/2026).</span></div>
       <div class="fato"><b>Dezembro</b><span>é quando a <span class="nw">Receita Federal</span> prevê publicar o edital.</span></div>
     </div>
+    <ol class="linha-tempo">
+      <li class="feito"><time>23/11</time><b>FGV definida</b><span>banca do concurso da Receita Federal</span></li>
+      <li class="hoje"><time id="lt-hoje">Hoje</time><b>Você está aqui</b><span>a hora de sair na frente</span></li>
+      <li class="live"><time>09/12 · 20h</time><b>Live da Operação Receita</b><span>como a FGV cobra Contabilidade</span></li>
+      <li><time>Dezembro</time><b>Edital previsto</b><span>a Receita prevê publicar ainda este mês</span></li>
+      <li><time>Depois</time><b>Prova</b><span>a data sai no edital</span></li>
+    </ol>
+    <p class="lt-vagas"><b>146 vagas:</b> 116 de Analista-Tributário e 30 de Auditor-Fiscal (Portaria MGI nº 5.505, de 03/07/2026).</p>
     <p class="fonte">Informações públicas de 23/11/2026. O edital, quando sair, é a fonte oficial.</p>
   </div>
 </section>
@@ -430,8 +473,40 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </section>
 
+<section class="sec questao so-captacao" id="questao">
+  <div class="wrap">
+    <span class="eyebrow">Teste rápido</span>
+    <h2>Você acertaria esta da FGV?</h2>
+    <p class="lead" id="q-lead">Caiu na prova da SEFAZ ES de 2021, aplicada pela FGV. Do jeito que aparece na plataforma da Fluência: escolha uma alternativa e veja a resolução.</p>
+    <div class="q-plat" id="q-plat"></div>
+    <script type="application/json" id="q-dados">{"seq": 5622, "cpcRef": "CPC 15", "subject": "Contabilidade Avançada", "subtopic": "CPC 18: Método da Equivalência Patrimonial", "examOrg": "SEFAZ ES", "year": 2021, "statement": "<p>As Cias. X e Y apresentavam, em 31/12/X0, os balanços patrimoniais a seguir.<\/p><table class=\"q-table\"><thead><tr><th><\/th><th>Cia X<\/th><th>Cia Y<\/th><\/tr><\/thead><tbody><tr><td>Ativo<\/td><td><\/td><td><\/td><\/tr><tr><td>Caixa<\/td><td>100.000<\/td><td>10.000<\/td><\/tr><tr><td>Terreno<\/td><td><\/td><td>22.000<\/td><\/tr><tr><td>Total do Ativo<\/td><td>100.000<\/td><td>32.000<\/td><\/tr><tr><td>Patrimônio Líquido<\/td><td><\/td><td><\/td><\/tr><tr><td>Capital Social<\/td><td>100.000<\/td><td>32.000<\/td><\/tr><tr><td>Total do PL<\/td><td>100.000<\/td><td>32.000<\/td><\/tr><\/tbody><\/table><p>Em X1, a Cia. X comprou 80% da Cia. Y por R$ 40.000.<\/p><p>Na data da compra, o valor de mercado do terreno era avaliado em R$ 30.000 e o valor de mercado da marca era avaliado em R$ 5.000.<\/p><p>Assinale a opção que indica o goodwill total contabilizado no balanço patrimonial consolidado em 31/12/X1, admitindo-se que o valor justo da parcela dos não controladores é igual ao do valor pago pelo novo controlador.<\/p>", "options": ["R$ 4.000", "R$ 5.000", "R$ 10.000", "R$ 14.400", "R$ 18.000"], "correctIndex": 1, "comment": "O item 32 do CPC 15 manda medir o goodwill como (a) menos (b). Comece pelo (b), os ativos líquidos identificáveis da Cia. Y: patrimônio líquido contábil de 32.000, mais a mais-valia do terreno (30.000 de valor de mercado contra 22.000 de balanço, ou seja, 8.000), mais a marca de 5.000, que nunca esteve no balanço da investida e entra por força do item 13. Total: 45.000.\nAgora o (a). A contraprestação transferida é 40.000.\nParticipação anterior não há — a Cia. X não tinha investimento na Cia. Y, e é por isso que o enunciado começou pelo balanço.\nFalta a parcela dos não controladores, e é ela que decide a questão: o comando diz que o valor justo dessa parcela é igual ao do valor pago pelo novo controlador.\nSe 80% valem 40.000, 100% valem 50.000, e os 20% dos não controladores valem 10.000.\nGoodwill = 40.000 (valor pago) + 10.000 (Participação dos não Controladores – Mensurado pelo valor Justo na Data da Aquisição) − 45.000 (Ativos Líquidos Identificáveis) = 5.000, letra (B).\nA letra (A), 4.000, é a fórmula reduzida: ela mede os não controladores pela fatia deles nos ativos líquidos identificáveis (20% × 45.000 = 9.000), que é o critério (b) do item 19 — e o enunciado pediu o critério (a). A letra (C), 10.000, é a própria parcela dos não controladores. A letra (D), 14.400, sai de quem ignorou a mais-valia e a marca e trabalhou com o PL contábil (40.000 − 80% × 32.000). A letra (E), 18.000, é o valor justo do todo menos o PL contábil (50.000 − 32.000). Erro típico: parar de ler no percentual adquirido e não perceber que a última linha do enunciado escolheu o critério de mensuração dos não controladores."}</script>
+    <div class="qp-cta" id="qp-cta" hidden><p>É esse o nível da FGV. O Raio-X FGV mostra onde a banca mais cobra.</p><a class="btn" href="#lista">Quero o Raio-X FGV</a><span class="rascunho">Rascunho · frase a aprovar</span></div>
+  </div>
+</section>
+
 <section class="sec clara so-captacao" id="raio-x">
   <div class="wrap raiox">
+    <div class="pdf3d" aria-hidden="true">
+      <div class="pg pg-a">
+        <div class="pg-top"><span>RAIO-X FGV · OPERAÇÃO RECEITA</span><span>p. 3</span></div>
+        <h4>Onde a FGV concentra as questões</h4>
+        <p class="pg-sub">Questões da FGV publicadas no banco da Fluência, por norma (<span data-n="data">24/11/2026</span>).</p>
+        <ul class="barras">
+          <li data-nv="cpc00" style="--v:114"><span>CPC 00 · Estrutura Conceitual</span><i></i><b data-n="cpc00">114</b></li>
+          <li data-nv="cpc25" style="--v:111"><span>CPC 25 · Provisões</span><i></i><b data-n="cpc25">111</b></li>
+          <li data-nv="cpc09" style="--v:98"><span>CPC 09 · DVA</span><i></i><b data-n="cpc09">98</b></li>
+          <li data-nv="cpc27" style="--v:96"><span>CPC 27 · Imobilizado</span><i></i><b data-n="cpc27">96</b></li>
+          <li data-nv="cpc01" style="--v:86"><span>CPC 01 · Valor recuperável</span><i></i><b data-n="cpc01">86</b></li>
+          <li data-nv="cpc03" style="--v:74"><span>CPC 03 · DFC</span><i></i><b data-n="cpc03">74</b></li>
+        </ul>
+        <p class="pg-nota">Total: <span data-n="fgv_total">1.222</span> questões da FGV no banco. Fluência Contábil apresenta.</p>
+      </div>
+      <div class="pg pg-b">
+        <div class="borrado"><div class="pg-top"><span>RAIO-X FGV</span><span>p. 4</span></div><h4>Como a FGV cobra Provisões</h4>
+          <p></p><p></p><p></p><p></p><div class="bl"></div><p></p><p></p><p></p><p></p><p></p><p></p></div>
+        <span class="cadeado"><svg viewBox="0 0 24 24" fill="none" stroke="#C8A84B" stroke-width="2"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Liberado no grupo<small>as próximas páginas chegam com o PDF</small></span>
+      </div>
+    </div>
     <picture><source srcset="assets/receita-federal/operacao/raio-x-fgv-capa.webp" type="image/webp">
       <img src="assets/receita-federal/operacao/raio-x-fgv-capa.jpg" width="520" height="736" loading="lazy" alt="Capa provisória do Raio-X FGV"></picture>
     <div>
@@ -446,6 +521,32 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <p style="margin-top:22px"><a class="btn" href="#lista">Quero o Raio-X FGV</a></p>
       <span class="rascunho">Rascunho · capa e conteúdo provisórios</span>
     </div>
+  </div>
+</section>
+
+<section class="sec plataforma so-captacao" id="plataforma">
+  <div class="wrap">
+    <span class="eyebrow">A plataforma por dentro</span>
+    <h2>Veja onde você vai estudar.</h2>
+    <p class="lead">Gravações da plataforma como ela está hoje. Escolha a ferramenta, ou navegue você mesmo.</p>
+    <div class="abas" role="tablist" aria-label="Ferramentas da plataforma" id="abas"></div>
+    <div class="tela">
+      <div class="tela-real">
+        <div class="barra-t"><i></i><i></i><i></i><span>Tela real da plataforma</span></div>
+        <video id="tela-video" muted loop playsinline preload="none" poster="assets/quiz/telas/aula-videos.jpg"></video>
+      </div>
+      <div class="tela-txt" aria-live="polite">
+        <span class="tela-n" id="tela-n"></span>
+        <h3 id="tela-titulo"></h3>
+        <p id="tela-desc"></p>
+        <p class="resolve" id="tela-resolve"></p>
+      </div>
+    </div>
+    <div class="demo">
+      <button class="btn btn-contorno" type="button" id="demo-abrir">Navegar na plataforma agora</button>
+      <div class="demo-moldura" id="demo-moldura" hidden></div>
+    </div>
+    <span class="rascunho">Rascunho · textos e o que entra no Fluente em FGV a confirmar</span>
   </div>
 </section>
 
@@ -469,6 +570,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </section>
 
 <section class="sec clara so-captacao" id="professor">
+  <div class="wrap prof2">
+    <div class="p2-foto"><img src="assets/prof-hero.webp" width="1200" height="900" alt="Prof. Vinícius Ferraz Neves" loading="lazy"><span class="selo-fgv">Especialista<b>FGV</b></span></div>
+    <div>
+      <span class="eyebrow">Quem conduz</span>
+      <h2>Prof. Vinícius Ferraz Neves</h2>
+      <p>Auditor Fiscal do Município do Rio de Janeiro, aprovado em três concursos da FGV:</p>
+      <ul class="aprov">
+        <li><b aria-hidden="true">✓</b><span>Fiscal de Rendas · Prefeitura do Rio<small>FGV, 2023</small></span></li>
+        <li><b aria-hidden="true">✓</b><span>Analista Legislativo, Contabilidade · Senado Federal<small>FGV, edital de 2022</small></span></li>
+        <li><b aria-hidden="true">✓</b><span>Auditor Fiscal da Receita Estadual · SEF/MG<small>FGV, edital de 2022</small></span></li>
+      </ul>
+      <p class="p2-alunos">Mais de <b>3.000 alunos</b> ao longo de <b>40 turmas</b>.</p>
+      <span class="rascunho">Rascunho · frases a aprovar</span>
+    </div>
+  </div>
   <div class="wrap prof">
     <picture><source srcset="assets/foto-vinicius.webp" type="image/webp">
       <img src="assets/foto-vinicius.jpg" width="1200" height="900" loading="lazy" alt="Prof. Vinícius Ferraz Neves"></picture>
@@ -505,6 +621,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <a class="btn" href="#lista">Quero o Raio-X FGV</a>
   </div>
 </section>
+
+<div class="barra-fixa so-captacao" id="barra-fixa"><a class="btn" href="#lista">Entrar na Operação Receita</a><small>Grátis · live 09/12, 20h</small></div>
 
 <footer>
   <div class="wrap">
@@ -701,5 +819,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 })();
 </script>
 <script src="assets/origem.js?v=20260909" defer></script>
+<script src="assets/receita-federal/operacao/pagina.js?v=20261126" defer></script>
 </body>
 </html>

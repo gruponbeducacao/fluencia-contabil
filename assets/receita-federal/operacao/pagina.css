@@ -1,0 +1,401 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap");
+/* /receita-federal · layout v2 (26/11/2026), homologado no mock "liga e desliga".
+   html.op = a página; html.tem-video = há vídeo-convite no config.js (VIDEO_CONVITE). */
+.palco{position:relative}
+.palco .folha,.palco .carimbo-arte,.palco .video,.missao,.numeros,.questao,.linha-tempo,.lt-vagas,.pdf3d,.prof2,.barra-fixa{display:none}
+@keyframes bate{0%{opacity:0;scale:2.4}60%{opacity:1;scale:.94}100%{opacity:1;scale:1}}
+
+/* ── 1 · topo em dossiê ── */
+.folha{width:230px;padding:14px 16px 16px;border-radius:2px;color:#1a1a1a;font-family:Montserrat,sans-serif;
+  background:#fff repeating-linear-gradient(#0000 0 23px,#0b1f3a10 23px 24px);box-shadow:0 18px 36px #0009}
+.folha::before{content:"";position:absolute;top:-10px;right:22px;width:16px;height:34px;border:3px solid #b8bfc9;border-radius:9px;border-bottom-color:transparent}
+.folha small{display:block;font:700 10px/1.2 ui-monospace,Consolas,monospace;letter-spacing:.14em;text-transform:uppercase;color:#8a6f22}
+.folha em{display:block;margin-top:6px;font-style:normal;font-size:38px;font-weight:900;line-height:1;color:#C0392B}
+.folha b{display:block;margin-top:4px;font-size:15px;font-weight:800;line-height:1.2;color:#0B1F3A}
+.folha span{display:block;margin-top:4px;font-size:12px;font-weight:600;color:#555}
+.carimbo-arte{width:138px;height:138px;border-radius:50%;place-items:center;align-content:center;text-align:center;rotate:-14deg;
+  border:4px solid #C0392B;box-shadow:inset 0 0 0 4px #fff,inset 0 0 0 6px #C0392B;background:#ffffffeb;color:#C0392B;font-family:Montserrat,sans-serif;
+  animation:bate .55s cubic-bezier(.2,.9,.3,1.2) .5s both}
+.carimbo-arte small{display:block;max-width:86%;margin-inline:auto;font-size:8.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;line-height:1.2}
+.carimbo-arte b{display:block;font-size:30px;font-weight:900;line-height:1.05}
+html.op .folha,html.op .carimbo-arte{display:grid;position:absolute}
+html.op .folha{display:block}
+html.op .hero{background:radial-gradient(ellipse 50% 60% at 25% 45%,#22365c,transparent 70%),radial-gradient(ellipse 60% 70% at 80% 0%,#1b2a4a,transparent 70%)}
+@media (min-width:921px){
+  html.op .hero{padding:34px 0 64px}
+  html.op .hero-in{grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);grid-template-areas:"ap ap" "h1 h1" "palco ficha" "sub ficha" "quando ficha" "cont ficha" "ras ficha";column-gap:64px;row-gap:0}
+  html.op .hero-txt{display:contents}
+  html.op .hero-txt>.apresenta{grid-area:ap}
+  html.op .hero-txt>h1{grid-area:h1;max-width:24ch;margin:12px 0 34px;font-size:clamp(36px,4.4vw,58px);line-height:1.04}
+  html.op .palco{grid-area:palco;height:500px}
+  html.op .hero-txt>.sub{grid-area:sub}
+  html.op .hero-txt>.quando{grid-area:quando}
+  html.op .hero-txt>.contagem{grid-area:cont}
+  html.op .hero-txt>.rascunho{grid-area:ras;justify-self:start}
+  html.op .cartao{grid-area:ficha;align-self:start}
+  html.op .palco .arte{position:absolute;left:40px;top:28px;width:410px;margin:0;rotate:-4deg;z-index:2;box-shadow:0 44px 90px #000b,0 0 0 1px #c8a84b55}
+  html.op .folha.f1{right:-6px;top:0;rotate:7deg;z-index:3}
+  html.op .folha.f2{left:-14px;top:318px;rotate:-8deg;z-index:3}
+  html.op .carimbo-arte{left:342px;top:332px;z-index:4}
+}
+/* a ficha de alistamento */
+html.op .cartao{padding-top:64px;border:0;border-radius:4px;color:#1a1a1a;background:#fff;border-top:0;box-shadow:0 34px 90px #000b,inset 0 0 0 1px #C8A84B}
+html.op .cartao::before{content:"FICHA DE ALISTAMENTO  ·  Nº 0912";position:absolute;inset:0 0 auto;padding:14px 26px;border-radius:4px 4px 0 0;
+  background:#0B1F3A;border-bottom:3px solid #C8A84B;color:#C8A84B;font:800 11px/1 ui-monospace,Consolas,monospace;letter-spacing:.2em;white-space:pre}
+html.op .cartao h2{color:#0B1F3A}
+html.op .cartao>p,html.op .bonus p,html.op #or-ok p{color:#3a3a3a}
+html.op .cartao .eyebrow,html.op .bonus b{color:#8a6f22}
+html.op .bonus{border-color:#b59a4c}
+html.op .cartao label{color:#0B1F3A;font-size:11.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+html.op .cartao input{background:#f6f8fb;border:1.5px solid #c9d1dd;color:#1a1a1a;border-radius:4px}
+html.op .cartao input::placeholder{color:#0007}
+html.op .privacidade{color:#555}html.op .privacidade a{color:#7a5f12}
+html.op .erro{color:#b03a2e}
+html.op .ok-titulo{color:#0B1F3A}
+html.op .cartao .btn-contorno{color:#7a5f12;border-color:#8a6f22}
+html.op #or-ok{padding-top:62px}
+html.op .cartao:has(#or-ok:not([hidden]))>.eyebrow{visibility:hidden}
+html.op .cartao:has(#or-ok:not([hidden]))::after{content:"CONFIRMADO";position:absolute;left:50%;translate:-50% 0;top:56px;padding:4px 14px;border:4px solid #C0392B;border-radius:6px;
+  rotate:-6deg;color:#C0392B;font:900 24px Montserrat,sans-serif;letter-spacing:.14em;opacity:.92;animation:bate .55s cubic-bezier(.2,.9,.3,1.2) .2s both}
+
+/* ── 2 · vídeo-convite no topo ── */
+.video{position:relative;aspect-ratio:16/9;border-radius:12px;overflow:hidden;background:#000;border:1px solid #c8a84b66;box-shadow:0 34px 80px #000b}
+.video img{width:100%;height:100%;object-fit:cover;object-position:50% 22%;filter:brightness(.78)}
+.video .play{position:absolute;left:50%;top:46%;translate:-50% -50%;display:grid;place-items:center;width:84px;height:84px;border:0;border-radius:50%;background:#C0392B;box-shadow:0 0 0 12px #c0392b45;cursor:pointer}
+.video .play::before{content:"";margin-left:7px;border-left:26px solid #fff;border-block:16px solid transparent}
+.video .vid-leg{position:absolute;inset:auto 0 0;padding:34px 18px 14px;background:linear-gradient(#0000,#000d);font:700 14px/1.35 Montserrat,sans-serif;color:#fff}
+html.tem-video .palco .video{display:block}
+@media (min-width:921px){
+  html.op.tem-video .palco{height:470px}
+  html.op.tem-video .palco .arte{left:0;top:6px;width:270px;rotate:-7deg}
+  html.op.tem-video .palco .video{position:absolute;left:96px;top:132px;width:calc(100% - 96px);z-index:3}
+  html.op.tem-video .folha.f2{display:none}
+  html.op.tem-video .folha.f1{right:-4px;top:-4px}
+  html.op.tem-video .carimbo-arte{left:-18px;top:352px;width:118px;height:118px;z-index:5}
+  html.op.tem-video .carimbo-arte b{font-size:25px}
+}
+
+/* ── 3 · contagem em faixa de missão ── */
+html.op .missao{display:block}
+html.op .hero .contagem{display:none}
+html[data-estado] .missao{display:none}
+.missao{position:relative;background:#07152A;font-family:Montserrat,sans-serif}
+.missao::before,.missao::after{content:"";position:absolute;left:0;right:0;height:8px;background:repeating-linear-gradient(-45deg,#C8A84B 0 14px,#07152A 14px 28px)}
+.missao::before{top:0}.missao::after{bottom:0}
+.missao-in{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:12px 34px;padding:30px 0}
+.m-tag{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border:1px solid #C0392B;border-radius:4px;color:#ff8a7a;font-size:11.5px;font-weight:800;letter-spacing:.18em;text-transform:uppercase}
+.m-tag::before{content:"";width:8px;height:8px;border-radius:50%;background:#e74c3c;animation:pulsa 1.4s infinite}
+.m-cont{display:flex;align-items:baseline;gap:6px;color:#fff;font-weight:800}
+.m-cont>span{margin-right:8px;font-size:15px;letter-spacing:.12em;text-transform:uppercase;color:var(--branco-2)}
+.m-cont b{min-width:1.6ch;font-size:58px;font-weight:900;line-height:1;color:var(--dourado);font-variant-numeric:tabular-nums;text-align:right}
+.m-cont i{margin-right:12px;font-style:normal;font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:var(--branco-3)}
+.m-quando{font-size:15px;font-weight:700;color:var(--branco-2)}
+.m-quando b{color:#fff}
+
+/* ── 4 · Raio-X com amostra real ── */
+html.op .pdf3d{display:flex}
+html.op #raio-x .raiox>picture{display:none}
+html.op #raio-x .raiox{grid-template-columns:minmax(0,560px) minmax(0,1fr);gap:48px}
+.pdf3d{position:relative;perspective:1600px;gap:0;padding:10px 0 20px}
+.pg{position:relative;width:50%;aspect-ratio:210/297;padding:18px 18px;background:#fff;color:#1a1a1a;box-shadow:0 30px 60px #0b1f3a55;font-family:Montserrat,sans-serif}
+.pg-a{transform:rotateY(10deg);transform-origin:right center;border-radius:4px 0 0 4px}
+.pg-b{transform:rotateY(-10deg);transform-origin:left center;border-radius:0 4px 4px 0;overflow:hidden}
+.pg-top{display:flex;justify-content:space-between;padding-bottom:8px;border-bottom:2px solid #C8A84B;font-size:8.5px;font-weight:800;letter-spacing:.16em;color:#0B1F3A}
+.pg h4{margin-top:10px;font-size:13.5px;font-weight:900;line-height:1.15;color:#0B1F3A}
+.pg-sub{margin-top:6px;font-size:9px;line-height:1.4;color:#666}
+.barras{list-style:none;display:grid;gap:6px;margin-top:10px}
+.barras li{display:grid;grid-template-columns:1fr 30px;gap:1px 8px;align-items:center;font-size:9px;font-weight:700;color:#0B1F3A}
+.barras li span{grid-column:1/-1}
+.barras li i{display:block;height:9px;border-radius:2px;background:linear-gradient(90deg,#0B1F3A,#2a4a7a);width:calc(var(--v) / var(--max,114) * 100%)}
+.barras li:nth-child(-n+3) i{background:linear-gradient(90deg,#a8882f,#C8A84B)}
+.barras li b{font-size:11px;font-weight:900;text-align:right}
+.pg-nota{position:absolute;left:18px;right:18px;bottom:12px;font-size:8.5px;color:#666;border-top:1px solid #ddd;padding-top:6px}
+.borrado{filter:blur(3.5px);opacity:.75}
+.borrado h4{margin-top:14px}
+.borrado p{height:7px;margin-top:9px;border-radius:3px;background:#c9ccd3}
+.borrado p:nth-child(3n){width:72%}.borrado p:nth-child(4n){width:88%}
+.borrado .bl{height:80px;margin-top:14px;border-radius:4px;background:linear-gradient(90deg,#C8A84B 0 64%,#e3e7ee 64%)}
+.cadeado{position:absolute;left:50%;top:50%;translate:-50% -50%;display:grid;justify-items:center;gap:8px;width:80%;padding:16px 12px;border-radius:10px;background:#0B1F3Aee;color:#fff;text-align:center;font:800 12px/1.3 Montserrat,sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.cadeado svg{width:26px;height:26px}
+.cadeado small{font-weight:600;letter-spacing:0;text-transform:none;font-size:11px;color:#ffffffc0}
+
+/* ── 5 · a FGV em números ── */
+html.op .numeros{display:block}
+.numeros{background:#07152A;border-top:1px solid var(--linha)}
+.num-grade{display:grid;grid-template-columns:1fr 1fr 1.5fr;gap:18px;margin-top:34px}
+.num{padding:26px 24px;border:1px solid #c8a84b55;border-radius:12px;background:linear-gradient(160deg,#13294B,#0B1F3A)}
+.num>b{display:block;font:900 clamp(44px,5vw,64px)/1 Montserrat,sans-serif;color:var(--dourado);font-variant-numeric:tabular-nums;letter-spacing:-1px}
+.num>span{display:block;margin-top:10px;font-size:16px;line-height:1.45;color:var(--branco-2)}
+.fav-t{display:block;font:800 12px Montserrat,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--dourado)}
+.favs{list-style:none;display:grid;gap:14px;margin-top:16px}
+.favs li{display:grid;grid-template-columns:1fr auto;gap:6px 12px;font-family:Montserrat,sans-serif}
+.favs li span{font-size:15px;font-weight:700;color:#fff}
+.favs li b{font-size:18px;font-weight:900;color:var(--dourado)}
+.favs li i{grid-column:1/-1;display:block;height:12px;border-radius:3px;background:#ffffff14;overflow:hidden}
+.favs li i::before{content:"";display:block;height:100%;width:0;background:linear-gradient(90deg,#a8882f,#D9BC5C);transition:width 1.2s cubic-bezier(.2,.8,.2,1)}
+.numeros.vis .favs li i::before{width:calc(var(--v) / var(--max,114) * 100%)}
+.numeros .fonte{color:var(--branco-3)}
+
+/* ── 6 · questão da FGV ── */
+html.op .questao{display:block}
+.questao{background:#07152A;border-top:1px solid var(--linha)}
+
+/* ── 7 · linha do tempo ── */
+html.op #por-que .fatos{display:none}
+html.op .linha-tempo{display:grid}
+html.op .lt-vagas{display:block}
+.linha-tempo{--lt-ink:#0B1F3A;--lt-mute:#555;--lt-fundo:var(--marinho-2);position:relative;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;margin-top:46px;list-style:none;font-family:Montserrat,sans-serif}
+.linha-tempo::before{content:"";position:absolute;left:4%;right:4%;top:38px;height:3px;background:linear-gradient(90deg,#C8A84B 0 30%,#c8a84b55 30%)}
+.linha-tempo li{position:relative;display:grid;justify-items:center;text-align:center;padding-top:0}
+.linha-tempo time{height:24px;font-size:13px;font-weight:800;letter-spacing:.06em;color:#8a6f22}
+.linha-tempo li::before{content:"";order:1;width:22px;height:22px;margin:3px 0 14px;border-radius:50%;border:3px solid #C8A84B;background:var(--lt-fundo);position:relative;z-index:1}
+.linha-tempo time{order:0}.linha-tempo b{order:2}.linha-tempo span{order:3}
+.linha-tempo li.feito::before{background:#C8A84B}
+.linha-tempo li.hoje::before{width:28px;height:28px;margin:0 0 11px;border-color:#C0392B;background:#C0392B;box-shadow:0 0 0 8px #c0392b33;animation:pulsa 1.6s infinite}
+.linha-tempo li.hoje time{color:#C0392B}
+.linha-tempo li.live::before{background:#0B1F3A;border-color:#C8A84B;box-shadow:0 0 0 5px #c8a84b40}
+.linha-tempo b{font-size:17px;font-weight:900;line-height:1.2;color:var(--lt-ink)}
+.linha-tempo span{margin-top:4px;font-family:"Source Serif 4",Georgia,serif;font-size:14.5px;line-height:1.4;color:var(--lt-mute)}
+.lt-vagas{margin-top:34px;padding:16px 20px;border-left:4px solid #C8A84B;background:#fff;color:#2b2b2b;font-size:16px;max-width:780px}
+.lt-vagas b{font-family:Montserrat,sans-serif;color:#0B1F3A}
+
+/* ── 8 · professor com autoridade ── */
+html.op #professor .prof{display:none}
+html.op .prof2{display:grid}
+html.op #professor{background:linear-gradient(120deg,#0B1F3A 0 55%,#13294B);color:#fff}
+.prof2{grid-template-columns:minmax(0,480px) minmax(0,1fr);gap:56px;align-items:center}
+.p2-foto{position:relative}
+.p2-foto img{width:100%;border-radius:0;-webkit-mask-image:radial-gradient(ellipse 62% 74% at 50% 42%,#000 58%,transparent 82%);mask-image:radial-gradient(ellipse 62% 74% at 50% 42%,#000 58%,transparent 82%)}
+.selo-fgv{position:absolute;right:6%;bottom:12%;display:grid;place-items:center;align-content:center;width:132px;height:132px;border-radius:50%;rotate:-10deg;text-align:center;
+  background:radial-gradient(circle,#D9BC5C,#a8882f);color:#0B1F3A;box-shadow:0 14px 34px #000a,inset 0 0 0 4px #0B1F3A,inset 0 0 0 6px #D9BC5C;font:800 11px/1.15 Montserrat,sans-serif;letter-spacing:.12em;text-transform:uppercase}
+.selo-fgv b{font-size:34px;letter-spacing:.02em;line-height:1}
+.prof2 .eyebrow{color:var(--dourado)}
+.prof2 h2{color:#fff}
+.prof2>div>p{margin-top:12px;font-size:17px;color:var(--branco-2)}
+.aprov{list-style:none;display:grid;gap:10px;margin-top:22px}
+.aprov li{display:grid;grid-template-columns:86px 1fr;align-items:center;gap:14px;padding:12px 16px;border:1px solid #c8a84b55;border-radius:10px;background:#ffffff08}
+.aprov b{font:900 30px/1 Montserrat,sans-serif;color:var(--dourado);text-align:center}
+.aprov span{font:600 14.5px/1.4 Montserrat,sans-serif;color:#fff}
+.aprov small{display:block;font-weight:500;color:var(--branco-3)}
+.p2-alunos{font-family:Montserrat,sans-serif;font-weight:700}
+.p2-alunos b{color:var(--dourado)}
+
+/* ── 9 · página inteira em marinho ── */
+html.op .sec.clara{background:var(--marinho-2);color:#fff;border-top:1px solid var(--linha)}
+html.op .sec.clara .lead,html.op .prof p{color:var(--branco-2)}
+html.op .sec.clara .eyebrow{color:var(--dourado)}
+html.op .fato{background:#ffffff08;border-color:var(--linha)}
+html.op .fato b{color:var(--dourado)}
+html.op .fato>span{color:var(--branco-2)}
+html.op .sec.clara .fonte{color:var(--branco-3)}
+html.op .raiox img{box-shadow:0 30px 70px #000a}
+html.op .linha-tempo{--lt-ink:#fff;--lt-mute:#ffffffb8;--lt-fundo:var(--marinho-2)}
+html.op .lt-vagas{background:#ffffff0a;color:var(--branco-2)}
+html.op .lt-vagas b{color:var(--dourado)}
+html.op .linha-tempo time{color:var(--dourado)}
+html.op .sec:not(.clara):not(.numeros):not(.questao){background:var(--marinho)}
+
+/* ── 10 · celular curto e direto ── */
+.passos{display:grid;gap:8px;font:800 12px Montserrat,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--dourado)}
+.passos i{display:block;height:6px;border-radius:3px;background:#ffffff1f;overflow:hidden}
+.passos i::before{content:"";display:block;height:100%;width:calc(var(--p) * 100%);background:var(--dourado);transition:width .3s}
+html.op .passos{color:#8a6f22}html.op .passos i{background:#0b1f3a1a}
+@media (max-width:920px){
+  html.op .barra-fixa{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:30;flex-direction:column;align-items:center;gap:4px;padding:10px 16px calc(10px + env(safe-area-inset-bottom));
+    background:#0b1f3af5;border-top:1px solid #c8a84b66;box-shadow:0 -10px 30px #0008;transition:translate .25s}
+  html.op .barra-fixa .btn{width:100%;min-height:52px}
+  html.op .barra-fixa small{font:700 11.5px Montserrat,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--branco-3)}
+  html.op .barra-fixa.some{translate:0 110%}
+  html.op body{padding-bottom:96px}
+  html.op .sec{padding:44px 0}
+  html.op .fatos,html.op .cargos,html.op .lista{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;margin-inline:-5vw;padding:0 5vw 6px;scrollbar-width:none}
+  html.op .fato,html.op .cargo,html.op .lista li{flex:0 0 84%;scroll-snap-align:start}
+  html.op .lista{max-width:none}
+  html.op #raio-x .raiox>picture{display:none}
+  html.op .hero .quando{display:none}
+  html.op .autoridade .wrap{gap:4px 18px;font-size:13px;padding:12px 0}
+  html.op .prof img{max-height:240px;width:100%;object-fit:cover;object-position:50% 30%}
+  html.op .linha-tempo{gap:18px}
+  html.op .faq details{padding:14px 0}
+}
+
+/* ── celular: ajustes de cada ideia ── */
+@media (max-width:920px){
+  .hero-txt>.palco{order:2}
+  html.op .hero-txt>.apresenta{order:0}
+  html.op .hero-txt>h1{order:1;margin-top:6px;font-size:31px}
+  html.op .hero-txt>.palco{order:2;width:min(100%,360px);height:340px;margin:0 auto}
+  html.op .palco .arte{position:absolute;left:50%;top:22px;width:230px;margin:0;translate:-50% 0;rotate:-4deg;box-shadow:0 30px 60px #000b}
+  html.op .folha{width:148px;padding:10px 12px 12px}
+  html.op .folha em{font-size:26px}html.op .folha b{font-size:12.5px}html.op .folha span{font-size:10.5px}
+  html.op .folha.f1{right:-6px;top:0;rotate:7deg;z-index:3}
+  html.op .folha.f2{left:-6px;top:206px;rotate:-7deg;z-index:3}
+  html.op .carimbo-arte{right:18px;top:222px;width:100px;height:100px;z-index:4}
+  html.op .carimbo-arte b{font-size:22px}html.op .carimbo-arte small{font-size:8px}
+  html.op .cartao{position:relative;padding-top:58px}
+  html.op .folha span{display:none}
+  .video .play{width:58px;height:58px;box-shadow:0 0 0 8px #c0392b45}.video .play::before{border-left-width:19px;border-block-width:12px;margin-left:5px}
+  .video .vid-leg{padding:24px 12px 10px;font-size:12px}
+  .video img{object-position:50% 30%}
+  html.op.tem-video .hero-txt>.palco{height:300px}
+  html.op.tem-video .palco .arte{left:0;translate:0 0;top:0;width:170px;rotate:-7deg}
+  html.op.tem-video .palco .video{position:absolute;left:34px;right:0;top:92px;z-index:3}
+  html.op.tem-video .folha{display:none}
+  html.op.tem-video .carimbo-arte{display:none}
+  .missao-in{gap:10px;padding:24px 0;text-align:center}
+  .m-cont b{font-size:40px}.m-cont i{margin-right:6px;font-size:11px}.m-cont>span{display:none}
+  .num-grade{grid-template-columns:minmax(0,1fr)}
+  html.op #raio-x .raiox{grid-template-columns:minmax(0,1fr)}
+  .pdf3d{max-width:420px}
+  .pg{padding:14px 12px}.pg-sub,.pg-nota{display:none}.pg h4{font-size:12px}.barras li{font-size:8px}.barras{gap:4px}.cadeado{font-size:10px;padding:12px 8px}
+  .prof2{grid-template-columns:minmax(0,1fr);gap:18px}
+  .p2-foto{max-width:360px;margin-inline:auto}
+  .selo-fgv{width:100px;height:100px;font-size:9px}.selo-fgv b{font-size:26px}
+  .linha-tempo{grid-template-columns:minmax(0,1fr);gap:22px;margin-top:30px;padding-left:44px}
+  .linha-tempo::before{left:14px;right:auto;top:6px;bottom:6px;width:3px;height:auto;background:linear-gradient(#C8A84B 0 24%,#c8a84b55 24%)}
+  .linha-tempo li{justify-items:start;text-align:left}
+  .linha-tempo li::before{position:absolute;left:-41px;top:0;margin:0}
+  .linha-tempo li.hoje::before{left:-44px;top:-2px;margin:0}
+  .linha-tempo time{height:auto}
+  .q-enun{font-size:16px;padding:18px 16px 4px}.q-alts{padding:10px 16px 18px}.q-res{padding:4px 16px 20px}
+}
+
+/* ── 11 · cards com cara de relatório (26/11) ── */
+html.op .num,html.op .fato,html.op .lista li,html.op .cargo,html.op .aprov li{
+  position:relative;border:1px solid #ffffff1c;border-radius:14px;
+  background:linear-gradient(90deg,#C8A84B,#c8a84b00 70%) top left/100% 2px no-repeat,linear-gradient(180deg,#16294d,#0e1f3d);
+  box-shadow:inset 0 1px 0 #ffffff12,0 24px 44px -26px #000;font-family:Montserrat,sans-serif}
+html.op .num-grade,html.op .fatos{align-items:stretch}
+html.op .num,html.op .fato{display:flex;flex-direction:column;padding:22px 24px 18px}
+html.op .num::before,html.op .fato::before{display:block;margin-bottom:14px;font:700 10.5px/1 ui-monospace,Consolas,monospace;letter-spacing:.18em;text-transform:uppercase;color:#ffffff8c}
+html.op .num:nth-child(1)::before{content:"01 · Banco de questões"}
+html.op .num:nth-child(2)::before{content:"02 · Vagas autorizadas"}
+html.op .num:nth-child(3)::before{content:"03 · Normas mais cobradas"}
+html.op .num:nth-child(1)::after{content:"Fonte: banco da Fluência, 24/11/2026"}
+html.op .num:nth-child(2)::after{content:"Fonte: Portaria MGI nº 5.505/2026"}
+html.op .num:nth-child(3)::after{content:"Questões da FGV por norma"}
+html.op .num::after,html.op .fato::after{margin-top:auto;padding-top:14px;border-top:1px solid #ffffff14;font:600 11.5px/1.3 Montserrat,sans-serif;color:#ffffff73}
+html.op .num>span,html.op .fato>span{font:500 14.5px/1.55 Montserrat,sans-serif;color:#ffffffc7;margin-bottom:18px}
+html.op .num>b{font-size:clamp(46px,4.6vw,60px)}
+html.op .fav-t{display:none}
+html.op .favs{margin-top:0}
+html.op .numeros .fonte{display:none}
+html.op .fato b{color:#fff;font-size:28px}
+html.op .fato:nth-child(1)::before{content:"01 · A banca"}
+html.op .fato:nth-child(2)::before{content:"02 · As vagas"}
+html.op .fato:nth-child(3)::before{content:"03 · O edital"}
+html.op .fato:nth-child(1)::after{content:"Fonte: Receita Federal, 23/11/2026"}
+html.op .fato:nth-child(2)::after{content:"Fonte: Portaria MGI nº 5.505/2026"}
+html.op .fato:nth-child(3)::after{content:"Previsão; a data oficial sai no edital"}
+html.op .fato:nth-child(2)>span{font-size:0}
+html.op .fato:nth-child(2)>span::before{content:"116 de Analista-Tributário e 30 de Auditor-Fiscal.";font-size:14.5px}
+html.op #por-que>.wrap>.fonte{display:none}
+/* o que você leva: grade 2×2, número grande vazado */
+@media (min-width:921px){html.op .lista{grid-template-columns:1fr 1fr;max-width:none;gap:18px}}
+html.op .lista li{grid-template-columns:1fr;gap:10px;padding:22px 24px 24px}
+html.op .lista .n{display:block;width:auto;height:auto;place-items:start;border:0;border-radius:0;font-size:44px;line-height:1;color:transparent;-webkit-text-stroke:1.5px #C8A84B}
+html.op .lista .n::before{content:"0"}
+html.op .lista h3{font-size:18.5px}
+html.op .lista p{font:500 14.5px/1.6 Montserrat,sans-serif;color:#ffffffc2}
+/* cargos */
+html.op .cargo{padding:24px 26px 26px}
+html.op .cargo.foco{border-color:#c8a84b8c;background:linear-gradient(90deg,#C8A84B,#D9BC5C) top left/100% 3px no-repeat,linear-gradient(180deg,#1b3360,#11264a)}
+html.op .cargo .eyebrow{display:inline-block;padding:5px 10px;border:1px solid #c8a84b66;border-radius:999px;font-size:10.5px}
+html.op .cargo.foco .eyebrow{background:#C8A84B;color:#0B1F3A;border-color:#C8A84B}
+html.op .cargo h3{margin-top:12px;font-size:23px}
+html.op .cargo p{font:500 14.5px/1.6 Montserrat,sans-serif;color:#ffffffc2}
+html.op .aprov li{padding:14px 18px}
+
+/* ── 12 · a plataforma por dentro ── */
+.plataforma{display:none}
+html.op .plataforma{display:block}
+.plataforma .abas{display:flex;flex-wrap:wrap;gap:8px;margin-top:30px}
+.plataforma .aba{padding:10px 16px;border:1px solid var(--linha);border-radius:999px;background:transparent;color:#fff;font:700 13.5px Montserrat,sans-serif;cursor:pointer}
+.plataforma .aba[aria-selected="true"]{background:var(--dourado);border-color:var(--dourado);color:#0B1F3A}
+.plataforma .tela{display:grid;grid-template-columns:1.5fr 1fr;gap:36px;align-items:center;margin-top:22px}
+.tela-real{border:1px solid #c8a84b55;border-radius:14px;overflow:hidden;background:#fff;box-shadow:0 26px 60px #000b}
+.tela-real .barra-t{display:flex;align-items:center;gap:6px;padding:8px 12px;background:#F1F2F5;font:600 11.5px Montserrat,sans-serif;color:#5A6A7E}
+.tela-real .barra-t i{width:8px;height:8px;border-radius:50%;background:#D3D6DE}
+.tela-real .barra-t span{margin-left:6px}
+.tela-real video{display:block;width:100%;height:auto;aspect-ratio:1264/796;background:#F5F7FA;object-fit:cover}
+.tela-n{font:700 10.5px ui-monospace,Consolas,monospace;letter-spacing:.18em;text-transform:uppercase;color:#ffffff8c}
+.tela-txt h3{margin-top:8px;font-size:24px;letter-spacing:-.4px}
+.tela-txt p{margin-top:12px;font-size:16px;line-height:1.7;color:var(--branco-2)}
+.tela-txt p.resolve{color:var(--dourado);font-weight:700}
+.plataforma .demo{margin-top:36px;text-align:center}
+.plataforma .demo .btn{width:auto;min-width:300px}
+.demo-moldura{margin-top:20px;border-radius:16px;overflow:hidden;background:#fff;border:1px solid #c8a84b55}
+.demo-moldura iframe{display:block;width:100%;height:600px;border:0}
+@media (max-width:920px){
+  .plataforma .tela{grid-template-columns:1fr;gap:20px}
+  .plataforma .abas{flex-wrap:nowrap;overflow-x:auto;margin-inline:-5%;padding-inline:5%;scrollbar-width:none}
+  .plataforma .aba{flex:0 0 auto}
+  .demo-moldura iframe{height:520px}
+  .plataforma .demo .btn{min-width:0;width:100%}
+}
+
+/* ── 6 (v2, 26/11) · questão no formato do banco de questões da plataforma (tokens da demo da plataforma) ── */
+.q-plat{max-width:860px;margin-top:28px}
+.qp-janela{border-radius:14px;overflow:hidden;border:1px solid #ffffff24;box-shadow:0 30px 70px #000a;background:#F4F5F8}
+.qp-barra{display:flex;align-items:center;gap:7px;padding:10px 14px;background:#0B1220;border-bottom:1px solid #ffffff14}
+.qp-barra i{width:10px;height:10px;border-radius:50%;background:#ffffff2e}
+.qp-barra span{flex:1;margin-left:6px;padding:5px 12px;border-radius:6px;background:#ffffff0f;color:#ffffff8c;font:500 12px Manrope,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.qp-card{margin:18px;padding:18px 20px 20px;border:1px solid #E8E6DF;border-radius:12px;background:#fff;box-shadow:0 1px 2px #1b2a4a0d;color:#2A2A2A;font-family:Manrope,system-ui,sans-serif}
+.qp-meta{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin-bottom:6px}
+.qp-meta b{font-size:13px;font-weight:800;color:#1B2A4A}
+.qp-badge{padding:3px 9px;border-radius:999px;background:#c8a84b24;color:#7A6320;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.qp-badge.cinza{background:#EEF0F4;color:#5E5E5E}
+.qp-trilha{margin-bottom:12px;font-size:12.5px;color:#717171}
+.qp-enun{font-size:15px;line-height:1.6;color:#2A2A2A}
+.qp-enun p+p,.qp-enun table+p,.qp-enun p+table{margin-top:9px}
+.qp-enun table{width:100%;border-collapse:collapse;font-size:13.5px}
+.qp-enun td{padding:6px 10px;border:1px solid #E8E6DF;vertical-align:top}
+.qp-enun td:nth-child(2){white-space:nowrap;text-align:right}
+.qp-enun tr.total td{font-weight:800}
+.qp-alts{display:grid;gap:7px;margin-top:16px}
+.qp-alt{display:flex;align-items:flex-start;gap:11px;width:100%;min-height:44px;padding:9px 12px;border:1px solid #E8E6DF;border-radius:8px;background:#fff;color:#2A2A2A;font:500 14.5px/1.5 Manrope,sans-serif;text-align:left;cursor:pointer;transition:border-color .15s}
+.qp-alt:hover{border-color:#C8A84B}
+.qp-l{flex:none;display:grid;place-items:center;width:26px;height:26px;border-radius:6px;background:#E8E6DF;color:#3F3F3F;font-size:12px;font-weight:800}
+.feito .qp-alt{cursor:default}.feito .qp-alt:hover{border-color:#E8E6DF}
+.qp-alt.certa{border:2px solid #2E7D32;background:#E8F3E9}.qp-alt.certa .qp-l{background:#2E7D32;color:#fff}
+.qp-alt.errada{border:2px solid #D93E3E;background:#FCEAEA}.qp-alt.errada .qp-l{background:#D93E3E;color:#fff}
+.qp-res{margin-top:12px;padding:14px 16px;border-radius:8px;background:#EEF2F8}
+.qp-ver{font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+.qp-ver.ok{color:#2E7D32}.qp-ver.erro{color:#D93E3E}
+.qp-gab{margin-top:4px;font-size:14px;font-weight:800;color:#1B2A4A}
+.qp-com{position:relative;max-height:190px;overflow:hidden;margin-top:6px}
+.qp-com::after{content:"";position:absolute;left:0;right:0;bottom:0;height:70px;background:linear-gradient(#eef2f800,#EEF2F8)}
+.qp-com.aberto{max-height:none}.qp-com.aberto::after{display:none}
+.qp-com p{margin-top:7px;font-size:14px;line-height:1.65;color:#2A2A2A}
+.qp-com h5{margin-top:14px;font:800 12px Manrope,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#1B2A4A}
+.qp-mais{margin-top:10px;min-height:40px;padding:8px 14px;border:1px solid #1B2A4A;border-radius:8px;background:#fff;color:#1B2A4A;font:700 13px Manrope,sans-serif;cursor:pointer}
+.qp-cta{margin-top:22px}
+.qp-cta p{font-size:17px;color:var(--branco-2)}
+.qp-cta .btn{margin-top:12px;width:auto}
+@media (max-width:600px){.qp-card{margin:10px;padding:14px}.qp-enun{font-size:14.5px}.qp-enun table{font-size:12.5px}.qp-enun td{padding:5px 6px}}
+
+/* ── 8 (26/11) · sem as posições: marca de aprovado no lugar do número ── */
+.aprov li{grid-template-columns:40px 1fr}
+.aprov b{display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:var(--dourado);color:#0B1F3A;font-size:17px}
+
+/* ── 11 (26/11) · números dos cards: sem "01 ·" nos rótulos e sem o número vazado ── */
+html.op .num:nth-child(1)::before{content:"Banco de questões"}
+html.op .num:nth-child(2)::before{content:"Vagas autorizadas"}
+html.op .num:nth-child(3)::before{content:"Normas mais cobradas"}
+html.op .fato:nth-child(1)::before{content:"A banca"}
+html.op .fato:nth-child(2)::before{content:"As vagas"}
+html.op .fato:nth-child(3)::before{content:"O edital"}
+html.op .num::before,html.op .fato::before{font:800 11px/1 Montserrat,sans-serif;letter-spacing:.14em;color:var(--dourado)}
+html.op .lista .n{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:var(--dourado);color:#0B1F3A;-webkit-text-stroke:0;font-size:16px;font-weight:900}
+html.op .lista .n::before{content:none}
+.qp-com table{width:100%;margin-top:8px;border-collapse:collapse;font:500 13.5px/1.45 Manrope,sans-serif;color:#2A2A2A}
+.qp-com th,.qp-com td{padding:5px 9px;border:1px solid #d9dfe8;text-align:left;vertical-align:top}
+.qp-com th{background:#e3e9f2;font-weight:800;color:#1B2A4A}
+.qp-com td:last-child{white-space:nowrap;text-align:right}
+.qp-com ul{margin:6px 0 0 18px;padding:0}
+.qp-com li{margin-top:5px;font:500 14px/1.6 Manrope,sans-serif;color:#2A2A2A}
+.qp-com strong{font-weight:800;color:#1B2A4A}
+
+/* estados da página: as seções novas de captação somem na live e na venda, como as antigas
+   (o html.op das regras acima empata em especificidade com a regra de estado da página) */
+html[data-estado=ao-vivo] .so-captacao,html[data-estado=venda] .so-captacao{display:none!important}
