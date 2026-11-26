@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="op">
+<head>
+<meta charset="UTF-8">
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MGQFHR5J');</script>
+<!-- End Google Tag Manager -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0B1F3A">
+<title>Operação Receita · Receita Federal, banca FGV · Live 09/12, 20h</title>
+<meta name="description" content="A FGV vai aplicar a prova da Receita Federal. Live na quarta, 09/12, às 20h, com o Prof. Vinícius Ferraz Neves: como a FGV cobra Contabilidade. Entre no grupo e receba o Raio-X FGV grátis.">
+<link rel="canonical" href="https://fluenciacontabil.com.br/receita-federal">
+
+<!--
+  /receita-federal: OPERAÇÃO RECEITA, a campanha de lançamento do curso "Fluente em FGV"
+  (Contabilidade para o Analista-Tributário da Receita Federal, banca FGV). Plano em
+  _MARKETING/_campanhas/_receita_federal_2026/lancamento_fgv_2026_12/ (memória
+  project_lancamento_rfb_fgv_2026_12). A URL é neutra de propósito: hoje capta para a live,
+  depois vende o curso.
+
+  ESTADOS por data (window.__rfb, decidido no <head> para a página não piscar; coberto por
+  scripts/receita-federal-estados.test.mjs):
+    (sem estado)  captação: até 09/12/2026 20h. Formulário → obrigado → grupo + Raio-X FGV.
+    ao-vivo       09/12 20h a 23h: player da live (LIVE_VIDEO em config.js).
+    venda         depois das 23h de 09/12, SÓ com VENDA_LIBERADA = true em config.js.
+    espera        depois das 23h de 09/12 com a venda ainda travada: a captação continua,
+                  com o aviso de que o curso abre em breve.
+  ?estado=ao-vivo|venda|espera força o estado, para homologar.
+
+  ⚠️ CAPTURA, como se amarra (mesmo caminho da /black):
+  1. Toda origem `aula_*` cai no handleAulaAoVivo do Apps Script, que busca rótulo e tópico
+     pela ORIGEM na aba "Config Aulas". ANTES de ir ao ar, criar a linha:
+       aula_operacao_receita_2026_whatsapp   Operação Receita · live 09/12   operacao-receita-2026   09/12/2026 20:00:00   sim
+     e rodar setupAulasAoVivo() para o tópico existir no SES. Sem a linha, o lead entra como
+     "DESCONHECIDA".
+  2. O aceite de WhatsApp é o aviso logo abaixo do botão: toda inscrição vai com a origem
+     terminada em `_whatsapp`. Se o aviso sair, a origem perde o `_whatsapp`.
+  3. O GTM-MGQFHR5J escuta `lead_capturado` e manda o Lead para a Meta. NÃO chamar fbq aqui.
+  4. Depois da inscrição a página vai para receita-federal-obrigado.
+  Links do grupo e do PDF: assets/receita-federal/operacao/config.js.
+-->
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Operação Receita · live 09/12, 20h">
+<meta property="og:description" content="A FGV vai aplicar a prova da Receita Federal. Live com o Prof. Vinícius Ferraz Neves e o Raio-X FGV grátis no grupo.">
+<meta property="og:url" content="https://fluenciacontabil.com.br/receita-federal">
+<meta property="og:image" content="https://fluenciacontabil.com.br/assets/receita-federal/operacao/og-operacao-receita.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="pt_BR">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/logo-fc-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="assets/receita-federal/operacao/arte-640.webp" type="image/webp">
+
+<style>
+  /* Operação Receita: marinho e dourado da marca, Montserrat nos títulos, Source Serif 4 no corpo.
+     Nada do visual da Black (preto, selo 11.11). Botão de ação no vermelho do site (#C0392B). */
+  :root{
+    --marinho:#0B1F3A; --marinho-2:#13294B; --marinho-3:#1B2A4A; --dourado:#C8A84B; --dourado-claro:#D9BC5C;
+    --branco:#fff; --branco-2:#ffffffd1; --branco-3:#ffffff99; --linha:#c8a84b40; --cream:#FBF6E9; --tinta:#1A1A1A;
+    --cta:#C0392B; --cta-hover:#A93226;
+  }
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth;scroll-padding-top:76px}
+  body{background:var(--marinho);color:var(--branco);font:400 17px/1.65 "Source Serif 4",Georgia,serif;-webkit-font-smoothing:antialiased;overflow-x:clip}
+  img{display:block;max-width:100%;height:auto}
+  a{color:inherit}
+  [hidden]{display:none!important}
+  :focus-visible{outline:3px solid var(--dourado);outline-offset:3px}
+  .wrap{width:90%;max-width:1120px;margin-inline:auto}
+  h1,h2,h3,.mont,.btn,label,.eyebrow,.quando,.contagem,.topbar{font-family:Montserrat,Arial,sans-serif}
+  .nw{white-space:nowrap}
+  .it{color:var(--dourado-claro)}
+
+  /* barra do topo */
+  .topbar{position:sticky;top:0;z-index:20;background:#0b1f3af2;backdrop-filter:blur(8px);border-bottom:1px solid var(--linha)}
+  .nav{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:64px}
+  .marca{display:flex;align-items:center;gap:12px;text-decoration:none}
+  .marca img{height:36px;width:auto}
+  .marca small{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--dourado)}
+  .topbar .cta{font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;
+    padding:10px 16px;border-radius:6px;background:var(--cta);color:#fff;white-space:nowrap}
+  .topbar .cta:hover{background:var(--cta-hover)}
+
+  /* botões */
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:56px;padding:15px 26px;border:0;border-radius:6px;
+    background:var(--cta);color:#fff;font-size:14px;font-weight:900;letter-spacing:.07em;text-transform:uppercase;text-decoration:none;
+    cursor:pointer;box-shadow:0 12px 30px #c0392b40;transition:background .2s,transform .2s}
+  .btn:hover{background:var(--cta-hover);transform:translateY(-1px)}
+  .btn[disabled]{opacity:.7;cursor:wait;transform:none}
+  .btn-contorno{background:transparent;color:var(--dourado);border:1.5px solid var(--dourado);box-shadow:none}
+  .btn-contorno:hover{background:#c8a84b1f}
+
+  /* topo: arte + mensagem + cartão do formulário */
+  .hero{padding:44px 0 56px;background:radial-gradient(ellipse 60% 70% at 20% 10%,#1b2a4a,transparent 70%)}
+  .hero-in{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:48px;align-items:start}
+  .apresenta{display:flex;align-items:center;gap:10px;font-family:Montserrat,sans-serif;font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--dourado)}
+  .apresenta::after{content:"";flex:0 0 48px;height:1px;background:var(--dourado)}
+  .arte{width:min(100%,380px);margin:18px 0 6px;border-radius:10px;box-shadow:0 30px 70px #0009}
+  .hero h1{margin-top:18px;font-size:clamp(30px,4.2vw,48px);font-weight:900;line-height:1.08;letter-spacing:-.8px;text-wrap:balance}
+  .hero .sub{margin-top:16px;max-width:56ch;font-size:18px;color:var(--branco-2)}
+  .quando{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+  .quando span{padding:7px 12px;border:1px solid var(--linha);border-radius:999px;font-size:12.5px;font-weight:700;letter-spacing:.04em;color:var(--branco)}
+  .quando span b{color:var(--dourado)}
+  .contagem{display:flex;gap:10px;margin-top:22px}
+  .contagem div{min-width:72px;padding:12px 8px 10px;border:1px solid var(--linha);border-radius:8px;background:#ffffff08;text-align:center}
+  .contagem b{display:block;font-size:28px;font-weight:900;line-height:1;color:var(--dourado);font-variant-numeric:tabular-nums}
+  .contagem span{display:block;margin-top:6px;font-size:9.5px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--branco-3)}
+
+  .cartao{position:sticky;top:88px;padding:28px 26px 24px;border:1px solid #c8a84b66;border-radius:14px;background:var(--marinho-2);box-shadow:0 30px 80px #0008}
+  .eyebrow{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--dourado)}
+  .cartao h2{margin-top:8px;font-size:26px;font-weight:900;line-height:1.15;letter-spacing:-.4px}
+  .cartao>p{margin-top:8px;font-size:16px;color:var(--branco-2)}
+  .bonus{display:grid;grid-template-columns:78px 1fr;gap:14px;align-items:center;margin-top:16px;padding:12px;border:1px dashed #c8a84b66;border-radius:10px}
+  .bonus img{width:78px;border-radius:3px;box-shadow:0 10px 24px #0009}
+  .bonus p{font-size:14.5px;line-height:1.5;color:var(--branco-2)}
+  .bonus b{display:block;font-family:Montserrat,sans-serif;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--dourado)}
+  form{display:grid;gap:14px;margin-top:18px}
+  label{display:block;margin-bottom:6px;font-size:13px;font-weight:700;color:var(--branco)}
+  input{width:100%;min-height:50px;padding:12px 14px;border:1px solid #ffffff40;border-radius:8px;background:#0b1f3a;color:#fff;font:500 16px Montserrat,sans-serif}
+  input::placeholder{color:#ffffff66}
+  input[aria-invalid=true]{border-color:#e57368}
+  form .btn{width:100%;margin-top:4px}
+  .erro{font-family:Montserrat,sans-serif;font-size:14px;font-weight:600;color:#ffb4ab}
+  .privacidade{font-size:12.5px;line-height:1.55;color:var(--branco-3)}
+  .privacidade a{color:var(--dourado-claro)}
+  .ok-titulo{font-family:Montserrat,sans-serif;font-size:22px;font-weight:900;line-height:1.25}
+  #or-ok p{margin-top:10px;font-size:15.5px;color:var(--branco-2)}
+  #or-ok .acoes{display:grid;gap:10px;margin-top:16px}
+
+  /* faixa de autoridade */
+  .autoridade{border-block:1px solid var(--linha);background:var(--marinho-3)}
+  .autoridade .wrap{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 40px;padding:18px 0;font-family:Montserrat,sans-serif;font-size:14px;font-weight:600;color:var(--branco-2);text-align:center}
+  .autoridade b{color:var(--dourado)}
+
+  /* seções */
+  .sec{padding:72px 0}
+  .sec.clara{background:var(--cream);color:var(--tinta)}
+  .sec h2{font-size:clamp(26px,3.2vw,38px);font-weight:900;line-height:1.12;letter-spacing:-.6px;text-wrap:balance;max-width:24ch}
+  .sec .lead{margin-top:14px;max-width:62ch;font-size:18px;color:var(--branco-2)}
+  .sec.clara .lead{color:#3a3a3a}
+  .sec .eyebrow{margin-bottom:10px}
+  .sec.clara .eyebrow{color:#8a6f22}
+  .fatos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:34px}
+  .fato{padding:24px 22px;border:1px solid #c8a84b55;border-radius:12px;background:#fff}
+  .fato b{display:block;font-family:Montserrat,sans-serif;font-size:30px;font-weight:900;line-height:1.05;color:var(--marinho)}
+  .fato>span{display:block;margin-top:8px;font-size:15.5px;line-height:1.55;color:#3a3a3a}
+  .fonte{margin-top:16px;font-size:13px;color:#6a6a6a}
+  .lista{display:grid;gap:14px;margin-top:30px;max-width:780px;list-style:none}
+  .lista li{display:grid;grid-template-columns:40px 1fr;gap:16px;align-items:start;padding:18px 20px;border:1px solid var(--linha);border-radius:12px;background:#ffffff06}
+  .lista .n{display:grid;place-items:center;width:40px;height:40px;border-radius:9px;border:1px solid var(--dourado);color:var(--dourado);font-family:Montserrat,sans-serif;font-weight:900}
+  .lista h3{font-size:18px;font-weight:800;line-height:1.3}
+  .lista p{margin-top:4px;font-size:16px;color:var(--branco-2)}
+  .raiox{display:grid;grid-template-columns:minmax(0,260px) minmax(0,1fr);gap:40px;align-items:center;margin-top:10px}
+  .raiox img{border-radius:6px;box-shadow:0 26px 60px #0b1f3a55}
+  .raiox ul{margin:18px 0 0 18px;font-size:16.5px}
+  .raiox li+li{margin-top:6px}
+  .cargos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:30px}
+  .cargo{padding:26px 24px;border:1px solid var(--linha);border-radius:12px;background:#ffffff06}
+  .cargo.foco{border-color:#c8a84b99;background:var(--marinho-2)}
+  .cargo .eyebrow{margin-bottom:6px}
+  .cargo h3{font-size:21px;font-weight:900}
+  .cargo p{margin-top:8px;font-size:16px;color:var(--branco-2)}
+  .prof{display:grid;grid-template-columns:minmax(0,420px) minmax(0,1fr);gap:44px;align-items:center}
+  .prof img{border-radius:12px}
+  .prof p{margin-top:12px;font-size:17px;color:#2b2b2b}
+  .faq{max-width:780px;margin-top:26px}
+  .faq details{border-bottom:1px solid var(--linha);padding:18px 0}
+  .faq summary{cursor:pointer;font-family:Montserrat,sans-serif;font-size:17px;font-weight:800;list-style:none;display:flex;justify-content:space-between;gap:16px}
+  .faq summary::after{content:"+";color:var(--dourado);font-size:22px;line-height:1}
+  .faq details[open] summary::after{content:"–"}
+  .faq p{margin-top:10px;font-size:16px;color:var(--branco-2)}
+  .final{text-align:center}
+  .final h2{margin-inline:auto}
+  .final .lead{margin-inline:auto}
+  .final .btn{margin-top:26px}
+  .rascunho{display:inline-block;margin-top:8px;padding:2px 8px;border-radius:4px;background:#ffd54f;color:#3a2c00;font:700 11px Montserrat,sans-serif;letter-spacing:.06em;text-transform:uppercase}
+  footer{border-top:1px solid var(--linha);padding:28px 0;font-family:Montserrat,sans-serif;font-size:13px;color:var(--branco-3)}
+  footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px}
+  footer a{color:var(--dourado)}
+
+  /* ESTADOS (html[data-estado], decidido no <head>) */
+  .st{display:none}
+  html[data-estado=ao-vivo] #st-ao-vivo,html[data-estado=venda] #st-venda,html[data-estado=espera] #st-espera{display:block}
+  html[data-estado=ao-vivo] .so-captacao,html[data-estado=venda] .so-captacao{display:none}
+  html[data-estado] .contagem{display:none}
+  html[data-estado=venda] .so-captacao-hero{display:none}
+  .st-hero{padding:56px 0;text-align:center;background:radial-gradient(ellipse 60% 70% at 50% 0%,#1b2a4a,transparent 70%)}
+  .st-hero h1{font-size:clamp(30px,4.4vw,50px);font-weight:900;line-height:1.08;letter-spacing:-.8px;text-wrap:balance}
+  .st-hero .sub{margin:14px auto 0;max-width:58ch;font-size:18px;color:var(--branco-2)}
+  .st-pill{display:inline-flex;align-items:center;gap:8px;margin-bottom:16px;padding:6px 14px;border-radius:999px;border:1px solid #c8a84b88;
+    font:800 12px Montserrat,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--dourado)}
+  .st-pill i{width:9px;height:9px;border-radius:50%;background:#e74c3c;animation:pulsa 1.4s infinite}
+  @keyframes pulsa{50%{opacity:.3}}
+  .st-player{position:relative;max-width:860px;margin:28px auto 0;aspect-ratio:16/9;border-radius:12px;overflow:hidden;background:#000}
+  .st-player:empty{display:none}
+  .st-player iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .st-acoes{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:26px}
+  .venda-grade{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;max-width:860px;margin:30px auto 0;text-align:left;list-style:none}
+  .venda-grade li{padding:16px 18px;border:1px solid var(--linha);border-radius:10px;background:#ffffff08;font-size:16px;color:var(--branco-2)}
+  .venda-grade b{display:block;font-family:Montserrat,sans-serif;color:var(--branco);font-size:16px}
+  .preco{margin-top:26px;font-family:Montserrat,sans-serif}
+  .preco .parc{font-size:clamp(30px,4vw,44px);font-weight:900;color:var(--dourado)}
+  .preco .vista{margin-top:4px;font-size:15px;color:var(--branco-2)}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+  @media (max-width:920px){
+    .hero{padding-top:24px}
+    .hero-in{grid-template-columns:minmax(0,1fr);gap:26px}
+    .arte{width:min(64vw,260px);margin-inline:auto}
+    .apresenta{justify-content:center}
+    .apresenta::after{display:none}
+    .hero h1,.hero .sub{text-align:center;margin-inline:auto}
+    .quando,.contagem{justify-content:center}
+    .cartao{position:static}
+    /* no celular o formulário sobe para logo depois do título (quem vem do anúncio quer o Raio-X) */
+    .hero-txt{display:contents}
+    .hero-txt>.apresenta{order:1}.hero-txt>picture{order:2;display:block}.hero-txt>h1{order:3}
+    .cartao{order:4}
+    .hero-txt>.sub{order:5}.hero-txt>.quando{order:6}.hero-txt>.contagem{order:7}.hero-txt>.rascunho{order:8;justify-self:center}
+    .hero-in{gap:18px}
+    .fatos,.cargos,.venda-grade{grid-template-columns:minmax(0,1fr)}
+    .raiox,.prof{grid-template-columns:minmax(0,1fr);gap:26px}
+    .raiox img{max-width:220px}
+  }
+  @media (max-width:560px){
+    .marca small{display:none}
+    .topbar .cta{padding:9px 12px;font-size:12px}
+    .hero h1{font-size:29px}
+    .hero .sub{font-size:16.5px}
+    .contagem div{min-width:0;flex:1}
+    .cartao{padding:22px 18px}
+    .sec{padding:56px 0}
+    .btn{width:100%}
+  }
+</style>
+<script src="assets/receita-federal/operacao/config.js?v=20261126"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="assets/depo-video.css?v=20261116">
+<link rel="stylesheet" href="assets/receita-federal/operacao/pagina.css?v=20261126">
+<script>
+/* Estado da /receita-federal pela hora de Brasília (ver o comentário no topo). estadoEm(t, venda) é
+   pura, para o teste (scripts/receita-federal-estados.test.mjs). */
+window.__rfb={estadoEm:function(t,venda){
+  var C=window.__OR||{};
+  if(t<Date.parse(C.LIVE||'2026-12-09T20:00:00-03:00'))return null;
+  if(t<Date.parse(C.FIM_LIVE||'2026-12-09T23:00:00-03:00'))return 'ao-vivo';
+  return venda?'venda':'espera';
+},estado:function(){
+  var q=null,V=['ao-vivo','venda','espera'];
+  try{q=new URLSearchParams(location.search).get('estado');}catch(e){}
+  if(q&&V.indexOf(q)>=0)return q;
+  return window.__rfb.estadoEm(Date.now(),!!(window.__OR&&window.__OR.VENDA_LIBERADA));
+}};
+(function(){var e=window.__rfb.estado();if(e)document.documentElement.setAttribute('data-estado',e);})();
+</script>
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MGQFHR5J"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<header class="topbar">
+  <div class="wrap nav">
+    <a class="marca" href="https://fluenciacontabil.com.br/" aria-label="Fluência Contábil">
+      <picture><source srcset="assets/receita-federal/operacao/logo-horizontal.webp" type="image/webp">
+        <img src="assets/receita-federal/operacao/logo-horizontal.png" alt="Fluência Contábil" width="250" height="80"></picture>
+      <small>apresenta</small>
+    </a>
+    <a class="cta" id="topo-cta" href="#lista">Quero o Raio-X FGV</a>
+  </div>
+</header>
+
+<!-- ══════════════════ ESTADOS DEPOIS DA HORA (escondidos até lá) ══════════════════ -->
+<div class="st" id="st-ao-vivo">
+  <section class="st-hero">
+    <div class="wrap">
+      <span class="st-pill"><i></i>Ao vivo agora</span>
+      <h1>A live da Operação Receita <span class="it">está no ar.</span></h1>
+      <p class="sub">Entra agora: como a FGV cobra Contabilidade na <span class="nw">Receita Federal</span> e o lançamento do Fluente em FGV.</p>
+      <div class="st-player" id="st-player"></div>
+      <div class="st-acoes"><a class="btn" data-live href="https://www.youtube.com/@prof.viniciusferraz/live" target="_blank" rel="noopener">Assistir no YouTube</a></div>
+    </div>
+  </section>
+</div>
+
+<!-- Estado de VENDA: estrutura pronta, travada por VENDA_LIBERADA (config.js). texto aprovado em 26/11/2026:
+     números do pacote conferidos no banco em 24/11/2026 (28 aulas, 24 listas FGV, 365 questões,
+     simulado, roteiro, acesso até 31/07/2027, R$ 297 ou 12x de R$ 30,72). O funil de venda
+     (perguntas → plano) está em _MARKETING/Site/wt-lp-receita-federal/receita-federal-2026.html,
+     ainda não publicado; FUNIL_URL fica vazio até lá. Texto aprovado por ele em 26/11/2026. -->
+<div class="st" id="st-venda">
+  <section class="st-hero">
+    <div class="wrap">
+      <span class="st-pill">Fluência Contábil apresenta</span>
+      <h1>Fluente em FGV: <span class="it">Contabilidade para a <span class="nw">Receita Federal</span>.</span></h1>
+      <p class="sub">O curso de Contabilidade para o Analista-Tributário, montado sobre o edital de 2022 (também FGV) e ajustado se o edital novo vier diferente. Cobre também a Contabilidade Geral do Auditor-Fiscal.</p>
+      <ul class="venda-grade">
+        <li><b>As aulas do edital, em ordem</b>Teoria em vídeo e PDF, item por item do edital do Analista-Tributário.</li>
+        <li><b>Listas só com questões da FGV</b>Separadas por item do edital, com resolução comentada.</li>
+        <li><b>A prova da Receita de 2023 resolvida</b>Analista e Auditor, comentada questão a questão.</li>
+        <li><b>Simulado e roteiro de estudo</b>Simulado no formato da prova e um roteiro que diz o que fazer em cada etapa.</li>
+      </ul>
+      <div class="preco"><div class="parc">12x de R$ 30,72</div><div class="vista">ou R$ 297,00 à vista · acesso até 31/07/2027</div></div>
+      <div class="st-acoes">
+        <a class="btn" id="venda-checkout" href="#" target="_blank" rel="noopener">Quero o Fluente em FGV</a>
+        <a class="btn btn-contorno" id="venda-funil" href="#" hidden>Montar meu plano de estudo</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="st" id="st-espera">
+  <section class="st-hero" style="padding-bottom:10px">
+    <div class="wrap">
+      <span class="st-pill">Operação Receita</span>
+      <h1>A live de 09/12 já aconteceu. <span class="it">O curso abre em breve.</span></h1>
+      <p class="sub">Entre no grupo da Operação Receita para saber primeiro quando o Fluente em FGV abrir e receber o Raio-X FGV.</p>
+    </div>
+  </section>
+</div>
+
+<!-- ══════════════════ CAPTAÇÃO (até 09/12, 20h) ══════════════════
+     Textos aprovados por ele em 26/11/2026. -->
+<section class="hero so-captacao-hero" id="topo">
+  <div class="wrap hero-in">
+    <div class="hero-txt">
+      <span class="apresenta">Fluência Contábil apresenta</span>
+      <div class="palco">
+      <picture>
+        <source type="image/webp" srcset="assets/receita-federal/operacao/arte-640.webp 640w, assets/receita-federal/operacao/arte-1000.webp 1000w" sizes="(max-width:920px) 260px, 380px">
+        <img class="arte" src="assets/receita-federal/operacao/arte-640.jpg" width="640" height="640" alt="Operação Receita: Analista-Tributário, banca FGV, 2026" fetchpriority="high">
+      </picture>
+        <div class="folha f1"><small>Raio-X · ficha 01</small><em data-n="cpc03">74</em><b>questões de DFC (CPC&nbsp;03)</b><span>FGV, no banco da Fluência</span></div>
+        <div class="folha f3"><small>Raio-X · ficha 03</small><em data-n="cpc25">111</em><b>questões de Provisões (CPC 25)</b><span>FGV, no banco da Fluência</span></div>
+        <div class="folha f2"><small>Raio-X · ficha 02</small><em data-n="cpc00">114</em><b>questões de Estrutura Conceitual (CPC&nbsp;00)</b><span>FGV, no banco da Fluência</span></div>
+        <div class="carimbo-arte" aria-hidden="true"><small>Operação Receita</small><b>09/12</b><small>20h · ao vivo</small></div>
+        <div class="video"><img src="assets/prof-hero.webp" alt="" width="1200" height="900"><button class="play" type="button" aria-label="Assistir ao convite"></button>
+          <span class="vid-leg">Por que a FGV muda o seu estudo para a Receita</span></div>
+      </div>
+      <h1>A FGV vai aplicar a prova da <span class="nw">Receita Federal.</span> <span class="it">Entre na Operação Receita.</span></h1>
+      <p class="sub">Na quarta, 09/12, às 20h, ao vivo, o Prof. Vinícius Ferraz Neves mostra como a FGV cobra Contabilidade e o caminho até a prova de Analista-Tributário. No grupo, você recebe grátis o Raio-X FGV.</p>
+      <div class="quando"><span><b>Quarta, 09/12</b></span><span><b>20h</b> · ao vivo no YouTube</span><span>Gratuito</span></div>
+      <div class="contagem" id="contagem" aria-label="Tempo até a live de 09/12, 20h">
+        <div><b id="c-dias">--</b><span>dias</span></div>
+        <div><b id="c-horas">--</b><span>horas</span></div>
+        <div><b id="c-min">--</b><span>min</span></div>
+        <div><b id="c-seg">--</b><span>seg</span></div>
+      </div>
+    </div>
+
+    <div class="cartao" id="lista">
+      <span class="eyebrow">Operação Receita · gratuito</span>
+      <h2 id="or-titulo">Receba o Raio-X FGV</h2>
+      <p id="or-sub">Deixe seus dados, entre no grupo e baixe <strong>grátis o Raio-X FGV</strong>. O link da live chega antes de todo mundo.</p>
+      <div class="bonus" id="or-bonus">
+        <picture><source srcset="assets/receita-federal/operacao/raio-x-fgv-capa.webp" type="image/webp">
+          <img src="assets/receita-federal/operacao/raio-x-fgv-capa.jpg" alt="" width="520" height="736"></picture>
+        <p><b>Raio-X FGV · PDF grátis</b>O que a FGV mais cobra em Contabilidade, com os números das questões da banca no banco da Fluência.</p>
+      </div>
+
+      <form id="or-form" novalidate>
+        <div>
+          <label for="or-nome">Seu nome</label>
+          <input id="or-nome" name="nome" type="text" autocomplete="name" maxlength="80" required>
+        </div>
+        <div>
+          <label for="or-telefone">WhatsApp com DDD</label>
+          <input id="or-telefone" name="telefone" type="tel" inputmode="tel" autocomplete="tel-national" maxlength="16" placeholder="(21) 99999-9999" required>
+        </div>
+        <div>
+          <label for="or-email">Seu melhor e-mail</label>
+          <input id="or-email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="254" placeholder="voce@exemplo.com" required>
+        </div>
+        <button class="btn" id="or-enviar" type="submit">Quero o Raio-X FGV</button>
+        <p class="erro" id="or-erro" role="status" aria-live="polite" hidden></p>
+        <p class="privacidade">Ao entrar, você aceita receber os avisos da Operação Receita por e-mail e no WhatsApp. Sai quando quiser, num clique.
+          <a href="https://portal.fluenciacontabil.com.br/privacidade" target="_blank" rel="noopener">Política de Privacidade</a>.</p>
+      </form>
+
+      <div id="or-ok" hidden>
+        <p class="ok-titulo" id="or-ok-titulo" tabindex="-1">Pronto! Você está na Operação Receita.</p>
+        <p>O link da live de 09/12, às 20h, chega no grupo e no seu e-mail antes do aviso geral.</p>
+        <div class="acoes">
+          <a class="btn" id="or-grupo" target="_blank" rel="noopener" hidden>Entrar no grupo da Operação Receita</a>
+          <a class="btn" id="or-raiox" target="_blank" rel="noopener" hidden>Baixar o Raio-X FGV (PDF)</a>
+          <p id="or-raiox-breve" hidden>O Raio-X FGV sai em breve e chega primeiro no grupo.</p>
+          <a class="btn btn-contorno" id="or-agenda" target="_blank" rel="noopener" aria-label="Pôr a live de 09/12 no Google Agenda (abre em nova aba)">Pôr 09/12, 20h na agenda</a>
+        </div>
+      </div>
+      <noscript><p class="erro">Ative o JavaScript para entrar na Operação Receita.</p></noscript>
+    </div>
+  </div>
+</section>
+
+<div class="missao so-captacao" id="missao">
+  <div class="wrap missao-in">
+    <span class="m-tag">Missão em andamento</span>
+    <div class="m-cont" aria-label="Tempo até a live"><span>Faltam</span><b id="m-dias">--</b><i>dias</i><b id="m-horas">--</b><i>h</i><b id="m-min">--</b><i>min</i><b id="m-seg">--</b><i>s</i></div>
+    <span class="m-quando">para a live · <b>quarta, 09/12, 20h</b></span>
+  </div>
+</div>
+
+<div class="autoridade">
+  <div class="wrap">
+    <div><b>Prof. Vinícius Ferraz Neves</b></div>
+    <div><b>Auditor Fiscal</b> do Município do Rio de Janeiro</div>
+    <div>Mais de <b>3.000 alunos</b> ao longo de <b>40 turmas</b></div>
+  </div>
+</div>
+
+<section class="sec numeros so-captacao" id="numeros">
+  <div class="wrap">
+    <span class="eyebrow">A FGV em números</span>
+    <h2>O que a banca já mostrou, contado questão por questão.</h2>
+    <div class="num-grade">
+      <div class="num"><b data-conta="1222" data-n="fgv_total">1.222</b><span>questões da FGV no banco da Fluência</span></div>
+      <div class="num"><b data-conta="116" data-n="vagas_analista">116</b><span>vagas de Analista-Tributário, mais <span data-n="vagas_auditor">30</span> de Auditor-Fiscal</span></div>
+      <div class="num"><span class="fav-t">Os 3 favoritos da FGV</span>
+        <ul class="favs">
+          <li data-nv="cpc00" style="--v:114"><span>CPC 00 · Estrutura Conceitual</span><b data-n="cpc00">114</b><i></i></li>
+          <li data-nv="cpc25" style="--v:111"><span>CPC 25 · Provisões</span><b data-n="cpc25">111</b><i></i></li>
+          <li data-nv="cpc09" style="--v:98"><span>CPC 09 · DVA</span><b data-n="cpc09">98</b><i></i></li>
+        </ul></div>
+    </div>
+    <p class="fonte">Questões da FGV publicadas no banco da Fluência em <span data-n="data">24/11/2026</span>. Vagas: Portaria MGI nº 5.505, de 03/07/2026.</p>
+  </div>
+</section>
+
+<section class="sec clara so-captacao" id="por-que">
+  <div class="wrap">
+    <span class="eyebrow">Por que agora</span>
+    <h2>A banca saiu. O edital vem em seguida.</h2>
+    <p class="lead">Quem começa a estudar Contabilidade para a banca certa antes do edital chega na prova com semanas de vantagem.</p>
+    <div class="fatos">
+      <div class="fato"><b>FGV</b><span>definida como banca do concurso da <span class="nw">Receita Federal</span> em 23/11/2026.</span></div>
+      <div class="fato"><b>146 vagas</b><span>116 de Analista-Tributário e 30 de Auditor-Fiscal (Portaria MGI nº 5.505, de 03/07/2026).</span></div>
+      <div class="fato"><b>Dezembro</b><span>é quando a <span class="nw">Receita Federal</span> prevê publicar o edital.</span></div>
+    </div>
+    <ol class="linha-tempo">
+      <li class="feito"><time>23/11</time><b>FGV definida</b><span>banca do concurso da Receita Federal</span></li>
+      <li class="hoje"><time id="lt-hoje">Hoje</time><b>Você está aqui</b><span>a hora de sair na frente</span></li>
+      <li class="live"><time>09/12 · 20h</time><b>Live da Operação Receita</b><span>como a FGV cobra Contabilidade</span></li>
+      <li><time>Dezembro</time><b>Edital previsto</b><span>a Receita prevê publicar ainda este mês</span></li>
+      <li><time>Depois</time><b>Prova</b><span>a data sai no edital</span></li>
+    </ol>
+    <p class="lt-vagas"><b>146 vagas:</b> 116 de Analista-Tributário e 30 de Auditor-Fiscal (Portaria MGI nº 5.505, de 03/07/2026).</p>
+    <p class="fonte">Informações públicas de 23/11/2026. O edital, quando sair, é a fonte oficial.</p>
+  </div>
+</section>
+
+<section class="sec so-captacao" id="live">
+  <div class="wrap">
+    <span class="eyebrow">Live · quarta, 09/12, 20h</span>
+    <h2>O que você leva da live</h2>
+    <ul class="lista">
+      <li><span class="n">1</span><div><h3>Como a FGV cobra Contabilidade na Área Fiscal</h3><p>O que caiu na prova de 2023, de Analista e de Auditor, e o padrão que a banca repete nas provas da área fiscal.</p></div></li>
+      <li><span class="n">2</span><div><h3>O que a FGV mais cobra, nos números e na leitura do professor</h3><p>Os assuntos com mais questões da FGV no banco da Fluência, a DFC entre eles, e o que a banca vem cobrando mais desde 2022, na leitura de quem resolve as provas dela.</p></div></li>
+      <li><span class="n">3</span><div><h3>As cobranças mais difíceis da FGV</h3><p>Goodwill e combinação de negócios (CPC 15), consolidação (CPC 36), tributos sobre o lucro (CPC 32), a exceção na transferência do imobilizado (CPC 28), a mudança de método de depreciação que é mudança de estimativa (CPC 23) e o ativo construído pela própria empresa na DVA.</p></div></li>
+      <li><span class="n">4</span><div><h3>Um plano de Contabilidade até a prova</h3><p>Para quem está começando do zero e para quem já estudou e precisa ajustar o foco para a FGV.</p></div></li>
+      <li><span class="n">5</span><div><h3>A abertura do Fluente em FGV</h3><p>O curso de Contabilidade para a <span class="nw">Receita Federal</span>, apresentado ao vivo.</p></div></li>
+    </ul>
+  </div>
+</section>
+
+<section class="sec questao so-captacao" id="questao">
+  <div class="wrap">
+    <span class="eyebrow">Teste rápido</span>
+    <h2>Você acertaria esta da FGV?</h2>
+    <p class="lead" id="q-lead">Caiu na prova da SEFAZ ES de 2021, aplicada pela FGV. Do jeito que aparece na plataforma da Fluência: escolha uma alternativa e veja a resolução.</p>
+    <div class="q-plat" id="q-plat"></div>
+    <script type="application/json" id="q-dados">{"seq": 5622, "cpcRef": "CPC 15", "subject": "Contabilidade Avançada", "subtopic": "CPC 18: Método da Equivalência Patrimonial", "examOrg": "SEFAZ ES", "year": 2021, "statement": "<p>As Cias. X e Y apresentavam, em 31/12/X0, os balanços patrimoniais a seguir.<\/p><table class=\"q-table\"><thead><tr><th><\/th><th>Cia X<\/th><th>Cia Y<\/th><\/tr><\/thead><tbody><tr><td>Ativo<\/td><td><\/td><td><\/td><\/tr><tr><td>Caixa<\/td><td>100.000<\/td><td>10.000<\/td><\/tr><tr><td>Terreno<\/td><td><\/td><td>22.000<\/td><\/tr><tr><td>Total do Ativo<\/td><td>100.000<\/td><td>32.000<\/td><\/tr><tr><td>Patrimônio Líquido<\/td><td><\/td><td><\/td><\/tr><tr><td>Capital Social<\/td><td>100.000<\/td><td>32.000<\/td><\/tr><tr><td>Total do PL<\/td><td>100.000<\/td><td>32.000<\/td><\/tr><\/tbody><\/table><p>Em X1, a Cia. X comprou 80% da Cia. Y por R$ 40.000.<\/p><p>Na data da compra, o valor de mercado do terreno era avaliado em R$ 30.000 e o valor de mercado da marca era avaliado em R$ 5.000.<\/p><p>Assinale a opção que indica o goodwill total contabilizado no balanço patrimonial consolidado em 31/12/X1, admitindo-se que o valor justo da parcela dos não controladores é igual ao do valor pago pelo novo controlador.<\/p>", "options": ["R$ 4.000", "R$ 5.000", "R$ 10.000", "R$ 14.400", "R$ 18.000"], "correctIndex": 1, "comment": "O item 32 do CPC 15 manda medir o goodwill como (a) menos (b). Comece pelo (b), os ativos líquidos identificáveis da Cia. Y: patrimônio líquido contábil de 32.000, mais a mais-valia do terreno (30.000 de valor de mercado contra 22.000 de balanço, ou seja, 8.000), mais a marca de 5.000, que nunca esteve no balanço da investida e entra por força do item 13. Total: 45.000.\nAgora o (a). A contraprestação transferida é 40.000.\nParticipação anterior não há — a Cia. X não tinha investimento na Cia. Y, e é por isso que o enunciado começou pelo balanço.\nFalta a parcela dos não controladores, e é ela que decide a questão: o comando diz que o valor justo dessa parcela é igual ao do valor pago pelo novo controlador.\nSe 80% valem 40.000, 100% valem 50.000, e os 20% dos não controladores valem 10.000.\nGoodwill = 40.000 (valor pago) + 10.000 (Participação dos não Controladores – Mensurado pelo valor Justo na Data da Aquisição) − 45.000 (Ativos Líquidos Identificáveis) = 5.000, letra (B).\nA letra (A), 4.000, é a fórmula reduzida: ela mede os não controladores pela fatia deles nos ativos líquidos identificáveis (20% × 45.000 = 9.000), que é o critério (b) do item 19 — e o enunciado pediu o critério (a). A letra (C), 10.000, é a própria parcela dos não controladores. A letra (D), 14.400, sai de quem ignorou a mais-valia e a marca e trabalhou com o PL contábil (40.000 − 80% × 32.000). A letra (E), 18.000, é o valor justo do todo menos o PL contábil (50.000 − 32.000). Erro típico: parar de ler no percentual adquirido e não perceber que a última linha do enunciado escolheu o critério de mensuração dos não controladores."}</script>
+    <div class="qp-cta" id="qp-cta" hidden><p>É esse o nível da FGV. O Raio-X FGV mostra onde a banca mais cobra.</p><a class="btn" href="#lista">Quero o Raio-X FGV</a></div>
+  </div>
+</section>
+
+<section class="sec clara so-captacao" id="raio-x">
+  <div class="wrap raiox">
+    <div class="pdf3d" aria-hidden="true">
+      <div class="pg pg-a">
+        <div class="pg-top"><span>RAIO-X FGV · OPERAÇÃO RECEITA</span><span>p. 3</span></div>
+        <h4>Onde a FGV concentra as questões</h4>
+        <p class="pg-sub">Questões da FGV publicadas no banco da Fluência, por norma (<span data-n="data">24/11/2026</span>).</p>
+        <ul class="barras">
+          <li data-nv="cpc00" style="--v:114"><span>CPC 00 · Estrutura Conceitual</span><i></i><b data-n="cpc00">114</b></li>
+          <li data-nv="cpc25" style="--v:111"><span>CPC 25 · Provisões</span><i></i><b data-n="cpc25">111</b></li>
+          <li data-nv="cpc09" style="--v:98"><span>CPC 09 · DVA</span><i></i><b data-n="cpc09">98</b></li>
+          <li data-nv="cpc27" style="--v:96"><span>CPC 27 · Imobilizado</span><i></i><b data-n="cpc27">96</b></li>
+          <li data-nv="cpc01" style="--v:86"><span>CPC 01 · Valor recuperável</span><i></i><b data-n="cpc01">86</b></li>
+          <li data-nv="cpc03" style="--v:74"><span>CPC 03 · DFC</span><i></i><b data-n="cpc03">74</b></li>
+        </ul>
+        <p class="pg-nota">Total: <span data-n="fgv_total">1.222</span> questões da FGV no banco. Fluência Contábil apresenta.</p>
+      </div>
+      <div class="pg pg-b">
+        <div class="borrado"><div class="pg-top"><span>RAIO-X FGV</span><span>p. 4</span></div><h4>Como a FGV cobra Provisões</h4>
+          <p></p><p></p><p></p><p></p><div class="bl"></div><p></p><p></p><p></p><p></p><p></p><p></p></div>
+        <span class="cadeado"><svg viewBox="0 0 24 24" fill="none" stroke="#C8A84B" stroke-width="2"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Liberado no grupo<small>as próximas páginas chegam com o PDF</small></span>
+      </div>
+    </div>
+    <picture><source srcset="assets/receita-federal/operacao/raio-x-fgv-capa.webp" type="image/webp">
+      <img src="assets/receita-federal/operacao/raio-x-fgv-capa.jpg" width="520" height="736" loading="lazy" alt="Capa provisória do Raio-X FGV"></picture>
+    <div>
+      <span class="eyebrow">Grátis no grupo</span>
+      <h2>O Raio-X FGV</h2>
+      <p class="lead">Um PDF com o que a FGV cobra em Contabilidade, montado a partir das questões da banca no banco da Fluência. Não é "todas as provas": é o que está no banco, dito com números.</p>
+      <ul>
+        <li>Os assuntos em que a FGV mais concentra questões.</li>
+        <li>Como a banca cobra: cálculo, conceito, valores em reais.</li>
+        <li>Por onde começar a estudar para a prova da Receita.</li>
+      </ul>
+      <p style="margin-top:22px"><a class="btn" href="#lista">Quero o Raio-X FGV</a></p>
+    </div>
+  </div>
+</section>
+
+<section class="sec plataforma so-captacao" id="plataforma">
+  <div class="wrap">
+    <span class="eyebrow">A plataforma por dentro</span>
+    <h2>Veja onde você vai estudar.</h2>
+    <p class="lead">Gravações da plataforma como ela está hoje. Escolha a ferramenta, ou navegue você mesmo.</p>
+    <div class="abas" role="tablist" aria-label="Ferramentas da plataforma" id="abas"></div>
+    <div class="tela">
+      <div class="tela-real">
+        <div class="barra-t"><i></i><i></i><i></i><span>Tela real da plataforma</span></div>
+        <video id="tela-video" muted loop playsinline preload="none" poster="assets/quiz/telas/aula-videos.jpg"></video>
+      </div>
+      <div class="tela-txt" aria-live="polite">
+        <span class="tela-n" id="tela-n"></span>
+        <h3 id="tela-titulo"></h3>
+        <p id="tela-desc"></p>
+        <p class="resolve" id="tela-resolve"></p>
+      </div>
+    </div>
+    <div class="demo">
+      <button class="btn btn-contorno" type="button" id="demo-abrir">Navegar na plataforma agora</button>
+      <div class="demo-moldura" id="demo-moldura" hidden></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec so-captacao" id="para-quem">
+  <div class="wrap">
+    <span class="eyebrow">Para quem é</span>
+    <h2>Foco no Analista-Tributário. Serve para o Auditor também.</h2>
+    <div class="cargos">
+      <div class="cargo foco">
+        <span class="eyebrow">O foco · 116 vagas</span>
+        <h3>Analista-Tributário</h3>
+        <p>A Contabilidade do Analista é Contabilidade Geral. É o cargo com mais vagas e aceita graduação em qualquer área: quem nunca estudou Contabilidade começa do zero com a gente.</p>
+      </div>
+      <div class="cargo">
+        <span class="eyebrow">30 vagas</span>
+        <h3>Auditor-Fiscal</h3>
+        <p>A parte de Contabilidade Geral do Auditor está coberta. Contabilidade Pública e Auditoria, que o Auditor também tem, ficam fora deste curso.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec clara so-captacao" id="professor">
+  <div class="wrap prof2">
+    <div class="p2-foto"><img src="assets/prof-hero.webp" width="1200" height="900" alt="Prof. Vinícius Ferraz Neves" loading="lazy"><span class="selo-fgv">Especialista<b>FGV</b></span></div>
+    <div>
+      <span class="eyebrow">Quem conduz</span>
+      <h2>Prof. Vinícius Ferraz Neves</h2>
+      <p>Auditor Fiscal do Município do Rio de Janeiro, aprovado em três concursos da FGV:</p>
+      <ul class="aprov">
+        <li><b aria-hidden="true">✓</b><span>Fiscal de Rendas · Prefeitura do Rio<small>FGV, 2023</small></span></li>
+        <li><b aria-hidden="true">✓</b><span>Analista Legislativo, Contabilidade · Senado Federal<small>FGV, edital de 2022</small></span></li>
+        <li><b aria-hidden="true">✓</b><span>Auditor Fiscal da Receita Estadual · SEF/MG<small>FGV, edital de 2022</small></span></li>
+      </ul>
+      <p class="p2-alunos">Mais de <b>3.000 alunos</b> ao longo de <b>40 turmas</b>.</p>
+    </div>
+  </div>
+  <div class="wrap prof">
+    <picture><source srcset="assets/foto-vinicius.webp" type="image/webp">
+      <img src="assets/foto-vinicius.jpg" width="1200" height="900" loading="lazy" alt="Prof. Vinícius Ferraz Neves"></picture>
+    <div>
+      <span class="eyebrow">Quem conduz</span>
+      <h2>Prof. Vinícius Ferraz Neves</h2>
+      <p>Auditor Fiscal do Município do Rio de Janeiro e professor de Contabilidade para concursos: mais de 3.000 alunos ao longo de 40 turmas.</p>
+      <p>Especialista na banca FGV, resolve as provas da área fiscal da banca e transforma o padrão dela em método de estudo.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ DEPOIMENTOS (pedido dele em 26/11/2026: "faltou na página os vídeos dos alunos e os comentários").
+     Vídeos e comentários iguais aos do cursos.html (mesma ordem dos vídeos de 16/11, mesmas fontes); componente
+     assets/depo-video.css/.js (o player da Panda só entra no toque). Aparece na captação e na venda; some na live. -->
+<section class="sec depo" id="depoimentos">
+  <div class="wrap">
+    <span class="eyebrow">Depoimentos</span>
+    <h2>Quem estudou com o professor</h2>
+    <div class="dv-bloco">
+      <p class="dv-label">Em vídeo</p>
+      <h3 class="dv-titulo">Quem passou conta como estudou</h3>
+      <div class="dv-grade" role="list">
+        <figure class="dv" role="listitem" data-panda="007de940-d01e-4944-b472-f43a6434fe67" data-aluno="daniel-matos" data-nome="Daniel Matos">
+          <div class="dv-moldura">
+            <img src="assets/depoimentos/video/daniel-matos.jpg" alt="" width="540" height="960" loading="lazy" decoding="async">
+            <button type="button" class="dv-play" data-dv-play aria-label="Assistir ao depoimento de Daniel Matos"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4l14 8-14 8z"/></svg></i></button>
+          </div>
+          <figcaption>“A minha jornada como concurseiro foi uma antes de eu conhecer o Vinícius e outra depois.”<b>Daniel Matos · Auditor Fiscal da SEFAZ-RJ, 4º lugar</b></figcaption>
+        </figure>
+        <figure class="dv" role="listitem" data-panda="386fd537-c0c7-4af3-a6e1-2dde6eae8ec1" data-aluno="antonio-sombra" data-nome="Antônio Sombra">
+          <div class="dv-moldura">
+            <img src="assets/depoimentos/video/antonio-sombra.jpg" alt="" width="540" height="960" loading="lazy" decoding="async">
+            <button type="button" class="dv-play" data-dv-play aria-label="Assistir ao depoimento de Antônio Sombra"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4l14 8-14 8z"/></svg></i></button>
+          </div>
+          <figcaption>“Comecei a achar contabilidade fácil e comecei a perder o medo de estudar aquele monte de CPC.”<b>Antônio Sombra · Auditor do TCU</b></figcaption>
+        </figure>
+        <figure class="dv" role="listitem" data-panda="89779efb-8bbf-4af1-b544-5d7cf01c8204" data-aluno="jorge-henriques" data-nome="Jorge Henriques">
+          <div class="dv-moldura">
+            <img src="assets/depoimentos/video/jorge-henriques.jpg" alt="" width="540" height="960" loading="lazy" decoding="async">
+            <button type="button" class="dv-play" data-dv-play aria-label="Assistir ao depoimento de Jorge Henriques"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4l14 8-14 8z"/></svg></i></button>
+          </div>
+          <figcaption>“Era um CPC que eu não conseguia entender em nenhuma outra aula, e eu só consegui aprender com ele.”<b>Jorge Henriques · Auditor Fiscal do Rio de Janeiro, 2º lugar</b></figcaption>
+        </figure>
+        <figure class="dv" role="listitem" data-panda="acc402b3-c364-4b45-81af-77741481716e" data-aluno="ransley-moreira-alves" data-nome="Ransley Moreira Alves">
+          <div class="dv-moldura">
+            <img src="assets/depoimentos/video/ransley-moreira-alves.jpg" alt="" width="540" height="960" loading="lazy" decoding="async">
+            <button type="button" class="dv-play" data-dv-play aria-label="Assistir ao depoimento de Ransley Moreira Alves"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4l14 8-14 8z"/></svg></i></button>
+          </div>
+          <figcaption>“O professor já faz questão de te explicar os conceitos lá dos CPCs. Isso te dá fluência na matéria desde o começo.”<b>Ransley Moreira Alves · 1º lugar na lista PcD, Senador Canedo (GO)</b></figcaption>
+        </figure>
+        <figure class="dv" role="listitem" data-panda="d8614e2c-f9bc-4c83-8373-de2d66e05b15" data-aluno="tallys" data-nome="Tallys">
+          <div class="dv-moldura">
+            <img src="assets/depoimentos/video/tallys.jpg" alt="" width="540" height="960" loading="lazy" decoding="async">
+            <button type="button" class="dv-play" data-dv-play aria-label="Assistir ao depoimento de Tallys"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4l14 8-14 8z"/></svg></i></button>
+          </div>
+          <figcaption>“Direta, sem enrolação e focada naquilo que realmente cai na prova.”<b>Tallys · aprovado em Auditor Fiscal, 2026</b></figcaption>
+        </figure>
+      </div>
+    </div>
+    <p class="dv-label">Nas palavras dos alunos</p>
+    <div class="depo-cards">
+      <figure class="depo-card"><span class="aspas" aria-hidden="true">“</span><blockquote>Contabilidade sempre foi a minha maior dificuldade na área fiscal, e a forma como o conteúdo é apresentado tem ajudado bastante. As aulas são objetivas, certeiras e vão direto ao ponto.</blockquote><figcaption>João Renan S. <span>· avaliação enviada pela plataforma</span></figcaption></figure>
+      <figure class="depo-card"><span class="aspas" aria-hidden="true">“</span><blockquote>Não é modéstia, honestamente é uma das melhores aulas sobre quaisquer CPCs que já assisti. Obrigada por esse PRESENTE!</blockquote><figcaption>@yarabezerra9762 <span>· comentário nas aulas do professor no YouTube</span></figcaption></figure>
+      <figure class="depo-card"><span class="aspas" aria-hidden="true">“</span><blockquote>Suas aulas são maravilhosas e nenhum professor explica questões como você. Impossível não aprender.</blockquote><figcaption>Gisele C. <span>· mensagem no Instagram</span></figcaption></figure>
+      <figure class="depo-card"><span class="aspas" aria-hidden="true">“</span><blockquote>Didática do professor, consegue transmitir muito bem algo bem complicado e isso é uma habilidade pra poucos.</blockquote><figcaption>Carlos Eduardo B. <span>· Plataforma</span></figcaption></figure>
+      <figure class="depo-card"><span class="aspas" aria-hidden="true">“</span><blockquote>Esse estudo me fez gostar, novamente, de estudar. Querer mais a cada dia. Ter mais conhecimento hoje do que ontem.</blockquote><figcaption>Érica Freitas <span>· WhatsApp, Turma ISS-RJ</span></figcaption></figure>
+      <figure class="depo-card"><span class="aspas" aria-hidden="true">“</span><blockquote>Só tenho agradecer ao professor Vinicius e sua equipe pela generosidade e empatia. É uma disciplina desafiadora e que demanda tempo e dedicação para sua perfeita compreensão.</blockquote><figcaption>Aluno(a) <span>· WhatsApp</span></figcaption></figure>
+    </div>
+    <p class="depo-mais"><a href="depoimentos.html">Ver todos os depoimentos, com print de cada um →</a></p>
+  </div>
+</section>
+
+<section class="sec so-captacao" id="duvidas">
+  <div class="wrap">
+    <span class="eyebrow">Dúvidas</span>
+    <h2>Perguntas frequentes</h2>
+    <div class="faq">
+      <details><summary>A live e o Raio-X são gratuitos?</summary><p>Sim. A live é aberta no YouTube e o Raio-X FGV é liberado no grupo para quem se inscreve.</p></details>
+      <details><summary>Preciso já saber Contabilidade?</summary><p>Não. A live serve para quem está começando e para quem já estudou: o foco é como a FGV cobra e por onde começar.</p></details>
+      <details><summary>Serve para o Auditor-Fiscal?</summary><p>Serve para a parte de Contabilidade Geral do Auditor. Contabilidade Pública e Auditoria não entram.</p></details>
+      <details><summary>E se o edital novo vier diferente do de 2022?</summary><p>O conteúdo é montado sobre o edital de 2022, que também foi da FGV. Se o edital novo mudar a Contabilidade, o material é ajustado.</p></details>
+      <details><summary>O que é o grupo do WhatsApp?</summary><p>O grupo da Operação Receita: o link da live, o Raio-X FGV e as novidades do edital chegam por lá. Você sai quando quiser.</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="sec clara final so-captacao">
+  <div class="wrap">
+    <span class="eyebrow">Operação Receita</span>
+    <h2>Quarta, 09/12, às 20h. Entre antes.</h2>
+    <p class="lead">Entre no grupo, baixe o Raio-X FGV e receba o link da live antes de todo mundo.</p>
+    <a class="btn" href="#lista">Quero o Raio-X FGV</a>
+  </div>
+</section>
+
+<div class="barra-fixa so-captacao" id="barra-fixa"><a class="btn" href="#lista">Entrar na Operação Receita</a><small>Grátis · live 09/12, 20h</small></div>
+
+<footer>
+  <div class="wrap">
+    <div><strong>Fluência Contábil</strong> · Contabilidade para quem quer ser fluente.</div>
+    <div><a href="https://fluenciacontabil.com.br/">fluenciacontabil.com.br</a> · <a href="https://instagram.com/prof.viniciusferraz">@prof.viniciusferraz</a></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  'use strict';
+  var C = window.__OR || {};
+  var ENDPOINT = 'https://script.google.com/macros/s/AKfycbx8lWrX5F0IByv0JEJ0iBGPjtLto7f2VxDHIh0uT0gZtvoj8EDVx0NFiriou-Dt0cxh/exec';
+  /* Linha da Config Aulas (ver o comentário no topo). */
+  var ORIGEM_COM_WHATSAPP = 'aula_operacao_receita_2026_whatsapp';
+  var CHAVE_LOCAL = 'fc_operacao_receita_2026';
+  var CHAVE_GRUPO = 'fc_operacao_receita_2026_grupo';
+  var LIVE = Date.parse(C.LIVE || '2026-12-09T20:00:00-03:00');
+  var GRUPO_OK = /^https:\/\/chat\.whatsapp\.com\/[A-Za-z0-9]+$/.test(C.GRUPO_URL || '');
+  var RAIOX_OK = /^(https:\/\/|\/|assets\/)\S+\.pdf(\?\S*)?$/.test(C.RAIO_X_URL || '');
+  /* Google Agenda: 20h às 22h de Brasília = 23h às 01h UTC. */
+  var AGENDA = 'https://calendar.google.com/calendar/render?action=TEMPLATE'
+    + '&text=' + encodeURIComponent('Live da Operação Receita (Receita Federal, banca FGV)')
+    + '&dates=20261209T230000Z/20261210T010000Z'
+    + '&details=' + encodeURIComponent('Ao vivo no YouTube, com o Prof. Vinícius Ferraz Neves. O link chega no grupo e no seu e-mail.')
+    + '&location=' + encodeURIComponent('fluenciacontabil.com.br/receita-federal');
+
+  function el(id){ return document.getElementById(id); }
+  function dois(n){ return String(n).padStart(2, '0'); }
+  function push(o){ try { window.dataLayer = window.dataLayer || []; window.dataLayer.push(o); } catch(e){} }
+
+  // ───────────── contagem ─────────────
+  var relogio = null;
+  function contar(){
+    var falta = LIVE - Date.now();
+    if (falta <= 0) { el('contagem').hidden = true; if (relogio) clearInterval(relogio); return; }
+    var s = Math.floor(falta / 1000);
+    el('c-dias').textContent  = Math.floor(s / 86400);
+    el('c-horas').textContent = dois(Math.floor(s % 86400 / 3600));
+    el('c-min').textContent   = dois(Math.floor(s % 3600 / 60));
+    el('c-seg').textContent   = dois(s % 60);
+  }
+  contar(); relogio = setInterval(contar, 1000);
+
+  // ───────────── estados ─────────────
+  var LINK_LIVE = C.LIVE_VIDEO ? 'https://youtu.be/' + C.LIVE_VIDEO : 'https://www.youtube.com/@prof.viniciusferraz/live';
+  document.querySelectorAll('a[data-live]').forEach(function(a){ a.setAttribute('href', LINK_LIVE); });
+  /* Checkout com a etiqueta da página; o funil só aparece com FUNIL_URL preenchido. */
+  if (C.CHECKOUT_URL) el('venda-checkout').href = C.CHECKOUT_URL + (C.CHECKOUT_URL.indexOf('?') < 0 ? '?' : '&') + 'src=lp-receita-federal&utm_campaign=receita_federal_2026';
+  if (C.FUNIL_URL) { el('venda-funil').href = C.FUNIL_URL; el('venda-funil').hidden = false; }
+  var atual = null;
+  function aplicarEstado(){
+    var e = window.__rfb.estado(), raiz = document.documentElement;
+    if (e === atual) return;
+    atual = e;
+    if (e) raiz.setAttribute('data-estado', e); else raiz.removeAttribute('data-estado');
+    var topo = el('topo-cta');
+    if (e === 'ao-vivo') { topo.textContent = 'Assistir à live'; topo.href = LINK_LIVE; topo.target = '_blank'; topo.rel = 'noopener'; }
+    else if (e === 'venda') { topo.textContent = 'Quero o Fluente em FGV'; topo.href = '#st-venda'; topo.removeAttribute('target'); }
+    else { topo.textContent = 'Quero o Raio-X FGV'; topo.href = '#lista'; topo.removeAttribute('target'); }
+    if (e === 'ao-vivo' && C.LIVE_VIDEO && !el('st-player').firstChild) {
+      var f = document.createElement('iframe');
+      f.src = 'https://www.youtube.com/embed/' + encodeURIComponent(C.LIVE_VIDEO) + '?autoplay=1&mute=1&rel=0';
+      f.title = 'Live da Operação Receita, 09/12, 20h';
+      f.allow = 'autoplay; encrypted-media; picture-in-picture';
+      f.allowFullscreen = true;
+      el('st-player').appendChild(f);
+    }
+  }
+  aplicarEstado(); setInterval(aplicarEstado, 1000);
+
+  // ───────────── formulário ─────────────
+  var form = el('or-form'), nome = el('or-nome'), tel = el('or-telefone'), email = el('or-email'),
+      enviar = el('or-enviar'), erro = el('or-erro'), ok = el('or-ok');
+  var ROTULO = enviar.textContent, ocupado = false;
+
+  function digitos(s){ return String(s || '').replace(/\D/g, ''); }
+  function telefoneLimpo(s){ var d = digitos(s); if (d.length > 11 && d.indexOf('55') === 0) d = d.slice(2); return d; }
+  function mascara(d){
+    d = d.slice(0, 11);
+    if (d.length <= 2) return d.length ? '(' + d : '';
+    if (d.length <= 6) return '(' + d.slice(0,2) + ') ' + d.slice(2);
+    if (d.length <= 10) return '(' + d.slice(0,2) + ') ' + d.slice(2,6) + '-' + d.slice(6);
+    return '(' + d.slice(0,2) + ') ' + d.slice(2,7) + '-' + d.slice(7);
+  }
+  tel.addEventListener('input', function(){ tel.value = mascara(telefoneLimpo(tel.value)); });
+  function emailOk(s){ return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(s || '').trim()); }
+  function telefoneOk(d){ return /^[1-9]{2}9?\d{8}$/.test(d); }
+  function marcar(campo, valido){ campo.setAttribute('aria-invalid', valido ? 'false' : 'true'); return valido; }
+  function falhar(msg, campo){
+    erro.textContent = msg; erro.hidden = false;
+    enviar.disabled = false; enviar.textContent = ROTULO;
+    [nome, tel, email].forEach(function(c){ c.readOnly = false; });
+    (campo || enviar).focus();
+  }
+
+  function liberarRaioX(){
+    if (RAIOX_OK) { el('or-raiox').href = C.RAIO_X_URL; el('or-raiox').hidden = false; }
+    else el('or-raiox-breve').hidden = false;
+  }
+  function confirmado(novo){
+    form.hidden = true; erro.hidden = true;
+    el('or-titulo').hidden = true; el('or-sub').hidden = true; el('or-bonus').hidden = true;
+    ok.hidden = false;
+    el('or-agenda').href = AGENDA;
+    if (GRUPO_OK) {
+      el('or-grupo').href = C.GRUPO_URL; el('or-grupo').hidden = false;
+      var tocou = false;
+      try { tocou = localStorage.getItem(CHAVE_GRUPO) === '1'; } catch(e){}
+      if (tocou) liberarRaioX();
+      else {
+        el('or-grupo').textContent = 'Entrar no grupo e liberar o Raio-X';
+        el('or-grupo').addEventListener('click', function(){
+          try { localStorage.setItem(CHAVE_GRUPO, '1'); } catch(e){}
+          push({event: 'grupo_vip_click', origem: 'operacao_receita'});
+          liberarRaioX();
+          el('or-grupo').textContent = 'Entrar no grupo da Operação Receita';
+        });
+      }
+    } else liberarRaioX();
+    if (!novo) return;
+    try { localStorage.setItem(CHAVE_LOCAL, '1'); } catch(e){}
+    /* O primeiro nome vai para o obrigado pelo sessionStorage, nunca pela URL. */
+    try { sessionStorage.setItem('fc_or_nome', (nome.value.split(/\s+/)[0] || '').slice(0, 30)); } catch(e){}
+    el('or-ok-titulo').focus();
+    /* O Lead sai pelo container (gatilho `lead_capturado` → Meta Lead). Só depois a página vai
+       para o obrigado; sem GTM (bloqueador), vai em 1,6 s. */
+    var foi = false;
+    function irObrigado(){ if (foi) return; foi = true; location.href = 'receita-federal-obrigado'; }
+    try {
+      if (window.dataLayer && window.google_tag_manager) {
+        window.dataLayer.push({event:'lead_capturado', origem:'operacao_receita_2026', eventCallback: irObrigado, eventTimeout: 1500});
+      } else if (window.dataLayer) {
+        window.dataLayer.push({event:'lead_capturado', origem:'operacao_receita_2026'});
+      }
+    } catch(e){}
+    setTimeout(irObrigado, 1600);
+  }
+  el('or-raiox').addEventListener('click', function(){ push({event: 'raio_x_download', origem: 'operacao_receita'}); });
+
+  // quem já se inscreveu, neste navegador, não repete o cadastro
+  try { if (localStorage.getItem(CHAVE_LOCAL) === '1') confirmado(false); } catch(e){}
+
+  form.addEventListener('submit', function(ev){
+    ev.preventDefault();
+    if (ocupado) return;
+    erro.hidden = true;
+    nome.value = nome.value.trim();
+    email.value = email.value.trim();
+    var fone = telefoneLimpo(tel.value);
+    if (!marcar(nome, nome.value.length >= 2)) return falhar('Escreva seu nome.', nome);
+    if (!marcar(tel, telefoneOk(fone))) return falhar('Confira o WhatsApp: DDD e número, como (21) 99999-9999.', tel);
+    if (!marcar(email, emailOk(email.value))) return falhar('Confira o e-mail: parece que falta algo.', email);
+
+    ocupado = true;
+    enviar.disabled = true;
+    enviar.textContent = 'Confirmando…';
+    [nome, tel, email].forEach(function(c){ c.readOnly = true; });
+
+    var corpo = new URLSearchParams({
+      email: email.value.toLowerCase(),
+      nome: nome.value,
+      telefone_digits: fone,
+      origem: ORIGEM_COM_WHATSAPP,
+      campanha: 'Operação Receita 2026',
+      pagina: location.origin + location.pathname,
+      referrer: document.referrer || '',
+      dispositivo: window.matchMedia('(max-width: 760px)').matches ? 'Mobile' : 'Desktop',
+      consentimento: 'avisos_operacao_receita_email_e_whatsapp_por_aviso'
+    });
+    var veio = new URLSearchParams(location.search);
+    // A navegação interna pode remover a query; origem.js conserva a visita.
+    var salva = window.FC_ORIGEM && window.FC_ORIGEM.instalada && window.FC_ORIGEM.origem;
+    var usarSalva = salva && typeof salva === 'object' && !Array.isArray(salva);
+    ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','src'].forEach(function(k){
+      var v = usarSalva ? salva[k] : veio.get(k);
+      if (typeof v === 'string' && v && v.length <= 180) corpo.set(k, v);
+    });
+    // Primeiro e último toque, id do clique e página de entrada (assets/origem.js).
+    try { if (window.FC_ORIGEM && window.FC_ORIGEM.anexarCamposDoLead) window.FC_ORIGEM.anexarCamposDoLead(corpo); } catch (e) {}
+    if (corpo.get('src')) corpo.set('ref', corpo.get('src'));
+
+    /* `cors` de propósito: a inscrição só é confirmada depois de LER a resposta do Apps Script. */
+    var aborta = new AbortController();
+    var limite = setTimeout(function(){ aborta.abort(); }, 20000);
+    fetch(ENDPOINT, { method:'POST', body:corpo, mode:'cors', credentials:'omit', redirect:'follow', signal:aborta.signal })
+      .then(function(r){ if (!r.ok || r.type === 'opaque') throw new Error('sem confirmacao'); return r.json(); })
+      .then(function(res){ if (res.ok !== true) throw new Error('recusado'); confirmado(true); })
+      .catch(function(e){
+        falhar(e && e.name === 'AbortError'
+          ? 'A confirmação demorou mais que o esperado. Tente de novo.'
+          : 'Não consegui confirmar o cadastro agora. Confira a conexão e tente de novo.');
+      })
+      .finally(function(){ clearTimeout(limite); ocupado = false; });
+  });
+})();
+</script>
+<script src="assets/origem.js?v=20261124" defer></script>
+<script src="assets/receita-federal/operacao/pagina.js?v=20261126" defer></script>
+<script src="assets/depo-video.js?v=20261116" defer></script>
+</body>
+</html>

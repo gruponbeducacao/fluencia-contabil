@@ -38,6 +38,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   fim e depois sai sozinho. Não vai para a agenda, que alimenta a aula-ao-vivo.html.
   Com `img` (arte 16:9 em assets/links/), a faixa mostra essa arte no lugar da
   miniatura do YouTube: serve para live de outro canal (o podcast de parceiro).
+  A `url` também pode ser uma página do site (ex.: receita-federal.html, a captação de um
+  lançamento): aí vale `cta` para o texto do botão antes do início, e a `img` faz falta,
+  porque não há miniatura do YouTube.
 
   Sem os dois arquivos a página continua de pé: o destaque cai no texto fixo
   ("Toda quarta, 20h"), com o símbolo da marca na faixa, e a lista de novidades
@@ -365,12 +368,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     // Live avulsa (a da Black, por exemplo), fora da agenda das quartas: o links.json
     // a põe no topo até a hora de fim, e depois a página volta sozinha ao de sempre.
     var av = links && links.destaque, ini = av && quando(av.inicio), fim = av && quando(av.fim);
-    if (ini && fim && ini.hora && fim.hora && fim.d > ini.d && agora < fim.d && NOME.test(texto(av.id)) && limpo(av.titulo) && video(av.url)) {
+    // O endereço é a live no YouTube ou uma página do próprio site (a de captação de um lançamento,
+    // que vira a sala da live na hora): aí o texto do botão vem de "cta" até o início.
+    var pagina = av && !video(av.url) && /^[a-z0-9][a-z0-9_-]*\.html$/i.test(texto(av.url));
+    if (ini && fim && ini.hora && fim.hora && fim.d > ini.d && agora < fim.d && NOME.test(texto(av.id)) && limpo(av.titulo) && (video(av.url) || pagina)) {
       destaque = {
         botao: av.id,
         kicker: 'Ao vivo · ' + (mesmoDia(ini.d, agora) ? 'hoje, ' : DIAS[ini.d.getDay()] + ', ' + ddmm(ini.d) + ' · ') + ini.d.getHours() + 'h' + (ini.d.getMinutes() ? dois(ini.d.getMinutes()) : ''),
         titulo: limpo(av.titulo),
-        cta: agora < ini.d ? 'Ativar lembrete no YouTube' : 'Entrar na live',
+        cta: agora >= ini.d ? 'Entrar na live' : (pagina ? (limpo(av.cta) || 'Saiba mais') : 'Ativar lembrete no YouTube'),
         url: av.url, video: video(av.url), avulso: true
       };
       // Arte própria (live de outro canal): ela vai na faixa no lugar da miniatura.
