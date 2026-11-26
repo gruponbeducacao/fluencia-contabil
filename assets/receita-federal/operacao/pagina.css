@@ -156,7 +156,7 @@ html.op .lt-vagas{display:block}
 .linha-tempo li.live::before{background:#0B1F3A;border-color:#C8A84B;box-shadow:0 0 0 5px #c8a84b40}
 .linha-tempo b{font-size:17px;font-weight:900;line-height:1.2;color:var(--lt-ink)}
 .linha-tempo span{margin-top:4px;font-family:"Source Serif 4",Georgia,serif;font-size:14.5px;line-height:1.4;color:var(--lt-mute)}
-.lt-vagas{margin-top:34px;padding:16px 20px;border-left:4px solid #C8A84B;background:#fff;color:#2b2b2b;font-size:16px;max-width:780px}
+.lt-vagas{margin-top:34px;padding:16px 20px;background:#fff;color:#2b2b2b;font-size:16px;max-width:780px}
 .lt-vagas b{font-family:Montserrat,sans-serif;color:#0B1F3A}
 
 /* ── 8 · professor com autoridade ── */
@@ -399,3 +399,31 @@ html.op .lista .n::before{content:none}
 /* estados da página: as seções novas de captação somem na live e na venda, como as antigas
    (o html.op das regras acima empata em especificidade com a regra de estado da página) */
 html[data-estado=ao-vivo] .so-captacao,html[data-estado=venda] .so-captacao{display:none!important}
+
+/* ficha 03 (26/11): a DFC entrou na 01; Provisões passou para o canto de cima à esquerda. Some quando há vídeo-convite */
+@media (min-width:921px){html.op .folha.f3{left:-14px;top:-10px;rotate:-6deg;z-index:3}}
+@media (max-width:920px){html.op .folha.f3{display:none}}   /* no celular cabem duas: DFC e CPC 00 */
+html.op.tem-video .folha.f3{display:none}
+
+/* depoimentos (26/11): na captação e na venda; somem só na live. O componente depo-video.css é claro, aqui vai no marinho */
+html[data-estado=ao-vivo] #depoimentos{display:none!important}
+html.op #depoimentos{background:var(--marinho);border-top:1px solid var(--linha)}
+#depoimentos h2{margin-bottom:28px}
+#depoimentos .dv-bloco{margin:0 auto 44px}
+#depoimentos .dv-label{color:var(--dourado)}
+#depoimentos .dv-titulo{color:#fff;font-family:Montserrat,sans-serif}
+#depoimentos .dv figcaption{color:var(--branco-2)}
+#depoimentos .dv figcaption b{color:var(--branco-3)}
+#depoimentos .dv-moldura{box-shadow:0 18px 40px -16px #000c;outline:1px solid var(--linha)}
+.depo-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:6px}
+.depo-card{position:relative;margin:0;padding:22px 22px 18px;border-radius:10px;background:#fff;color:#1A1A1A;box-shadow:0 14px 34px -18px #000c}
+.depo-card .aspas{position:absolute;top:6px;right:16px;font:400 46px/1 'Source Serif 4',Georgia,serif;color:#C8A84B}
+.depo-card blockquote{margin:0 0 12px;padding-right:18px;font:400 15.5px/1.6 'Source Serif 4',Georgia,serif;color:#2a2a2a}
+.depo-card figcaption{font:700 12.5px/1.4 Montserrat,sans-serif;color:#0B1F3A}
+.depo-card figcaption span{font-weight:500;color:#6b6f78}
+.depo-mais{margin-top:22px;text-align:center;font:700 14px Montserrat,sans-serif}
+.depo-mais a{color:var(--dourado)}
+@media (max-width:920px){
+  .depo-cards{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;margin-inline:-5vw;padding:0 5vw 6px;scrollbar-width:none}
+  .depo-card{flex:0 0 84%;scroll-snap-align:start}
+}
