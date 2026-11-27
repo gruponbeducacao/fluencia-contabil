@@ -1,6 +1,6 @@
 {
-  "geradoEm": "2026-11-26T07:24:48.747Z",
-  "total": 30,
+  "geradoEm": "2026-11-27T07:24:31.926Z",
+  "total": 33,
   "editais": [
     {
       "concursoSlug": "secretaria-da-fazenda-do-estado-do-ceara-sefaz-ce",
@@ -38,6 +38,23 @@
     {
       "concursoSlug": "unificado-ma-2026",
       "orgao": "Governo do Estado do Maranhão — Secretaria de Estado da Administração (SEAD) / Secretaria de Estado do Planejamento e Orçamento (SEPLAN)",
+      "cargo": "Analista de Planejamento e Finanças Públicas – Finanças e Controle (SEPLAN, código 30)",
+      "banca": "FCC",
+      "esfera": "ESTADUAL",
+      "uf": "MA",
+      "area": "ADMINISTRACAO_PUBLICA",
+      "dataProva": "2027-04-04",
+      "linkOficial": "https://www.concursosfcc.com.br/concursos/seadm226/",
+      "disciplinas": [
+        {
+          "rotulo": "Contabilidade geral",
+          "pct": 65
+        }
+      ]
+    },
+    {
+      "concursoSlug": "unificado-ma-2026",
+      "orgao": "Governo do Estado do Maranhão — Secretaria de Estado da Administração (SEAD) / Secretaria de Estado do Planejamento e Orçamento (SEPLAN)",
       "cargo": "Assistente Técnico – Técnico em Contabilidade (SEAD, código 42)",
       "banca": "FCC",
       "esfera": "ESTADUAL",
@@ -53,19 +70,19 @@
       ]
     },
     {
-      "concursoSlug": "unificado-ma-2026",
-      "orgao": "Governo do Estado do Maranhão — Secretaria de Estado da Administração (SEAD) / Secretaria de Estado do Planejamento e Orçamento (SEPLAN)",
-      "cargo": "Analista de Planejamento e Finanças Públicas – Finanças e Controle (SEPLAN, código 30)",
-      "banca": "FCC",
-      "esfera": "ESTADUAL",
-      "uf": "MA",
-      "area": "ADMINISTRACAO_PUBLICA",
-      "dataProva": "2027-04-04",
-      "linkOficial": "https://www.concursosfcc.com.br/concursos/seadm226/",
+      "concursoSlug": "iss-osasco-2026",
+      "orgao": "Prefeitura do Município de Osasco",
+      "cargo": "Fiscal Tributário – 1ª Classe",
+      "banca": "VUNESP",
+      "esfera": "MUNICIPAL",
+      "uf": "SP",
+      "area": "FISCAL",
+      "dataProva": "2027-03-07",
+      "linkOficial": "https://www.vunesp.com.br/PMOS2605",
       "disciplinas": [
         {
-          "rotulo": "Contabilidade geral",
-          "pct": 65
+          "rotulo": "Noções de Contabilidade",
+          "pct": 100
         }
       ]
     },
@@ -316,6 +333,23 @@
       ]
     },
     {
+      "concursoSlug": "banco-central-do-brasil-bcb",
+      "orgao": "Banco Central do Brasil (BCB)",
+      "cargo": "Cargo 1: Analista – Área: Economia e Finanças",
+      "banca": "CEBRASPE (CESPE)",
+      "esfera": "FEDERAL",
+      "uf": null,
+      "area": "REGULADORAS",
+      "dataProva": "2024-08-04",
+      "linkOficial": "https://www.cebraspe.org.br/concursos/bcb_24",
+      "disciplinas": [
+        {
+          "rotulo": "Contabilidade de instituições financeiras padrão COSIF (plano contábil das instituições do sistema financeiro nacional)",
+          "pct": 71
+        }
+      ]
+    },
+    {
       "concursoSlug": "ministerio-da-economia-secretaria-especial-da-receita-federal-do-brasil",
       "orgao": "Ministério da Economia — Secretaria Especial da Receita Federal do Brasil",
       "cargo": "Analista-Tributário da Receita Federal do Brasil",
@@ -490,6 +524,23 @@
         {
           "rotulo": "Contabilidade Avançada",
           "pct": 100
+        }
+      ]
+    },
+    {
+      "concursoSlug": "sefaz-rs-2018-tecnico",
+      "orgao": "Estado do Rio Grande do Sul — Secretaria da Fazenda (SEFAZ/RS)",
+      "cargo": "Técnico Tributário da Receita Estadual",
+      "banca": "CEBRASPE (CESPE)",
+      "esfera": "ESTADUAL",
+      "uf": "RS",
+      "area": "FISCAL",
+      "dataProva": "2018-12-02",
+      "linkOficial": "https://www.cebraspe.org.br/concursos/sefaz_rs_18_tecnico",
+      "disciplinas": [
+        {
+          "rotulo": "Contabilidade Geral",
+          "pct": 86
         }
       ]
     },
