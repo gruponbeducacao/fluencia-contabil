@@ -17,6 +17,7 @@
    FUNIL_URL       página do funil de venda (perguntas → plano). Vazio = botão some.
    VIDEO_CONVITE   endereço de EMBED do vídeo-convite do professor (Panda ou YouTube). Vazio = o topo
                    mostra a arte do dossiê; preenchido = o vídeo entra por cima dela.
+   VIDEO_CAPA      capa do vídeo-convite (em pé, 9:16, como o vídeo). Vazio = a foto antiga do professor.
    NUMEROS         números da FGV no banco e das vagas, num lugar só (cards, fichas do topo, página
                    do Raio-X e aba Questões). Atualize aqui quando entrarem questões novas.
    ═══════════════════════════════════════════════════════════════ */
@@ -27,7 +28,8 @@ window.__OR = {
   VENDA_LIBERADA: false,
   CHECKOUT_URL: 'https://pay.kiwify.com.br/oDn2naU',
   FUNIL_URL: '',
-  VIDEO_CONVITE: '',
+  VIDEO_CONVITE: 'https://player-vz-7867cfdb-be1.tv.pandavideo.com.br/embed/?v=f5e5360a-8037-417c-a9b1-180b54cceb62', /* 5:33, em pé, gravado em 27/11 */
+  VIDEO_CAPA: 'assets/receita-federal/operacao/convite-capa.webp',
   NUMEROS: {
     data: '24/11/2026',          /* data da contagem no banco de produção */
     fgv_total: 1222,             /* questões da FGV publicadas */

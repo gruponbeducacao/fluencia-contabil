@@ -21,6 +21,8 @@
   if (OR.VIDEO_CONVITE) {
     R.classList.add('tem-video');
     var vid = document.querySelector('.palco .video');
+    var capa = vid && vid.querySelector('img');
+    if (capa && OR.VIDEO_CAPA) { capa.src = OR.VIDEO_CAPA; capa.width = 540; capa.height = 960; }
     if (vid) vid.addEventListener('click', function(){
       if (vid.querySelector('iframe')) return;
       var f = document.createElement('iframe');
